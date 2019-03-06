@@ -11,28 +11,14 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            adminId: '',
-            adminToken: null,
-            isGod: false,
             email: '',
             password: '',
-            test: null,
-            statusCode: null,
-        }; 
-        this.GotoHome = this.GotoHome.bind(this);
+        };
+
         this.handleClick = this.handleClick.bind(this);
+       
     }
 
-
-    GotoHome() {
-        let path = `/welcome`;
-        this.props.history.push(path);
-        
-            // return(<Redirect to="/welcome" />)
-             
-        
-        
-      }
 
     handleClick(event) {
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -52,32 +38,31 @@ class Login extends Component {
             })
         }) /*end fetch */
             .then((response) => {
-                this.setState({ adminToken: response.headers.get('authorization'), statusCode: response.status })
-                if (this.state.statusCode == 200) {
+                AsyncStorage.setItem('adminToken', response.headers.get('authorization'));
+                // console.log(response.headers.get('authorization'))
+                if (response.status === 200) {
                     return response.json()
+                    
                 } else {
-                    console.log("Algo deu errado");
+                    console.log(response.text());
 
                 }
             })
             .then((responseJson) => {
-
-                this.setState({
-                    adminId: responseJson.id,
-                    isGod: responseJson.is_god,
-                })
                 AsyncStorage.setItem('adminID', responseJson.id);
                 AsyncStorage.setItem('adminName', responseJson.first_name);
-                AsyncStorage.setItem('adminName', responseJson.last_name);
-                AsyncStorage.setItem('adminToken', this.state.adminToken);
+                AsyncStorage.setItem('adminLastName', responseJson.last_name);
                 AsyncStorage.setItem('adminEmail', responseJson.email);
                 AsyncStorage.setItem('adminGod', responseJson.is_god);
                 AsyncStorage.setItem('adminApp', responseJson.app_id);
-                
+
+                /* Block that make the redirect  */
+                let path = `/welcome`;
+                this.props.history.push(path);
 
             })
-            this.GotoHome()
-            console.log(this.state.adminToken)
+            
+            
     }
 
     render() {

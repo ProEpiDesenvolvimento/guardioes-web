@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Navbar, Carousel } from 'react-bootstrap';
 import { withRouter, Link } from 'react-router-dom';
+import { AsyncStorage } from 'AsyncStorage';
 import '../styles/welcome.css';
 import ExampleApp from '../imgs/hero-a.svg';
 import Logo from '../imgs/logo2.svg';
@@ -11,17 +12,41 @@ import Footer from '../components/footer'
 class Welcome extends Component {
     constructor(props) {
         super(props)
-        
+        this.state = {
+            adminID: null,
+            adminName: "",
+        }
+
         this.GotoLogin = this.GotoLogin.bind(this);
-        
+
     }
-    
-      GotoLogin() {
+
+    GotoLogin() {
         let path = `/login`;
         this.props.history.push(path)
-        
-      }
 
+    }
+
+
+    componentDidMount = async () => {
+
+        let adminName = await AsyncStorage.getItem('adminName');
+        let adminId = await AsyncStorage.getItem('adminId');
+        let adminLastName = await AsyncStorage.getItem('adminLastName');
+        let adminEmail = await AsyncStorage.getItem('adminEmail');
+        let adminGod = await AsyncStorage.getItem('adminGod');
+        let adminApp = await AsyncStorage.getItem('adminApp');
+        this.setState({
+            adminName,
+            adminApp,
+            adminEmail,
+            adminGod,
+            adminId,
+            adminLastName,
+
+        });
+        console.log(this.state.adminName + " " + this.state.adminLastName)
+    }
     render() {
 
         return (
@@ -121,8 +146,8 @@ class Welcome extends Component {
                     </div>
                 </Container>
 
-                <Footer/>
-                
+                <Footer />
+
             </div >
         );
     }
