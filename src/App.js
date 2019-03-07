@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Home from './views/Home'
-import Test from './views/Test'
 import Welcome from './views/Welcome'
 import Login from './views/Login'
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -19,11 +18,7 @@ class App extends Component {
               <Home />
             </div>
           )} />
-          <Route exact={true} path='/test' render={() => (
-            <div className="App">
-              <Test />
-            </div>
-          )} />
+          
             <Route exact={true} path='/welcome' render={() => (
             <div className="App">
               <Welcome />

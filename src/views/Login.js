@@ -11,8 +11,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -32,7 +31,7 @@ class Login extends Component {
             body: JSON.stringify({
                 "admin":
                 {
-                    "email": "proepi.desenvolvimento@gmail.com",
+                    "email": this.state.name,
                     "password": "!ProEpiDev_1"
                 }
             })
@@ -55,9 +54,10 @@ class Login extends Component {
                 AsyncStorage.setItem('adminEmail', responseJson.email);
                 AsyncStorage.setItem('adminGod', responseJson.is_god);
                 AsyncStorage.setItem('adminApp', responseJson.app_id);
+                console.log(responseJson.first_name)
 
                 /* Block that make the redirect  */
-                let path = `/welcome`;
+                let path = `/test`;
                 this.props.history.push(path);
 
             })
@@ -65,6 +65,16 @@ class Login extends Component {
             
     }
 
+    handleChangeName = name => event => {
+        this.setState({ [name]: event.target.value });
+        // console.log(this.state.name)
+      };
+
+      handleChange = password => event => {
+        this.setState({ [password]: event.target.value});
+        // console.log(this.state.password)
+      };
+    
     render() {
 
 
@@ -78,14 +88,14 @@ class Login extends Component {
                         <TextField
                             hintText="Enter your Email"
                             floatingLabelText="Email"
-                            onChange={(event, newValue) => this.setState({ email: newValue })}
+                            onChange={this.handleChangeName('name')}
                         />
                         <br />
                         <TextField
                             type="password"
                             hintText="Enter your Password"
                             floatingLabelText="Password"
-                            onChange={(event, newValue) => this.setState({ password: newValue })}
+                            onChange={this.handleChange('password')}
                         />
                         <br />
                         <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/> 

@@ -26,7 +26,25 @@ class Welcome extends Component {
         this.props.history.push(path)
 
     }
+//   componentDidMount = async () => {
 
+//     let adminName = await AsyncStorage.getItem('adminName');
+//     let adminId = await AsyncStorage.getItem('adminId');
+//     let adminLastName = await AsyncStorage.getItem('adminLastName');
+//     let adminEmail = await AsyncStorage.getItem('adminEmail');
+//     let adminGod = await AsyncStorage.getItem('adminGod');
+//     let adminApp = await AsyncStorage.getItem('adminApp');
+//     this.setState({
+//         adminName,
+//         adminApp,
+//         adminEmail,
+//         adminGod,
+//         adminId,
+//         adminLastName,
+
+//     });
+//     console.log(this.state.adminName + " " + this.state.adminLastName)
+// }
 
     componentDidMount = async () => {
 
