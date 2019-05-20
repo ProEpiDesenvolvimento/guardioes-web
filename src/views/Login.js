@@ -32,7 +32,7 @@ class Login extends Component {
                 "admin":
                 {
                     "email": this.state.name,
-                    "password": "!ProEpiDev_1"
+                    "password": this.state.password
                 }
             })
         }) /*end fetch */
@@ -57,7 +57,7 @@ class Login extends Component {
                 console.log(responseJson.first_name)
 
                 /* Block that make the redirect  */
-                let path = `/test`;
+                let path = `/`;
                 this.props.history.push(path);
 
             })
@@ -65,14 +65,14 @@ class Login extends Component {
             
     }
 
-    handleChangeName = name => event => {
+    handleChangeName = (name) => event => {
         this.setState({ [name]: event.target.value });
-        // console.log(this.state.name)
+        console.log(this.state.name)
       };
 
-      handleChange = password => event => {
+      handleChange = (password) => event => {
         this.setState({ [password]: event.target.value});
-        // console.log(this.state.password)
+         console.log(this.state.password)
       };
     
     render() {
@@ -98,7 +98,7 @@ class Login extends Component {
                             onChange={this.handleChange('password')}
                         />
                         <br />
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/> 
+                        <RaisedButton label="Submit" primary={true} style={style} onClick={() => this.handleClick()}/> 
                     </div>
                 </MuiThemeProvider>
             </div>
