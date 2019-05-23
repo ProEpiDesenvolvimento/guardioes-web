@@ -31,6 +31,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Icon from '@material-ui/core/Icon';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import Content from "./ContentController"
 
 import { Icon_Flag_BG, Icon_Flag_BR } from "material-ui-country-flags";
 
@@ -135,11 +136,16 @@ const styles = theme => ({
 });
 
 class MiniDrawer extends React.Component {
-  state = {
-    open: true,
-    openToolbarNested: false,
-    openToolbarNestedConfig: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true,
+      openToolbarNested: false,
+      openToolbarNestedConfig: false,
+      renderContent: false,
+    };
+    this._renderContent = this._renderContent.bind(this);
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -155,6 +161,11 @@ class MiniDrawer extends React.Component {
   handleClickNestedToobarConfig = () => {
     this.setState(state => ({ openToolbarNestedConfig: !state.openToolbarNestedConfig }));
   };
+
+  _renderContent = () => {
+    this.setState({renderContent: true});
+    console.log(this.state.renderContent)
+  }
   render() {
     const { classes, theme } = this.props;
 
@@ -249,7 +260,7 @@ class MiniDrawer extends React.Component {
 
             <Collapse in={this.state.openToolbarNested} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => this._renderContent()}>
                   <ListItemIcon>
                     <ArchiveIcon />
                   </ListItemIcon>
@@ -305,40 +316,12 @@ class MiniDrawer extends React.Component {
             </Collapse>
           </List>
         </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-            dolor purus non enim praesent elementum facilisis leo vel. Risus at
-            ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-            rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-            sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-            integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-            eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-            quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-            vivamus at augue. At augue eget arcu dictum varius duis at
-            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography>
-        </main>
-      </div>
+        
+        {this.state.renderContent ?
+           <Content /> :
+           null
+        }
+        </div>
     );
   }
 }
