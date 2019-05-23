@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import { AsyncStorage } from 'AsyncStorage';
 
 const styles = theme => ({
     root: {
@@ -59,6 +60,19 @@ const styles = theme => ({
     // },
   });
 class Content extends Component {
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('adminToken');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   render() {
     const { classes, theme } = this.props;
     return (

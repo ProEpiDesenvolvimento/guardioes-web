@@ -31,7 +31,8 @@ import Collapse from '@material-ui/core/Collapse';
 import Icon from '@material-ui/core/Icon';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import Content from "./ContentController"
+import Content from "./ContentController";
+import { AsyncStorage } from 'AsyncStorage';
 
 import { Icon_Flag_BG, Icon_Flag_BR } from "material-ui-country-flags";
 
@@ -143,9 +144,27 @@ class MiniDrawer extends React.Component {
       openToolbarNested: false,
       openToolbarNestedConfig: false,
       renderContent: false,
+      adminToken: "",
+      adminName: "",
+      adminLastName: "",
     };
     this._renderContent = this._renderContent.bind(this);
+    this._retrieveData = this._retrieveData.bind(this);
   }
+
+  componentDidMount() {
+    const AdminParams = this.props.AdminParams
+        console.log(AdminParams)
+  }
+  
+    _retrieveData = async () => {
+      try {
+        const AdminParams = this.props.location.AdminParams
+        console.log(AdminParams)
+      } catch (error) {
+        console.log(error)
+      }
+    };
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -200,7 +219,7 @@ class MiniDrawer extends React.Component {
                 color="inherit"
                 className={classNames(classes.userName)}
               >
-                Fulano da Silva
+                {this.state.adminName + " " + this.state.adminLastName}
               </Typography>
               <div className={classNames(classes.personIcon)}>
                 <PersonIcon />

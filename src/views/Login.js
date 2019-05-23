@@ -19,7 +19,7 @@ class Login extends Component {
     }
 
 
-    handleClick(event) {
+    handleClick = async (event) => {
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
         const url = "https://apiguardioes.herokuapp.com/admin/login"
         fetch(proxyurl + url, {
@@ -36,29 +36,40 @@ class Login extends Component {
                 }
             })
         }) /*end fetch */
-            .then((response) => {
-                AsyncStorage.setItem('adminToken', response.headers.get('authorization'));
-                // console.log(response.headers.get('authorization'))
-                if (response.status === 200) {
-                    return response.json()
-                    
-                } else {
-                    console.log(response.text());
+            .then(response => {
+                 console.log(response)
+                 this.setState({adminToken: response.headers.get('authorization')})
+                 return response.json()
+                })
 
-                }
-            })
+                // proepi.desenvolvimento@gmail.com
+                // !ProEpiDev_1
+
             .then((responseJson) => {
-                AsyncStorage.setItem('adminID', responseJson.id);
-                AsyncStorage.setItem('adminName', responseJson.first_name);
-                AsyncStorage.setItem('adminLastName', responseJson.last_name);
-                AsyncStorage.setItem('adminEmail', responseJson.email);
-                AsyncStorage.setItem('adminGod', responseJson.is_god);
-                AsyncStorage.setItem('adminApp', responseJson.app_id);
+                this.setState({ 
+                    adminName: responseJson.first_name,
+                    adminLastName: responseJson.last_name,
+                    adminEmail: responseJson.email,
+                    adminId: responseJson.id,
+                    adminIsGod: responseJson.is_god,
+                    adminAppId: responseJson.app_id
+                })
                 console.log(responseJson.first_name)
 
                 /* Block that make the redirect  */
                 let path = `/`;
-                this.props.history.push(path);
+                this.props.history.push({
+                    pathname: path,
+                    adminParams: {
+                        adminToken: this.state.adminToken,
+                        adminName: this.state.adminName,
+                        adminLastName: this.state.adminLastName,
+                        adminEmail: this.state.adminEmail,
+                        adminId: this.state.adminId,
+                        adminIsGod: this.state.adminIsGod,
+                        adminAppId: this.state.adminAppId
+                      }
+                });
 
             })
             
