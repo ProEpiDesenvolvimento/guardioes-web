@@ -32,6 +32,11 @@ import Icon from '@material-ui/core/Icon';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import Content from "./ContentController";
+import Dashboard from "./DashboardController";
+import Symptom from "./SymptomController";
+import Users from "./UsersController";
+import Admins from "./AdminsController";
+import HealthUnit from "./HealthUnitController";
 import { AsyncStorage } from 'AsyncStorage';
 
 import { Icon_Flag_BG, Icon_Flag_BR } from "material-ui-country-flags";
@@ -143,7 +148,7 @@ class MiniDrawer extends React.Component {
       open: true,
       openToolbarNested: false,
       openToolbarNestedConfig: false,
-      renderContent: false,
+      renderContent: '',
       adminToken: null,
       adminAppId: 0,
       adminEmail: "",
@@ -274,7 +279,7 @@ class MiniDrawer extends React.Component {
           >
             <Divider />
 
-            <ListItem button >
+            <ListItem button onClick={() => {this.setState({renderContent: 'dashboard'})}}>
               <ListItemIcon >
                 <HomeIcon color={primary}/>
               </ListItemIcon>
@@ -293,25 +298,25 @@ class MiniDrawer extends React.Component {
 
             <Collapse in={this.state.openToolbarNested} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={() => this._renderContent()}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'content'})}}>
                   <ListItemIcon>
                     <ArchiveIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Conteúdo" />
                 </ListItem>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'symptom'})}}>
                   <ListItemIcon>
                     <BugReportIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Sintomas" />
                 </ListItem>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'healthUnits'})}}>
                   <ListItemIcon>
                     <LocalHospitalIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Unidades de Saúde" />
                 </ListItem>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'users'})}}>
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
@@ -339,7 +344,7 @@ class MiniDrawer extends React.Component {
 
             <Collapse in={this.state.openToolbarNestedConfig} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'admins'})}}>
                   <ListItemIcon>
                     <RecentActorsIcon />
                   </ListItemIcon>
@@ -350,8 +355,18 @@ class MiniDrawer extends React.Component {
           </List>
         </Drawer>
         
-        {this.state.renderContent ?
-           <Content location={this.props.location}/> :
+        {this.state.renderContent ==  'content'?
+           <Content location={this.props.location}/> : 
+                this.state.renderContent == 'dashboard' ? 
+                  <Dashboard location={this.props.location}/> :
+                    this.state.renderContent == 'symptom' ?
+                      <Symptom location={this.props.location}/> :
+                        this.state.renderContent == 'healthUnit' ?
+                          <HealthUnit location={this.props.location}/> :
+                            this.state.renderContent == 'Users' ?
+                              <Users location={this.props.location}/> :
+                                this.state.renderContent == 'admins' ?
+                                  <Admins location={this.props.location}/> :
            null
         }
         </div>
