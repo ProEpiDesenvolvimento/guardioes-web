@@ -7,24 +7,23 @@ import './App.css';
 
 class App extends Component {
 
-
-
   render() {
+    
     return (
       <BrowserRouter>
         <div>
-          <Route exact={true} path='/' render={() => (
+          <Route exact={true} location={this.props.location} path='/' component={Home} render={() => (
             <div className="App">
               <Home />
             </div>
           )} />
           
-            <Route exact={true} path='/welcome' render={() => (
+            <Route exact={true} location={this.props.location} path='/welcome' render={() => (
             <div className="App">
               <Welcome />
             </div>
           )} />
-          <Route exact={true} path='/login' render={() => (
+          <Route exact={true} location={this.props.location} path='/login' render={() => (
             <div className="App">
               <Login />
             </div>

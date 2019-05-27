@@ -144,27 +144,41 @@ class MiniDrawer extends React.Component {
       openToolbarNested: false,
       openToolbarNestedConfig: false,
       renderContent: false,
-      adminToken: "",
-      adminName: "",
+      adminToken: null,
+      adminAppId: 0,
+      adminEmail: "",
+      adminIsGod: false,
       adminLastName: "",
+      adminName: "",
+      adminAppId: 1,
     };
     this._renderContent = this._renderContent.bind(this);
-    this._retrieveData = this._retrieveData.bind(this);
+    // this._retrieveData = this._retrieveData.bind(this);
   }
 
   componentDidMount() {
-    const AdminParams = this.props.AdminParams
-        console.log(AdminParams)
+        let AdminParams = this.props.location.state
+        this.setState({
+          adminName: AdminParams.adminName,
+          adminLastName: AdminParams.adminLastName,
+          adminId: AdminParams.adminId,
+          adminIsGod: AdminParams.adminIsGod,
+          adminToken: AdminParams.adminToken,
+          adminAppId: AdminParams.adminAppId,
+          adminEmail: AdminParams.adminEmail,
+
+        })
+        console.log(this.props.location.state)
   }
   
-    _retrieveData = async () => {
-      try {
-        const AdminParams = this.props.location.AdminParams
-        console.log(AdminParams)
-      } catch (error) {
-        console.log(error)
-      }
-    };
+    // _retrieveData = async () => {
+    //   try {
+    //     const AdminParams = this.props.location.AdminParams
+    //     console.log(AdminParams)
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // };
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -187,8 +201,8 @@ class MiniDrawer extends React.Component {
   }
   render() {
     const { classes, theme } = this.props;
-
-    const primary = blue[500]
+    // const adminToken = this.history.location.state
+    const primary = blue[100]
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -337,7 +351,7 @@ class MiniDrawer extends React.Component {
         </Drawer>
         
         {this.state.renderContent ?
-           <Content /> :
+           <Content location={this.props.location}/> :
            null
         }
         </div>

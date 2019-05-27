@@ -11,7 +11,13 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            adminToken: "",
+            adminAppId: 0,
+            adminEmail: "",
+            adminIsGod: false,
+            adminLastName: "",
+            adminName: "",
+            adminAppId: 1,
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -22,7 +28,8 @@ class Login extends Component {
     handleClick = async (event) => {
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
         const url = "https://apiguardioes.herokuapp.com/admin/login"
-        fetch(proxyurl + url, {
+        const url_local = "http://localhost:3001/admin/login"
+        fetch(url_local, {
             method: 'POST',
             headers: {
                 "Accept": "application/vnd.api+json",
@@ -57,10 +64,10 @@ class Login extends Component {
                 console.log(responseJson.first_name)
 
                 /* Block that make the redirect  */
-                let path = `/`;
+                
                 this.props.history.push({
-                    pathname: path,
-                    adminParams: {
+                    pathname: '/',
+                    state: {
                         adminToken: this.state.adminToken,
                         adminName: this.state.adminName,
                         adminLastName: this.state.adminLastName,
@@ -69,6 +76,7 @@ class Login extends Component {
                         adminIsGod: this.state.adminIsGod,
                         adminAppId: this.state.adminAppId
                       }
+                    
                 });
 
             })
