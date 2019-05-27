@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,9 +9,8 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import DeleteIcon from "@material-ui/icons/Delete";
 import UpdateIcon from "@material-ui/icons/Update";
-import { Modal } from "@material-ui/core";
 import FormContent from "../components/FormContent";
-
+import InfoIcon from "@material-ui/icons/Info";
 const styles = theme => ({
   root: {
     display: "flex"
@@ -74,7 +71,7 @@ const styles = theme => ({
     //  backgroundColor: "rgb("+0+","+56+","+69+")"
   },
   contents: {
-    margin: 10,
+    margin: 10
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4
@@ -107,21 +104,21 @@ const styles = theme => ({
   },
   textFieldBody: {
     minWidth: 375,
-    margin: 10,
+    margin: 10
   },
   textFieldTitle: {
     minWidth: 50,
-    margin: 10,
+    margin: 10
   },
   textFieldType: {
     minWidth: 100,
-    margin: 10,
+    margin: 10
   },
   formCreate: {
     margin: 10,
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-around'
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-around"
   }
 });
 class Content extends Component {
@@ -163,12 +160,12 @@ class Content extends Component {
 
   _renderContents() {
     let appContents = this.state.appContents;
-    return appContents.map(content =>
-      this.SimpleCard(content.title, content.body)
+    return appContents.map(content => 
+      this.SimpleCard(content.title, content.body, content.id)
     );
     // return this.state.appContents[0].body
   }
-  
+
   render() {
     const { classes, theme } = this.props;
 
@@ -183,16 +180,14 @@ class Content extends Component {
 
         <Divider variant={"middle"} />
 
-        {this.state.renderFormCreate ?
-           <FormContent adminParams={this.props.location}/> :
-           null
-        }
-        
+        {this.state.renderFormCreate ? (
+          <FormContent adminParams={this.props.location.state} />
+        ) : null}
       </div>
     );
   }
 
-  SimpleCard(title, body) {
+  SimpleCard(title, body, id) {
     const { classes, theme } = this.props;
     const { open } = this.state;
     return (
@@ -206,6 +201,15 @@ class Content extends Component {
             >
               {title}
             </Typography>
+
+            <Button
+              size="small"
+              variant={"contained"}
+              color={"inherit"}
+              onClick={() => this.toggleModal}
+            >
+              <InfoIcon />
+            </Button>
 
             <Typography variant="body2" component="p">
               {body}

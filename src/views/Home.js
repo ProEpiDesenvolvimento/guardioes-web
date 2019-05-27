@@ -28,8 +28,6 @@ import ArchiveIcon from '@material-ui/icons/ArchiveOutlined';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import Icon from '@material-ui/core/Icon';
-import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import Content from "./ContentController";
 import Dashboard from "./DashboardController";
@@ -38,11 +36,6 @@ import Users from "./UsersController";
 import Admins from "./AdminsController";
 import HealthUnit from "./HealthUnitController";
 import { AsyncStorage } from 'AsyncStorage';
-
-import { Icon_Flag_BG, Icon_Flag_BR } from "material-ui-country-flags";
-
-
-
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -131,14 +124,11 @@ const styles = theme => ({
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-  //  backgroundColor: "rgb("+0+","+56+","+69+")"
   },
   nested: {
     paddingLeft: theme.spacing.unit * 4,
   },
-  // toolbarIcon: {
-  //   backgroundColor: "white",
-  // },
+
 });
 
 class MiniDrawer extends React.Component {
@@ -158,7 +148,6 @@ class MiniDrawer extends React.Component {
       adminAppId: 1,
     };
     this._renderContent = this._renderContent.bind(this);
-    // this._retrieveData = this._retrieveData.bind(this);
   }
 
   componentDidMount() {
@@ -176,15 +165,6 @@ class MiniDrawer extends React.Component {
         console.log(this.props.location.state)
   }
   
-    // _retrieveData = async () => {
-    //   try {
-    //     const AdminParams = this.props.location.AdminParams
-    //     console.log(AdminParams)
-    //   } catch (error) {
-    //     console.log(error)
-    //   }
-    // };
-
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -355,17 +335,17 @@ class MiniDrawer extends React.Component {
           </List>
         </Drawer>
         
-        {this.state.renderContent ==  'content'?
+        {this.state.renderContent ===  'content'?
            <Content location={this.props.location}/> : 
-                this.state.renderContent == 'dashboard' ? 
+                this.state.renderContent === 'dashboard' ? 
                   <Dashboard location={this.props.location}/> :
-                    this.state.renderContent == 'symptom' ?
+                    this.state.renderContent === 'symptom' ?
                       <Symptom location={this.props.location}/> :
-                        this.state.renderContent == 'healthUnit' ?
+                        this.state.renderContent === 'healthUnit' ?
                           <HealthUnit location={this.props.location}/> :
-                            this.state.renderContent == 'Users' ?
+                            this.state.renderContent === 'Users' ?
                               <Users location={this.props.location}/> :
-                                this.state.renderContent == 'admins' ?
+                                this.state.renderContent === 'admins' ?
                                   <Admins location={this.props.location}/> :
            null
         }
