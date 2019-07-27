@@ -11,6 +11,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import UpdateIcon from "@material-ui/icons/Update";
 import FormContent from "../components/FormContent";
 import InfoIcon from "@material-ui/icons/Info";
+import Modal from 'react-responsive-modal';
+import {url_live} from '../utils/urls';
 const styles = theme => ({
   root: {
     display: "flex"
@@ -78,7 +80,13 @@ const styles = theme => ({
   },
   card: {
     minWidth: 375,
-    margin: 10
+    margin: 10,
+    flexDirection: "column",
+    display: "inline-block"
+  },
+  cardHeader: {
+    display: "inline",
+    flexDirection: "row"
   },
   bullet: {
     display: "inline-block",
@@ -99,7 +107,6 @@ const styles = theme => ({
   contentView: {
     flexDirection: "row",
     display: "inline-block",
-    justifyContent: "center",
     alignItems: "center"
   },
   textFieldBody: {
@@ -119,6 +126,9 @@ const styles = theme => ({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around"
+  },
+  infoBtn: {
+    float: "right"
   }
 });
 class Content extends Component {
@@ -127,7 +137,11 @@ class Content extends Component {
     this.state = {
       renderFormCreate: true,
       appContents: [],
-      name: ""
+      name: "",
+      openModalDetails: false,
+      modalBody: "",
+      modalTitle: "",
+      modalId: 1
     };
   }
   componentDidMount() {
@@ -160,7 +174,7 @@ class Content extends Component {
 
   _renderContents() {
     let appContents = this.state.appContents;
-    return appContents.map(content => 
+    return appContents.map(content =>
       this.SimpleCard(content.title, content.body, content.id)
     );
     // return this.state.appContents[0].body
@@ -177,55 +191,109 @@ class Content extends Component {
           <Typography variant={"h5"}>Conteúdos</Typography>
           {this._renderContents()}
         </div>
-
+        {this.state.openModalDetails ? (
+          this.modalDetails(this.state.modalTitle, this.state.modalBody, this.state.modalId)
+        ) : null}
         <Divider variant={"middle"} />
 
         {this.state.renderFormCreate ? (
-          <FormContent adminParams={this.props.location.state} />
+          <FormContent adminParams={this.props.location.state} title = "Criar" buttonText = "criar" action="create"/>
         ) : null}
       </div>
     );
   }
 
+  deleteContent = (id) => {
+    let url =
+      url_live + "/contents/" + id;
+      if (
+        window.confirm("Are you sure you wish to delete this content?")
+      )
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/vnd.api+json",
+        "Content-Type": "application/json",
+        Authorization: this.props.location.state.adminToken
+      }
+    }) /*end fetch */
+      .then(response => {
+        console.log(response);
+        return response.json();
+      })
+      // proepi.desenvolvimento@gmail.com
+      // !ProEpiDev_1
+      .then(responseJson => {
+        
+      });
+  };
+  
+  onOpenModalDetails = () => {
+    this.setState({ openModalDetails: true });
+  };
+
+  onCloseModalDetails = () => {
+    this.setState({ openModalDetails: false });
+  };
+
+  modalDetails(title, body, id) {
+    const { openModalDetails } = this.state;
+    return (
+      <div>
+        <Modal open={openModalDetails} onClose={this.onCloseModalDetails} center>
+          <h5>{title}</h5>
+          <h6>{body}</h6>
+          <h6>{id}</h6>
+          <FormContent adminParams={this.props.location.state} title="Atualizar" buttonText="atualizar" contentId = {this.state.modalId} action="update" />
+        </Modal>
+      </div>
+    );
+  }
   SimpleCard(title, body, id) {
     const { classes, theme } = this.props;
     const { open } = this.state;
+    
     return (
       <div className={classes.contentView}>
         <Card className={classes.card}>
-          <CardContent>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-            >
-              {title}
-            </Typography>
+          
+            <div button className={classes.cardHeader} onClick={() => {
+              this.onOpenModalDetails();
+              this.setState({modalTitle: title,
+                              modalBody: body,
+                              modalId:  id
+                })
+            }}>
+            <CardContent>
+              <Typography
+                className={classes.title}
+                color="textSecondary"
+                gutterBottom
+              >
+                {title} 
+              </Typography>
 
-            <Button
-              size="small"
-              variant={"contained"}
-              color={"inherit"}
-              onClick={() => this.toggleModal}
-            >
-              <InfoIcon />
-            </Button>
-
+              {/* <Button
+                className={classes.infoBtn}
+                onClick={() => this.toggleModal}
+              >
+                <InfoIcon />
+              </Button> */}
+            
             <Typography variant="body2" component="p">
               {body}
             </Typography>
-          </CardContent>
+            </CardContent>
+            </div>
+          
           <CardActions>
             <Button
               size="small"
               variant={"contained"}
-              color={"inherit"}
-              onClick={() => this.toggleModal}
+              color={"secondary"}
+              onClick={() => this.deleteContent(id)}
+                
             >
-              Update
-              <UpdateIcon />
-            </Button>
-            <Button size="small" variant={"contained"} color={"secondary"}>
               Delete
               <DeleteIcon />
             </Button>

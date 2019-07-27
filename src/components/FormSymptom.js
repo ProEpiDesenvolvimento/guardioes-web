@@ -33,7 +33,7 @@ const styles = theme => ({
     marginTop: "190px"
   }
 });
-class FormContent extends Component {
+class FormSymptom extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -44,7 +44,7 @@ class FormContent extends Component {
   }
 
   _createContent = () => {
-    let url = "http://localhost:3001/contents/";
+    let url = "http://localhost:3001/symptoms/";
     fetch(url, {
       method: "POST",
       headers: {
@@ -53,17 +53,15 @@ class FormContent extends Component {
         Authorization: this.props.adminParams.adminToken
       },
       body: JSON.stringify({
-        content: {
-          title: this.state.title,
-          body: this.state.body,
-          type: this.state.type,
+        symptom: {
+          description: this.state.description,
+          details: this.state.details,
+          code: this.state.code,
           app_id: this.props.adminParams.adminAppId
         }
       })
     }) /*end fetch */
       .then(response => {
-        this.setState(this.state );
-        console.log("Calling forceUpdae");
         console.log(response);
         return response.json();
       })
@@ -71,24 +69,25 @@ class FormContent extends Component {
   };
 
   _updateContent = () => {
-    let url = "http://localhost:3001/contents/" + this.props.contentId;
+    let url = "http://localhost:3001/symptoms/" + this.props.contentId;
     fetch(url, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         Accept: "application/vnd.api+json",
         "Content-Type": "application/json",
         Authorization: this.props.adminParams.adminToken
       },
       body: JSON.stringify({
-        content: {
-          title: this.state.title,
-          body: this.state.body,
-          type: this.state.type,
-          app_id: this.props.adminParams.adminAppId
-        }
+        symptom: {
+            description: this.state.description,
+            details: this.state.details,
+            code: this.state.code,
+            app_id: this.props.adminParams.adminAppId
+          }
       })
     }) /*end fetch */
       .then(response => {
+        this.setState(this.state)
         console.log(response);
         return response.json();
       })
@@ -103,9 +102,9 @@ class FormContent extends Component {
    } 
    
  }
-  handleChangeName = title => event => {
-    this.setState({ [title]: event.target.value });
-    console.log(this.state.title);
+  handleChangeName = description => event => {
+    this.setState({ [description]: event.target.value });
+    console.log(this.state.description);
   };
   handleChangeType = type => event => {
     this.setState({ [type]: event.target.value });
@@ -120,40 +119,33 @@ class FormContent extends Component {
     const AdminParams = { AdminParams };
     return (
       <form className={classes.formCreate} noValidate autoComplete="off">
-        <Typography variant={"h5"}>{this.props.title} Conteúdos</Typography>
+        <Typography variant={"h5"}>{this.props.title} Sintomas </Typography>
         <TextField
           label="Titulo"
           hintText="Title of the content"
           floatingLabelText="Title"
-          onChange={this.handleChangeName("title")}
+          onChange={this.handleChangeName("description")}
           margin="normal"
           className={classes.textFieldTitle}
         />
 
         <TextField
           id="standard-multiline-static"
-          label="Corpo"
+          label="Detalhes"
           multiline
           rows="10"
           defaultValue=""
           className={classes.textFieldBody}
           margin="normal"
-          onChange={this.handleChangeBody("body")}
+          onChange={this.handleChangeBody("details")}
         />
-        <FormControl className={classes.textFieldType}>
-          <InputLabel htmlFor="age-simple">Tipo</InputLabel>
-          <Select
-            onChange={this.handleChangeType("type")}
-            inputProps={{
-              name: "type",
-              id: "type-simple"
-            }}
-          >
-            <MenuItem value={"list"}>List</MenuItem>
-            <MenuItem value={"text"}>Text</MenuItem>
-            <MenuItem value={"map"}>Map</MenuItem>
-          </Select>
-        </FormControl>
+         <TextField
+          label="Código"
+          defaultValue=""
+          className={classes.textFieldBody}
+          margin="normal"
+          onChange={this.handleChangeType("code")}
+        />
         <Button
           size="small"
           variant={"contained"}
@@ -169,4 +161,4 @@ class FormContent extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(FormContent);
+export default withStyles(styles, { withTheme: true })(FormSymptom);
