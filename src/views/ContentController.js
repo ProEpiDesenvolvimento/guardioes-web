@@ -205,7 +205,7 @@ class Content extends Component {
 
   deleteContent = (id) => {
     let url =
-      url_live + "/contents/" + id;
+      "http://localhost:3001/contents/" + id;
       if (
         window.confirm("Are you sure you wish to delete this content?")
       )

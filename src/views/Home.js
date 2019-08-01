@@ -35,6 +35,7 @@ import Symptom from "./SymptomController";
 import Users from "./UsersController";
 import Admins from "./AdminsController";
 import HealthUnit from "./HealthUnitController";
+import User from "./UserController";
 import { AsyncStorage } from 'AsyncStorage';
 
 const drawerWidth = 240;
@@ -212,11 +213,13 @@ class MiniDrawer extends React.Component {
               Guardões da Saúde
             </Typography>
 
-            <div className={classNames(classes.userNameView)}>
+            <div className={classNames(classes.userNameView)}
+            button onClick={() => {this.setState({renderContent: 'user'})}}>
               <Typography
                 variant="h8"
                 color="inherit"
                 className={classNames(classes.userName)}
+                button onClick={() => {this.setState({renderContent: 'content'})}}
               >
                 {this.state.adminName + " " + this.state.adminLastName}
               </Typography>
@@ -290,7 +293,7 @@ class MiniDrawer extends React.Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Sintomas" />
                 </ListItem>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'healthUnits'})}}>
+                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'healthUnit'})}}>
                   <ListItemIcon>
                     <LocalHospitalIcon />
                   </ListItemIcon>
@@ -347,6 +350,8 @@ class MiniDrawer extends React.Component {
                               <Users location={this.props.location}/> :
                                 this.state.renderContent === 'admins' ?
                                   <Admins location={this.props.location}/> :
+                                    this.state.renderContent === 'user' ?
+                                    <User location={this.props.location}/> :
            null
         }
         </div>
