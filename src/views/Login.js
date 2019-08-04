@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import { api_url } from '../utils/urls';
 
 class Login extends Component {
 
@@ -26,9 +27,10 @@ class Login extends Component {
 
     handleClick = async (event) => {
         const proxyurl = "https://cors-anywhere.herokuapp.com/";
-        const url = "https://apiguardioes.herokuapp.com/admin/login"
-        const url_local = "http://localhost:3001/admin/login"
-        fetch(url_local, {
+        // const url = "https://apiguardioes.herokuapp.com/admin/login"
+        // const url_local = "http://localhost:3001/admin/login"
+        const url = api_url + "/admin/login";
+        fetch(url, {
             method: 'POST',
             headers: {
                 "Accept": "application/vnd.api+json",

@@ -12,9 +12,9 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div>
-          <Route exact={true} location={this.props.location} path='/' component={Home} render={() => (
+          <Route exact={true} location={this.props.location} path='/' render={() => (
             <div className="App">
-              <Home />
+              <Login />
             </div>
           )} />
           
