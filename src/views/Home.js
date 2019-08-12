@@ -346,7 +346,7 @@ class MiniDrawer extends React.Component {
                       <Symptom location={this.props.location}/> :
                         this.state.renderContent === 'healthUnit' ?
                           <HealthUnit location={this.props.location}/> :
-                            this.state.renderContent === 'Users' ?
+                            this.state.renderContent === 'users' ?
                               <Users location={this.props.location}/> :
                                 this.state.renderContent === 'admins' ?
                                   <Admins location={this.props.location}/> :

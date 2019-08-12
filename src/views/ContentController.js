@@ -291,7 +291,10 @@ class Content extends Component {
               size="small"
               variant={"contained"}
               color={"secondary"}
-              onClick={() => this.deleteContent(id)}
+              onClick={() => {
+                this.deleteContent(id)
+                this.setState(this.state)
+              }}
                 
             >
               Delete
