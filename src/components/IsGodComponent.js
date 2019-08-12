@@ -12,9 +12,9 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { url_live } from "../utils/urls";
+import { api_url } from "../utils/urls";
 import { withStyles } from "@material-ui/core/styles";
-import { Divider } from "material-ui";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
   titleView: {
@@ -23,22 +23,21 @@ const styles = theme => ({
     color: "rgb(" + 0 + "," + 56 + "," + 69 + ")"
   },
   isGodView: {
-      display: 'flex',
-    //   flex: 1,
+    display: "flex",
+    flex: 1,
+    marginTop: 10
   }
 });
 class IsGodComponent extends Component {
   render() {
     const { classes, theme } = this.props;
     return (
-       <div >
-        {/* <Divider />
+      <div className={classes.isGodView}>
+        
         <Typography className={classes.titleView}>
           Administre os Aplicativos do GDS
-        </Typography> */}
-       
-        <Typography>TESTE </Typography>
-        </div>
+        </Typography>
+      </div>
     );
   }
 }

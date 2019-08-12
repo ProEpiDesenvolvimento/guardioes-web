@@ -1,15 +1,9 @@
 import React, { Component } from "react";
-import { Typography, FormControl, TextField, Button, Divider } from "@material-ui/core";
-import { url_live } from "../utils/urls";
+import { Typography, FormControl, TextField, Button} from "@material-ui/core";
+import { api_url } from "../utils/urls";
 import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import IsGodComponent from "../components/IsGodComponent";
-
+import Divider from "@material-ui/core/Divider";
+import IsGodComponent from "../components/IsGodComponent"
 const styles = theme => ({
   container: {
     flex: 1,
@@ -31,6 +25,7 @@ const styles = theme => ({
     alignSelf: "center",
     // display: 'flex',
     // flexDirection: 'row',
+    marginBottom: 10,
   }
 });
 
@@ -74,7 +69,7 @@ class AdminsController extends Component {
   }
   _createAdmin = () => {
     let confirmationPassword = false;
-    const url = url_live + "/admin";
+    const url = api_url + "/admin";
     if (this.state.password === this.state.confirmPassword) {
       confirmationPassword = true;
       fetch(url, {
@@ -155,8 +150,8 @@ class AdminsController extends Component {
             Criar
           </Button>
         </FormControl>
-
-        { this.location.state.adminIsGod? <IsGodComponent /> : <Divider />}
+        <Divider variant={"middle"} />
+        { !this.props.location.state.adminIsGod ? <IsGodComponent /> : null }
       </div>
     );
   }

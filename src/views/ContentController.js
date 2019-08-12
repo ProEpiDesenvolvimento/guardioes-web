@@ -149,7 +149,7 @@ class Content extends Component {
   }
   _fetchAppData = () => {
     let url =
-      api_url + this.props.location.state.adminAppId;
+      api_url + "/apps/" +this.props.location.state.adminAppId;
     fetch(url, {
       method: "GET",
       headers: {

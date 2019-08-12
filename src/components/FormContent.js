@@ -140,20 +140,7 @@ class FormContent extends Component {
           margin="normal"
           onChange={this.handleChangeBody("body")}
         />
-        <FormControl className={classes.textFieldType}>
-          <InputLabel htmlFor="age-simple">Tipo</InputLabel>
-          <Select
-            onChange={this.handleChangeType("type")}
-            inputProps={{
-              name: "type",
-              id: "type-simple"
-            }}
-          >
-            <MenuItem value={"list"}>List</MenuItem>
-            <MenuItem value={"text"}>Text</MenuItem>
-            <MenuItem value={"map"}>Map</MenuItem>
-          </Select>
-        </FormControl>
+        
         <Button
           size="small"
           variant={"contained"}

@@ -12,7 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { url_live } from "../utils/urls";
+import { api_url } from "../utils/urls";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -118,7 +118,7 @@ class UsersController extends Component {
     )
   }
   _fetchUserDataToSearch = () => {
-    let url = url_live + "/render_user_by_filter";
+    let url = api_url + "/render_user_by_filter";
     console.log(url);
     fetch(url, {
       method: "POST",
