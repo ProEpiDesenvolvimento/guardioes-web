@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import {url_live} from "../utils/urls"
+import {api_url} from "../utils/urls"
 const styles = theme => ({
   textFieldBody: {
     minWidth: 375,
@@ -40,7 +40,7 @@ class FormSymptom extends Component {
   }
 
   _createContent = () => {
-    let url = "http://localhost:3001/symptoms/";
+    let url = api_url;
     fetch(url, {
       method: "POST",
       headers: {
@@ -65,7 +65,7 @@ class FormSymptom extends Component {
   };
 
   _updateContent = () => {
-    let url = "http://localhost:3001/symptoms/" + this.props.contentId;
+    let url = api_url + this.props.contentId;
     fetch(url, {
       method: "PATCH",
       headers: {

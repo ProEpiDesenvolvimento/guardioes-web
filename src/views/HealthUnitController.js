@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button";
 import Modal from 'react-responsive-modal';
+import { api_url } from '../utils/urls';
 
 const styles = theme => ({
   container: {
@@ -78,7 +79,7 @@ class HealthUnitController extends Component {
   }
 
     _createPublicHospital = (description, latitude, longitude, details) => {
-      let url  = "http://localhost:3001/public_hospitals"
+      let url  = api_url + "/public_hospitals"
 
       fetch(url, {
         method: "POST",
@@ -101,7 +102,7 @@ class HealthUnitController extends Component {
 
   _fetchPublicHospitals = () => {
     let url =
-      "http://localhost:3001/public_hospital_admin/"
+      api_url + "/public_hospital_admin/"
     fetch(url, {
       method: "POST",
       headers: {

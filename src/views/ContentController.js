@@ -12,7 +12,7 @@ import UpdateIcon from "@material-ui/icons/Update";
 import FormContent from "../components/FormContent";
 import InfoIcon from "@material-ui/icons/Info";
 import Modal from 'react-responsive-modal';
-import {url_live} from '../utils/urls';
+import {api_url} from '../utils/urls';
 const styles = theme => ({
   root: {
     display: "flex"
@@ -149,7 +149,7 @@ class Content extends Component {
   }
   _fetchAppData = () => {
     let url =
-      "http://localhost:3001/apps/" + this.props.location.state.adminAppId;
+      api_url + this.props.location.state.adminAppId;
     fetch(url, {
       method: "GET",
       headers: {
@@ -205,7 +205,7 @@ class Content extends Component {
 
   deleteContent = (id) => {
     let url =
-      "http://localhost:3001/contents/" + id;
+      api_url + `/${id}`;
       if (
         window.confirm("Are you sure you wish to delete this content?")
       )

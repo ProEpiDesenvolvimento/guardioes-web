@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import {url_live} from "../utils/urls"
+import {api_url} from "../utils/urls"
 const styles = theme => ({
   textFieldBody: {
     minWidth: 375,
@@ -45,7 +45,7 @@ class FormContent extends Component {
 
   _createContent = () => {
     let url = "http://localhost:3001/contents/";
-    fetch(url, {
+    fetch(api_url, {
       method: "POST",
       headers: {
         Accept: "application/vnd.api+json",
@@ -71,7 +71,7 @@ class FormContent extends Component {
   };
 
   _updateContent = () => {
-    let url = "http://localhost:3001/contents/" + this.props.contentId;
+    let url = api_url + this.props.contentId;
     fetch(url, {
       method: "PUT",
       headers: {
