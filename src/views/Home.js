@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -36,7 +36,6 @@ import Users from "./UsersController";
 import Admins from "./AdminsController";
 import HealthUnit from "./HealthUnitController";
 import User from "./UserController";
-import { AsyncStorage } from 'AsyncStorage';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -132,7 +131,7 @@ const styles = theme => ({
 
 });
 
-class MiniDrawer extends React.Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -148,7 +147,7 @@ class MiniDrawer extends React.Component {
       adminName: "",
       adminAppId: 1,
     };
-    this._renderContent = this._renderContent.bind(this);
+   
   }
 
   componentDidMount() {
@@ -163,7 +162,7 @@ class MiniDrawer extends React.Component {
           adminEmail: AdminParams.adminEmail,
 
         })
-        console.log(this.props.location.state)
+        console.log(this.props.location)
   }
   
   handleDrawerOpen = () => {
@@ -181,10 +180,7 @@ class MiniDrawer extends React.Component {
     this.setState(state => ({ openToolbarNestedConfig: !state.openToolbarNestedConfig }));
   };
 
-  _renderContent = () => {
-    this.setState({renderContent: true});
-    console.log(this.state.renderContent)
-  }
+
   render() {
     const { classes, theme } = this.props;
     // const adminToken = this.history.location.state
@@ -346,7 +342,7 @@ class MiniDrawer extends React.Component {
                       <Symptom location={this.props.location}/> :
                         this.state.renderContent === 'healthUnit' ?
                           <HealthUnit location={this.props.location}/> :
-                            this.state.renderContent === 'Users' ?
+                            this.state.renderContent === 'users' ?
                               <Users location={this.props.location}/> :
                                 this.state.renderContent === 'admins' ?
                                   <Admins location={this.props.location}/> :
@@ -359,9 +355,9 @@ class MiniDrawer extends React.Component {
   }
 }
 
-MiniDrawer.propTypes = {
+Home.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(MiniDrawer);
+export default withStyles(styles, { withTheme: true })(Home);

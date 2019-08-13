@@ -6,28 +6,16 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
-
+  constructor(props){
+    super(props);
+  }
   render() {
     
     return (
       <BrowserRouter>
         <div>
-          <Route exact={true} location={this.props.location} path='/' render={() => (
-            <div className="App">
-              <Login />
-            </div>
-          )} />
-          
-            <Route exact={true} location={this.props.location} path='/welcome' render={() => (
-            <div className="App">
-              <Welcome />
-            </div>
-          )} />
-          <Route exact={true} location={this.props.location} path='/login' render={() => (
-            <div className="App">
-              <Login />
-            </div>
-          )} />
+          <Route exact location={this.props.location} path='/' component={Login}/>
+          <Route location={this.props.location} path='/home' component={Home}/>
         </div>
       </BrowserRouter>
     );

@@ -16,6 +16,7 @@ import { api_url } from '../utils/urls';
 const styles = theme => ({
   container: {
     flex: 1,
+    margin: 10
   },
   toolbar: {
     display: "flex",
@@ -32,6 +33,20 @@ const styles = theme => ({
   table: {
     minWidth: 650,
   },
+  modalMap: {
+    width: "50%",
+    height: "50%"
+  },
+  mapView: {
+    width: "50%",
+    height: "50%",
+    margin: 30,
+  },
+  titleView: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: "rgb("+0+","+56+","+69+")",
+  }
 })
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 class HealthUnitController extends Component {
@@ -122,9 +137,10 @@ class HealthUnitController extends Component {
 
   modalDetails(description, lat, lng) {
     const { openModalDetails } = this.state;
+    const {classes} = this.props;
     return (
-        <Modal open={openModalDetails} onClose={this.onCloseModalDetails} style={{ height: '100vh', width: '100%' }} center>
-        <div style={{ height: '100vh', width: '100%' }}>
+        <Modal open={openModalDetails} onClose={this.onCloseModalDetails} className={classes.modalMap} center>
+        <div className={classes.mapView}>
               <GoogleMapReact
                 bootstrapURLKeys={{ key: "AIzaSyAVPgl2h7uETdFfsK11Chdw4UQy-GAKF0w" }}
                 defaultCenter={{
@@ -139,8 +155,8 @@ class HealthUnitController extends Component {
                   text={description}
                 />
               </GoogleMapReact>
-              <Typography>{description}</Typography>
               </div>
+            
         </Modal>
       
     );
@@ -203,7 +219,7 @@ class HealthUnitController extends Component {
     return (
       <div className={classes.container}>
       <div className={classes.toolbar} />
-        <Typography variant={"h5"}> Unidades de saúde </Typography>
+        <Typography className={classes.titleView}> Unidades de saúde </Typography>
         <CSVReader
           cssClass="react-csv-input"
           label="Selecione um arquivo .CSV para cadatrar suas unidades de saúde"

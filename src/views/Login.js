@@ -24,7 +24,22 @@ class Login extends Component {
 
 	}
 
-
+	_setTheStatePush = () => {
+		this.props.history.push({
+			pathname: '/home',
+			state: {
+				adminToken: this.state.adminToken,
+				adminName: this.state.adminName,
+				adminLastName: this.state.adminLastName,
+				adminEmail: this.state.adminEmail,
+				adminId: this.state.adminId,
+				adminIsGod: this.state.adminIsGod,
+				adminAppId: this.state.adminAppId
+			}
+			
+		});
+		console.log("Parapametros pushados")
+	}
 	handleClick = async (event) => {
 		const proxyurl = "https://cors-anywhere.herokuapp.com/";
 		// const url = "https://apiguardioes.herokuapp.com/admin/login"
@@ -67,29 +82,18 @@ class Login extends Component {
 					adminIsGod: responseJson.is_god,
 					adminAppId: responseJson.app_id
 				})
-				console.log(responseJson.first_name)
+				console.log(responseJson)
 
 				/* Block that make the redirect  */
-
-				this.props.history.push({
-					pathname: '/',
-					state: {
-						adminToken: this.state.adminToken,
-						adminName: this.state.adminName,
-						adminLastName: this.state.adminLastName,
-						adminEmail: this.state.adminEmail,
-						adminId: this.state.adminId,
-						adminIsGod: this.state.adminIsGod,
-						adminAppId: this.state.adminAppId
-					}
-
-				});
+				console.log(this.state.adminToken)
+				this._setTheStatePush()
 
 			})
 
 
 	}
 
+	
 	handleChangeName = (name) => event => {
 		this.setState({ [name]: event.target.value });
 		console.log(this.state.name)

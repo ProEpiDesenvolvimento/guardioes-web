@@ -149,7 +149,7 @@ class Content extends Component {
   }
   _fetchAppData = () => {
     let url =
-      api_url + this.props.location.state.adminAppId;
+      api_url + "/apps/" +this.props.location.state.adminAppId;
     fetch(url, {
       method: "GET",
       headers: {
@@ -291,7 +291,10 @@ class Content extends Component {
               size="small"
               variant={"contained"}
               color={"secondary"}
-              onClick={() => this.deleteContent(id)}
+              onClick={() => {
+                this.deleteContent(id)
+                this.setState(this.state)
+              }}
                 
             >
               Delete
