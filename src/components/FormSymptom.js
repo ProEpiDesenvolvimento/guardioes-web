@@ -40,7 +40,7 @@ class FormSymptom extends Component {
   }
 
   _createContent = () => {
-    let url = api_url;
+    let url = api_url + "/symptoms";
     fetch(url, {
       method: "POST",
       headers: {

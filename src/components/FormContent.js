@@ -44,8 +44,8 @@ class FormContent extends Component {
   }
 
   _createContent = () => {
-    let url = "http://localhost:3001/contents/";
-    fetch(api_url, {
+    let url = api_url + "/contents/";
+    fetch(url, {
       method: "POST",
       headers: {
         Accept: "application/vnd.api+json",
