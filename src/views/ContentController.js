@@ -205,7 +205,7 @@ class Content extends Component {
  
   deleteContent = (id) => {
     let url =
-      api_url + `/${id}`;
+      api_url + `contents/${id}`;
       if (
         window.confirm("Are you sure you wish to delete this content?")
       )
