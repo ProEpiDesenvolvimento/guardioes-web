@@ -202,7 +202,7 @@ class Content extends Component {
       </div>
     );
   }
-
+ 
   deleteContent = (id) => {
     let url =
       api_url + `/${id}`;
