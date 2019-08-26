@@ -36,6 +36,7 @@ import Users from "./UsersController";
 import Admins from "./AdminsController";
 import HealthUnit from "./HealthUnitController";
 import User from "./UserController";
+import { withRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -118,7 +119,7 @@ const styles = theme => ({
   menu: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "rgb("+0+","+56+","+69+")"
+    backgroundColor: "rgb(" + 0 + "," + 56 + "," + 69 + ")"
   },
   rootToolbar: {
     width: '100%',
@@ -134,6 +135,7 @@ const styles = theme => ({
 class Home extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: true,
       openToolbarNested: false,
@@ -147,24 +149,43 @@ class Home extends Component {
       adminName: "",
       adminAppId: 1,
     };
-   
+  }
+
+  componentWillMount() {
+    this.checkTokenCookie();
+  }
+
+  checkTokenCookie() {
+    const { cookies, history } = this.props;
+
+    if (!cookies.get('authorization')) {
+      history.push('/');
+    };
   }
 
   componentDidMount() {
-        let AdminParams = this.props.location.state
-        this.setState({
-          adminName: AdminParams.adminName,
-          adminLastName: AdminParams.adminLastName,
-          adminId: AdminParams.adminId,
-          adminIsGod: AdminParams.adminIsGod,
-          adminToken: AdminParams.adminToken,
-          adminAppId: AdminParams.adminAppId,
-          adminEmail: AdminParams.adminEmail,
+    const {
+      adminName,
+      adminLastName, 
+      adminId, 
+      adminIsGod, 
+      adminToken, 
+      adminAppId, 
+      adminEmail 
+    } = this.props.location.state;
+    
+    this.setState({
+      adminName,
+      adminLastName,
+      adminId,
+      adminIsGod,
+      adminToken,
+      adminAppId,
+      adminEmail,
 
-        })
-        console.log(this.props.location)
+    })
   }
-  
+
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -183,8 +204,8 @@ class Home extends Component {
 
   render() {
     const { classes, theme } = this.props;
-    // const adminToken = this.history.location.state
-    const primary = blue[100]
+    const primary = blue[100];
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -210,12 +231,15 @@ class Home extends Component {
             </Typography>
 
             <div className={classNames(classes.userNameView)}
-            button onClick={() => {this.setState({renderContent: 'user'})}}>
+              // button 
+              onClick={() => { this.setState({ renderContent: 'user' }) }}
+            >
               <Typography
-                variant="h8"
+                variant="h6"
                 color="inherit"
                 className={classNames(classes.userName)}
-                button onClick={() => {this.setState({renderContent: 'content'})}}
+                // button 
+                onClick={() => { this.setState({ renderContent: 'content' }) }}
               >
                 {this.state.adminName + " " + this.state.adminLastName}
               </Typography>
@@ -245,8 +269,8 @@ class Home extends Component {
               {theme.direction === "rtl" ? (
                 <ChevronRightIcon />
               ) : (
-                <ChevronLeftIcon />
-              )}
+                  <ChevronLeftIcon />
+                )}
             </IconButton>
           </div>
           <List
@@ -258,9 +282,9 @@ class Home extends Component {
           >
             <Divider />
 
-            <ListItem button onClick={() => {this.setState({renderContent: 'dashboard'})}}>
+            <ListItem button onClick={() => { this.setState({ renderContent: 'dashboard' }) }}>
               <ListItemIcon >
-                <HomeIcon color={primary}/>
+                <HomeIcon color={primary} />
               </ListItemIcon>
               <ListItemText inset primary="Dashboard" color={"white"} />
             </ListItem>
@@ -277,25 +301,25 @@ class Home extends Component {
 
             <Collapse in={this.state.openToolbarNested} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'content'})}}>
+                <ListItem button className={classes.nested} onClick={() => { this.setState({ renderContent: 'content' }) }}>
                   <ListItemIcon>
                     <ArchiveIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Conteúdo" />
                 </ListItem>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'symptom'})}}>
+                <ListItem button className={classes.nested} onClick={() => { this.setState({ renderContent: 'symptom' }) }}>
                   <ListItemIcon>
                     <BugReportIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Sintomas" />
                 </ListItem>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'healthUnit'})}}>
+                <ListItem button className={classes.nested} onClick={() => { this.setState({ renderContent: 'healthUnit' }) }}>
                   <ListItemIcon>
                     <LocalHospitalIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Unidades de Saúde" />
                 </ListItem>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'users'})}}>
+                <ListItem button className={classes.nested} onClick={() => { this.setState({ renderContent: 'users' }) }}>
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
@@ -313,7 +337,7 @@ class Home extends Component {
             // }
             className={classes.rootToolbar}
           >
-          <ListItem button onClick={this.handleClickNestedToobarConfig}>
+            <ListItem button onClick={this.handleClickNestedToobarConfig}>
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
@@ -323,34 +347,34 @@ class Home extends Component {
 
             <Collapse in={this.state.openToolbarNestedConfig} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem button className={classes.nested} onClick={() => {this.setState({renderContent: 'admins'})}}>
+                <ListItem button className={classes.nested} onClick={() => { this.setState({ renderContent: 'admins' }) }}>
                   <ListItemIcon>
                     <RecentActorsIcon />
                   </ListItemIcon>
                   <ListItemText inset primary="Administradores" />
                 </ListItem>
-                </List>
+              </List>
             </Collapse>
           </List>
         </Drawer>
-        
-        {this.state.renderContent ===  'content'?
-           <Content location={this.props.location}/> : 
-                this.state.renderContent === 'dashboard' ? 
-                  <Dashboard location={this.props.location}/> :
-                    this.state.renderContent === 'symptom' ?
-                      <Symptom location={this.props.location}/> :
-                        this.state.renderContent === 'healthUnit' ?
-                          <HealthUnit location={this.props.location}/> :
-                            this.state.renderContent === 'users' ?
-                              <Users location={this.props.location}/> :
-                                this.state.renderContent === 'admins' ?
-                                  <Admins location={this.props.location}/> :
-                                    this.state.renderContent === 'user' ?
-                                    <User location={this.props.location}/> :
-           null
+
+        {this.state.renderContent === 'content' ?
+          <Content location={this.props.location} /> :
+          this.state.renderContent === 'dashboard' ?
+            <Dashboard location={this.props.location} /> :
+            this.state.renderContent === 'symptom' ?
+              <Symptom location={this.props.location} /> :
+              this.state.renderContent === 'healthUnit' ?
+                <HealthUnit location={this.props.location} /> :
+                this.state.renderContent === 'users' ?
+                  <Users location={this.props.location} /> :
+                  this.state.renderContent === 'admins' ?
+                    <Admins location={this.props.location} /> :
+                    this.state.renderContent === 'user' ?
+                      <User location={this.props.location} /> :
+                      null
         }
-        </div>
+      </div>
     );
   }
 }
@@ -360,4 +384,4 @@ Home.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(Home);
+export default withRouter(withStyles(styles, { withTheme: true })(Home));

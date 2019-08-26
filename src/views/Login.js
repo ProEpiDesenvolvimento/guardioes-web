@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { api_url } from '../utils/urls';
+import '../styles/Login.css';
 
 class Login extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -19,9 +19,43 @@ class Login extends Component {
 			adminName: "",
 			adminAppId: 1,
 		};
-
 		this.handleClick = this.handleClick.bind(this);
+	}
 
+	setTokenCookie = token => (
+		this.props.cookies.set('authorization', token, {
+			path: '/',
+			maxAge: 900 //15 minutes
+		})
+	)
+
+	updateTokenCookie = (Authorization) => (
+		fetch(api_url + '/admin/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				Authorization
+			}
+		})
+			.then(res => {
+				if(res.status.ok) {
+					this.setTokenCookie(Authorization);
+				}
+			})
+	)
+
+	checkIfTheresCookies = () => {
+		const { cookies } = this.props;
+		const { history } = this.props;
+	
+		if (cookies && cookies.get('authorization')) { //If cookies exist and there's an authorization cookie, login.
+			this.updateTokenCookie(cookies.get('authorization')) ? history.push('/home') : history.push('/');
+		}
+	}
+
+	componentWillMount() {
+		this.checkIfTheresCookies();
 	}
 
 	_setTheStatePush = () => {
@@ -36,14 +70,11 @@ class Login extends Component {
 				adminIsGod: this.state.adminIsGod,
 				adminAppId: this.state.adminAppId
 			}
-			
+
 		});
 		console.log("Parapametros pushados")
 	}
-	handleClick = async (event) => {
-		const proxyurl = "https://cors-anywhere.herokuapp.com/";
-		// const url = "https://apiguardioes.herokuapp.com/admin/login"
-		// const url_local = "http://localhost:3001/admin/login"
+	handleClick = async () => {
 		const url = api_url + "/admin/login";
 		fetch(url, {
 			method: 'POST',
@@ -52,69 +83,62 @@ class Login extends Component {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				"admin":
-				{
-					"email": this.state.name,
-					"password": this.state.password
+				"admin": {
+					// "email": this.state.name,
+					// "password": this.state.password
+					"email": "proepi.desenvolvimento@gmail.com",
+					"password": "!ProEpiDev_1"
 				}
 			})
 		}) /*end fetch */
-			.then(response => {
-				if(response.ok) {
-					console.log(response)
-					this.setState({ adminToken: response.headers.get('authorization') })
-					return response.json()
-				} else {
+			.then(async response => {
+				if (response.status === 200) {
+					this.setTokenCookie(response.headers.get('authorization'));
+					this.setState({ adminToken: response.headers.get('authorization') });
+
+					const adminInfo = await response.json();
+					const { id, first_name, last_name, email, is_god, app_id } = adminInfo;
+					console.log("Admin", id, first_name, last_name, email, is_god, app_id);
+					
+					this.props.history.push({
+						pathname: '/home',
+						state: {
+							adminToken: response.headers.get('authorization'),
+							adminName: first_name,
+							adminLastName: last_name,
+							adminEmail: email,
+							adminId: id,
+							adminIsGod: is_god,
+							adminAppId: app_id
+						}
+					});
+				} else if (response.status === 401) {
 					alert("Usuário ou senha incorretos.");
-					return false;
 				}
-			})
-
-			// proepi.desenvolvimento@gmail.com
-			// !ProEpiDev_1
-
-			.then((responseJson) => {
-				this.setState({
-					adminName: responseJson.first_name,
-					adminLastName: responseJson.last_name,
-					adminEmail: responseJson.email,
-					adminId: responseJson.id,
-					adminIsGod: responseJson.is_god,
-					adminAppId: responseJson.app_id
-				})
-				console.log(responseJson)
-
-				/* Block that make the redirect  */
-				console.log(this.state.adminToken)
-				this._setTheStatePush()
-
-			})
-
-
+			});
 	}
-
-	
 	handleChangeName = (name) => event => {
 		this.setState({ [name]: event.target.value });
 		console.log(this.state.name)
 	};
-
 	handleChange = (password) => event => {
 		this.setState({ [password]: event.target.value });
 		console.log(this.state.password)
 	};
-
+	handleForgotPassword = () => {
+		alert("esqueci a senha, carai de asa");
+	}
 	render() {
-
-
+		const { cookies } = this.props.cookies;
 		return (
-			<div>
+			<div className="container">
 				<MuiThemeProvider>
 					<div>
 						<AppBar
 							title="Login"
 						/>
 						<TextField
+							type="email"
 							hintText="Enter your Email"
 							floatingLabelText="Email"
 							onChange={this.handleChangeName('name')}
@@ -126,8 +150,11 @@ class Login extends Component {
 							floatingLabelText="Password"
 							onChange={this.handleChange('password')}
 						/>
+						<button onClick={this.handleForgotPassword} className='forgotPassword'>FORGOT PASSWORD</button>
 						<br />
-						<RaisedButton label="Submit" primary={true} style={style} onClick={() => this.handleClick()} />
+						<div>
+							<RaisedButton label="Submit" primary={true} style={style} onClick={() => this.handleClick()} />
+						</div>
 					</div>
 				</MuiThemeProvider>
 			</div>
