@@ -98,7 +98,6 @@ class Login extends Component {
 
 					const adminInfo = await response.json();
 					const { id, first_name, last_name, email, is_god, app_id } = adminInfo;
-					console.log("Admin", id, first_name, last_name, email, is_god, app_id);
 					
 					this.props.history.push({
 						pathname: '/home',
@@ -129,7 +128,6 @@ class Login extends Component {
 		alert("esqueci a senha, carai de asa");
 	}
 	render() {
-		const { cookies } = this.props.cookies;
 		return (
 			<div className="container">
 				<MuiThemeProvider>
