@@ -74,6 +74,7 @@ class Login extends Component {
 		});
 		console.log("Parapametros pushados")
 	}
+	
 	handleClick = async () => {
 		const url = api_url + "/admin/login";
 		fetch(url, {
@@ -84,10 +85,10 @@ class Login extends Component {
 			},
 			body: JSON.stringify({
 				"admin": {
-					// "email": this.state.name,
-					// "password": this.state.password
-					"email": "proepi.desenvolvimento@gmail.com",
-					"password": "!ProEpiDev_1"
+					"email": this.state.name,
+					"password": this.state.password
+					// "email": "proepi.desenvolvimento@gmail.com",
+					// "password": "!ProEpiDev_1"
 				}
 			})
 		}) /*end fetch */

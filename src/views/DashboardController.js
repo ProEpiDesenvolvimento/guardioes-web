@@ -1,11 +1,84 @@
 import React, { Component } from 'react';
 import CanvasJSReact from '../assets/canvasjs.react';
 import '../styles/Dashboard.css';
+import { api_url } from '../utils/urls';
+import { withCookies } from 'react-cookie';
+import moment from 'moment';
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class DashboardController extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      users: [],
+      apps: [],
+      surveys: [],
+      symptoms: [],
+      year: '',
+      surveys_week: []
+    }
+  }
+
+  componentDidMount() {
+    this.fetchDashboard();
+  }
+
+  fetchDashboard() {
+    const { cookies } = this.props;
+    try {
+      fetch(api_url + '/dashboard', { method: 'GET', headers: { Accept: 'application/vnd.api+json', Authorization: cookies.get('authorization') } })
+        .then((res) => res.status === 200 ? res.json() : null)
+        .then(d => {
+          if (d != null) {
+            this.setState({
+              users: d.users,
+              apps: d.apps,
+              surveys: d.surveys,
+              symptoms: d.symptoms,
+              year: d.year,
+              surveys_week: d.surveys_week,
+              all_users: d.all_users,
+              all_surveys: d.all_surveys
+            })
+          }
+        })
+    } catch (error) {
+      console.log("Error Fetch dashboard", error);
+    }
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+
+  format(object, date = false) {
+    let data = [];
+
+    Object.values(object).map(u => {
+      let length = u.length;
+      let label = this.getKeyByValue(object, u);
+
+      if (label != '') {
+        data.push(date ? { y: u, label: moment(label).add(1, 'day').format("DD/MM/YYYY") } : { y: length, label });
+      }
+    })
+
+    return data;
+  }
+
+  geraIndicadores(number, label) {
+    return (
+      <div className="indicador">
+        <h1>{number}</h1>
+        <p>{label.toUpperCase()}</p>
+      </div>
+    )
+  }
+
   render() {
+    const { all_surveys, all_users } = this.state;
     const options1 = {
       exportEnabled: true,
       animationEnabled: true,
@@ -13,98 +86,90 @@ class DashboardController extends Component {
         text: "Number of New Users"
       },
       axisY: {
-        title: "Number of Users",
+        title: "Users",
         includeZero: false
+      },
+      axisX: {
+        title: 'Time'
       },
       toolTip: {
         shared: true
       },
       data: [{
         type: "spline",
-        name: "2016",
+        name: this.state.year.toString(),
         showInLegend: true,
-        dataPoints: [
-          { y: 155, label: "Jan" },
-          { y: 150, label: "Feb" },
-          { y: 152, label: "Mar" },
-          { y: 148, label: "Apr" },
-          { y: 142, label: "May" },
-          { y: 150, label: "Jun" },
-          { y: 146, label: "Jul" },
-          { y: 149, label: "Aug" },
-          { y: 153, label: "Sept" },
-          { y: 158, label: "Oct" },
-          { y: 154, label: "Nov" },
-          { y: 150, label: "Dec" }
-        ]
-      },
-      {
-        type: "spline",
-        name: "2017",
-        showInLegend: true,
-        dataPoints: [
-          { y: 172, label: "Jan" },
-          { y: 173, label: "Feb" },
-          { y: 175, label: "Mar" },
-          { y: 172, label: "Apr" },
-          { y: 162, label: "May" },
-          { y: 165, label: "Jun" },
-          { y: 172, label: "Jul" },
-          { y: 168, label: "Aug" },
-          { y: 175, label: "Sept" },
-          { y: 170, label: "Oct" },
-          { y: 165, label: "Nov" },
-          { y: 169, label: "Dec" }
-        ]
+        dataPoints: this.format(this.state.users)
       }]
     }
     const options2 = {
       exportEnabled: true,
       animationEnabled: true,
       title: {
-        text: "Symptoms Reported"
+        text: "Survey per city"
       },
       data: [{
         type: "pie",
         startAngle: 75,
-        toolTipContent: "<b>{label}</b>: {y}%",
+        toolTipContent: "<b>{label}</b>: {y} surveys",
         showInLegend: "true",
         legendText: "{label}",
         indexLabelFontSize: 16,
-        indexLabel: "{label} - {y}%",
-        dataPoints: [
-          { y: 18, label: "Symptom 01" },
-          { y: 49, label: "Symptom 02" },
-          { y: 9, label: "Symptom 03" },
-          { y: 5, label: "Symptom 04" },
-          { y: 19, label: "Symptom 05" }
-        ]
+        indexLabel: "{label} - {y} surveys",
+        dataPoints: this.format(this.state.surveys)
+      }]
+    }
+
+    const options3 = {
+      exportEnabled: true,
+      animationEnabled: true,
+      title: {
+        text: "Surveys per Week"
+      },
+      axisY: {
+        title: "Surveys",
+        includeZero: false
+      },
+      axisX: {
+        title: 'Time'
+      },
+      toolTip: {
+        shared: true
+      },
+      data: [{
+        type: "spline",
+        name: this.state.year.toString(),
+        showInLegend: true,
+        dataPoints: this.format(this.state.surveys_week, true)
       }]
     }
 
     return (
       <div
         style={{
-          width: '100%',
-          height: '8%',
-          marginTop: '5%',
-          marginBottom: '3%',
-          marginLeft: '2%',
-          marginRight: '2%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: 'white'
+          flex: 1,
+          margin: '5%'
+
         }}
       >
+        <div className="indicador-container">
+          {this.geraIndicadores(all_users, "Users")}
+          {this.geraIndicadores(all_surveys, "Surveys")}
+        </div>
+
         <div style={{
           width: '80%',
         }}>
+          <CanvasJSChart
+            options={options3}
+          /* onRef={ref => this.chart = ref} */
+          />
           <CanvasJSChart
             options={options1}
           /* onRef={ref => this.chart = ref} */
           />
           <br />
-          <CanvasJSChart 
+          <CanvasJSChart
             options={options2}
           /* onRef={ref => this.chart = ref} */
           />
@@ -115,4 +180,4 @@ class DashboardController extends Component {
   }
 }
 
-export default DashboardController;
+export default withCookies(DashboardController);
