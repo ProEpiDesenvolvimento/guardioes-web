@@ -61,7 +61,7 @@ class DashboardController extends Component {
       let label = this.getKeyByValue(object, u);
 
       if (label != '') {
-        data.push(date ? { y: u, label: moment(label).add(1, 'day').format("DD/MM/YYYY") } : { y: length, label });
+        data.push({ y: length, label: date ? moment(label).format("DD/MM/YYYY") : label });
       }
     })
 
