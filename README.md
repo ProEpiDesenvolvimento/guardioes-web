@@ -66,3 +66,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## License & copyright
+
+ProEpi, Associação Brasileira de Profissionais de Epidemiologia de Campo
+
+Licensed under the [Apache License 2.0](LICENSE.md).
