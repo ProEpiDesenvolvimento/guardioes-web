@@ -1,6 +1,21 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Guardiões da Saúde - Dashboards
 
-## Available Scripts
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+<Insira aqui uma breve descrição sobre o que é o projeto>
+
+
+## Arquitetura do projeto
+
+<Insira aqui uma imagem que demonstre como todas as tecnologias/componentes da arquitetura do projeto se relacionam>
+
+<Agora escreva uma breve explicação de como eles se relacionam>
+
+## Como rodar o Guardiões da Saúde - Dashboards
+
+<!-- A explicação abaixo provavelmente foi criada automaticamente, então pode ser melhorada pro contexto do projeto -->
+
+<Inserir aqui todos os passos e comandos necessários para subir o ambiente de desenvolvimento do Guardiões - Dashboards>
 
 In the project directory, you can run:
 
@@ -37,35 +52,26 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Como rodar a stack de monitoramento
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<Inserir aqui todos os passos e comandos necessários para subir o ambiente de desenvolvimento do ElasticSearch e do Kibana>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Como contribuir
 
-### Code Splitting
+Ficaremos muito felizes de receber e incorporar suas contribuições. Tem algumas informações adicionais sobre o estilo do código e a documentação.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Em geral o processo é bem simples:
 
-### Analyzing the Bundle Size
+- Crie uma issue descrevendo uma feature que você queira trabalhar (ou olhe as issues com o label help-wanted e good-first-issue)
+- Escreva seu código, testes e documentação
+- Abra um pull request descrevendo as suas alterações propostas
+- Seu pull request será revisado por um dos mantenedores, que pode levantar questões para você sobre eventuais mudanças necessárias ou questões.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## Como conseguir ajuda
 
-### Making a Progressive Web App
+Caso seja dúvida técnica sobre a _stack_ do projeto, siga os passos descritos acima de como executar em modo desenvolvimento. Caso a duvida persista ou seja sobre outro assunto, abra uma _issue_ com uma **TAG** no nome ```[duvida]``` que tentaremos responder o mais rápido possível.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Em caso de dúvidas em relação às tecnologias que utilizamos, sugerimos as suas próprias documentações e fóruns. Porém, sempre estamos abertos para ajudar, então comente a dificuldade que está passando na _issue_ que está resolvendo que iremos auxiliar.  
 
 ## License & copyright
 
