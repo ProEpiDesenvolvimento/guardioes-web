@@ -16,4 +16,7 @@ Nesse projeto temos 3 templates diferentes para se abrir uma issue, eles são:
 
 ## Template de Pull Request
 
-O template de pull request pode ser encontrando [clicando aqui.](https://github.com/proepidesenvolvimento/guardioes-web/blob/master/.github/pull_request_template.md)
+O template de pull request para Bugs pode ser encontrando [clicando aqui.](https://github.com/proepidesenvolvimento/guardioes-web/blob/master/.github/PULL_REQUEST_TEMPLATE/pr_bugs.md)
+
+
+O template de pull request para Features pode ser encontrando [clicando aqui.](https://github.com/proepidesenvolvimento/guardioes-web/blob/master/.github/PULL_REQUEST_TEMPLATE/pr_feature.md)
