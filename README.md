@@ -52,9 +52,37 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Como rodar a stack de monitoramento
+## Stack de monitoramento
 
-<Inserir aqui todos os passos e comandos necessários para subir o ambiente de desenvolvimento do ElasticSearch e do Kibana>
+A stack de monitoramento utiliza o ElasticSearch e o Kibana.
+
+### Como rodar
+
+Para rodar os serviços basta seguir o comando a seguir:
+```
+sudo docker-compose up
+```
+
+Por padrão já está configurado para subir o ambiente com configurações de usuário. Caso deseja terminar essa configuração, siga este tutorial: [link](https://github.com/lappis-unb/rasa-ptbr-boilerplate/blob/v4.3.x/docs/setup_user_elasticsearch.md). Caso contrário, comente a seguinte linha do arquivo /elasticsearch/elasticsearch.yml:
+```
+...
+#xpack.security.enabled: true
+...
+```
+
+### Como criar usuário no Kibana com permissão de visualização
+
+Para conseguir executar os passos a seguir, é necessário que o xpack.security esteja habilitado (olhar subseção anterior).
+
+Criando usuário: 
+* Acesse o Kibana com um superuser
+* Vá nas configurações (canto inferior esquerdo)
+* Clique em Users (Security)
+* Preencha os campos requeridos
+* No campo de roles adicione as seguintes:
+  * apm_system
+  * kibana_dashboard_only_user
+  * watcher_user
 
 ## Como contribuir
 
