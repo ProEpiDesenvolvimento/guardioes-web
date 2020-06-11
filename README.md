@@ -1,71 +1,72 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Guardiões da Saúde - Dashboards
 
-## Available Scripts
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-In the project directory, you can run:
+<Insira aqui uma breve descrição sobre o que é o projeto>
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Arquitetura do projeto
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+<Insira aqui uma imagem que demonstre como todas as tecnologias/componentes da arquitetura do projeto se relacionam>
 
-### `npm test`
+<Agora escreva uma breve explicação de como eles se relacionam>
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Como rodar o Guardiões da Saúde - Dashboards
 
-### `npm run build`
+Para rodar os serviços basta digitar o comando a seguir:
+```
+docker-compose up
+```
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Por padrão já está configurado para subir o ambiente com configurações de usuário. Caso deseja terminar essa configuração, siga este tutorial: [link](https://github.com/lappis-unb/rasa-ptbr-boilerplate/blob/v4.3.x/docs/setup_user_elasticsearch.md). Caso contrário, comente a seguinte linha do arquivo /elasticsearch/elasticsearch.yml:
+```
+...
+#xpack.security.enabled: true
+...
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Portas:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Serviço | Porta |
+| ------------- | ------------- |
+| Elastic | 9200 |
+| Kibana | 5601 |
+| Site React | 8080 |
 
-### `npm run eject`
+## Stack de monitoramento
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+A stack de monitoramento utiliza o ElasticSearch e o Kibana.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Como criar usuário no Kibana com permissão de visualização
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Para conseguir executar os passos a seguir, é necessário que o xpack.security esteja habilitado (olhar subseção anterior).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Criando usuário: 
+* Acesse o Kibana com um superuser
+* Vá nas configurações (canto inferior esquerdo)
+* Clique em Users (Security)
+* Preencha os campos requeridos
+* No campo de roles adicione as seguintes:
+  * apm_system
+  * kibana_dashboard_only_user
+  * watcher_user
 
-## Learn More
+## Como contribuir
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Ficaremos muito felizes de receber e incorporar suas contribuições. Tem algumas informações adicionais sobre o estilo do código e a documentação.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Em geral o processo é bem simples:
 
-### Code Splitting
+- Crie uma issue descrevendo uma feature que você queira trabalhar (ou olhe as issues com o label help-wanted e good-first-issue)
+- Escreva seu código, testes e documentação
+- Abra um pull request descrevendo as suas alterações propostas
+- Seu pull request será revisado por um dos mantenedores, que pode levantar questões para você sobre eventuais mudanças necessárias ou questões.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Como conseguir ajuda
 
-### Analyzing the Bundle Size
+Caso seja dúvida técnica sobre a _stack_ do projeto, siga os passos descritos acima de como executar em modo desenvolvimento. Caso a duvida persista ou seja sobre outro assunto, abra uma _issue_ com uma **TAG** no nome ```[duvida]``` que tentaremos responder o mais rápido possível.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Em caso de dúvidas em relação às tecnologias que utilizamos, sugerimos as suas próprias documentações e fóruns. Porém, sempre estamos abertos para ajudar, então comente a dificuldade que está passando na _issue_ que está resolvendo que iremos auxiliar.  
 
 ## License & copyright
 

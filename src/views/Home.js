@@ -30,7 +30,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import blue from '@material-ui/core/colors/blue';
 import Content from "./ContentController";
-import Dashboard from "./DashboardController";
+import DashboardController from "./DashboardController";
 import Symptom from "./SymptomController";
 import Users from "./UsersController";
 import Admins from "./AdminsController";
@@ -140,7 +140,7 @@ class Home extends Component {
       open: true,
       openToolbarNested: false,
       openToolbarNestedConfig: false,
-      renderContent: '',
+      renderContent: 'dashboard',
       adminToken: null,
       adminAppId: 0,
       adminEmail: "",
@@ -166,14 +166,14 @@ class Home extends Component {
   componentDidMount() {
     const {
       adminName,
-      adminLastName, 
-      adminId, 
-      adminIsGod, 
-      adminToken, 
-      adminAppId, 
-      adminEmail 
+      adminLastName,
+      adminId,
+      adminIsGod,
+      adminToken,
+      adminAppId,
+      adminEmail
     } = this.props.location.state;
-    
+
     this.setState({
       adminName,
       adminLastName,
@@ -200,8 +200,6 @@ class Home extends Component {
   handleClickNestedToobarConfig = () => {
     this.setState(state => ({ openToolbarNestedConfig: !state.openToolbarNestedConfig }));
   };
-
-
   render() {
     const { classes, theme } = this.props;
     const primary = blue[100];
@@ -358,24 +356,31 @@ class Home extends Component {
           </List>
         </Drawer>
 
-        {this.state.renderContent === 'content' ?
-          <Content location={this.props.location} /> :
-          this.state.renderContent === 'dashboard' ?
-            <Dashboard location={this.props.location} /> :
-            this.state.renderContent === 'symptom' ?
-              <Symptom location={this.props.location} /> :
-              this.state.renderContent === 'healthUnit' ?
-                <HealthUnit location={this.props.location} /> :
-                this.state.renderContent === 'users' ?
-                  <Users location={this.props.location} /> :
-                  this.state.renderContent === 'admins' ?
-                    <Admins location={this.props.location} /> :
-                    this.state.renderContent === 'user' ?
-                      <User location={this.props.location} /> :
-                      null
-        }
+        {this.chooseWhoRenders()}
       </div>
     );
+  }
+  chooseWhoRenders() {
+    switch (this.state.renderContent) {
+      case 'content':
+        return <Content location={this.props.location} />
+      case 'dashboard':
+        return <DashboardController location={this.props.location} />
+      case 'symptom':
+        return <Symptom location={this.props.location} />
+      case 'healthUnit':
+        return <Content location={this.props.location} />
+      case 'HealthUnit':
+        return <HealthUnit location={this.props.location} />
+      case 'Users':
+        return <Users location={this.props.location} />
+      case 'Admins':
+        return <Admins location={this.props.location} />
+      case 'User':
+        return <User location={this.props.location} />
+      default:
+        return null
+    }
   }
 }
 
