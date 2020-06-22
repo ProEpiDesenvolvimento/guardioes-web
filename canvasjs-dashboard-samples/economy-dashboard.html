@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<title>Economic Trends Since 1961</title>
+
+		<!-- Styles -->
+		<link rel="stylesheet" type="text/css" href="assets/bootstrap/bootstrap4-alpha3.min.css"/>
+		<link rel="stylesheet" type="text/css" href="assets/no-ui-slider/nouislider.min.css"/>
+		<link rel="stylesheet" type="text/css" href="assets/economy-dashboard/styles.css"/>
+		<link rel="stylesheet" type="text/css" href="assets/font-awesome/css/font-awesome.min.css"/>
+
+		<!-- Scripts -->
+		<script type="text/javascript" src="assets/jquery/jquery-3.1.0.min.js"></script>
+		<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<script type="text/javascript" src="assets/tether/tether.min.js"></script>
+		<script type="text/javascript" src="assets/bootstrap/bootstrap4-alpha3.min.js"></script>
+		<script type="text/javascript" src="assets/economy-dashboard/economy-dashboard-data.js"></script>
+		<script type="text/javascript" src="assets/no-ui-slider/nouislider.min.js"></script>
+		<script type="text/javascript" src="assets/economy-dashboard/economy-dashboard.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="header col-sm-12">
+					<div class="col-xs-12">
+						<h1 class="heading">Economic Trends Since 1961</h1>
+						<blockquote>
+							<p class="economy-definition">
+								<span class="quotes">
+									<sup style="margin-right: 5px;"><i class="fa fa-quote-left quotes-size" aria-hidden="true"></i></sup>
+									Economy is the method by which we prepare today to afford improvements of tomorrow.
+								</span>
+							</p>
+							<footer class="author"><cite><i>Calvin Coolidge<br></i></cite></footer>
+						</blockquote>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<hr>
+			</div>
+			<div class="row">
+					<h4 class="chart-title">GDP Per Capita Vs Life Expectancy</h4>
+					<div class="col-md-1 hidden-md-down life-expec-chart-info">
+						<p class="chart-info-description">
+							<sup><i class="fa fa-quote-left quotes-size" aria-hidden="true"></i></sup>
+							The relationship between GDP per capita and life expectancy for different countries is shown. Click on Play Button to Start Animation.
+						</p>
+					</div>	
+					<div class="col-lg-11 col-xs-12">
+						<div id="GDP-per-capita-bubble-chart"></div>
+					</div>
+				<div class="col-lg-1 hidden-md-down"></div>
+				<div class="col-lg-11 col-xs-12 pull-right" style="margin:20px 0 50px 0;">
+					<div class="col-xs-1">
+						<i class="fa fa-play play-btn" aria-hidden="true" id="startGraphAnimation"></i>
+						<i class="fa fa-pause pause-btn" aria-hidden="true" id="pauseGraphAnimation" style="display: none;"></i>
+					</div>
+					<div class="col-xs-10 col-sm-11 slider">
+						<div id="year-slider"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<hr>
+			</div>
+			<div class="row" id="population-charts">
+				<div class="col-md-1 hidden-md-down population-chart-info">
+					<p class="chart-info-description">
+						<sup><i class="fa fa-quote-left quotes-size" aria-hidden="true"></i></sup>
+						The working age population is defined as those aged 15 to 64.
+					</p>
+				</div>
+				<div class="col-lg-11 col-xs-12 remove-population-charts-padding">
+					<div class="col-sm-12 col-lg-6">
+						<h4 class="population-charts-title">Population<span id="selected-country"> - United States</span></h4>
+						<div id="population-line-chart"></div>
+					</div>
+					<div class="col-sm-12 col-lg-6">
+						<h4 class="population-charts-title">Working Age Population<span id="selected-country"> - United States</span></h4>
+						<div id="working-population-line-chart"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<hr>
+			</div>
+			<div class="row">
+				<h4 class="chart-title">Merchandise Imports & Exports<span id="selected-country"> - United States</span></h4>
+				<div class="col-sm-1 hidden-md-down life-expec-chart-info">
+					<p class="chart-info-description">
+						<sup><i class="fa fa-quote-left quotes-size" aria-hidden="true"></i></sup>
+						Merchandise imports and exports from year 1961 to 2014.
+					</p>
+				</div>
+				<div class="col-lg-11 col-xs-12">
+					<div id="merchandise-imports-exports-column-chart"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
