@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
+import {
+  Link,
+} from "react-router-dom";
 
 export const Container = styled.div`
     position: absolute;
@@ -34,11 +37,16 @@ export const HeaderNav = styled.div`
     width: 25%;
 `;
 
-export const NavTo = styled.p`
+export const NavTo = styled(Link)`
+    text-decoration: 'none';
     font-family: Argentum Sans;
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
     line-height: 29px;
     color: #FFFFFF;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
 `;
