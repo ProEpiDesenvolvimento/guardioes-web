@@ -44,6 +44,7 @@ export const NavTo = styled(Link)`
     font-size: 1.5rem;
     line-height: 1.825rem;
     color: #FFFFFF;
+    margin-top: 3%;
 
     &:focus, &:hover, &:visited, &:link, &:active {
         text-decoration: none;
