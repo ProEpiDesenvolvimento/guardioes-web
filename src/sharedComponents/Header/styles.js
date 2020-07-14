@@ -38,11 +38,11 @@ export const HeaderNav = styled.div`
 
 export const NavTo = styled(Link)`
     text-decoration: 'none';
-    font-family: Argentum Sans;
+    font-family: argumentum, sans-serif;
     font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 29px;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.825rem;
     color: #FFFFFF;
 
     &:focus, &:hover, &:visited, &:link, &:active {
