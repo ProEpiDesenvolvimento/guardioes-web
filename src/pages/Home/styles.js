@@ -77,16 +77,22 @@ export const MapDiv = styled.div`
     display: flex;
     align-self: flex-end;
     position: absolute;
-    top: 10rem;
-    right: 0rem;
+
+    @media ${device.laptopL} {
+        top: 10rem;
+        right: 8rem;
+    };
+
+    top: 16rem;
+    right: 14rem;
 `;
 
 export const MapImage = styled.img`
-  width: 50vw;
-  height: 80vh;
+  width: 25vw;
+  height: 65vh;
 
-  @media ${device.mobileL} {
-    width: 50vw;
-    height: 5vh;
+  @media ${device.laptopL} {
+    width: 30vw;
+    height: 60vh;
   };
 `;

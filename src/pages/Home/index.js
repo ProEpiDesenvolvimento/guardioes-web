@@ -10,7 +10,7 @@ import {
   MapDiv
 } from './styles';
 import Header from 'sharedComponents/Header'
-import map from './assets/Man&Map.svg'
+import map from './assets/man_and_map.png'
 const Home = () => {
   return (
     <Container>
