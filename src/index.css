@@ -19,6 +19,6 @@ code {
 }
 
 @font-face {
-  font-family: 'Argumentum Sans';
-  src: local('Argumentum Sans'), url(utils/assets/fonts/ArgentumSans-Regular.otf) format('otf');
+  font-family: 'Argumentum';
+  src: local('Argumentum'), url(utils/assets/fonts/ArgentumSans-Regular.otf) format('otf');
 }

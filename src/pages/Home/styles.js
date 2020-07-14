@@ -29,7 +29,7 @@ export const Title = styled.p`
 `;
 
 export const SubTitle = styled.p`
-    font-family: Argentum Sans;
+    font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 1.5625rem;
@@ -54,15 +54,15 @@ export const PreSignUpBtn = styled.div`
     justify-self: flex-end;
 
     @media ${device.laptopL}{
-        margin-top: 25%;
+        margin-top: 20%;
         height: 4.5rem;
     }
 `;
 
 export const PreSignUpTxt = styled.p`
-    font-family: Argentum Sans;
+    font-family: argumentum, sans-serif;
     font-style: normal;
-    font-weight: bold;
+    font-weight: 500;
     font-size: 1.875rem;
     line-height: 2.3125rem;
     color: #FFFFFF;
