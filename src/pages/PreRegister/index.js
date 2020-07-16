@@ -18,7 +18,8 @@ import {
   SendButton,
   SendButtonName,
   BackIcon,
-  BackLink
+  BackLink,
+  QuestionPopup
 } from './styles';
 
 import Header from 'sharedComponents/Header'
@@ -111,7 +112,7 @@ const PreRegister = () => {
           <FieldDiv>
             <FieldName>
               Tipo de Organização
-              <QuestionVector src={questionIcon}/>
+              <QuestionPopup content='Tipo de Organização' trigger={<QuestionVector src={questionIcon} />} />
               <Input
                 type='text'
                 value={organizationType}
@@ -122,9 +123,9 @@ const PreRegister = () => {
           <FieldDiv>
             <FieldName>
               Categorias
-              <QuestionVector src={questionIcon}/>
+              <QuestionPopup content='Categorias' trigger={<QuestionVector src={questionIcon} />} />
               <ButtonsDiv>
-                <DownloadBtn>
+                <DownloadBtn href='./documents/modelo_categoras.xls' download="modelo_categorias.xls">
                   <ButtonName>
                     Download
                   </ButtonName>

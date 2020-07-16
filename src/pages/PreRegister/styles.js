@@ -1,16 +1,18 @@
 import styled from 'styled-components';
-import { device } from 'utils/devices';
 import { Link } from 'react-router-dom'
+import { Popup } from 'semantic-ui-react'
 
 export const Container = styled.div`
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
 `;
 
 export const Body = styled.div`
     height: 92vh;
-    background: rgb(255,255,255);
     background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 `;
 
 export const BackIcon = styled.img`
@@ -33,39 +35,60 @@ export const Title = styled.p`
     font-weight: 900;
     font-size: 40px;
     line-height: 48px;
-
     color: #000000;
+    @media(max-width: 625px) {
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        margin: 5vh auto;
+        text-align: center;
+        font-size: 30px;
+    }
 `;
 
 export const ManDiv = styled.div`
-position: absolute;
-width: 500px;
-height: 50vh;
-left: 20px;
-top: 200px;
+    position: absolute;
+    width: 500px;
+    height: 50vh;
+    left: 20px;
+    top: 200px;
+    @media(max-width: 920px) {
+        display: none;
+    }
 `;
 
 export const ManImage = styled.img`
-width: 35vw;
-height: 45vh;
-@media ${device.mobileL} {
-    width: 50vw;
-    height: 5vh;
-};
+    width: 35vw;
+    height: 45vh;
 `;
 
 export const RegisterDiv = styled.form`
     position: absolute;
     right: 5vw;
     top: 28vh;
-    width: 54vw;
+    width: max(54vw, 532px);
     height: 60vh;
+    display: inline-block;
+    @media(max-width: 920px) {
+        width: 100vw;
+        height: 60vh;
+        margin: 0 auto;
+        padding: 10px;
+        left: 0;
+    }
+    @media(max-width: 625px) {
+        margin-top: 30px;
+    }
+    @media(max-width: 480px) {
+        height: 500px;
+    }
 `;
 
 export const FieldDiv = styled.div`
     float: left;
-    width: 27vw;
+    width: max(225px, 25vw);
     height: 12vh;
+    margin-left: 20px;
 `;
     
 export const FieldName = styled.label`
@@ -82,7 +105,7 @@ export const FieldName = styled.label`
 export const Input = styled.input`
     display: block;
     height: 5vh;
-    width: 22vw;
+    width: max(225px, 25vw);
     background: #FFFFFF;
     mix-blend-mode: normal;
     border: 1px solid #348EAC;
@@ -95,7 +118,7 @@ export const Input = styled.input`
 export const LargerInput = styled.textarea`
     display: block;
     height: 12vh;
-    width: 28vw;
+    width: max(250px, 27vw);
     background: #FFFFFF;
     mix-blend-mode: normal;
     border: 1px solid #348EAC;
@@ -107,44 +130,49 @@ export const LargerInput = styled.textarea`
 `;
 
 export const ButtonsDiv = styled.div`
-    width: 22vw;
+    width: max(210px, 20vw);
     height: 7vh;
     border: none;
     padding: 0;
 `;
 
 export const QuestionVector = styled.img`
-    width: 1vw;
-    height: 2vh;
-    margin-left: 0.5vw;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
     cursor: pointer;
+    fill: blue;
 `;
 
-export const DownloadBtn = styled.button`
-    width: 9vw;
-    height: 5vh;
+export const DownloadBtn = styled.a`
+    width: 100px;
+    height: 30px;
     float: left;
     background: #FFFFFF;
     border: 1px solid #348EAC;
     box-sizing: border-box;
     border-radius: 15px;
-    margin-left: 0;
     cursor: pointer;
+    padding: 0;
+    text-decoration: none;
 `;
 
 export const UploadBtn = styled.button`
-    width: 9vw;
-    height: 5vh;
+    width: 100px;
+    height: 30px;
     float: right;
     background: #FFFFFF;
     border: 1px solid #348EAC;
     box-sizing: border-box;
     border-radius: 15px;
     cursor: pointer;
+    margin-left: 5px;
+    padding: 0;
+    margin: 0;
 `;
 
 export const ButtonName = styled.p`
-    margin: 0;
+    margin: 5px;
     text-align: center;
     font-family: argumentum, sans-serif;
     font-style: normal;
@@ -176,4 +204,15 @@ export const SendButtonName = styled.p`
     font-size: 17px;
     line-height: 24px;
     color: #FFFFFF;
+`;
+
+export const QuestionPopup = styled(Popup)`
+    width: 300px;
+    height: 60px;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid gray;
+    background: #FFFFFF;
+    margin-bottom: 7px;
+    box-shadow: 1px 1px 1px gray;
 `;
