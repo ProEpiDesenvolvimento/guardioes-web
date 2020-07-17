@@ -33,6 +33,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "semantic-ui-react": "^0.88.2",
     "styled-components": "^4.4.1"
   },
   "scripts": {
