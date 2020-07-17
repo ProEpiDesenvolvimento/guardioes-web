@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect} from 'react-router-dom'
 import { 
   Container, 
   Body, 
@@ -19,7 +20,8 @@ import {
   SendButtonName,
   BackIcon,
   BackLink,
-  QuestionPopup
+  QuestionPopupCat,
+  QuestionPopupOrgType
 } from './styles';
 
 import Header from 'sharedComponents/Header'
@@ -36,6 +38,9 @@ const PreRegister = () => {
   const [state, setState] = useState("")
   const [organizationType, setOrganizationType] = useState("")
   const [socialReason, setSocialReason] = useState("")
+  const [file, setFile] = useState("")
+
+  const [redirect, setRedirect] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -45,16 +50,20 @@ const PreRegister = () => {
       email: email,
       state: state,
       organizationType: organizationType,
-      socialReason: socialReason
+      socialReason: socialReason,
     }
     const response = await axios.post('school_units', { data })
     if (response.errors) {
       console.log("Algo deu errado.\n" + response.errors)
     } else {
       console.log("Registro feito com sucesso.")
+      setRedirect(true);
     }
   }
 
+  if (redirect)
+    return <Redirect to='/thanks' />
+  else {
   return (
     <Container>
       <Header />
@@ -112,7 +121,7 @@ const PreRegister = () => {
           <FieldDiv>
             <FieldName>
               Tipo de Organização
-              <QuestionPopup content='Tipo de Organização' trigger={<QuestionVector src={questionIcon} />} />
+              <QuestionPopupOrgType content='Qual o tipo da sua organização?' trigger={<QuestionVector src={questionIcon} />} />
               <Input
                 type='text'
                 value={organizationType}
@@ -123,18 +132,17 @@ const PreRegister = () => {
           <FieldDiv>
             <FieldName>
               Categorias
-              <QuestionPopup content='Categorias' trigger={<QuestionVector src={questionIcon} />} />
+              <QuestionPopupCat content='Faça o download do documento modelo das categorias, preencha-o e faça o upload.' trigger={<QuestionVector src={questionIcon} />} />
               <ButtonsDiv>
                 <DownloadBtn href='./documents/modelo_categoras.xls' download="modelo_categorias.xls">
                   <ButtonName>
                     Download
                   </ButtonName>
                 </DownloadBtn>
-                <UploadBtn>
-                  <ButtonName>
-                    Upload
-                  </ButtonName>
-                </UploadBtn>
+                <UploadBtn
+                  type='file'
+                  onChange={(e) => setFile(e.target.value)}
+                />
               </ButtonsDiv>
             </FieldName>
           </FieldDiv>
@@ -159,6 +167,6 @@ const PreRegister = () => {
       </Body>
     </Container>
   );
-}
+}}
 
 export default PreRegister;

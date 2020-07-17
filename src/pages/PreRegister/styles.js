@@ -130,7 +130,7 @@ export const LargerInput = styled.textarea`
 `;
 
 export const ButtonsDiv = styled.div`
-    width: max(210px, 20vw);
+    width: max(350px, 26vw);
     height: 7vh;
     border: none;
     padding: 0;
@@ -157,18 +157,18 @@ export const DownloadBtn = styled.a`
     text-decoration: none;
 `;
 
-export const UploadBtn = styled.button`
-    width: 100px;
+export const UploadBtn = styled.input`
+    width: 230px;
     height: 30px;
-    float: right;
-    background: #FFFFFF;
-    border: 1px solid #348EAC;
-    box-sizing: border-box;
-    border-radius: 15px;
     cursor: pointer;
     margin-left: 5px;
-    padding: 0;
-    margin: 0;
+    padding-top: 5px;
+    float: right;
+    @media(max-width: 1180px) {
+        width: 115px;
+        float: left;
+        margin-left: 25px;
+    }
 `;
 
 export const ButtonName = styled.p`
@@ -197,6 +197,7 @@ export const SendButton = styled.button`
     
 export const SendButtonName = styled.p`
     text-align: center;
+    text-decoration: none;
     margin: 9px;
     font-family: argumentum, sans-serif;
     font-style: normal;
@@ -206,7 +207,18 @@ export const SendButtonName = styled.p`
     color: #FFFFFF;
 `;
 
-export const QuestionPopup = styled(Popup)`
+export const QuestionPopupOrgType = styled(Popup)`
+    width: 230px;
+    height: 15px;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid gray;
+    background: #FFFFFF;
+    margin-bottom: 7px;
+    box-shadow: 1px 1px 1px gray;
+`;
+
+export const QuestionPopupCat = styled(Popup)`
     width: 300px;
     height: 60px;
     padding: 10px;
