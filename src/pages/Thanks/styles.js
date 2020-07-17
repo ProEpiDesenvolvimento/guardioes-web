@@ -64,7 +64,7 @@ export const HomeButton = styled(Link)`
     padding-top: 10px;
     background: #5DD39E;
     box-shadow: 0px 0px 40px rgba(93, 211, 158, 0.3);
-    border-radius: 25px;
+    border-radius: 20px;
     width: 300px;
     height: 50px;
     cursor: pointer;

@@ -201,7 +201,7 @@ export const SendButtonName = styled.p`
     margin: 9px;
     font-family: argumentum, sans-serif;
     font-style: normal;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 17px;
     line-height: 24px;
     color: #FFFFFF;

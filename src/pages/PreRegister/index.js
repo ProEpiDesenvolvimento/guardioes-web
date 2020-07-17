@@ -52,13 +52,13 @@ const PreRegister = () => {
       organizationType: organizationType,
       socialReason: socialReason,
     }
-    const response = await axios.post('school_units', { data })
-    if (response.errors) {
-      console.log("Algo deu errado.\n" + response.errors)
-    } else {
+    // const response = await axios.post('school_units', { data })
+    // if (response.errors) {
+    //   console.log("Algo deu errado.\n" + response.errors)
+    // } else {
       console.log("Registro feito com sucesso.")
       setRedirect(true);
-    }
+    // }
   }
 
   if (redirect)
