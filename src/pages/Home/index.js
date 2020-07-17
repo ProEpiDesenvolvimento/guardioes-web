@@ -22,7 +22,7 @@ const Home = () => {
         <SubTitle>
           Use o Guardiões da Saúde para monitorar o <br/> estado de saúde dos integrantes da sua <br/> instituição
         </SubTitle>
-        <PreSignUpBtn>
+        <PreSignUpBtn to='/preregister'>
           <PreSignUpTxt>
             Realizar Pré-cadastro
           </PreSignUpTxt>

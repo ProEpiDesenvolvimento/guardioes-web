@@ -20,33 +20,32 @@ export const Container = styled.div`
 
 
 export const Logo = styled.img`
-  width: 15vw;
-  height: 5vh;
-  @media ${device.mobileL} {
-    width: 50vw;
-    height: 5vh;
-  };
-
+  width: 80px;
+  height: 35px;
 `;
 
 export const HeaderNav = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 25%;
+    width: max(200px, 30vw);
+    margin-right: 20px;
+    @media ${device.mobileL} {
+      margin-right: 10px;
+    };
 `;
 
 export const NavTo = styled(Link)`
-    text-decoration: 'none';
+    text-decoration: none;
     font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 22px;
     line-height: 1.825rem;
     color: #FFFFFF;
-    margin-top: 3%;
+    margin-left: 10px;
 
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
+    @media ${device.mobileL} {
+      font-size: 15px;
+    };
 `;

@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
+import { Link } from 'react-router-dom'
 
 export const Container = styled.div`
+    width: 100vw;
+    height: 100vh;
 `;
 
 export const Body = styled.div`
@@ -9,7 +12,7 @@ export const Body = styled.div`
     background: rgb(255,255,255);
     background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 `;
 
 export const Title = styled.p`
@@ -20,10 +23,12 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     margin: 5% 5% 2%;
+    text-align: center;
 
     @media ${device.laptopL}{
         font-size: 3rem;
         line-height: 3rem;
+        text-align: left;
     }
 
 `;
@@ -38,10 +43,11 @@ export const SubTitle = styled.p`
     margin: 0% 5%;
 `;
 
-export const PreSignUpBtn = styled.div`
+export const PreSignUpBtn = styled(Link)`
     display: flex;
     width: 30.9375rem;
     height: 5.5rem;
+    text-decoration: none;
 
     background: #5DD39E;
     box-shadow: 0px 0px 40px rgba(93, 211, 158, 0.3);
@@ -53,8 +59,13 @@ export const PreSignUpBtn = styled.div`
     cursor: pointer;
     justify-self: flex-end;
 
+    @media(max-width: 640px) {
+        width: 300px;
+        height: 50px;
+    }
+
     @media ${device.laptopL}{
-        margin-top: 20%;
+        margin-top: 10%;
         height: 4.5rem;
     }
 `;
@@ -62,13 +73,16 @@ export const PreSignUpBtn = styled.div`
 export const PreSignUpTxt = styled.p`
     font-family: argumentum, sans-serif;
     font-style: normal;
-    font-weight: 500;
-    font-size: 1.875rem;
+    font-weight: bold;
+    font-size: 1.5rem;
     line-height: 2.3125rem;
     color: #FFFFFF;
 
+    @media(max-width: 640px) {
+        font-size: 20px;
+    }
+
     @media ${device.laptopL}{
-        font-size: 1.5rem;
         line-height: 2rem;
     }
 `;
@@ -80,7 +94,7 @@ export const MapDiv = styled.div`
 
     @media ${device.laptopL} {
         top: 10rem;
-        right: 8rem;
+        right: 8vw;
     };
 
     top: 16rem;
@@ -91,8 +105,12 @@ export const MapImage = styled.img`
   width: 25vw;
   height: 65vh;
 
+  @media(max-width: 980px) {
+      display: none;
+  }
+
   @media ${device.laptopL} {
-    width: 30vw;
-    height: 60vh;
+    width: 305px;
+    height: 380px;
   };
 `;

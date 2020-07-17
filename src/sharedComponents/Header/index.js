@@ -5,7 +5,7 @@ import {
   HeaderNav,  
   NavTo
 } from './styles';
-import logo from 'utils/assets/logo.svg';
+import logo from 'utils/assets/logo.png';
 
 const Header = () => { 
   return (

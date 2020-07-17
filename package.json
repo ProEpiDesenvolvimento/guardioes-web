@@ -7,6 +7,7 @@
     "@material-ui/icons": "^3.0.2",
     "@trendmicro/react-sidenav": "^0.4.5",
     "AsyncStorage": "^0.1.5",
+    "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "google-map-react": "^1.1.7",
     "history": "^4.10.1",
@@ -32,6 +33,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "semantic-ui-react": "^0.88.2",
     "styled-components": "^4.4.1"
   },
   "scripts": {
