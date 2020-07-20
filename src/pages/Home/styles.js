@@ -23,13 +23,13 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     margin: 5% 5% 2%;
-    text-align: center;
+    text-align: flex-start;
 
     @media ${device.laptopL}{
         font-size: 3rem;
         line-height: 3rem;
         text-align: left;
-    }
+    } 
 
 `;
 
