@@ -21,9 +21,8 @@ import {
 
 import questionIcon from '../assets/question_icon.png'
 
-export default function App() {
+export default function Form() {
   const { register, handleSubmit, watch, errors } = useForm();
-  const onSubmit = data => console.log(data);
 
   const [cnpj, setCnpj] = useState("")
   const [phone, setPhone] = useState("")
@@ -32,6 +31,15 @@ export default function App() {
   const [organizationType, setOrganizationType] = useState("")
   const [socialReason, setSocialReason] = useState("")
   const [file, setFile] = useState("")
+
+  const onSubmit = data => {
+    const response = await axios.post('school_units', { data })
+    if (response.errors) {
+      console.log("Algo deu errado.\n" + response.errors)
+    } else {
+      console.log("Registro feito com sucesso.")
+    }
+  }
 
   return (
     <RegisterDiv onSubmit={handleSubmit(onSubmit)}>
