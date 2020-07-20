@@ -6,27 +6,13 @@ import {
   Title, 
   ManDiv,
   ManImage,
-  RegisterDiv, 
-  FieldDiv,
-  FieldName,
-  Input,
-  QuestionVector,
-  LargerInput,
-  ButtonsDiv,
-  DownloadBtn,
-  UploadBtn,
-  ButtonName,
-  SendButton,
-  SendButtonName,
   BackIcon,
   BackLink,
-  QuestionPopupCat,
-  QuestionPopupOrgType
 } from './styles';
 
 import Header from 'sharedComponents/Header'
+import Form from './Form'
 import businessMan from './assets/businessMan.svg'
-import questionIcon from './assets/question_icon.png'
 import backIcon from './assets/back_icon.svg'
 
 import axios from '../../services/api.js';
@@ -52,13 +38,13 @@ const PreRegister = () => {
       organizationType: organizationType,
       socialReason: socialReason,
     }
-    // const response = await axios.post('school_units', { data })
-    // if (response.errors) {
-    //   console.log("Algo deu errado.\n" + response.errors)
-    // } else {
+    const response = await axios.post('school_units', { data })
+    if (response.errors) {
+      console.log("Algo deu errado.\n" + response.errors)
+    } else {
       console.log("Registro feito com sucesso.")
       setRedirect(true);
-    // }
+    }
   }
 
   if (redirect)
@@ -77,7 +63,8 @@ const PreRegister = () => {
         <ManDiv>
           <ManImage src={businessMan}/>
         </ManDiv>
-        <RegisterDiv onSubmit={handleSubmit}>
+        <Form />
+        {/* <RegisterDiv onSubmit={handleSubmit}>
           <FieldDiv>
             <FieldName>
               CNPJ
@@ -163,7 +150,7 @@ const PreRegister = () => {
               </SendButtonName>
             </SendButton>
           </FieldDiv>
-        </RegisterDiv>
+        </RegisterDiv> */}
       </Body>
     </Container>
   );
