@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'localhost:3001';
+const baseURL = 'http://localhost:3001';
 
 axios.defaults.baseURL = baseURL;
 axios.defaults.responseType = 'json';
