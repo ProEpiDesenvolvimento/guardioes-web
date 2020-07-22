@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'
 import { Popup } from 'semantic-ui-react'
 
 export const Container = styled.div`
@@ -13,18 +12,6 @@ export const Body = styled.div`
     background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
     display: flex;
     flex-direction: column;
-`;
-
-export const BackIcon = styled.img`
-    width: 3vw;
-    height: 4vh;
-    margin: 10px 0px 0px 10px;
-`;
-
-export const BackLink = styled(Link)`
-    width: 3vw;
-    height: 4vh;
-    margin: 10px 0px 0px 10px;
 `;
 
 export const Title = styled.p`
@@ -90,7 +77,7 @@ export const FieldDiv = styled.div`
     height: 12vh;
     margin-left: 20px;
 `;
-    
+
 export const FieldName = styled.label`
     float: left;
     margin: 10px 0px 5px 10px;
@@ -101,7 +88,7 @@ export const FieldName = styled.label`
     line-height: 24px;
     color: #000000;
 `;
-    
+
 export const Input = styled.input`
     display: block;
     height: 5vh;
@@ -194,7 +181,7 @@ export const SendButton = styled.button`
     text-decoration: none;
     cursor: pointer;
 `;
-    
+
 export const SendButtonName = styled.p`
     text-align: center;
     text-decoration: none;
