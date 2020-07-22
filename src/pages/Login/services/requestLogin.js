@@ -1,15 +1,14 @@
 import api from 'services/api';
 
-const requestLogin = async (email, password, userType) => {
-    const url = `/${userType}/login`
-    api.post(url, {[userType]: {email, password}})
-    .then(async (res) => {
-        const response = { headers: { authorization }, data: requestData } = res;
-        return response
-    })
-    .catch((e) => {
-        alert('Falha no login');
-        console.log(e);
-    });
-}
+const requestLogin = async (email, password, userType) => 
+    api.post(`/${userType}/login`, {[userType]: {email, password}})
+        .then(async (res) => {
+            const response =  {authorization: res.headers.authorization, user: res.data};
+            return response
+        })
+        .catch((e) => {
+            alert('Falha no login');
+            console.log(e);
+            return {authorization: "", user: {}}
+        }); 
 export default requestLogin;
