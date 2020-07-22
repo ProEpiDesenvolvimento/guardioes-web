@@ -1,84 +1,40 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'
 import { Popup } from 'semantic-ui-react'
 
-export const Container = styled.div`
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-`;
-
-export const Body = styled.div`
-    height: 92vh;
-    background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
-    display: flex;
-    flex-direction: column;
-`;
-
-export const Title = styled.p`
-    margin: 3vh auto;
-    display: inline;
-    font-family: Lovelo;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 40px;
-    line-height: 48px;
-    color: #000000;
-    @media(max-width: 625px) {
-        width: 100vw;
-        height: 100vh;
-        left: 0;
-        margin: 5vh auto;
-        text-align: center;
-        font-size: 30px;
-    }
-`;
-
-export const ManDiv = styled.div`
-    position: absolute;
-    width: 500px;
-    height: 50vh;
-    left: 20px;
-    top: 200px;
-    @media(max-width: 920px) {
-        display: none;
-    }
-`;
-
-export const ManImage = styled.img`
-    width: 35vw;
-    height: 45vh;
+export const Span = styled.span`
+  color: red;
+  font-size: 8px;
 `;
 
 export const RegisterDiv = styled.form`
-    position: absolute;
-    right: 5vw;
-    top: 28vh;
-    width: max(54vw, 532px);
-    height: 60vh;
-    display: inline-block;
-    @media(max-width: 920px) {
-        width: 100vw;
-        height: 60vh;
-        margin: 0 auto;
-        padding: 10px;
-        left: 0;
-    }
-    @media(max-width: 625px) {
-        margin-top: 30px;
-    }
-    @media(max-width: 480px) {
-        height: 500px;
-    }
+  position: absolute;
+  right: 5vw;
+  top: 28vh;
+  width: max(54vw, 532px);
+  height: 60vh;
+  display: inline-block;
+  @media(max-width: 920px) {
+      width: 100vw;
+      height: 60vh;
+      margin: 0 auto;
+      padding: 10px;
+      left: 0;
+  }
+  @media(max-width: 625px) {
+      margin-top: 30px;
+  }
+  @media(max-width: 480px) {
+      height: 500px;
+  }
 `;
 
 export const FieldDiv = styled.div`
     float: left;
     width: max(225px, 25vw);
-    height: 12vh;
+    height: 13vh;
     margin-left: 20px;
 `;
-
+    
 export const FieldName = styled.label`
     float: left;
     margin: 10px 0px 5px 10px;
@@ -89,7 +45,7 @@ export const FieldName = styled.label`
     line-height: 24px;
     color: #000000;
 `;
-
+    
 export const Input = styled.input`
     display: block;
     height: 5vh;
@@ -182,7 +138,7 @@ export const SendButton = styled.button`
     text-decoration: none;
     cursor: pointer;
 `;
-
+    
 export const SendButtonName = styled.p`
     text-align: center;
     text-decoration: none;
