@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 
-import { 
-  RegisterDiv, 
+import {
+  RegisterDiv,
   FieldDiv,
   FieldName,
   Input,
@@ -21,7 +21,9 @@ import {
 
 import questionIcon from '../assets/question_icon.png'
 
-export default function Form() {
+import axios from '../../../services/api.js';
+
+const Form = (props) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
   const [cnpj, setCnpj] = useState("")
@@ -32,17 +34,19 @@ export default function Form() {
   const [socialReason, setSocialReason] = useState("")
   const [file, setFile] = useState("")
 
-  const onSubmit = data => {
-    const response = await axios.post('school_units', { data })
-    if (response.errors) {
-      console.log("Algo deu errado.\n" + response.errors)
-    } else {
-      console.log("Registro feito com sucesso.")
-    }
+  const onSubmit = async data => {
+    // const response = await axios.post('school_units', { data })
+    // if (response.errors) {
+    // console.log("Algo deu errado.\n" + response.errors)
+    // } else {
+    // console.log("Registro feito com sucesso.")
+    // }
+    props.setRedirectCallback(true)
+    console.log(data)
   }
 
   return (
-    <RegisterDiv onSubmit={handleSubmit(onSubmit)}>
+    <RegisterDiv onSubmit={handleSubmit(onSubmit)} >
       <FieldDiv>
         <FieldName>
           CNPJ
@@ -149,3 +153,5 @@ export default function Form() {
     </RegisterDiv>
   );
 }
+
+export default Form;
