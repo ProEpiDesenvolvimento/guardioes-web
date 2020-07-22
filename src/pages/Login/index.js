@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import {
   setEmail, setToken, setUser
@@ -14,9 +15,9 @@ import {
   LoginBox,
   Title,
   Field,
-  FieldName,
   SendButton,
-  SendButtonName
+  SendButtonName,
+  Span
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
@@ -29,14 +30,14 @@ const Login = ({
   setUser,
   setToken
 }) => {
+  const { register, handleSubmit, watch, errors } = useForm();
 
   const [password, setPassword] = useState("")
 
-  const makeUserLogin = async (e) => {
-    e.preventDefault()
-    const response = await requestLogin(email, password, userType)
-    setToken(response.authorization);
-    setUser(response.user)
+  const makeUserLogin = async () => {
+    // const response = await requestLogin(email, password, "admin")
+    // setToken(response.authorization);
+    // setUser(response.user)
   }
 
 
@@ -51,12 +52,28 @@ const Login = ({
         <UserMenu />
       </HeadSection>
       <Body>
-        <LoginBox onSubmit={makeUserLogin}>
+        <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
           <Title>
             Login
         </Title>
-          <Field placeholder="E-mail" />
-          <Field placeholder="Senha" type="password" />
+          <Field
+            placeholder="E-mail"
+            name='email'
+            type='text'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            ref={register({ required: true })}
+          />
+          {errors.email && <Span>O e-mail é obrigatório</Span>}
+          <Field
+            placeholder="Senha"
+            type="password"
+            name='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            ref={register({ required: true })}
+          />
+          {errors.password && <Span>A senha é obrigatória</Span>}
           <SendButton type='submit'>
             <SendButtonName>
               ENVIAR

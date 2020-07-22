@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
 
+export const Span = styled.span`
+  color: red;
+  font-size: 15px;
+`;
+
 export const Container = styled.div`
     width: 100vw;
     height: 100vh;
