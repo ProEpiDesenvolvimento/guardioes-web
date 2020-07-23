@@ -21,6 +21,7 @@ import {
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
+import Dropdown from './Dropdown'
 
 const Login = ({
   email,
@@ -33,13 +34,30 @@ const Login = ({
   const { register, handleSubmit, watch, errors } = useForm();
 
   const [password, setPassword] = useState("")
+  const [items, setItems] = useState([
+    {
+      key: "manager",
+      value: 'Gerente',
+    },
+    {
+      key: "admin",
+      value: 'Admin',
+    }
+  ])
 
-  const makeUserLogin = async () => {
-    // const response = await requestLogin(email, password, "admin")
-    // setToken(response.authorization);
-    // setUser(response.user)
+  const makeUserLogin = async (data) => {
+    const response = await requestLogin(email, password, items[0])
+    if (response.errors) {
+      console.log("Algo deu errado.\n", response.errors)
+    } else {
+      setToken(response.authorization);
+      setUser(response.user)
+    }
   }
 
+  const setItemsCallback = (items) => {
+    setItems(items)
+  }
 
   useEffect(() => {
   }, []);
@@ -49,7 +67,7 @@ const Login = ({
       <Header />
       <HeadSection>
         <Backicon />
-        <UserMenu />
+        <Dropdown title="Gerente" items={items} setItemsCallback={setItemsCallback} />
       </HeadSection>
       <Body>
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>

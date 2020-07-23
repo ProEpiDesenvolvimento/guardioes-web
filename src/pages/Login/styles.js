@@ -16,12 +16,11 @@ export const HeadSection = styled.div`
     margin: 0;
 `;
 
-export const UserMenu = styled.div``;
-
 export const Body = styled.div`
     height: 84vh;
     background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
     margin: 0;
+    width: 100vw;
 `;
 
 export const LoginBox = styled.form`
@@ -34,6 +33,9 @@ export const LoginBox = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: absolute;
+    left: calc(50vw - max(300px, 35vw)/2);
+    z-index: 1;
 `;
 
 export const Title = styled.p`
