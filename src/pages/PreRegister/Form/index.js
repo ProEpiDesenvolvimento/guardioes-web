@@ -20,8 +20,7 @@ import {
 } from './styles';
 
 import questionIcon from '../assets/question_icon.png'
-
-import axios from '../../../services/api.js';
+import submitPreRegister from './services/submitPreRegister';
 
 const Form = (props) => {
   const { register, handleSubmit, watch, errors } = useForm();
@@ -34,15 +33,26 @@ const Form = (props) => {
   const [socialReason, setSocialReason] = useState("")
   const [file, setFile] = useState("")
 
-  const onSubmit = async data => {
-    // const response = await axios.post('school_units', { data })
-    // if (response.errors) {
-    // console.log("Algo deu errado.\n" + response.errors)
-    // } else {
-    // console.log("Registro feito com sucesso.")
-    // }
+  const onSubmit = async () => {
+    const body = {
+      pre_register: {
+        cnpj,
+        phone,
+        organization_kind: organizationType,
+        state,
+        company_name: socialReason,
+        app_id: 1
+      }
+    } 
+
+    const response = await submitPreRegister(body)
+    if (response.errors) {
+    console.log("Algo deu errado.\n" + response.errors)
+    } else {
+    console.log("Registro feito com sucesso.")
+    }
     props.setRedirectCallback(true)
-    console.log(data)
+    console.log(response)
   }
 
   return (
@@ -144,7 +154,9 @@ const Form = (props) => {
         </FieldName>
       </FieldDiv>
       <FieldDiv>
-        <SendButton type='submit'>
+        <SendButton 
+          type='submit'
+          >
           <SendButtonName>
             ENVIAR
           </SendButtonName>
