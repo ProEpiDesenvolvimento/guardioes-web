@@ -101,7 +101,7 @@ const Form = (props) => {
       <FieldDiv>
         <FieldName>
           Tipo de Organização
-          <QuestionPopupOrgType content='Qual o tipo da sua organização?' trigger={<QuestionVector src={questionIcon} />} />
+          <QuestionPopupOrgType content='Ex: Ensino, Administrativa, etc..' trigger={<QuestionVector src={questionIcon} />} />
           <Input
             name='organizationType'
             type='text'
@@ -115,7 +115,7 @@ const Form = (props) => {
       <FieldDiv>
         <FieldName>
           Categorias
-          <QuestionPopupCat content='Faça o download do documento modelo das categorias, preencha-o e faça o upload.' trigger={<QuestionVector src={questionIcon} />} />
+          <QuestionPopupCat content='Faça o download do documento modelo das categorias.' trigger={<QuestionVector src={questionIcon} />} />
           <ButtonsDiv>
             <DownloadBtn href='./documents/modelo_categoras.xls' download="modelo_categorias.xls">
               <ButtonName>
