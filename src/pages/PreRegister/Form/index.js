@@ -10,7 +10,6 @@ import {
   LargerInput,
   ButtonsDiv,
   DownloadBtn,
-  UploadBtn,
   ButtonName,
   SendButton,
   SendButtonName,
@@ -123,10 +122,6 @@ const Form = (props) => {
                 Download
               </ButtonName>
             </DownloadBtn>
-            <UploadBtn
-              type='file'
-              onChange={(e) => setFile(e.target.value)}
-            />
           </ButtonsDiv>
         </FieldName>
       </FieldDiv>

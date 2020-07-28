@@ -9,7 +9,7 @@ export const Span = styled.span`
 export const RegisterDiv = styled.form`
   position: absolute;
   right: 5vw;
-  top: 28vh;
+  top: 20vh;
   width: max(54vw, 532px);
   height: 60vh;
   display: inline-block;
@@ -34,7 +34,7 @@ export const FieldDiv = styled.div`
     height: 13vh;
     margin-left: 20px;
 `;
-    
+
 export const FieldName = styled.label`
     float: left;
     margin: 10px 0px 5px 10px;
@@ -45,7 +45,7 @@ export const FieldName = styled.label`
     line-height: 24px;
     color: #000000;
 `;
-    
+
 export const Input = styled.input`
     display: block;
     height: 5vh;
@@ -101,20 +101,6 @@ export const DownloadBtn = styled.a`
     text-decoration: none;
 `;
 
-export const UploadBtn = styled.input`
-    width: 230px;
-    height: 30px;
-    cursor: pointer;
-    margin-left: 5px;
-    padding-top: 5px;
-    float: right;
-    @media(max-width: 1180px) {
-        width: 115px;
-        float: left;
-        margin-left: 25px;
-    }
-`;
-
 export const ButtonName = styled.p`
     margin: 5px;
     text-align: center;
@@ -138,7 +124,7 @@ export const SendButton = styled.button`
     text-decoration: none;
     cursor: pointer;
 `;
-    
+
 export const SendButtonName = styled.p`
     text-align: center;
     text-decoration: none;

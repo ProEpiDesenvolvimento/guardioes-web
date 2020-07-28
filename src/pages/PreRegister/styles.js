@@ -15,204 +15,33 @@ export const Body = styled.div`
     flex-direction: column;
 `;
 
-export const Title = styled.p`
-    margin: 3vh auto;
-    display: inline;
+export const Title = styled.h1`
     font-family: Lovelo;
     font-style: normal;
     font-weight: 900;
     font-size: 40px;
     line-height: 48px;
     color: #000000;
-    @media(max-width: 625px) {
-        width: 100vw;
-        height: 100vh;
-        left: 0;
-        margin: 5vh auto;
-        text-align: center;
-        font-size: 30px;
-    }
+
+    // background: red;
+    
+    width: max(35vw, 200px);
+    text-align: center;
+    margin: 75px 30px 0 30px;
 `;
 
-export const ManDiv = styled.div`
-    position: absolute;
-    width: 500px;
-    height: 50vh;
-    left: 20px;
-    top: 200px;
-    @media(max-width: 920px) {
-        display: none;
-    }
-`;
+export const Subtitle = styled.h3`
+    width: max(35vw, 200px);
+    margin: 25px 30px;
 
-export const ManImage = styled.img`
-    width: 35vw;
-    height: 45vh;
-`;
+    // background: green;
 
-export const RegisterDiv = styled.form`
-    position: absolute;
-    right: 5vw;
-    top: 28vh;
-    width: max(54vw, 532px);
-    height: 60vh;
-    display: inline-block;
-    @media(max-width: 920px) {
-        width: 100vw;
-        height: 60vh;
-        margin: 0 auto;
-        padding: 10px;
-        left: 0;
-    }
-    @media(max-width: 625px) {
-        margin-top: 30px;
-    }
-    @media(max-width: 480px) {
-        height: 500px;
-    }
-`;
-
-export const FieldDiv = styled.div`
-    float: left;
-    width: max(225px, 25vw);
-    height: 12vh;
-    margin-left: 20px;
-`;
-
-export const FieldName = styled.label`
-    float: left;
-    margin: 10px 0px 5px 10px;
-    font-family: argumentum, sans-serif;
+    font-family: Roboto;
     font-style: normal;
-    font-weight: bold;
-    font-size: 17px;
-    line-height: 24px;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+    text-align: center;
+
     color: #000000;
-`;
-
-export const Input = styled.input`
-    display: block;
-    height: 5vh;
-    width: max(225px, 25vw);
-    background: #FFFFFF;
-    mix-blend-mode: normal;
-    border: 1px solid #348EAC;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 2px;
-`;
-
-export const LargerInput = styled.textarea`
-    display: block;
-    height: 12vh;
-    width: max(250px, 27vw);
-    background: #FFFFFF;
-    mix-blend-mode: normal;
-    border: 1px solid #348EAC;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 5px;
-    margin-top: 2px;
-    resize: none;
-`;
-
-export const ButtonsDiv = styled.div`
-    width: max(350px, 26vw);
-    height: 7vh;
-    border: none;
-    padding: 0;
-`;
-
-export const QuestionVector = styled.img`
-    width: 10px;
-    height: 10px;
-    margin-left: 5px;
-    cursor: pointer;
-    fill: blue;
-`;
-
-export const DownloadBtn = styled.a`
-    width: 100px;
-    height: 30px;
-    float: left;
-    background: #FFFFFF;
-    border: 1px solid #348EAC;
-    box-sizing: border-box;
-    border-radius: 15px;
-    cursor: pointer;
-    padding: 0;
-    text-decoration: none;
-`;
-
-export const UploadBtn = styled.input`
-    width: 230px;
-    height: 30px;
-    cursor: pointer;
-    margin-left: 5px;
-    padding-top: 5px;
-    float: right;
-    @media(max-width: 1180px) {
-        width: 115px;
-        float: left;
-        margin-left: 25px;
-    }
-`;
-
-export const ButtonName = styled.p`
-    margin: 5px;
-    text-align: center;
-    font-family: argumentum, sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 16px;
-    color: #000000
-`;
-
-export const SendButton = styled.button`
-    display: inline-block;
-    position: relative;
-    background: #5DD39E;
-    width: 150px;
-    height: 40px;
-    margin: 8vh 0 0 15vh;
-    border-radius: 15px;
-    border: 1px;
-    text-decoration: none;
-    cursor: pointer;
-`;
-
-export const SendButtonName = styled.p`
-    text-align: center;
-    text-decoration: none;
-    margin: 9px;
-    font-family: argumentum, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 17px;
-    line-height: 24px;
-    color: #FFFFFF;
-`;
-
-export const QuestionPopupOrgType = styled(Popup)`
-    width: 230px;
-    height: 15px;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid gray;
-    background: #FFFFFF;
-    margin-bottom: 7px;
-    box-shadow: 1px 1px 1px gray;
-`;
-
-export const QuestionPopupCat = styled(Popup)`
-    width: 300px;
-    height: 60px;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid gray;
-    background: #FFFFFF;
-    margin-bottom: 7px;
-    box-shadow: 1px 1px 1px gray;
 `;
