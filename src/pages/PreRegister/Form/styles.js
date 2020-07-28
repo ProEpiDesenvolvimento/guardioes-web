@@ -10,29 +10,28 @@ export const RegisterDiv = styled.form`
   position: absolute;
   right: 5vw;
   top: 20vh;
-  width: max(54vw, 532px);
+  width: max(51vw, 532px);
   height: 60vh;
   display: inline-block;
-  @media(max-width: 920px) {
+  @media(max-width: 921px) {
+      right: 0;
       width: 100vw;
       height: 60vh;
-      margin: 0 auto;
+      margin: 40vh auto;
       padding: 10px;
-      left: 0;
   }
-  @media(max-width: 625px) {
-      margin-top: 30px;
-  }
-  @media(max-width: 480px) {
-      height: 500px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media(max-width: 450px) {
+    justify-content: center;
+}
 `;
 
 export const FieldDiv = styled.div`
-    float: left;
     width: max(225px, 25vw);
     height: 13vh;
-    margin-left: 20px;
+    cursor: text;
 `;
 
 export const FieldName = styled.label`

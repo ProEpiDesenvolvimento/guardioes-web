@@ -13,6 +13,7 @@ export const Body = styled.div`
     background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
     display: flex;
     flex-direction: column;
+    background-size: cover;
 `;
 
 export const Title = styled.h1`
@@ -22,26 +23,34 @@ export const Title = styled.h1`
     font-size: 40px;
     line-height: 48px;
     color: #000000;
-
-    // background: red;
     
     width: max(35vw, 200px);
     text-align: center;
     margin: 75px 30px 0 30px;
+
+    @media(max-width: 921px) {
+        width: 100vw;
+        margin: 75px auto 0 auto;
+    }
 `;
 
 export const Subtitle = styled.h3`
     width: max(35vw, 200px);
     margin: 25px 30px;
 
-    // background: green;
-
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: 23px;
     text-align: center;
 
-    color: #000000;
+    
+    font-family: Argentum Sans;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 25px;
+
+    color: #524948;
+
+    @media(max-width: 921px) {
+        width: 100vw;
+        margin: 0 auto;
+    }
 `;
