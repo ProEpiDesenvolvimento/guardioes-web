@@ -52,6 +52,8 @@ const Form = (props) => {
           <Input
             name='cnpj'
             type='text'
+            pattern="[0-9]{10,14}$"
+            title="Apenas números"
             value={cnpj}
             onChange={(e) => setCnpj(e.target.value)}
             ref={register({ required: true })}
@@ -64,7 +66,9 @@ const Form = (props) => {
           Contato
           <Input
             name='phone'
-            type='text'
+            type='tel'
+            pattern="[0-9]{9,11}$"
+            title="Apenas números. ddd + número"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             ref={register({ required: true })}
@@ -78,6 +82,8 @@ const Form = (props) => {
           <Input
             name='email'
             type='text'
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            title="email@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             ref={register({ required: true })}
