@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  Container, 
+import {
+  Container,
   Body,
   PositiveBanner,
   Title,
@@ -15,19 +15,19 @@ const Thanks = () => {
 
   return (
     <Container>
-        <Header />
-        <Body>
-            <PositiveBanner src={positiveBanner} />
-            <Title>
-                Obrigado por se inscrever!
+      <Header />
+      <Body>
+        <PositiveBanner src={positiveBanner} />
+        <Title>
+          Obrigado por se inscrever!
             </Title>
-            <Subtitle>
-                Iremos enviar a confirmação de cadastro no e-mail em breve. Fique Atento! 
+        <Subtitle>
+          Iremos enviar a confirmação de cadastro no e-mail em breve. Fique Atento!
             </Subtitle>
-            <HomeButton to='/'>
-                Voltar à Home
+        <HomeButton to='/'>
+          Voltar à Home
             </HomeButton>
-        </Body>
+      </Body>
     </Container>
   );
 }

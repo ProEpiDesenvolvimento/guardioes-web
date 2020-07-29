@@ -4,17 +4,11 @@ import {
   Container,
   Body,
   Title,
-  ManDiv,
-  ManImage,
-  BackIcon,
-  BackLink,
+  Subtitle
 } from './styles';
 
 import Header from 'sharedComponents/Header'
 import Form from './Form'
-import businessMan from './assets/businessMan.svg'
-import Backicon from 'sharedComponents/BackIcon'
-
 
 const PreRegister = () => {
   const [redirect, setRedirect] = useState(false)
@@ -30,13 +24,8 @@ const PreRegister = () => {
       <Container>
         <Header />
         <Body>
-          <Backicon />
-          <Title>
-            PRÉ-CADASTRO DE INSTITUIÇÃO
-        </Title>
-          <ManDiv>
-            <ManImage src={businessMan} />
-          </ManDiv>
+          <Title>Retorne às atividades com segurança</Title>
+          <Subtitle>Use o Guardiões da Saúde para monitorar o estado de saúde dos integrantes da sua instituição</Subtitle>
           <Form setRedirectCallback={setRedirectCallback} />
         </Body>
       </Container>

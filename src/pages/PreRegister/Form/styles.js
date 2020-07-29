@@ -9,32 +9,30 @@ export const Span = styled.span`
 export const RegisterDiv = styled.form`
   position: absolute;
   right: 5vw;
-  top: 28vh;
-  width: max(54vw, 532px);
+  top: 20vh;
+  width: max(51vw, 532px);
   height: 60vh;
   display: inline-block;
-  @media(max-width: 920px) {
+  @media(max-width: 921px) {
+      right: 0;
       width: 100vw;
       height: 60vh;
-      margin: 0 auto;
+      margin: 40vh auto;
       padding: 10px;
-      left: 0;
   }
-  @media(max-width: 625px) {
-      margin-top: 30px;
-  }
-  @media(max-width: 480px) {
-      height: 500px;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  @media(max-width: 450px) {
+    justify-content: center;
+}
 `;
 
 export const FieldDiv = styled.div`
-    float: left;
     width: max(225px, 25vw);
     height: 13vh;
-    margin-left: 20px;
+    cursor: text;
 `;
-    
 export const FieldName = styled.label`
     float: left;
     margin: 10px 0px 5px 10px;
@@ -45,7 +43,7 @@ export const FieldName = styled.label`
     line-height: 24px;
     color: #000000;
 `;
-    
+
 export const Input = styled.input`
     display: block;
     height: 5vh;
@@ -101,20 +99,6 @@ export const DownloadBtn = styled.a`
     text-decoration: none;
 `;
 
-export const UploadBtn = styled.input`
-    width: 230px;
-    height: 30px;
-    cursor: pointer;
-    margin-left: 5px;
-    padding-top: 5px;
-    float: right;
-    @media(max-width: 1180px) {
-        width: 115px;
-        float: left;
-        margin-left: 25px;
-    }
-`;
-
 export const ButtonName = styled.p`
     margin: 5px;
     text-align: center;
@@ -138,7 +122,7 @@ export const SendButton = styled.button`
     text-decoration: none;
     cursor: pointer;
 `;
-    
+
 export const SendButtonName = styled.p`
     text-align: center;
     text-decoration: none;
@@ -153,7 +137,7 @@ export const SendButtonName = styled.p`
 
 export const QuestionPopupOrgType = styled(Popup)`
     width: 230px;
-    height: 15px;
+    height: 20px;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid gray;
@@ -164,7 +148,7 @@ export const QuestionPopupOrgType = styled(Popup)`
 
 export const QuestionPopupCat = styled(Popup)`
     width: 300px;
-    height: 60px;
+    height: 40px;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid gray;
