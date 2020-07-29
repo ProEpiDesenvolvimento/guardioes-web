@@ -33,7 +33,6 @@ export const FieldDiv = styled.div`
     height: 13vh;
     cursor: text;
 `;
-
 export const FieldName = styled.label`
     float: left;
     margin: 10px 0px 5px 10px;

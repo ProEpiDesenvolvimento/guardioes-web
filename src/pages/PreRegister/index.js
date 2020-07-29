@@ -10,7 +10,6 @@ import {
 import Header from 'sharedComponents/Header'
 import Form from './Form'
 
-
 const PreRegister = () => {
   const [redirect, setRedirect] = useState(false)
 

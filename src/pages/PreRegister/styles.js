@@ -37,10 +37,7 @@ export const Title = styled.h1`
 export const Subtitle = styled.h3`
     width: max(35vw, 200px);
     margin: 25px 30px;
-
     text-align: center;
-
-    
     font-family: Argentum Sans;
     font-style: normal;
     font-weight: 500;
