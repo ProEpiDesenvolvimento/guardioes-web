@@ -20,6 +20,7 @@ import {
 
 import questionIcon from '../assets/question_icon.png'
 import submitPreRegister from './services/submitPreRegister';
+import validateCnpj from './services/validateCnpj';
 
 const Form = (props) => {
   const { register, handleSubmit, watch, errors } = useForm();
@@ -42,13 +43,13 @@ const Form = (props) => {
         company_name: socialReason,
         app_id: 1
       }
-    } 
+    }
 
     const response = await submitPreRegister(body)
     if (response.errors) {
-    console.log("Algo deu errado.\n" + response.errors)
+      console.log("Algo deu errado.\n" + response.errors)
     } else {
-    console.log("Registro feito com sucesso.")
+      console.log("Registro feito com sucesso.")
     }
     props.setRedirectCallback(true)
     console.log(response)
@@ -62,13 +63,12 @@ const Form = (props) => {
           <Input
             name='cnpj'
             type='text'
-            pattern="[0-9]{10,14}$"
-            title="Apenas números"
             value={cnpj}
             onChange={(e) => setCnpj(e.target.value)}
-            ref={register({ required: true })}
+            ref={register({ required: true, validate: validateCnpj })}
           />
-          {errors.cnpj && <Span>O CNPJ é obrigatório</Span>}
+          {errors.cnpj && errors.cnpj.type === "validate" && <Span>CNPJ inválido</Span>}
+          {errors.cnpj && errors.cnpj.type === "required" && <Span>O CNPJ é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
@@ -92,8 +92,6 @@ const Form = (props) => {
           <Input
             name='email'
             type='text'
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-            title="email@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             ref={register({ required: true })}
@@ -155,9 +153,9 @@ const Form = (props) => {
         </FieldName>
       </FieldDiv>
       <FieldDiv>
-        <SendButton 
+        <SendButton
           type='submit'
-          >
+        >
           <SendButtonName>
             ENVIAR
           </SendButtonName>
