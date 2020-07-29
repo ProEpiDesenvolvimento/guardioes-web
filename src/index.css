@@ -12,3 +12,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@font-face {
+  font-family: 'Lovelo';
+  src: local('Lovelo'), url(utils/assets/fonts/Lovelo-Black.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Argumentum';
+  src: local('Argumentum'), url(utils/assets/fonts/ArgentumSans-Regular.otf) format('otf');
+}

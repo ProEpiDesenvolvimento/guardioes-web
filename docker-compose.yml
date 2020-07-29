@@ -35,6 +35,7 @@ services:
       - kibana
     environment: 
       - PORT=8080
+    stdin_open: true
 
 volumes:
   esdata:
