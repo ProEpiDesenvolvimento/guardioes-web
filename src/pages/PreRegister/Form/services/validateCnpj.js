@@ -1,11 +1,13 @@
 const validateCnpj = (val) => {
-  if (val.length === 18) {
+  if (val.length >= 14 && val.length <= 18) {
     let cnpj = val.trim();
 
     cnpj = cnpj.replace(/\./g, '');
     cnpj = cnpj.replace('-', '');
     cnpj = cnpj.replace('/', '');
     cnpj = cnpj.split('');
+
+    console.log(cnpj)
 
     let v1 = 0;
     let v2 = 0;

@@ -49,9 +49,8 @@ const Form = (props) => {
       console.log("Algo deu errado.\n" + response.errors)
     } else {
       console.log("Registro feito com sucesso.")
+      props.setRedirectCallback(true)
     }
-    props.setRedirectCallback(true)
-    console.log(response)
   }
 
   return (
@@ -77,7 +76,7 @@ const Form = (props) => {
             name='phone'
             type='tel'
             pattern="[0-9]{9,11}$"
-            title="Apenas números. ddd + número"
+            title="Apenas números. DDD + número"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             ref={register({ required: true })}
