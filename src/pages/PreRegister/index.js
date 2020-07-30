@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom'
 import {
   Container,
   Body,
@@ -9,6 +8,7 @@ import {
 
 import Header from 'sharedComponents/Header'
 import Form from './Form'
+import Thanks from './Thanks'
 
 const PreRegister = () => {
   const [redirect, setRedirect] = useState(false)
@@ -17,20 +17,22 @@ const PreRegister = () => {
     setRedirect(redirect)
   }
 
-  if (redirect)
-    return <Redirect to='/thanks' />
-  else {
-    return (
-      <Container>
-        <Header />
-        <Body>
-          <Title>Retorne às atividades com segurança</Title>
-          <Subtitle>Use o Guardiões da Saúde para monitorar o estado de saúde dos integrantes da sua instituição</Subtitle>
-          <Form setRedirectCallback={setRedirectCallback} />
-        </Body>
-      </Container>
-    );
-  }
+  return (
+    <>
+      {redirect ?
+        <Thanks />
+        :
+        <Container>
+          <Header />
+          <Body>
+            <Title>Retorne às atividades com segurança</Title>
+            <Subtitle>Use o Guardiões da Saúde para monitorar o estado de saúde dos integrantes da sua instituição</Subtitle>
+            <Form setRedirectCallback={setRedirectCallback} />
+          </Body>
+        </Container>
+      }
+    </>
+  );
 }
 
 export default PreRegister;

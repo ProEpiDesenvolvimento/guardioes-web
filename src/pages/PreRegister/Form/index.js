@@ -7,7 +7,6 @@ import {
   FieldName,
   Input,
   QuestionVector,
-  LargerInput,
   ButtonsDiv,
   DownloadBtn,
   ButtonName,
@@ -71,17 +70,15 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Contato
+          Razão Social
           <Input
-            name='phone'
-            type='tel'
-            pattern="[0-9]{9,11}$"
-            title="Apenas números. DDD + número"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            name='socialReason'
+            type='text'
+            value={socialReason}
+            onChange={(e) => setSocialReason(e.target.value)}
             ref={register({ required: true })}
           />
-          {errors.phone && <Span>O telefone de contato é obrigatório</Span>}
+          {errors.socialReason && <Span>A razão social é obrigatória</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
@@ -95,6 +92,21 @@ const Form = (props) => {
             ref={register({ required: true })}
           />
           {errors.email && <Span>O e-mail institucional é obrigatório</Span>}
+        </FieldName>
+      </FieldDiv>
+      <FieldDiv>
+        <FieldName>
+          Contato
+          <Input
+            name='phone'
+            type='tel'
+            pattern="[0-9]{9,11}$"
+            title="Apenas números. DDD + número"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            ref={register({ required: true })}
+          />
+          {errors.phone && <Span>O telefone de contato é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
@@ -138,26 +150,15 @@ const Form = (props) => {
         </FieldName>
       </FieldDiv>
       <FieldDiv>
-        <FieldName>
-          Razão Social
-          <LargerInput
-            name='socialReason'
-            type='text'
-            value={socialReason}
-            onChange={(e) => setSocialReason(e.target.value)}
-            ref={register({ required: true })}
-          />
-          {errors.socialReason && <Span>A razão social é obrigatória</Span>}
-        </FieldName>
-      </FieldDiv>
-      <FieldDiv>
-        <SendButton
-          type='submit'
-        >
-          <SendButtonName>
-            ENVIAR
-          </SendButtonName>
-        </SendButton>
+        <ButtonsDiv>
+          <SendButton
+            type='submit'
+          >
+            <SendButtonName>
+              ENVIAR
+            </SendButtonName>
+          </SendButton>
+        </ButtonsDiv>
       </FieldDiv>
     </RegisterDiv>
   );

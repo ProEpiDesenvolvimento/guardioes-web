@@ -15,17 +15,21 @@ import checkAnimation from './assets/checkAnimation.json'
 
 const Thanks = () => {
 
+  const handleClick = () => {
+    window.location.refresh(true)
+  }
+
   return (
     <Container>
       <Header />
       <Body>
         <AnimationDiv>
           <Lottie
+            speed={0.5}
             options={{
               animationData: checkAnimation,
-              loop: false
+              loop: false,
             }}
-            autoplay={false}
           />
         </AnimationDiv>
         <Title>
@@ -34,9 +38,9 @@ const Thanks = () => {
         <Subtitle>
           Iremos enviar a confirmação de cadastro no e-mail em breve. Fique Atento!
             </Subtitle>
-        <HomeButton to='/'>
-          Voltar à Home
-            </HomeButton>
+        <HomeButton onClick={handleClick} to="/login">
+          Voltar
+        </HomeButton>
       </Body>
     </Container>
   );

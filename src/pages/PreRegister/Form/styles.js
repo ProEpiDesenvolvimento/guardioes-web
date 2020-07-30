@@ -57,20 +57,6 @@ export const Input = styled.input`
     margin-top: 2px;
 `;
 
-export const LargerInput = styled.textarea`
-    display: block;
-    height: 12vh;
-    width: max(250px, 27vw);
-    background: #FFFFFF;
-    mix-blend-mode: normal;
-    border: 1px solid #348EAC;
-    box-sizing: border-box;
-    border-radius: 5px;
-    padding: 5px;
-    margin-top: 2px;
-    resize: none;
-`;
-
 export const ButtonsDiv = styled.div`
     width: max(350px, 26vw);
     height: 7vh;
@@ -116,7 +102,7 @@ export const SendButton = styled.button`
     background: #5DD39E;
     width: 150px;
     height: 40px;
-    margin: 8vh 0 0 15vh;
+    margin: 3vh 0 0 15vh;
     border-radius: 15px;
     border: 1px;
     text-decoration: none;
