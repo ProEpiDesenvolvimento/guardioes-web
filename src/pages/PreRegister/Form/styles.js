@@ -7,31 +7,32 @@ export const Span = styled.span`
 `;
 
 export const RegisterDiv = styled.form`
-  position: absolute;
-  right: 5vw;
-  top: 20vh;
-  width: max(51vw, 532px);
+  width: 50vw;
   height: 60vh;
-  display: inline-block;
-  @media(max-width: 921px) {
-      right: 0;
-      width: 100vw;
-      height: 60vh;
-      margin: 40vh auto;
-      padding: 10px;
-  }
+  margin: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  @media(max-width: 450px) {
-    justify-content: center;
-}
+  @media(max-width: 925px) {
+      width: 100vw;
+      height: 60vh;
+      margin-top: 30px;
+  }
+  @media (max-width: 650px) {
+    width: max(80%, 350px)
+  }
 `;
 
 export const FieldDiv = styled.div`
-    width: max(225px, 25vw);
-    height: 13vh;
+    width: 48%;
+    height: 10vh;
     cursor: text;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    @media (max-width: 650px) {
+        width: max(80%, 350px);
+    }
 `;
 export const FieldName = styled.label`
     float: left;
@@ -45,11 +46,9 @@ export const FieldName = styled.label`
 `;
 
 export const Input = styled.input`
-    display: block;
     height: 5vh;
-    width: max(225px, 25vw);
+    width: 90%;
     background: #FFFFFF;
-    mix-blend-mode: normal;
     border: 1px solid #348EAC;
     box-sizing: border-box;
     border-radius: 5px;

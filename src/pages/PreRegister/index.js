@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Container,
   Body,
+  TitleDiv,
   Title,
   Subtitle
 } from './styles';
@@ -25,8 +26,10 @@ const PreRegister = () => {
         <Container>
           <Header />
           <Body>
-            <Title>Retorne às atividades com segurança</Title>
-            <Subtitle>Use o Guardiões da Saúde para monitorar o estado de saúde dos integrantes da sua instituição</Subtitle>
+            <TitleDiv>
+              <Title>Retorne às atividades com segurança</Title>
+              <Subtitle>Use o Guardiões da Saúde para monitorar o estado de saúde dos integrantes da sua instituição</Subtitle>
+            </TitleDiv>
             <Form setRedirectCallback={setRedirectCallback} />
           </Body>
         </Container>
