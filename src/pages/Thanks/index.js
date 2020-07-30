@@ -1,15 +1,17 @@
-import React from 'react';
+import React from 'react'
+import Lottie from 'lottie-react-web'
+
 import {
   Container,
   Body,
-  PositiveBanner,
+  AnimationDiv,
   Title,
   Subtitle,
   HomeButton
 } from './styles';
 
 import Header from 'sharedComponents/Header'
-import positiveBanner from './assets/positiveBanner.svg'
+import checkAnimation from './assets/checkAnimation.json'
 
 const Thanks = () => {
 
@@ -17,7 +19,15 @@ const Thanks = () => {
     <Container>
       <Header />
       <Body>
-        <PositiveBanner src={positiveBanner} />
+        <AnimationDiv>
+          <Lottie
+            options={{
+              animationData: checkAnimation,
+              loop: false
+            }}
+            autoplay={false}
+          />
+        </AnimationDiv>
         <Title>
           Obrigado por se inscrever!
             </Title>

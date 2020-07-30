@@ -42,9 +42,3 @@ const Dropdown = (props) => {
 }
 
 export default Dropdown;
-
-// const clickOutsideConfig = {
-//   handleClickOutside: () => Dropdown.handleClickOutside,
-// };
-
-// export default onClickOutside(Dropdown, clickOutsideConfig);

@@ -14,7 +14,7 @@ export const Body = styled.div`
     flex-direction: column;
 `;
 
-export const PositiveBanner = styled.img`
+export const AnimationDiv = styled.div`
     width: max(300px, 50vw);
     height: max(200px, 40vh);
     margin: 5vh auto;
@@ -52,7 +52,7 @@ export const Subtitle = styled.p`
 `;
 
 export const HomeButton = styled(Link)`
-    margin: 30px auto;
+    margin: 20px auto;
     text-decoration: none;
     font-family: Argentum Sans;
     font-style: normal;
