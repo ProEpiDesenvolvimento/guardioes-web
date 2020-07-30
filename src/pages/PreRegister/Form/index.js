@@ -23,7 +23,7 @@ import submitPreRegister from './services/submitPreRegister';
 import validateCnpj from './services/validateCnpj';
 
 const Form = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   const [cnpj, setCnpj] = useState("")
   const [phone, setPhone] = useState("")
@@ -31,7 +31,6 @@ const Form = (props) => {
   const [state, setState] = useState("")
   const [organizationType, setOrganizationType] = useState("")
   const [socialReason, setSocialReason] = useState("")
-  const [file, setFile] = useState("")
 
   const onSubmit = async () => {
     const body = {

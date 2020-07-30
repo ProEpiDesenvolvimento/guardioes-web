@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'
-import { Popup } from 'semantic-ui-react'
 
 export const Container = styled.div`
     width: 100vw;
