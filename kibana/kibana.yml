@@ -3,4 +3,4 @@ server.name: kibana
 server.host: "0"
 elasticsearch.hosts: [ "http://elasticsearch:9200" ]
 xpack.monitoring.ui.container.elasticsearch.enabled: true
-xpack.reporting.csv.maxSizeBytes: 2048576000
+xpack.reporting.csv.maxSizeBytes: 248576000
