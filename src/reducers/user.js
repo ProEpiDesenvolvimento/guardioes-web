@@ -1,13 +1,23 @@
 import {
     SET_EMAIL, 
     SET_TOKEN, 
-    SET_USER
+	SET_USER,
+	SET_ADMIN_CATEGORIES
 } from 'constants/action-types';
 
 const initialState = {
 	email: "",
 	token: "",
-	purchases: {}
+	user: {},
+	admin_categories: {
+		config_app: true,
+		manager: false,
+		users: false,
+		symptoms: false,
+		syndromes: false,
+		contents: false,
+		dashboard: false
+	} 
 };
 
 const User = (state = initialState, action) => {
@@ -27,6 +37,11 @@ const User = (state = initialState, action) => {
 				...state,
 				token: action.payload,
 			};	
+		case SET_ADMIN_CATEGORIES:
+			return {
+				...state,
+				admin_categories: action.payload,
+			}
 		default:
 			return {
 				...state,

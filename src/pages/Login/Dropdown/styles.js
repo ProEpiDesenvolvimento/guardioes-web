@@ -11,7 +11,7 @@ export const DropdownDiv = styled.div`
 export const Header = styled.div`
   @include styling();
   display: flex;
-  justify - content: space - between;
+  justify-content: space-between;
   cursor: pointer;
   width: 125px;
   padding: 0 20px;
