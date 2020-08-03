@@ -1,90 +1,39 @@
 import React from 'react';
-import {
-  Container,
-  Title,
-  SelectButton,
-  SelectText
-} from './styles';
-import { connect } from 'react-redux';
-import {
-  setAdminCategories
-} from 'actions/';
-import { bindActionCreators } from 'redux';
 
-const NavBar = (
-  {
-    email,
-    token,
-    user,
-    setAdminCategories,
-    admin_categories
-  }
-) => {
+import { Container, OptionsSection, OptionButton, OptionName } from './styles';
 
-  const changeNavigation = (renderThis) => {
-    setAdminCategories(renderThis)
-  }
+const Sidebar = () => {
   return (
     <Container>
-      <Title>
-        Admin
-      </Title>
-      <SelectButton 
-        isSelected={admin_categories.config_app}
-        onClick={() => {changeNavigation("config_app")}}
-        >
-        <SelectText>
-          Configurar Apps
-        </SelectText>
-      </SelectButton>
-      <SelectButton isSelected={admin_categories.manager}>
-        <SelectText>
-          Gerentes
-        </SelectText>  
-       </SelectButton>
-      <SelectButton isSelected={admin_categories.users}>
-        <SelectText>
-          Usuários
-        </SelectText>
-      </SelectButton>
-      <SelectButton isSelected={admin_categories.symptoms}>
-        <SelectText>
-          Sintomas
-        </SelectText>
-      </SelectButton>
-      <SelectButton isSelected={admin_categories.syndromes}>
-        <SelectText>
-          Síndromes
-        </SelectText>
-      </SelectButton>
-      <SelectButton isSelected={admin_categories.contents}>
-        <SelectText>
-          Conteúdos
-        </SelectText>
-      </SelectButton>
-      <SelectButton isSelected={admin_categories.dashboard}>
-        <SelectText>
-          Dashboard
-        </SelectText>
-      </SelectButton>
+      <OptionsSection>
+        <OptionButton>
+          <OptionName>
+            Gerentes
+          </OptionName>
+        </OptionButton>
+        <OptionButton>
+          <OptionName>
+            Configurar Apps
+          </OptionName>
+        </OptionButton>
+        <OptionButton>
+          <OptionName>
+            Usuários
+          </OptionName>
+        </OptionButton>
+        <OptionButton>
+          <OptionName>
+            Sintomas
+          </OptionName>
+        </OptionButton>
+        <OptionButton>
+          <OptionName>
+            Conteúdos
+          </OptionName>
+        </OptionButton>
+      </OptionsSection>
     </Container>
   );
 }
-const mapStateToProps = (state) => ({
-  email: state.user.email,
-  token: state.user.token,
-  user: state.user.user,
-  admin_categories: state.user.admin_categories
-});
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-  {
-    setAdminCategories
-  },
-  dispatch,
-);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NavBar);
+export default Sidebar;
