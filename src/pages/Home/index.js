@@ -5,6 +5,7 @@ import {
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
+import Apps from './components/Apps';
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <Header />
       <Body>
         <NavBar />
+        <Apps />
       </Body>
     </Container>
   );

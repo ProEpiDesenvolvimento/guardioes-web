@@ -8,9 +8,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #5DD39E;
-  justify-content: space-between;
   align-items: center;
-  position: fixed;
 `;
 
 export const OptionsSection = styled.div`
