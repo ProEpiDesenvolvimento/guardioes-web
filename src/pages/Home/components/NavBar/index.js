@@ -20,9 +20,32 @@ const NavBar = (
     admin_categories
   }
 ) => {
+  const aux_categories = {
+		'config_app': false,
+		'manager': false,
+		'users': false,
+		'symptoms': false,
+		'syndromes': false,
+		'contents': false,
+    'dashboard': false
+  } 
+  
+  const changeNavigation = async (renderThis) => {
+    const categories = admin_categories;
+    categories[renderThis] = true;
+    setAdminCategories(categories)
+  }
 
-  const changeNavigation = (renderThis) => {
-    setAdminCategories(renderThis)
+  const resetCategories = () => {
+    setAdminCategories({
+      config_app: false,
+      manager: false,
+      users: false,
+      symptoms: false,
+      syndromes: false,
+      contents: false,
+      dashboard: false
+    } )
   }
   return (
     <Container>
@@ -30,39 +53,64 @@ const NavBar = (
         Admin
       </Title>
       <SelectButton 
-        isSelected={admin_categories.config_app}
-        onClick={() => {changeNavigation("config_app")}}
+        onClick={() => {
+          resetCategories()
+          changeNavigation('config_app')}}
+        isSelected={admin_categories.config_app}  
         >
         <SelectText>
           Configurar Apps
         </SelectText>
       </SelectButton>
-      <SelectButton isSelected={admin_categories.manager}>
+      <SelectButton 
+        isSelected={admin_categories.manager}
+        onClick={() => {resetCategories()
+           changeNavigation('manager')}}
+        >
         <SelectText>
           Gerentes
         </SelectText>  
        </SelectButton>
-      <SelectButton isSelected={admin_categories.users}>
+      <SelectButton 
+        isSelected={admin_categories.users}
+        onClick={() => {
+          resetCategories()
+          changeNavigation('users')}}
+        >
         <SelectText>
           Usuários
         </SelectText>
       </SelectButton>
-      <SelectButton isSelected={admin_categories.symptoms}>
+      <SelectButton 
+        isSelected={admin_categories.symptoms}
+        onClick={() => {
+          resetCategories()
+          changeNavigation('symptoms')}}
+        >
         <SelectText>
           Sintomas
         </SelectText>
       </SelectButton>
-      <SelectButton isSelected={admin_categories.syndromes}>
+      <SelectButton 
+        isSelected={admin_categories.syndromes}
+        onClick={() => {changeNavigation('syndromes')}}
+        >
         <SelectText>
           Síndromes
         </SelectText>
       </SelectButton>
-      <SelectButton isSelected={admin_categories.contents}>
+      <SelectButton 
+        isSelected={admin_categories.contents}
+        onClick={() => {changeNavigation('contents')}}
+        >
         <SelectText>
           Conteúdos
         </SelectText>
       </SelectButton>
-      <SelectButton isSelected={admin_categories.dashboard}>
+      <SelectButton 
+        isSelected={admin_categories.dashboard}
+        onClick={() => {changeNavigation('dashboard')}}
+        >
         <SelectText>
           Dashboard
         </SelectText>

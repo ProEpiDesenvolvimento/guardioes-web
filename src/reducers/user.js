@@ -10,7 +10,7 @@ const initialState = {
 	token: "",
 	user: {},
 	admin_categories: {
-		config_app: true,
+		config_app: false,
 		manager: false,
 		users: false,
 		symptoms: false,
