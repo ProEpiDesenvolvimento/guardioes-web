@@ -1,8 +1,8 @@
 import React from 'react';
-import { 
+import {
   Container,
   Body
- } from './styles';
+} from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 

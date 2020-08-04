@@ -5,17 +5,17 @@ import {
 } from "react-router-dom";
 
 export const Container = styled.div`
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
-    height: 8vh;
-    background: #63D5A2;
-    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0% 2%;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+  height: 8vh;
+  background: #5dd39e;
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0% 2%;
 `;
 
 
