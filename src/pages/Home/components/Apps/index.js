@@ -3,7 +3,11 @@ import {
     Container,
     AppsTable,
     AppsTableHeaderDiv,
-    AppsTableTitle
+    AppsTableTitle,
+    Table,
+    THead,
+    Tr,
+    Th
  } from './styles';
 
 const Apps = () => {
@@ -14,6 +18,16 @@ const Apps = () => {
                 <AppsTableTitle>
                     Apps
                 </AppsTableTitle>
+                <Table>
+                    <THead>
+                        <Tr>
+                            <Th>AppId</Th>
+                            <Th>Nome</Th>
+                            <Th>País</Th>
+                            <Th></Th>
+                        </Tr>
+                    </THead>
+                </Table>
             </AppsTableHeaderDiv>
           </AppsTable>
       </Container>
