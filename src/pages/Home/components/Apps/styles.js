@@ -3,80 +3,79 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  align-content: center;
+  width: 70%;
+
+  @media (min-width: 500px) {
+    width: 100%;
+  }
 `;
 
-export const AppsTable = styled.div`
+export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 20rem;
   width: 90%;
-  align-self: center;
-  margin: 5%
-`;
-
-export const AppsTableHeaderDiv = styled.div`
-  height: 60px;
-  background-color: #5DD39E;  
-  border-radius: 10px;
-  -webkit-box-shadow: -1px 23px 21px -17px rgba(0,0,0,0.35);
-  -moz-box-shadow: -1px 23px 21px -17px rgba(0,0,0,0.35);
-  box-shadow: -1px 23px 21px -17px rgba(0,0,0,0.35);
   align-content: center;
-`;
-
-export const AppsTableTitle = styled.p`
+  margin: 0% 5%;
+  margin-bottom: 2%;
+  background-color: #E5E5E5;
+  border-radius: 10px;
+  font-family: argumentum, sans-serif;
   font-style: normal;
-  font-weight: bold;
-  font-size: 1.5625rem;
-  line-height: 0.9375rem;
+
+  @media (min-width: 500px) {
+    width: 90%;
+  }
+`;
+
+export const ContainerHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5DD39E;
+  height: 60px;
+  border-radius: 10px;
+  border-bottom: 2px solid rgba(0,0,0,0.125);
+`;
+
+export const ContainerTitle = styled.h3`
+  margin: 0;
+  font-weight: 500;
+  font-size: 24;
   color: white;
-  align-self: center;
-  justify-self: center;
-  text-align: center
+  text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
 `;
 
-export const Table = styled.table`
-    justify-content: center;
-    border-collapse: collapse;
-    border-radius: 0 0 0.8rem 0.8rem;
-    background-color: #e5e5e5
+export const ContainerForm = styled.div`
+  margin: 1rem 1.8rem;
+  max-height: 14rem;
 `;
 
-export const THead = styled.thead`
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    background-color: transparent
+export const InputBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
+  margin-bottom: 1rem;
 `;
 
-export const Tr = styled.tr`
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-`;
+export const Input = styled.input`
+  width: 100%;
+  background-color: #5DD39E;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  height: 2.2rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
 
-export const TBody = styled.tbody`
-    display: block;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    table-layout: fixed;
-    min-height: 30vh;
-    max-height: 30vh
-`;
+  &:hover {
+    opacity: 0.7;
+  }
 
-export const Td = styled.td`
-    text-align: center; 
-    vertical-align: middle;
-    border-bottom: 1px solid #ddd;
-    border-left: 1px solid #ddd
-`;
-
-export const Th = styled.th`
-    font-size: 1.25rem;
-    padding: 1%;
-    font-weight: 500;
-    color: #348eac;
-
+  @media (min-width: 500px) {
+    width: 14rem;
+  }
 `;

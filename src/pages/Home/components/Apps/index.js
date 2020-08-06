@@ -7,13 +7,12 @@ import { bindActionCreators } from 'redux';
 import getAllApps from './services/getAllApps'
 import {
   Container,
-  AppsTable,
-  AppsTableHeaderDiv,
-  AppsTableTitle,
-  Table,
-  THead,
-  Tr,
-  Th
+  AddAppContainer,
+  ContainerHeader,
+  ContainerTitle,
+  ContainerForm,
+  InputBlock,
+  Input,
 } from './styles';
 import ContentBox from '../ContentBox';
 
@@ -36,7 +35,30 @@ const Apps = ({
   const contents = [["1", "App 1", "País 1"], ["2", "App 2", "País 2"], ["3", "App 3", "País 3"]];
 
   return (
-    <ContentBox title="Apps" contents={contents} fields={fields} />
+    <Container>
+      <ContentBox title="Apps" contents={contents} fields={fields} />
+
+      <AddAppContainer className="shadow-sm">
+        <ContainerHeader>
+          <ContainerTitle>Adicionar App</ContainerTitle>
+        </ContainerHeader>
+        <ContainerForm>
+          <form id="addApp">
+            <InputBlock>
+              <label htmlFor="name">Nome</label>
+              <input type="text" id="name" />
+            </InputBlock>
+
+            <InputBlock>
+              <label htmlFor="country">País</label>
+              <input type="text" id="country" />
+            </InputBlock>
+
+            <Input type="submit" value="Confirmar" className="shadow-sm" />
+          </form>
+        </ContainerForm>
+      </AddAppContainer>
+    </Container>
   );
 }
 
