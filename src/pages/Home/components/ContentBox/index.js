@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import {
     Container,
@@ -39,14 +40,14 @@ const ContentBox = ({ title, fields, contents }) => {
                                 ))}
                                 
                                 <td>
-                                    <a href="#">
+                                    <Link to="/panel">
                                         <ContentBoxTableIcon src={editIcon} alt="Editar"/>
-                                    </a>
+                                    </Link>
                                 </td>
                                 <td>
-                                    <a href="#">
+                                    <Link to="/panel">
                                         <ContentBoxTableIcon src={deleteIcon} alt="Deletar"/>
-                                    </a>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
