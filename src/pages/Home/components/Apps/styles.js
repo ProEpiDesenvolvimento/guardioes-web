@@ -40,7 +40,7 @@ export const AppsTableTitle = styled.p`
 export const Table = styled.table`
     justify-content: center;
     border-collapse: collapse;
-    border-radius: 0.8rem;
+    border-radius: 0 0 0.8rem 0.8rem;
     background-color: #e5e5e5
 `;
 
@@ -55,7 +55,6 @@ export const Tr = styled.tr`
     display: table;
     width: 100%;
     table-layout: fixed;
-    border-bottom: 2px solid #ddd;
 `;
 
 export const TBody = styled.tbody`

@@ -1,4 +1,10 @@
-import React from 'react';
+import React, { useEffect }from 'react';
+import { connect } from 'react-redux';
+import {
+  setApps
+} from 'actions/';
+import { bindActionCreators } from 'redux';
+import getAllApps from './services/getAllApps'
 import { 
     Container,
     AppsTable,
@@ -10,7 +16,21 @@ import {
     Th
  } from './styles';
 
-const Apps = () => {
+const Apps = ({
+    token,
+    user,
+    apps,
+    setApps
+}) => {
+
+    const _getApps = async (token) => {
+        const response = await getAllApps(token)
+    } 
+
+    useEffect(() => {
+        _getApps(token)
+    }, []);
+  
   return (
       <Container>
           <AppsTable>
@@ -34,4 +54,20 @@ const Apps = () => {
   );
 }
 
-export default Apps;
+const mapStateToProps = (state) => ({
+    token: state.user.token,
+    user: state.user.user,
+    apps: state.user.apps
+  });
+  
+  const mapDispatchToProps = (dispatch) => bindActionCreators(
+    {
+      setApps
+    },
+    dispatch,
+  );
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Apps);
