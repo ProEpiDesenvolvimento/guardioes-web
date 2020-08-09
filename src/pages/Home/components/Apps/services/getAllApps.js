@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const getAllApps = async (token) => api
-  .post('/apps',{
+  .get('/apps',{
             headers: {
                 "Authorization": token,
             },                    

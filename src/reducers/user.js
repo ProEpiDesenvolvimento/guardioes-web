@@ -47,7 +47,7 @@ const User = (state = initialState, action) => {
 		case SET_APPS:
 			return {
 				...state,
-				admin_categories: action.payload
+				apps: action.payload
 			};
 		default:
 			return {
