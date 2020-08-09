@@ -24,7 +24,8 @@ const Apps = ({
 }) => {
 
     const _getApps = async (token) => {
-        const response = await getAllApps(token)
+        const response = await getAllApps()
+        console.log(response)
     } 
 
     useEffect(() => {
