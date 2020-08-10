@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
-  .get('/apps',{
+const deleteApp = async (id, token) => api
+  .delete(`/apps/${id}`,{
             headers: {
                 "Authorization": token,
             },                    
@@ -9,11 +9,11 @@ const getAllApps = async (token) => api
     )
   .then(async (res) => {
     const { data } = res;
+    alert("App deletado")
     return data
   })
   .catch((e) => {
     console.log(e);
-    return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default deleteApp;

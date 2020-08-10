@@ -5,6 +5,8 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import getAllApps from './services/getAllApps'
+import createApp from './services/createApp'
+import deleteApp from './services/deleteApp' 
 import {
   Container,
   AddAppContainer,
@@ -13,7 +15,9 @@ import {
   ContainerForm,
   InputBlock,
   Input,
+  SubmitButton
 } from './styles';
+import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 
 const Apps = ({
@@ -22,20 +26,30 @@ const Apps = ({
   apps,
   setApps
 }) => {
+  const { handleSubmit } = useForm()
+  const [appName, setAppName] = useState("")
+  const [ownerCountry, setOwnerCountry] = useState("")
 
-  const [nameUpdated, setNameUpdated] = useState("")
-  const [ownerCountryUpdated, setOwnerCountryUpdated] = useState("")
-
-  const handleNameUpdated = (value) => {
-    setNameUpdated(value);
+  const handleAppName = (value) => {
+    setAppName(value);
   }
 
-  const handleOwnerCountryUpdated = (value) => {
-    setOwnerCountryUpdated(value)
+  const handleOwnerCountry = (value) => {
+    setOwnerCountry(value)
+  }
+
+  const _createApp = async () => {
+    const data = {
+      "app_name": appName,
+      "owner_country": ownerCountry 
+    }
+    console.log(data)
+    const reponse = await createApp(data, token)
+    console.log(reponse)
   }
 
   const _getApps = async (token) => {
-    const response = await getAllApps("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NjkzOTM3NywiZXhwIjoxNTk5NTY5MTIzLCJqdGkiOiIwOGZiZmY4MC00YzQwLTRkYTItYjgwYS05ZGU2NGExYmI0NWMifQ.LTvhh8xoNzrKl5PAeEqM_-fpRuXInHWMLQu38xXXQDY")
+    const response = await getAllApps(token)
     setApps(response.apps)
   }
 
@@ -44,25 +58,29 @@ const Apps = ({
   }, []);
 
   const fields = ["ID", "Nome", "País"];
-  const contents = [["1", "App 1", "País 1"], ["2", "App 2", "País 2"], ["3", "App 3", "País 3"]];
 
   return (
     <Container>
-      <ContentBox title="Apps" contents={apps} fields={fields} />
+      <ContentBox 
+        title="Apps"
+        token={token} 
+        contents={apps} 
+        fields={fields} 
+        delete_function={deleteApp} />
 
       <AddAppContainer className="shadow-sm">
         <ContainerHeader>
           <ContainerTitle>Adicionar App</ContainerTitle>
         </ContainerHeader>
         <ContainerForm>
-          <form id="addApp">
+          <form id="addApp" onSubmit={handleSubmit(_createApp)}>
             <InputBlock>
               <label htmlFor="name">Nome</label>
               <input 
                 type="text" 
                 id="name"
-                value={nameUpdated}
-                onChange={(e) => handleNameUpdated(e.target.value)}
+                value={appName}
+                onChange={(e) => handleAppName(e.target.value)}
                 />
             </InputBlock>
 
@@ -71,11 +89,14 @@ const Apps = ({
               <input 
                 type="text"  
                 id="country"
-                value={ownerCountryUpdated} 
-                onChange={(e)=> handleOwnerCountryUpdated(e.target.value)}/>
+                value={ownerCountry} 
+                onChange={(e)=> handleOwnerCountry(e.target.value)}/>
             </InputBlock>
 
-            <Input type="submit" value="Confirmar" className="shadow-sm" />
+            {/* <Input type="submit" className="shadow-sm" /> */}
+            <SubmitButton type="submit">
+              Criar App
+            </SubmitButton>
           </form>
         </ContainerForm>
       </AddAppContainer>
