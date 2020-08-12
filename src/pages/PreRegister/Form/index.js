@@ -7,7 +7,6 @@ import {
   FieldName,
   Input,
   QuestionVector,
-  LargerInput,
   ButtonsDiv,
   DownloadBtn,
   ButtonName,
@@ -23,7 +22,7 @@ import submitPreRegister from './services/submitPreRegister';
 import validateCnpj from './services/validateCnpj';
 
 const Form = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   const [cnpj, setCnpj] = useState("")
   const [phone, setPhone] = useState("")
@@ -31,7 +30,6 @@ const Form = (props) => {
   const [state, setState] = useState("")
   const [organizationType, setOrganizationType] = useState("")
   const [socialReason, setSocialReason] = useState("")
-  const [file, setFile] = useState("")
 
   const onSubmit = async () => {
     const body = {
@@ -50,9 +48,8 @@ const Form = (props) => {
       console.log("Algo deu errado.\n" + response.errors)
     } else {
       console.log("Registro feito com sucesso.")
+      props.setRedirectCallback(true)
     }
-    props.setRedirectCallback(true)
-    console.log(response)
   }
 
   return (
@@ -73,17 +70,15 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Contato
+          Razão Social
           <Input
-            name='phone'
-            type='tel'
-            pattern="[0-9]{9,11}$"
-            title="Apenas números. ddd + número"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            name='socialReason'
+            type='text'
+            value={socialReason}
+            onChange={(e) => setSocialReason(e.target.value)}
             ref={register({ required: true })}
           />
-          {errors.phone && <Span>O telefone de contato é obrigatório</Span>}
+          {errors.socialReason && <Span>A razão social é obrigatória</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
@@ -97,6 +92,21 @@ const Form = (props) => {
             ref={register({ required: true })}
           />
           {errors.email && <Span>O e-mail institucional é obrigatório</Span>}
+        </FieldName>
+      </FieldDiv>
+      <FieldDiv>
+        <FieldName>
+          Contato
+          <Input
+            name='phone'
+            type='tel'
+            pattern="[0-9]{9,11}$"
+            title="Apenas números. DDD + número"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            ref={register({ required: true })}
+          />
+          {errors.phone && <Span>O telefone de contato é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
@@ -140,26 +150,15 @@ const Form = (props) => {
         </FieldName>
       </FieldDiv>
       <FieldDiv>
-        <FieldName>
-          Razão Social
-          <LargerInput
-            name='socialReason'
-            type='text'
-            value={socialReason}
-            onChange={(e) => setSocialReason(e.target.value)}
-            ref={register({ required: true })}
-          />
-          {errors.socialReason && <Span>A razão social é obrigatória</Span>}
-        </FieldName>
-      </FieldDiv>
-      <FieldDiv>
-        <SendButton
-          type='submit'
-        >
-          <SendButtonName>
-            ENVIAR
-          </SendButtonName>
-        </SendButton>
+        <ButtonsDiv>
+          <SendButton
+            type='submit'
+          >
+            <SendButtonName>
+              ENVIAR
+            </SendButtonName>
+          </SendButton>
+        </ButtonsDiv>
       </FieldDiv>
     </RegisterDiv>
   );

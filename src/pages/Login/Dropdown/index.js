@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-// // import onClickOutside from 'react-onclickoutside';
 
 import { DropdownDiv, Header, SelectionDiv, Title, DownIcon, List, ListItem, ListItemButton } from './styles.js'
 import downIcon from './assets/down_arrow.png'
 
 const Dropdown = (props) => {
   const [open, setOpen] = useState(false);
-  const [selection, setSelection] = useState(props.items[0]);
   const toggle = () => setOpen(!open);
-  // Dropdown.handleClickOutside = () => setOpen(false);
 
   function handleOnClick() {
     let items_copy = props.items
@@ -45,9 +42,3 @@ const Dropdown = (props) => {
 }
 
 export default Dropdown;
-
-// const clickOutsideConfig = {
-//   handleClickOutside: () => Dropdown.handleClickOutside,
-// };
-
-// export default onClickOutside(Dropdown, clickOutsideConfig);

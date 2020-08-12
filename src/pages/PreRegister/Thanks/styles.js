@@ -14,45 +14,45 @@ export const Body = styled.div`
     flex-direction: column;
 `;
 
-export const PositiveBanner = styled.img`
+export const AnimationDiv = styled.div`
     width: max(300px, 50vw);
     height: max(200px, 40vh);
     margin: 5vh auto;
 `;
 
 export const Title = styled.p`
-    margin: 0 auto;
-    display: inline;
-    font-family: Lovelo;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 40px;
-    line-height: 48px;
-    color: #000000;
-    text-align: center;
-    @media(max-width: 400px) {
-        font-size: 25px;
-    } 
+margin: 0 auto;
+display: inline;
+font-family: Lovelo;
+font-style: normal;
+font-weight: 900;
+font-size: 40px;
+line-height: 48px;
+color: #000000;
+text-align: center;
+@media(max-width: 400px) {
+    font-size: 25px;
+}
 `;
 
 export const Subtitle = styled.p`
-    width: max(40vw, 250px);
-    font-family: Argentum Sans;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 31px;
-    text-align: center;
-    color: #000000;
-    text-align: center;
-    margin 0 auto;
-    @media(max-width: 400px) {
-        font-size: 15px;
-    } 
+width: max(40vw, 250px);
+font-family: Argentum Sans;
+font-style: normal;
+font-weight: 500;
+font-size: 22px;
+line-height: 31px;
+text-align: center;
+color: #000000;
+text-align: center;
+margin 0 auto;
+@media(max-width: 400px) {
+    font-size: 15px;
+}
 `;
 
 export const HomeButton = styled(Link)`
-    margin: 30px auto;
+    margin: 20px auto;
     text-decoration: none;
     font-family: Argentum Sans;
     font-style: normal;
