@@ -46,89 +46,61 @@ const Symptoms = ({
 
   const { handleSubmit } = useForm()
   const [symptomName, setSymptomName] = useState("")
-
-
-  const handleSymptomName = (value) => {
-    setSymptomName(value);
-  }
+  const [symptomDescription, setSymptomDescription] = useState("")
 
   const _createSymptom = async () => {
     const data = {
       "description": symptomName,
-      "code": symptomName.trim.join(' '),
+      "code": symptomName.trim().replace(' ', ''),
       "priority": 1,
-      "details": symptomName,
+      "details": symptomDescription,
       "message": null,
       "app_id": 1
     }
-    console.log(data)
     const reponse = await createSymptom(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNTk3MjUyOTA0LCJleHAiOjE1OTk4ODI2NTAsImp0aSI6IjM4MDlkZTRmLWI5ZjAtNGJiYS05NmZkLTk5MmM4NjcyMzEwZSJ9.ccsgvAjMZUiUzwGXjlIFZelI0053XFwBR1orjNh43iA")
-    console.log(reponse)
-    _getSymptoms(token)
+    loadSymptoms(token)
   }
 
-  const _getSymptoms = async (token) => {
+  const loadSymptoms = async (token) => {
     const response = await getAllSymptoms("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNTk3MjUyOTA0LCJleHAiOjE1OTk4ODI2NTAsImp0aSI6IjM4MDlkZTRmLWI5ZjAtNGJiYS05NmZkLTk5MmM4NjcyMzEwZSJ9.ccsgvAjMZUiUzwGXjlIFZelI0053XFwBR1orjNh43iA")
-    setSymptoms(response.symptoms)
+    let aux_symptoms = [];
+    response.symptoms.map(symptom => {
+      aux_symptoms.push({
+        "id": symptom.id,
+        "name": symptom.description,
+        "description": symptom.details
+      })
+    })
+    setSymptoms(aux_symptoms)
   }
 
   useEffect(() => {
-    _getSymptoms(token)
+    loadSymptoms(token)
   }, []);
 
-  const fields = ["ID", "Nome", "País"];
+  const fields =
+    [{
+      key: "id",
+      value: "ID"
+    },
+    {
+      key: "name",
+      value: "Nome",
+    },
+    {
+      key: "description",
+      value: "Descrição"
+    }];
 
   return (
     <Container>
-      {/* //   <ContentBox
-    //     title="Sintomas"
-    //     token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
-    //     contents={symptoms ? symptoms : []}
-    //     fields={fields}
-    //     delete_function={deleteSymptom}
-    //   /> */}
-
-      <ContentContainer className="shadow-sm">
-        <ContentBoxHeader>
-          <ContentBoxTitle>Sintomas</ContentBoxTitle>
-        </ContentBoxHeader>
-        <ContentBoxTable>
-          <Table responsive>
-            <thead>
-              <tr>
-                {fields.map(field => (
-                  <ContentBoxTableHeader>{field}</ContentBoxTableHeader>
-                ))}
-                <ContentBoxTableHeader></ContentBoxTableHeader>
-                <ContentBoxTableHeader></ContentBoxTableHeader>
-              </tr>
-            </thead>
-
-            <tbody>
-              {symptoms ? symptoms.map(content => (
-                <tr>
-                  <td>{content.id}</td>
-                  <td>{content.description}</td>
-                  <td>
-                    <Link to="/panel">
-                      <ContentBoxTableIcon src={editIcon} alt="Editar" />
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to="/panel">
-                      <ContentBoxTableIcon
-                        src={deleteIcon}
-                        alt="Deletar"
-                        onClick={() => { deleteSymptom(content.id, token) }}
-                      />
-                    </Link>
-                  </td>
-                </tr>
-              )) : null}
-            </tbody>
-          </Table>
-        </ContentBoxTable>
-      </ContentContainer>
+      <ContentBox
+        title="Sintomas"
+        token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
+        contents={symptoms ? symptoms : []}
+        fields={fields}
+        delete_function={deleteSymptom}
+      />
 
       <AddAppContainer className="shadow-sm">
         <ContainerHeader>
@@ -142,7 +114,16 @@ const Symptoms = ({
                 type="text"
                 id="name"
                 value={symptomName}
-                onChange={(e) => handleSymptomName(e.target.value)}
+                onChange={(e) => setSymptomName(e.target.value)}
+              />
+            </InputBlock>
+            <InputBlock>
+              <label htmlFor="name">Descrição</label>
+              <input
+                type="text"
+                id="description"
+                value={symptomDescription}
+                onChange={(e) => setSymptomDescription(e.target.value)}
               />
             </InputBlock>
             <SubmitButton type="submit">

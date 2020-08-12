@@ -9,7 +9,6 @@ const getAllApps = async (token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    console.log(data)
     return data
   })
   .catch((e) => {
