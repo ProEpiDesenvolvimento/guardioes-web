@@ -6,7 +6,7 @@ import {
 import { bindActionCreators } from 'redux';
 import getAllApps from './services/getAllApps'
 import createApp from './services/createApp'
-import deleteApp from './services/deleteApp' 
+import deleteApp from './services/deleteApp'
 import {
   Container,
   AddAppContainer,
@@ -41,16 +41,16 @@ const Apps = ({
   const _createApp = async () => {
     const data = {
       "app_name": appName,
-      "owner_country": ownerCountry 
+      "owner_country": ownerCountry
     }
     console.log(data)
-    const reponse = await createApp(data, token)
+    const reponse = await createApp(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     console.log(reponse)
     _getApps(token)
   }
 
   const _getApps = async (token) => {
-    const response = await getAllApps(token)
+    const response = await getAllApps("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     setApps(response.apps)
   }
 
@@ -62,11 +62,11 @@ const Apps = ({
 
   return (
     <Container>
-      <ContentBox 
+      <ContentBox
         title="Apps"
-        token={token} 
-        contents={apps} 
-        fields={fields} 
+        token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
+        contents={apps}
+        fields={fields}
         delete_function={deleteApp} />
 
       <AddAppContainer className="shadow-sm">
@@ -77,21 +77,21 @@ const Apps = ({
           <form id="addApp" onSubmit={handleSubmit(_createApp)}>
             <InputBlock>
               <label htmlFor="name">Nome</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 id="name"
                 value={appName}
                 onChange={(e) => handleAppName(e.target.value)}
-                />
+              />
             </InputBlock>
 
             <InputBlock>
               <label htmlFor="country">País</label>
-              <input 
-                type="text"  
+              <input
+                type="text"
                 id="country"
-                value={ownerCountry} 
-                onChange={(e)=> handleOwnerCountry(e.target.value)}/>
+                value={ownerCountry}
+                onChange={(e) => handleOwnerCountry(e.target.value)} />
             </InputBlock>
 
             {/* <Input type="submit" className="shadow-sm" /> */}

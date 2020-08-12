@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const getAllApps = async (token) => api
-  .get('/apps', {
+  .get('/symptoms', {
     headers: {
       "Authorization": token,
     },
@@ -9,6 +9,7 @@ const getAllApps = async (token) => api
   )
   .then(async (res) => {
     const { data } = res;
+    console.log(data)
     return data
   })
   .catch((e) => {
