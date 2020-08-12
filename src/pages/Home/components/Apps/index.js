@@ -46,6 +46,7 @@ const Apps = ({
     console.log(data)
     const reponse = await createApp(data, token)
     console.log(reponse)
+    _getApps(token)
   }
 
   const _getApps = async (token) => {
