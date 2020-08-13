@@ -16,6 +16,8 @@ import {
   ContainerHeader,
   ContainerTitle,
   ContainerForm,
+  Form,
+  Inputs,
   InputBlock,
   Input,
   SubmitButton
@@ -49,17 +51,23 @@ const Symptoms = ({
       // será usado o app_id do user logado, como feito abaixo
       // "app_id": user.app_id
     }
-    const reponse = await createSymptom(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNTk3MjUyOTA0LCJleHAiOjE1OTk4ODI2NTAsImp0aSI6IjM4MDlkZTRmLWI5ZjAtNGJiYS05NmZkLTk5MmM4NjcyMzEwZSJ9.ccsgvAjMZUiUzwGXjlIFZelI0053XFwBR1orjNh43iA")
+    const response = await createSymptom(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     setSymptomName("")
     setSymptomDescription("")
+    _getAllSymptoms(response)
   }
 
   const _deleteSymptom = async (id, token) => {
-    deleteSymptom(id, token)
+    const response = await deleteSymptom(id, token)
+    _getAllSymptoms(response)
   }
 
-  const loadSymptoms = async (token) => {
-    const response = await getAllSymptoms("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNTk3MjUyOTA0LCJleHAiOjE1OTk4ODI2NTAsImp0aSI6IjM4MDlkZTRmLWI5ZjAtNGJiYS05NmZkLTk5MmM4NjcyMzEwZSJ9.ccsgvAjMZUiUzwGXjlIFZelI0053XFwBR1orjNh43iA")
+  const _getAllSymptoms = async (token) => {
+    const response = await getAllSymptoms("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    loadSymptoms(response)
+  }
+
+  const loadSymptoms = async (response) => {
     let aux_symptoms = [];
     response.symptoms.map(symptom => {
       aux_symptoms.push({
@@ -72,8 +80,8 @@ const Symptoms = ({
   }
 
   useEffect(() => {
-    loadSymptoms(token)
-  }, [symptoms]);
+    _getAllSymptoms(token)
+  }, []);
 
   const fields =
     [{
@@ -104,29 +112,31 @@ const Symptoms = ({
           <ContainerTitle>Adicionar Sintoma</ContainerTitle>
         </ContainerHeader>
         <ContainerForm>
-          <form id="addApp" onSubmit={handleSubmit(_createSymptom)}>
-            <InputBlock>
-              <label htmlFor="name">Nome</label>
-              <input
-                type="text"
-                id="name"
-                value={symptomName}
-                onChange={(e) => setSymptomName(e.target.value)}
-              />
-            </InputBlock>
-            <InputBlock>
-              <label htmlFor="name">Descrição</label>
-              <input
-                type="text"
-                id="description"
-                value={symptomDescription}
-                onChange={(e) => setSymptomDescription(e.target.value)}
-              />
-            </InputBlock>
+          <Form id="addApp" onSubmit={handleSubmit(_createSymptom)}>
+            <Inputs>
+              <InputBlock>
+                <label htmlFor="name">Nome</label>
+                <Input
+                  type="text"
+                  id="name"
+                  value={symptomName}
+                  onChange={(e) => setSymptomName(e.target.value)}
+                />
+              </InputBlock>
+              <InputBlock>
+                <label htmlFor="name">Descrição</label>
+                <Input
+                  type="text"
+                  id="description"
+                  value={symptomDescription}
+                  onChange={(e) => setSymptomDescription(e.target.value)}
+                />
+              </InputBlock>
+            </Inputs>
             <SubmitButton type="submit">
-              Criar Sintoma
+              Adicionar
             </SubmitButton>
-          </form>
+          </Form>
         </ContainerForm>
       </AddAppContainer>
     </Container >
