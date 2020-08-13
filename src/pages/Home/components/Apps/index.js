@@ -47,11 +47,18 @@ const Apps = ({
     const reponse = await createApp(data, token)
     console.log(reponse)
     _getApps(token)
+    setAppName("")
+    setOwnerCountry("")
   }
 
   const _getApps = async (token) => {
     const response = await getAllApps(token)
     setApps(response.apps)
+  }
+
+  const _deleteApp = (token) => {
+    deleteApp(token)
+    _getApps(token)
   }
 
   useEffect(() => {
@@ -67,7 +74,7 @@ const Apps = ({
         token={token} 
         contents={apps} 
         fields={fields} 
-        delete_function={deleteApp} />
+        delete_function={_deleteApp} />
 
       <AddAppContainer className="shadow-sm">
         <ContainerHeader>
