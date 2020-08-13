@@ -5,7 +5,8 @@ import {
   SET_EMAIL,
   SET_ADMIN_CATEGORIES,
   SET_APPS,
-  SET_SYMPTOMS
+  SET_SYMPTOMS,
+  SET_MANAGERS
 } from 'constants/action-types';
 
 export const loadMakes = (payload) => ({ type: LOAD_MAKES, payload });
@@ -21,3 +22,5 @@ export const setAdminCategories = (payload) => ({ type: SET_ADMIN_CATEGORIES, pa
 export const setApps = (payload) => ({ type: SET_APPS, payload });
 
 export const setSymptoms = (payload) => ({ type: SET_SYMPTOMS, payload });
+
+export const setManagers = (payload) => ({ type: SET_MANAGERS, payload });
