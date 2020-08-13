@@ -9,7 +9,7 @@ const createSYmptoms = async (data, token) =>
     }
   )
     .then(async (res) => {
-      alert('Symptom criado!');
+      // alert('Symptom criado!');
       const response = { data: res.data };
       return response
     })

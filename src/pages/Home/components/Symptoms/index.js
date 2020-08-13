@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import {
@@ -14,12 +12,6 @@ import deleteSymptom from './services/deleteSymptom'
 
 import {
   Container,
-  ContentContainer,
-  ContentBoxHeader,
-  ContentBoxTitle,
-  ContentBoxTable,
-  ContentBoxTableHeader,
-  ContentBoxTableIcon,
   AddAppContainer,
   ContainerHeader,
   ContainerTitle,
@@ -29,9 +21,6 @@ import {
   SubmitButton
 } from './styles';
 import { useForm } from "react-hook-form";
-
-import editIcon from '../assets/edit-solid.svg';
-import deleteIcon from '../assets/trash-solid.svg';
 
 import ContentBox from '../ContentBox';
 
@@ -56,9 +45,17 @@ const Symptoms = ({
       "details": symptomDescription,
       "message": null,
       "app_id": 1
+      // Por enquanto esta sendo usado o 1, mas quando for corrigido as rotas
+      // será usado o app_id do user logado, como feito abaixo
+      // "app_id": user.app_id
     }
     const reponse = await createSymptom(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNTk3MjUyOTA0LCJleHAiOjE1OTk4ODI2NTAsImp0aSI6IjM4MDlkZTRmLWI5ZjAtNGJiYS05NmZkLTk5MmM4NjcyMzEwZSJ9.ccsgvAjMZUiUzwGXjlIFZelI0053XFwBR1orjNh43iA")
-    loadSymptoms(token)
+    setSymptomName("")
+    setSymptomDescription("")
+  }
+
+  const _deleteSymptom = async (id, token) => {
+    deleteSymptom(id, token)
   }
 
   const loadSymptoms = async (token) => {
@@ -76,7 +73,7 @@ const Symptoms = ({
 
   useEffect(() => {
     loadSymptoms(token)
-  }, []);
+  }, [symptoms]);
 
   const fields =
     [{
@@ -99,7 +96,7 @@ const Symptoms = ({
         token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
         contents={symptoms ? symptoms : []}
         fields={fields}
-        delete_function={deleteSymptom}
+        delete_function={_deleteSymptom}
       />
 
       <AddAppContainer className="shadow-sm">

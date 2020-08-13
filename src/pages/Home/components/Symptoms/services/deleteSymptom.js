@@ -9,7 +9,7 @@ const deleteSymptoms = async (id, token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    alert("Sintoma deletado")
+    // alert("Sintoma deletado")
     return data
   })
   .catch((e) => {
