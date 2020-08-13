@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const createSYmptoms = async (data, token) =>
+const createSymptoms = async (data, token) =>
   api.post(`/symptoms`, data,
     {
       headers: {
@@ -9,7 +9,6 @@ const createSYmptoms = async (data, token) =>
     }
   )
     .then(async (res) => {
-      // alert('Symptom criado!');
       const response = { data: res.data };
       return response
     })
@@ -18,4 +17,4 @@ const createSYmptoms = async (data, token) =>
       console.log(e);
       return { data: {}, errors: e }
     });
-export default createSYmptoms;
+export default createSymptoms;

@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const createSYmptoms = async (data, token) =>
-  api.post(`/symptoms`, data,
+const createManagers = async (data, token) =>
+  api.post(`/managers`, data,
     {
       headers: {
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto",
@@ -9,7 +9,7 @@ const createSYmptoms = async (data, token) =>
     }
   )
     .then(async (res) => {
-      // alert('Symptom criado!');
+      ;
       const response = { data: res.data };
       return response
     })
@@ -18,4 +18,4 @@ const createSYmptoms = async (data, token) =>
       console.log(e);
       return { data: {}, errors: e }
     });
-export default createSYmptoms;
+export default createManagers;

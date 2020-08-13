@@ -13,19 +13,14 @@ export const Container = styled.div`
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 20rem;
+  height: 15rem;
   width: 90%;
   align-content: center;
-  margin: 0% 5%;
-  margin-bottom: 2%;
+  margin: 0 auto;
   background-color: #E5E5E5;
   border-radius: 10px;
   font-family: argumentum, sans-serif;
   font-style: normal;
-
-  @media (min-width: 500px) {
-    width: 90%;
-  }
 `;
 
 export const ContainerHeader = styled.div`
@@ -36,6 +31,7 @@ export const ContainerHeader = styled.div`
   height: 60px;
   border-radius: 10px;
   border-bottom: 2px solid rgba(0,0,0,0.125);
+  width: 100%;
 `;
 
 export const ContainerTitle = styled.h3`
@@ -47,11 +43,24 @@ export const ContainerTitle = styled.h3`
 `;
 
 export const ContainerForm = styled.div`
-  margin: 1rem 1.8rem;
+  margin: 30px auto;
   max-height: 14rem;
+  width: 70vw;
+  width: 95%;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Inputs = styled.div`
+  display: flex;
+  flex-flow: row wrap;
 `;
 
 export const InputBlock = styled.div`
+  width: 225px;
   display: flex;
   flex-direction: column;
   font-weight: 700;
@@ -59,29 +68,23 @@ export const InputBlock = styled.div`
   color: #348EAC;
   text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
   margin-bottom: 1rem;
+  margin-right: 50px;
 `;
 
 export const Input = styled.input`
   width: 100%;
-  background-color: #5DD39E;
-  color: white;
-  border: 0;
+  background-color: white;
+  color: black;
+  border: 2px solid #348EAC;
   border-radius: 5px;
   height: 2.2rem;
-  cursor: pointer;
+  cursor: text;
   transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.7;
-  }
-
-  @media (min-width: 500px) {
-    width: 14rem;
-  }
+  padding-left: 10px;
 `;
 
 export const SubmitButton = styled.button`
-  width: 100%;
+  width: 100px;
   background-color: #5DD39E;
   color: white;
   border: 0;
@@ -89,12 +92,9 @@ export const SubmitButton = styled.button`
   height: 2.2rem;
   cursor: pointer;
   transition: opacity 0.2s;
+  margin: auto 0;
 
   &:hover {
     opacity: 0.7;
-  }
-
-  @media (min-width: 500px) {
-    width: 14rem;
   }
 `;

@@ -73,9 +73,9 @@ export const InputBlock = styled.div`
 
 export const Input = styled.input`
   width: 100%;
-  background-color: #5DD39E;
-  color: white;
-  border: 0;
+  background-color: white;
+  color: black;
+  border: 2px solid #348EAC;
   border-radius: 5px;
   height: 2.2rem;
   cursor: text;

@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const deleteSymptoms = async (id, token) => api
-  .delete(`/symptoms/${id}`, {
+const deleteManagers = async (id, token) => api
+  .delete(`/managers/${id}`, {
     headers: {
       "Authorization": token,
     },
@@ -9,11 +9,10 @@ const deleteSymptoms = async (id, token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    // alert("Sintoma deletado")
     return data
   })
   .catch((e) => {
     console.log(e);
   });
 
-export default deleteSymptoms;
+export default deleteManagers;

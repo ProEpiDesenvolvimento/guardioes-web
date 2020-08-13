@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
+const getAllSymptoms = async (token) => api
   .get('/symptoms', {
     headers: {
       "Authorization": token,
@@ -16,4 +16,4 @@ const getAllApps = async (token) => api
     return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default getAllSymptoms;

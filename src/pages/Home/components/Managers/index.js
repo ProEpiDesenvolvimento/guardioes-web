@@ -16,6 +16,8 @@ import {
   ContainerHeader,
   ContainerTitle,
   ContainerForm,
+  Form,
+  Inputs,
   InputBlock,
   Input,
   SubmitButton
@@ -42,7 +44,6 @@ const Managers = ({
     }
     const reponse = await createManager(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     setManagerName("")
-    setManagerDescription("")
   }
 
   const _deleteManager = async (id, token) => {
@@ -62,8 +63,8 @@ const Managers = ({
   }
 
   useEffect(() => {
-    loadManagers(token)
-  }, [managers]);
+    // loadManagers(token)
+  }, []);
 
   const fields =
     [{
@@ -90,20 +91,22 @@ const Managers = ({
           <ContainerTitle>Adicionar Gerente</ContainerTitle>
         </ContainerHeader>
         <ContainerForm>
-          <form id="addApp" onSubmit={handleSubmit(_createManager)}>
-            <InputBlock>
-              <label htmlFor="name">Nome</label>
-              <input
-                type="text"
-                id="name"
-                value={managerName}
-                onChange={(e) => setManagerName(e.target.value)}
-              />
-            </InputBlock>
+          <Form id="addApp" onSubmit={handleSubmit(_createManager)}>
+            <Inputs>
+              <InputBlock>
+                <label htmlFor="name">Nome</label>
+                <Input
+                  type="text"
+                  id="name"
+                  value={managerName}
+                  onChange={(e) => setManagerName(e.target.value)}
+                />
+              </InputBlock>
+            </Inputs>
             <SubmitButton type="submit">
-              Adicionar Gerente
+              Adicionar
             </SubmitButton>
-          </form>
+          </Form>
         </ContainerForm>
       </AddAppContainer>
     </Container >

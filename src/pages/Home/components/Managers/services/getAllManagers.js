@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
-  .get('/symptoms', {
+const getAllManagers = async (token) => api
+  .get('/managers', {
     headers: {
       "Authorization": token,
     },
@@ -16,4 +16,4 @@ const getAllApps = async (token) => api
     return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default getAllManagers;
