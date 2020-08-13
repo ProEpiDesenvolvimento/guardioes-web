@@ -11,3 +11,5 @@ export const SET_ADMIN_CATEGORIES = 'SET_ADMIN_CATEGORIES'
 export const SET_APPS = 'SET_APPS'
 
 export const SET_SYMPTOMS = 'SET_SYMPTOMS'
+
+export const SET_MANAGERS = 'SET_MANAGERS'
