@@ -47,11 +47,18 @@ const Apps = ({
     const reponse = await createApp(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     console.log(reponse)
     _getApps(token)
+    setAppName("")
+    setOwnerCountry("")
   }
 
   const _getApps = async (token) => {
     const response = await getAllApps("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
     setApps(response.apps)
+  }
+
+  const _deleteApp = (token) => {
+    deleteApp(token)
+    _getApps(token)
   }
 
   useEffect(() => {
@@ -64,10 +71,10 @@ const Apps = ({
     <Container>
       <ContentBox
         title="Apps"
-        token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
+        token={token}
         contents={apps}
         fields={fields}
-        delete_function={deleteApp} />
+        delete_function={_deleteApp} />
 
       <AddAppContainer className="shadow-sm">
         <ContainerHeader>
