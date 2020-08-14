@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const getAllManagers = async (token) => api
-  .get('/managers', {
+  .get('/group_managers', {
     headers: {
       "Authorization": token,
     },

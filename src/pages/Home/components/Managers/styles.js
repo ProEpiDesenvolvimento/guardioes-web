@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 15rem;
+  height: 25rem;
   width: 90%;
   align-content: center;
   margin: 0 auto;
@@ -60,7 +60,7 @@ export const Inputs = styled.div`
 `;
 
 export const InputBlock = styled.div`
-  width: 225px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   font-weight: 700;
@@ -78,9 +78,33 @@ export const Input = styled.input`
   border: 2px solid #348EAC;
   border-radius: 5px;
   height: 2.2rem;
-  cursor: text;
   transition: opacity 0.2s;
   padding-left: 10px;
+`;
+
+export const CheckboxInputBlock = styled.div`
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: #348EAC;
+  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
+  margin-bottom: 1rem;
+  margin-right: 50px;
+  padding-top: 25px;
+`;
+
+export const CheckboxInput = styled.input` 
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  transition: opacity 0.2s;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
+export const Label = styled.label` 
+  margin: 0;
 `;
 
 export const SubmitButton = styled.button`
