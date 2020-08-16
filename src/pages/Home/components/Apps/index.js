@@ -65,7 +65,11 @@ const Apps = ({
     _getApps(token)
   }, []);
 
-  const fields = ["ID", "Nome", "País"];
+  const fields = [
+    { key: "id", value: "ID" }, 
+    { key: "app_name", value: "Nome" }, 
+    { key: "owner_country", value: "País" }
+  ];
 
   return (
     <Container>

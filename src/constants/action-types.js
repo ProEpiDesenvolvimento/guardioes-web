@@ -13,3 +13,5 @@ export const SET_APPS = 'SET_APPS'
 export const SET_SYMPTOMS = 'SET_SYMPTOMS'
 
 export const SET_MANAGERS = 'SET_MANAGERS'
+
+export const SET_CONTENTS = 'SET_CONTENTS'

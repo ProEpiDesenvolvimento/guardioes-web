@@ -8,7 +8,7 @@ import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
 import Managers from './components/Managers';
-
+import Contents from './components/Contents'
 const Home = () => {
   return (
     <Container>
@@ -17,7 +17,8 @@ const Home = () => {
         <NavBar />
         {/* <Apps /> */}
         {/* <Symptoms /> */}
-        <Managers />
+        {/* <Managers /> */}
+        <Contents />
       </Body>
     </Container>
   );
