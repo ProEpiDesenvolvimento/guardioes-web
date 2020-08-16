@@ -55,7 +55,7 @@ const Contents = ({
   const [source_link, setSourceLink] = useState("") 
 
   const _getContents = async (token) => {
-    const response = await getAllContents("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzUxNjMyOCwiZXhwIjoxNjAwMTQ2MDc0LCJqdGkiOiIxNmY3YTg2Yy1iMmNkLTQyNWItOTE2NC0xMTIzN2ZkNTBjZTMifQ.ADJxA59tE1SYGHexk6w2jbhpmN4jiueFRoYMeaQFWCo")
+    const response = await getAllContents(token)
     console.log(response)
     setContents(response.contents)
   }
@@ -66,9 +66,11 @@ const Contents = ({
         title,
         body,
         content_type,
-        source_link
+        source_link,
+        app_id: user.app_id
       }
     }
+    console.log(data)
     createContent(data, token)
   }
 
@@ -101,8 +103,8 @@ const Contents = ({
           title="Conteúdos" 
           fields={fields}
           delete_function={_deleteContent}
-          contents={contents}
-          token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzUxNjMyOCwiZXhwIjoxNjAwMTQ2MDc0LCJqdGkiOiIxNmY3YTg2Yy1iMmNkLTQyNWItOTE2NC0xMTIzN2ZkNTBjZTMifQ.ADJxA59tE1SYGHexk6w2jbhpmN4jiueFRoYMeaQFWCo"}
+          contents={contents ? contents : []}
+          token={token}
           />
 
       <AddContentContainer className="shadow-sm">
