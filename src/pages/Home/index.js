@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Body
@@ -7,11 +7,18 @@ import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 
 const Home = () => {
+
+  const [component, setComponent] = useState({ key: "", value: "" })
+
+  const setComponentCallback = (component) => {
+    setComponent(component);
+  }
+
   return (
     <Container>
       <Header />
       <Body>
-        <NavBar />
+        <NavBar setComponentCallback={setComponentCallback} />
       </Body>
     </Container>
   );

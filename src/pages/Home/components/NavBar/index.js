@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   OptionButton,
@@ -11,68 +11,79 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 
-const NavBar = ({ user }) => {
-  const [categories, setCategories] = user.type === "admin" ?
-    useState([
-      {
-        key: "managers",
-        value: "Gerentes"
-      },
-      {
-        key: "configApps",
-        value: "Configurar Apps"
-      },
-      {
-        key: "users",
-        value: "Usuários"
-      },
-      {
-        key: "symptoms",
-        value: "Sintomas"
-      },
-      {
-        key: "syndromes",
-        value: "Síndromes"
-      },
-      {
-        key: "contents",
-        value: "Conteúdos"
-      },
-      {
-        key: "dashboard",
-        value: "Visualizações"
-      }
-    ])
-    : useState([
-      {
-        key: "users",
-        value: "Usuários"
-      },
-      {
-        key: "symptoms",
-        value: "Sintomas"
-      },
-      {
-        key: "syndromes",
-        value: "Síndromes"
-      },
-      {
-        key: "contents",
-        value: "Conteúdos"
-      },
-      {
-        key: "dashboard",
-        value: "Visualizações"
-      }
-    ])
-  const [selected, setSelected] = useState(categories[0].key);
+const NavBar = ({ user, setComponentCallback }) => {
+
+  const allCategories = [
+    {
+      key: "admins",
+      value: "Admins"
+    },
+    {
+      key: "configApps",
+      value: "Configurar Apps"
+    },
+    {
+      key: "managers",
+      value: "Gerentes"
+    },
+    {
+      key: "managers_group",
+      value: "Gerentes de Instituições"
+    },
+    {
+      key: "symptoms",
+      value: "Sintomas"
+    },
+    {
+      key: "syndromes",
+      value: "Síndromes"
+    },
+    {
+      key: "contents",
+      value: "Conteúdos"
+    },
+    {
+      key: "users",
+      value: "Usuários"
+    },
+    {
+      key: "dashboard",
+      value: "Visualizações"
+    }
+  ]
+
+  const loadCategories = () => {
+    const usera = { type: "admin_god" }
+    if (usera.type === "admin") {
+      allCategories.splice(0, 2);
+    } else if (usera.type === "manager") {
+      allCategories.splice(0, 4);
+    } else if (usera.type === "manager_group") {
+      allCategories.splice(0, 7);
+    }
+    setCategories(allCategories)
+    setSelected(allCategories[0].key)
+  }
+
+  useEffect(() => {
+    loadCategories();
+  }, [])
+
+  const [categories, setCategories] = useState([])
+  const [selected, setSelected] = useState("");
 
   return (
     <Container>
       <OptionsSection>
         {categories.map(category => {
           return (
-            <OptionButton onClick={() => setSelected(category.key)} selected={selected === category.key ? true : false} key={category.key}>
+            <OptionButton
+              onClick={() => {
+                setSelected(category.key)
+                setComponentCallback(category)
+              }}
+              selected={selected === category.key ? true : false}
+            >
               <OptionName>
                 {category.value}
               </OptionName>

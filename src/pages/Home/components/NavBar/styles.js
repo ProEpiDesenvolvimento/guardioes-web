@@ -8,18 +8,18 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #5DD39E;
-  justify-content: space-between;
+  justify-content: initial;
   align-items: center;
   position: fixed;
 `;
 
 export const OptionsSection = styled.div`
   margin-top: 50px;
-  height: 70vh;
+  height: 85%;
   width: 80%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export const OptionButton = styled.button`
@@ -36,6 +36,7 @@ export const OptionButton = styled.button`
   justify-content: center;
   align-items: center;
   transition: all 0.5s;
+  margin-bottom: 10px;
 `;
 
 export const OptionName = styled.div`
