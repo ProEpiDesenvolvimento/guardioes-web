@@ -5,6 +5,9 @@ import {
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
+import Apps from './components/Apps';
+import Symptoms from './components/Symptoms';
+import Managers from './components/Managers';
 
 const Home = () => {
 
@@ -18,7 +21,10 @@ const Home = () => {
     <Container>
       <Header />
       <Body>
-        <NavBar setComponentCallback={setComponentCallback} />
+        <NavBar />
+        {/* <Apps /> */}
+        {/* <Symptoms /> */}
+        <Managers />
       </Body>
     </Container>
   );

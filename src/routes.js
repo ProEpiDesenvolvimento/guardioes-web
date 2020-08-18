@@ -11,7 +11,6 @@ export default function Routes() {
       <Switch>
         <Route path='/' exact component={PreRegister} />
         <Route path='/panel' exact component={Home} />
-        <Route path='/thanks' exact component={Thanks} />
         <Route path='/login' exact component={Login} />
       </Switch>
     </BrowserRouter>

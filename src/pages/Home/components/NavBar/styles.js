@@ -4,13 +4,11 @@ export const Container = styled.div`
   margin: 0;
   padding: 0;
   width: max(17vw, 200px);
-  height: 92vh;
   display: flex;
   flex-direction: column;
   background: #5DD39E;
   justify-content: initial;
   align-items: center;
-  position: fixed;
 `;
 
 export const OptionsSection = styled.div`
