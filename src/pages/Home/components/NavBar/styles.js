@@ -17,7 +17,7 @@ export const OptionsSection = styled.div`
   width: 80%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: initial;
 `;
 
 export const OptionButton = styled.button`
@@ -35,6 +35,7 @@ export const OptionButton = styled.button`
   align-items: center;
   transition: all 0.5s;
   margin-bottom: 10px;
+  outline: none !important;
 `;
 
 export const OptionName = styled.div`
@@ -44,6 +45,5 @@ export const OptionName = styled.div`
   font-weight: bold;
   font-size: 17px;
   line-height: 21px;
-
   color: #FFFFFF;
 `;

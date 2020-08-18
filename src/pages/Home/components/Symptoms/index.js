@@ -83,19 +83,18 @@ const Symptoms = ({
     _getAllSymptoms(token)
   }, []);
 
-  const fields =
-    [{
-      key: "id",
-      value: "ID"
-    },
-    {
-      key: "name",
-      value: "Nome",
-    },
-    {
-      key: "description",
-      value: "Descrição"
-    }];
+  const fields = [{
+    key: "id",
+    value: "ID"
+  },
+  {
+    key: "name",
+    value: "Nome",
+  },
+  {
+    key: "description",
+    value: "Descrição"
+  }];
 
   return (
     <Container>

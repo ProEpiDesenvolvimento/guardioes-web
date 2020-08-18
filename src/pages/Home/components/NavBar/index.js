@@ -63,6 +63,7 @@ const NavBar = ({ user, setComponentCallback }) => {
     }
     setCategories(allCategories)
     setSelected(allCategories[0].key)
+    setComponentCallback(allCategories[0])
   }
 
   useEffect(() => {
