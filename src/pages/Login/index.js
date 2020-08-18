@@ -6,11 +6,10 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import requestLogin from './services/requestLogin'
-import { useHistory } from "react-router-dom";
+
 import {
   Container,
   HeadSection,
-  UserMenu,
   Body,
   LoginBox,
   Title,
@@ -31,7 +30,7 @@ const Login = ({
   setUser,
   setToken
 }) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   const [password, setPassword] = useState("")
   const [items, setItems] = useState([

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import PreRegister from 'pages/PreRegister';
-import Thanks from 'pages/Thanks'
 import Login from 'pages/Login'
 import Home from 'pages/Home';
 
