@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Body
@@ -10,6 +10,13 @@ import Symptoms from './components/Symptoms';
 import Managers from './components/Managers';
 
 const Home = () => {
+
+  const [component, setComponent] = useState({ key: "", value: "" })
+
+  const setComponentCallback = (component) => {
+    setComponent(component);
+  }
+
   return (
     <Container>
       <Header />

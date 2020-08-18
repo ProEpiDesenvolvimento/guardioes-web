@@ -7,38 +7,34 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: #5DD39E;
+  justify-content: initial;
   align-items: center;
 `;
 
 export const OptionsSection = styled.div`
   margin-top: 50px;
-  height: 70vh;
+  height: 85%;
   width: 80%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export const OptionButton = styled.button`
   margin: 0 auto;
   width: 100%;
   height: 50px;
-  border: 2px solid #FFFFFF;
   box-sizing: border-box;
   border-radius: 10px;
-  background: transparent;
+  border: ${props => props.selected ? "2px solid #348EAC" : "2px solid #FFFFFF"};
+  background: ${props => props.selected ? "#348EAC" : "transparent"};
+  box-shadow: ${props => props.selected ? "0px 4px 4px rgba(0, 0, 0, 0.25)" : "none"};
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &:focus {
-    background: #348EAC;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border: 2px solid #348EAC;
-  }
-
   transition: all 0.5s;
+  margin-bottom: 10px;
 `;
 
 export const OptionName = styled.div`

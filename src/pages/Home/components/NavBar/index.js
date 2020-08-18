@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   OptionButton,
@@ -11,88 +11,104 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 
-const NavBar = (
-  {
-    email,
-    token,
-    user,
-    setAdminCategories,
-    admin_categories
-  }
-) => {
-  const aux_categories = {
-		'config_app': false,
-		'manager': false,
-		'users': false,
-		'symptoms': false,
-		'syndromes': false,
-		'contents': false,
-    'dashboard': false
-  } 
-  
-  const changeNavigation = async (renderThis) => {
-    const categories = admin_categories;
-    categories[renderThis] = true;
-    setAdminCategories(categories)
+const NavBar = ({ user, setComponentCallback }) => {
+
+  const allCategories = [
+    {
+      key: "admins",
+      value: "Admins"
+    },
+    {
+      key: "configApps",
+      value: "Configurar Apps"
+    },
+    {
+      key: "managers",
+      value: "Gerentes"
+    },
+    {
+      key: "managers_group",
+      value: "Gerentes de Instituições"
+    },
+    {
+      key: "symptoms",
+      value: "Sintomas"
+    },
+    {
+      key: "syndromes",
+      value: "Síndromes"
+    },
+    {
+      key: "contents",
+      value: "Conteúdos"
+    },
+    {
+      key: "users",
+      value: "Usuários"
+    },
+    {
+      key: "dashboard",
+      value: "Visualizações"
+    }
+  ]
+
+  const loadCategories = () => {
+    const usera = { type: "admin_god" }
+    if (usera.type === "admin") {
+      allCategories.splice(0, 2);
+    } else if (usera.type === "manager") {
+      allCategories.splice(0, 4);
+    } else if (usera.type === "manager_group") {
+      allCategories.splice(0, 7);
+    }
+    setCategories(allCategories)
+    setSelected(allCategories[0].key)
   }
 
-  const resetCategories = () => {
-    setAdminCategories({
-      config_app: false,
-      manager: false,
-      users: false,
-      symptoms: false,
-      syndromes: false,
-      contents: false,
-      dashboard: false
-    } )
-  }
+  useEffect(() => {
+    loadCategories();
+  }, [])
+
+  const [categories, setCategories] = useState([])
+  const [selected, setSelected] = useState("");
+
   return (
     <Container>
       <OptionsSection>
-        <OptionButton>
-          <OptionName>
-            Gerentes
-          </OptionName>
-        </OptionButton>
-        <OptionButton>
-          <OptionName>
-            Configurar Apps
-          </OptionName>
-        </OptionButton>
-        <OptionButton>
-          <OptionName>
-            Usuários
-          </OptionName>
-        </OptionButton>
-        <OptionButton>
-          <OptionName>
-            Sintomas
-          </OptionName>
-        </OptionButton>
-        <OptionButton>
-          <OptionName>
-            Conteúdos
-          </OptionName>
-        </OptionButton>
+        {categories.map(category => {
+          return (
+            <OptionButton
+              onClick={() => {
+                setSelected(category.key)
+                setComponentCallback(category)
+              }}
+              selected={selected === category.key ? true : false}
+            >
+              <OptionName>
+                {category.value}
+              </OptionName>
+            </OptionButton>
+          );
+        })}
       </OptionsSection>
     </Container>
-  )}
-  const mapStateToProps = (state) => ({
-    email: state.user.email,
-    token: state.user.token,
-    user: state.user.user,
-    admin_categories: state.user.admin_categories
-  });
-  
-  const mapDispatchToProps = (dispatch) => bindActionCreators(
-    {
-      setAdminCategories
-    },
-    dispatch,
-  );
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(NavBar); 
+  )
+}
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+  token: state.user.token,
+  user: state.user.user,
+  admin_categories: state.user.admin_categories
+});
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    setAdminCategories
+  },
+  dispatch,
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(NavBar); 
