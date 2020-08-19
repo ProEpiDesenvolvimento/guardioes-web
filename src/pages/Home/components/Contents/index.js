@@ -16,13 +16,16 @@ import deleteContent from './services/deleteContent'
 import createContent from './services/createContent'
 import { connect } from 'react-redux';
 import {
-  setContents
+  setContents,
+  setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
+import { sessionService } from 'redux-react-session';
 
 const Contents = ({
   contents,
   token,
+  setToken,
   user,
   setContents
 }) => {
@@ -52,11 +55,11 @@ const Contents = ({
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [content_type, setContentType] = useState("text")
-  const [source_link, setSourceLink] = useState("") 
+  const [source_link, setSourceLink] = useState("")
+
 
   const _getContents = async (token) => {
     const response = await getAllContents(token)
-    console.log(response)
     setContents(response.contents)
   }
 
@@ -74,13 +77,21 @@ const Contents = ({
     createContent(data, token)
   }
 
+  
+
   const _deleteContent = (token, id) => {
     deleteContent(token, id)
   }
+  
 
   useEffect(() => {
+    const _loadSession = async () => {
+      const auxSession = await sessionService.loadSession()
+      setToken(auxSession.token)
+    }
+    _loadSession();
     _getContents(token)
-  }, []);
+  }, [token]);
 
   const handleTitle = (value) => {
     setTitle(value)
@@ -162,7 +173,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setContents
+    setContents,
+    setToken
   },
   dispatch,
 );
