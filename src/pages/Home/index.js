@@ -32,7 +32,7 @@ const Home = () => {
       },
       {
         key: "managers_group",
-        value: "Gerentes de Instituições"
+        value: "GerentesDeInstituições"
       },
       {
         key: "symptoms",

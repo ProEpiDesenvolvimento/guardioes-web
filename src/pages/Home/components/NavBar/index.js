@@ -53,12 +53,12 @@ const NavBar = ({ user, setComponentCallback }) => {
   ]
 
   const loadCategories = () => {
-    const usera = { type: "admin_god" }
-    if (usera.type === "admin") {
+    const user = { type: "admin_god" }
+    if (user.type === "admin") {
       allCategories.splice(0, 2);
-    } else if (usera.type === "manager") {
+    } else if (user.type === "manager") {
       allCategories.splice(0, 4);
-    } else if (usera.type === "manager_group") {
+    } else if (user.type === "manager_group") {
       allCategories.splice(0, 7);
     }
     setCategories(allCategories)
