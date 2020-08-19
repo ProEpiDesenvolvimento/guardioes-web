@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import {
   setManagers
 } from 'actions/';
-
 import { bindActionCreators } from 'redux';
 import getAllManagers from './services/getAllManagers'
 import createManager from './services/createManager'
@@ -63,8 +61,9 @@ const Managers = ({
   }
 
   useEffect(() => {
+    console.log(token)
     // loadManagers(token)
-  }, []);
+  }, [token]);
 
   const fields =
     [{
@@ -113,22 +112,18 @@ const Managers = ({
   );
 }
 
-// const mapStateToProps = (state) => ({
-//   token: state.user.token,
-//   user: state.user.user,
-//   managers: state.user.managers
-// });
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+  user: state.user.user,
+});
 
-// const mapDispatchToProps = (dispatch) => bindActionCreators(
-//   {
-//     setManagers
-//   },
-//   dispatch,
-// );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+  },
+  dispatch,
+);
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(Managers);
-
-export default Managers;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Managers);

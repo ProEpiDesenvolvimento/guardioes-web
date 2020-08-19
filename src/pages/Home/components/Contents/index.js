@@ -79,8 +79,8 @@ const Contents = ({
 
   
 
-  const _deleteContent = (token, id) => {
-    deleteContent(token, id)
+  const _deleteContent = (id, token) => {
+    deleteContent(id, token)
   }
   
 

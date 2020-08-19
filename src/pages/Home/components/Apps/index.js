@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setApps
+  setApps, setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import getAllApps from './services/getAllApps'
@@ -24,7 +24,8 @@ const Apps = ({
   token,
   user,
   apps,
-  setApps
+  setApps,
+  setToken
 }) => {
   const { handleSubmit } = useForm()
   const [appName, setAppName] = useState("")
@@ -44,7 +45,7 @@ const Apps = ({
       "owner_country": ownerCountry
     }
     console.log(data)
-    const reponse = await createApp(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    const reponse = await createApp(data, token)
     console.log(reponse)
     _getApps(token)
     setAppName("")
@@ -52,18 +53,20 @@ const Apps = ({
   }
 
   const _getApps = async (token) => {
-    const response = await getAllApps("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    const response = await getAllApps(token)
     setApps(response.apps)
   }
 
-  const _deleteApp = (token) => {
-    deleteApp(token)
+  const _deleteApp = (id,token) => {
+    deleteApp(id, token)
     _getApps(token)
   }
 
   useEffect(() => {
     _getApps(token)
-  }, []);
+    setToken(token)
+    console.log(token)
+  }, [token]);
 
   const fields = [
     { key: "id", value: "ID" }, 
@@ -76,7 +79,7 @@ const Apps = ({
       <ContentBox
         title="Apps"
         token={token}
-        contents={apps}
+        contents={apps ? apps : []}
         fields={fields}
         delete_function={_deleteApp} />
 
@@ -124,7 +127,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setApps
+    setApps,
+    setToken
   },
   dispatch,
 );
