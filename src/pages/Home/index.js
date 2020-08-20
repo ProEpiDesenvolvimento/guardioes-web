@@ -35,9 +35,9 @@ const Home = ({
       <Header />
       <Body>
         <NavBar />
-        {/* <Apps /> */}
+        <Apps />
         {/* <Symptoms /> */}
-        <Managers />
+        {/* <Managers /> */}
         {/* <Contents /> */}
       </Body>
     </Container>
