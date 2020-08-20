@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const deleteManagers = async (id, token) => api
-  .delete(`/group_managers/${id}`, {
+const getAllGroupManagers = async (token) => api
+  .get('/group_managers', {
     headers: {
       "Authorization": token,
     },
@@ -13,6 +13,7 @@ const deleteManagers = async (id, token) => api
   })
   .catch((e) => {
     console.log(e);
+    return { data: {}, errors: e }
   });
 
-export default deleteManagers;
+export default getAllGroupManagers;

@@ -27,7 +27,7 @@ const NavBar = ({ user, setComponentCallback }) => {
       value: "Gerentes"
     },
     {
-      key: "managers_group",
+      key: "managersGroup",
       value: "Gerentes de Instituições"
     },
     {

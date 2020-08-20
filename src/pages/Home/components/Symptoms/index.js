@@ -29,11 +29,11 @@ import ContentBox from '../ContentBox';
 const Symptoms = ({
   token,
   user,
-  // symptoms,
-  // setSymptoms
+  symptoms,
+  setSymptoms
 }) => {
 
-  const [symptoms, setSymptoms] = useState()
+  // const [symptoms, setSymptoms] = useState()
 
   const { handleSubmit } = useForm()
   const [symptomName, setSymptomName] = useState("")
@@ -142,22 +142,22 @@ const Symptoms = ({
   );
 }
 
-// const mapStateToProps = (state) => ({
-//   token: state.user.token,
-//   user: state.user.user,
-//   symptoms: state.user.symptoms
-// });
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+  user: state.user.user,
+  symptoms: state.user.symptoms
+});
 
-// const mapDispatchToProps = (dispatch) => bindActionCreators(
-//   {
-//     setSymptoms
-//   },
-//   dispatch,
-// );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    setSymptoms
+  },
+  dispatch,
+);
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(Symptoms);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Symptoms);
 
-export default Symptoms;
+// export default Symptoms;

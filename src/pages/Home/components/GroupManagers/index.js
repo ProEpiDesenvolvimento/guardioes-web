@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import {
-  setManagers
+  setGroupManagers
 } from 'actions/';
 
 import { bindActionCreators } from 'redux';
-import getAllManagers from './services/getAllManagers'
-import createManager from './services/createManager'
-import deleteManager from './services/deleteManager'
+import getAllGroupManagers from './services/getAllGroupManagers'
+import createGroupManager from './services/createGroupManager'
+import deleteGroupManager from './services/deleteGroupManager'
 
 import {
   Container,
@@ -29,14 +29,14 @@ import { useForm } from "react-hook-form";
 
 import ContentBox from '../ContentBox';
 
-const Managers = ({
+const GroupManagers = ({
   token,
   user,
-  // managers,
-  // setManagers
+  groupManagers,
+  setGroupManagers
 }) => {
 
-  const [groupManagers, setGroupManagers] = useState([])
+  // const [groupManagers, setGroupManagers] = useState([])
 
   const { handleSubmit } = useForm()
   const [managerName, setManagerName] = useState("")
@@ -47,7 +47,7 @@ const Managers = ({
   const [managerLengthIdentificationCode, setManagerLengthIdentificationCode] = useState(0)
   const [managerPassword, setManagerPassword] = useState("")
 
-  const _createManager = async () => {
+  const _createGroupManager = async () => {
     const data = {
       "group_manager": {
         "password": managerPassword,
@@ -60,7 +60,7 @@ const Managers = ({
         "id_code_length": managerIdentificationCode ? managerLengthIdentificationCode : undefined
       }
     }
-    const reponse = await createManager(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    const reponse = await createGroupManager(data, token)
     setManagerName("")
     setManagerPassword("")
     setManagerEmail("")
@@ -68,21 +68,21 @@ const Managers = ({
     setManagerIdentificationCode(false)
     setManagerLengthIdentificationCode(0)
     setManagerTwitter("")
-    _getAllManagers(token);
+    _getAllGroupManagers(token);
   }
 
-  const _deleteManager = async (id, token) => {
-    deleteManager(id, token)
-    _getAllManagers(token)
+  const _deleteGroupManager = async (id, token) => {
+    deleteGroupManager(id, token)
+    _getAllGroupManagers(token)
   }
 
-  const _getAllManagers = async (token) => {
-    const response = await getAllManagers("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
-    loadManagers(response)
+  const _getAllGroupManagers = async (token) => {
+    const response = await getAllGroupManagers(token)
+    loadGroupManagers(response)
   }
 
-  const loadManagers = async (token) => {
-    const response = await getAllManagers("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+  const loadGroupManagers = async (token) => {
+    const response = await getAllGroupManagers(token)
     let aux_managers = [];
     response.group_managers.map(manager => {
       aux_managers.push({
@@ -96,7 +96,7 @@ const Managers = ({
   }
 
   useEffect(() => {
-    _getAllManagers(token)
+    _getAllGroupManagers(token)
   }, []);
 
   const fields =
@@ -121,10 +121,10 @@ const Managers = ({
     <Container>
       <ContentBox
         title="Gerentes"
-        token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
-        contents={groupManagers}
+        token={token}
+        contents={groupManagers ? groupManagers : []}
         fields={fields}
-        delete_function={_deleteManager}
+        delete_function={_deleteGroupManager}
       />
 
       <AddAppContainer className="shadow-sm">
@@ -132,7 +132,7 @@ const Managers = ({
           <ContainerTitle>Adicionar Gerente</ContainerTitle>
         </ContainerHeader>
         <ContainerForm>
-          <Form id="addApp" onSubmit={handleSubmit(_createManager)}>
+          <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>
             <Inputs>
               <InputBlock>
                 <label htmlFor="name">Nome</label>
@@ -209,22 +209,22 @@ const Managers = ({
   );
 }
 
-// const mapStateToProps = (state) => ({
-//   token: state.user.token,
-//   user: state.user.user,
-//   managers: state.user.managers
-// });
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+  user: state.user.user,
+  managers: state.user.managers
+});
 
-// const mapDispatchToProps = (dispatch) => bindActionCreators(
-//   {
-//     setManagers
-//   },
-//   dispatch,
-// );
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    setGroupManagers
+  },
+  dispatch,
+);
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(Managers);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(GroupManagers);
 
-export default Managers;
+// export default GroupManagers;

@@ -1,12 +1,12 @@
 import api from 'services/api';
 
 const deleteApp = async (id, token) => api
-  .delete(`/apps/${id}`,{
-            headers: {
-                "Authorization": token,
-            },                    
-        }
-    )
+  .delete(`/apps/${id}`, {
+    headers: {
+      "Authorization": token,
+    },
+  }
+  )
   .then(async (res) => {
     const { data } = res;
     alert("App deletado")

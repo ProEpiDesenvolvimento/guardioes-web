@@ -8,7 +8,7 @@ import Header from 'sharedComponents/Header'
 
 import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
-import Managers from './components/Managers';
+import GroupManagers from './components/GroupManagers';
 import Contents from './components/Contents';
 
 const Home = () => {
@@ -28,11 +28,11 @@ const Home = () => {
       },
       {
         key: "managers",
-        value: Managers
+        value: "Gerentes"
       },
       {
-        key: "managers_group",
-        value: "GerentesDeInstituições"
+        key: "managersGroup",
+        value: GroupManagers
       },
       {
         key: "symptoms",
