@@ -14,11 +14,16 @@ import {
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
 
-const ContentBox = ({ title, fields, contents, delete_function, token }) => {
+const ContentBox = ({ title, fields, contents, delete_function, token, handleEdit }) => {
 
     const _deleteApp = (id, token) => {
         delete_function(id, token)
     }
+
+    const setEditingContent = (content) => {
+        handleEdit(content);
+    }
+
     return (
         <Container className="shadow-sm">
             <ContentBoxHeader>
@@ -44,7 +49,11 @@ const ContentBox = ({ title, fields, contents, delete_function, token }) => {
                                 <td>{content.owner_country}</td>
                                 <td>
                                     <Link to="/panel">
-                                        <ContentBoxTableIcon src={editIcon} alt="Editar"/>
+                                        <ContentBoxTableIcon 
+                                            src={editIcon} 
+                                            alt="Editar"
+                                            onClick={() => {setEditingContent(content)}}
+                                        />
                                     </Link>
                                 </td>
                                 <td>

@@ -98,3 +98,12 @@ export const SubmitButton = styled.button`
     width: 14rem;
   }
 `;
+
+export const EditInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  margin-bottom: 1rem;
+`;
