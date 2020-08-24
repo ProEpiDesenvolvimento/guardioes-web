@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const createManagers = async (data, token) =>
-  api.post(`/managers`, data,
+const createGroupManagers = async (data, token) =>
+  api.post(`/group_managers`, data,
     {
       headers: {
         "Authorization": token,
@@ -9,7 +9,6 @@ const createManagers = async (data, token) =>
     }
   )
     .then(async (res) => {
-      ;
       const response = { data: res.data };
       return response
     })
@@ -18,4 +17,4 @@ const createManagers = async (data, token) =>
       console.log(e);
       return { data: {}, errors: e }
     });
-export default createManagers;
+export default createGroupManagers;

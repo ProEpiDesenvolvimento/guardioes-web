@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllManagers = async (token) => api
-  .get('/managers', {
+const getAllGroupManagers = async (token) => api
+  .get('/group_managers', {
     headers: {
       "Authorization": token,
     },
@@ -16,4 +16,4 @@ const getAllManagers = async (token) => api
     return { data: {}, errors: e }
   });
 
-export default getAllManagers;
+export default getAllGroupManagers;

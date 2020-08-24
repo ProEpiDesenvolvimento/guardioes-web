@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Body
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
+
 import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
-import Managers from './components/Managers';
+import GroupManagers from './components/GroupManagers';
 import Contents from './components/Contents';
 import { connect } from 'react-redux';
 import {
@@ -29,16 +30,73 @@ const Home = ({
     _loadSession();
   }, []);
 
+  const [component, setComponent] = useState({})
+  const [components, setComponents] = useState([])
+
+  const loadComponents = () => {
+    setComponents([
+      {
+        key: "admins",
+        value: "Admins"
+      },
+      {
+        key: "configApps",
+        value: Apps
+      },
+      {
+        key: "managers",
+        value: "Gerentes"
+      },
+      {
+        key: "managersGroup",
+        value: GroupManagers
+      },
+      {
+        key: "symptoms",
+        value: Symptoms
+      },
+      {
+        key: "syndromes",
+        value: "Síndromes"
+      },
+      {
+        key: "contents",
+        value: Contents
+      },
+      {
+        key: "users",
+        value: "Usuários"
+      },
+      {
+        key: "dashboard",
+        value: "Visualizações"
+      }
+    ])
+    setComponent({
+      key: "admins",
+      value: "Admins"
+    })
+  }
+
+  useEffect(() => {
+    loadComponents();
+  }, [])
+
+  const setComponentCallback = (component) => {
+    setComponent({ key: component.key, value: component.value });
+    console.log(component)
+  }
 
   return (
     <Container>
       <Header />
       <Body>
-        <NavBar />
-        <Apps />
-        {/* <Symptoms /> */}
-        {/* <Managers /> */}
-        {/* <Contents /> */}
+        <NavBar setComponentCallback={setComponentCallback} />
+        {components.map((comp) => {
+          if (comp.key === component.key) {
+            return <comp.value />
+          }
+        })}
       </Body>
     </Container>
   );
