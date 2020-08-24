@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setApps
+  setApps, setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import getAllApps from './services/getAllApps'
@@ -26,7 +26,8 @@ const Apps = ({
   token,
   user,
   apps,
-  setApps
+  setApps,
+  setToken
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [editingApp, setEditingApp] = useState({});
@@ -62,8 +63,8 @@ const Apps = ({
     setApps(response.apps)
   }
 
-  const _deleteApp = (token) => {
-    deleteApp(token)
+  const _deleteApp = async (id, token) => {
+    await deleteApp(id, token)
     _getApps(token)
   }
 
@@ -93,9 +94,15 @@ const Apps = ({
 
   useEffect(() => {
     _getApps(token)
-  }, []);
+    setToken(token)
+    console.log(token)
+  }, [token]);
 
-  const fields = ["ID", "Nome", "País"];
+  const fields = [
+    { key: "id", value: "ID" },
+    { key: "app_name", value: "Nome" },
+    { key: "owner_country", value: "País" }
+  ];
 
   return (
     <>
@@ -140,44 +147,45 @@ const Apps = ({
         <ContentBox
           title="Apps"
           token={token}
-          contents={apps}
+          contents={apps ? apps : []}
           fields={fields}
           delete_function={_deleteApp}
           handleEdit={handleEdit} />
 
-        <AddAppContainer className="shadow-sm">
-          <ContainerHeader>
-            <ContainerTitle>Adicionar App</ContainerTitle>
-          </ContainerHeader>
-          <ContainerForm>
-            <form id="addApp" onSubmit={handleSubmit(_createApp)}>
-              <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={appName}
-                  onChange={(e) => handleAppName(e.target.value)}
-                />
-              </InputBlock>
 
-              <InputBlock>
-                <label htmlFor="country">País</label>
-                <input
-                  type="text"
-                  id="country"
-                  value={ownerCountry}
-                  onChange={(e) => handleOwnerCountry(e.target.value)} />
-              </InputBlock>
+      <AddAppContainer className="shadow-sm">
+        <ContainerHeader>
+          <ContainerTitle>Adicionar App</ContainerTitle>
+        </ContainerHeader>
+        <ContainerForm>
+          <form id="addApp" onSubmit={handleSubmit(_createApp)}>
+            <InputBlock>
+              <label htmlFor="name">Nome</label>
+              <input
+                type="text"
+                id="name"
+                value={appName}
+                onChange={(e) => handleAppName(e.target.value)}
+              />
+            </InputBlock>
 
-              {/* <Input type="submit" className="shadow-sm" /> */}
-              <SubmitButton type="submit">
-                Criar App
-              </SubmitButton>
-            </form>
-          </ContainerForm>
-        </AddAppContainer>
-      </Container>
+            <InputBlock>
+              <label htmlFor="country">País</label>
+              <input
+                type="text"
+                id="country"
+                value={ownerCountry}
+                onChange={(e) => handleOwnerCountry(e.target.value)} />
+            </InputBlock>
+
+            {/* <Input type="submit" className="shadow-sm" /> */}
+            <SubmitButton type="submit">
+              Criar App
+            </SubmitButton>
+          </form>
+        </ContainerForm>
+      </AddAppContainer>
+    </Container>
     </>
   );
 }
@@ -190,7 +198,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setApps
+    setApps,
+    setToken
   },
   dispatch,
 );

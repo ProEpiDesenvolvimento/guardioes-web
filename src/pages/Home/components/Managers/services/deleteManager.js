@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
-  .get('/apps', {
+const deleteManagers = async (id, token) => api
+  .delete(`/managers/${id}`, {
     headers: {
       "Authorization": token,
     },
@@ -13,7 +13,6 @@ const getAllApps = async (token) => api
   })
   .catch((e) => {
     console.log(e);
-    return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default deleteManagers;

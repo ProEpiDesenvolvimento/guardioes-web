@@ -34,19 +34,17 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
                     <thead>
                         <tr>
                             {fields.map(field => (
-                                <ContentBoxTableHeader>{ field }</ContentBoxTableHeader>
+                                <ContentBoxTableHeader>{field.value}</ContentBoxTableHeader>
                             ))}
-                            <ContentBoxTableHeader></ContentBoxTableHeader>
-                            <ContentBoxTableHeader></ContentBoxTableHeader>
                         </tr>
                     </thead>
 
                     <tbody>
                         {contents.map(content => (
                             <tr>
-                                <td>{content.id}</td>
-                                <td>{content.app_name}</td>
-                                <td>{content.owner_country}</td>
+                                {fields.map(field => (
+                                    <td>{content[field.key]}</td>
+                                ))}
                                 <td>
                                     <Link to="/panel">
                                         <ContentBoxTableIcon 
@@ -58,11 +56,11 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
                                 </td>
                                 <td>
                                     <Link to="/panel">
-                                        <ContentBoxTableIcon 
-                                            src={deleteIcon} 
+                                        <ContentBoxTableIcon
+                                            src={deleteIcon}
                                             alt="Deletar"
-                                            onClick={() => {_deleteApp(content.id, token)}}
-                                            />
+                                            onClick={() => { _deleteApp(content.id, token) }}
+                                        />
                                     </Link>
                                 </td>
                             </tr>
