@@ -57,8 +57,8 @@ const Apps = ({
     setApps(response.apps)
   }
 
-  const _deleteApp = (id,token) => {
-    deleteApp(id, token)
+  const _deleteApp = async (id, token) => {
+    await deleteApp(id, token)
     _getApps(token)
   }
 
@@ -69,8 +69,8 @@ const Apps = ({
   }, [token]);
 
   const fields = [
-    { key: "id", value: "ID" }, 
-    { key: "app_name", value: "Nome" }, 
+    { key: "id", value: "ID" },
+    { key: "app_name", value: "Nome" },
     { key: "owner_country", value: "País" }
   ];
 

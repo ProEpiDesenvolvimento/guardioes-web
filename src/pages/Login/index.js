@@ -49,6 +49,7 @@ const Login = ({
 
   const makeUserLogin = async (data) => {
     const response = await requestLogin(email, password, items[0].key)
+    console.log("status", response.status)
     if (response.errors) {
       console.log("Algo deu errado.\n", response.errors)
     } else {

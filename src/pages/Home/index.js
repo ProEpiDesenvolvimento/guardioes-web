@@ -35,10 +35,10 @@ const Home = ({
       <Header />
       <Body>
         <NavBar />
-        {/* <Apps /> */}
+        <Apps />
         {/* <Symptoms /> */}
         {/* <Managers /> */}
-        <Contents />
+        {/* <Contents /> */}
       </Body>
     </Container>
   );
