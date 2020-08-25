@@ -72,8 +72,9 @@ const Apps = ({
     const data = {
       "app_name": editName,
       "owner_country": editCountry
-    }
+    };
     await editApp(editingApp.id, data, token);
+    setModalShow(false);
     _getApps(token);
   }
 
