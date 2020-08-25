@@ -36,8 +36,6 @@ const GroupManagers = ({
   setGroupManagers
 }) => {
 
-  // const [groupManagers, setGroupManagers] = useState([])
-
   const { handleSubmit } = useForm()
   const [managerName, setManagerName] = useState("")
   const [managerEmail, setManagerEmail] = useState("")
@@ -81,8 +79,7 @@ const GroupManagers = ({
     loadGroupManagers(response)
   }
 
-  const loadGroupManagers = async (token) => {
-    const response = await getAllGroupManagers(token)
+  const loadGroupManagers = async (response) => {
     let aux_managers = [];
     response.group_managers.map(manager => {
       aux_managers.push({
@@ -226,5 +223,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(GroupManagers);
-
-// export default GroupManagers;

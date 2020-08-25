@@ -51,7 +51,7 @@ const Symptoms = ({
       // será usado o app_id do user logado, como feito abaixo
       // "app_id": user.app_id
     }
-    const response = await createSymptom(data, "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    const response = await createSymptom(data, token)
     setSymptomName("")
     setSymptomDescription("")
     _getAllSymptoms(response)
@@ -63,7 +63,7 @@ const Symptoms = ({
   }
 
   const _getAllSymptoms = async (token) => {
-    const response = await getAllSymptoms("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto")
+    const response = await getAllSymptoms(token)
     loadSymptoms(response)
   }
 
@@ -100,7 +100,7 @@ const Symptoms = ({
     <Container>
       <ContentBox
         title="Sintomas"
-        token={"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwic2NwIjoiYWRtaW4iLCJhdWQiOm51bGwsImlhdCI6MTU5NzI2MTc5NCwiZXhwIjoxNTk5ODkxNTQwLCJqdGkiOiJjYjZjZmNlNC1kOWQ3LTQ5OTAtYjE5NS05YjllMTM5ZjNmMzAifQ.ctPtvipCDYP90JXkukbzwtJluEn-H9_HEH_hZXuDsto"}
+        token={token}
         contents={symptoms ? symptoms : []}
         fields={fields}
         delete_function={_deleteSymptom}

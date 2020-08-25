@@ -84,7 +84,6 @@ const Home = ({
 
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });
-    console.log(component)
   }
 
   return (
