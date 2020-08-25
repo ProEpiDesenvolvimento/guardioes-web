@@ -3,7 +3,8 @@ import {
     SET_TOKEN, 
 	SET_USER,
 	SET_ADMIN_CATEGORIES,
-	SET_APPS
+	SET_APPS,
+	SET_CONTENTS
 } from 'constants/action-types';
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
 		contents: false,
 		dashboard: false
 	},
-	apps: []
+	apps: [],
+	contents: []
 };
 
 const User = (state = initialState, action) => {
@@ -48,6 +50,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				apps: action.payload
+			};
+		case SET_CONTENTS:
+			return {
+				...state,
+				contents: action.payload
 			};
 		default:
 			return {

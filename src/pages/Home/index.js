@@ -10,8 +10,25 @@ import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
 import Contents from './components/Contents';
+import { connect } from 'react-redux';
+import {
+  setToken
+} from 'actions/';
+import { bindActionCreators } from 'redux';
+import { sessionService } from 'redux-react-session';
 
-const Home = () => {
+const Home = ({
+  token,
+  setToken,
+}) => {
+
+  useEffect(() => {
+    const _loadSession = async () => {
+      const auxSession = await sessionService.loadSession()
+      setToken(auxSession.token)
+    }
+    _loadSession();
+  }, []);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -85,4 +102,18 @@ const Home = () => {
   );
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+});
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    setToken
+  },
+  dispatch,
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);

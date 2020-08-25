@@ -6,7 +6,7 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import requestLogin from './services/requestLogin'
-
+import { sessionService } from 'redux-react-session'
 import {
   Container,
   HeadSection,
@@ -21,6 +21,7 @@ import {
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
 import Dropdown from './Dropdown'
+import { useHistory } from "react-router-dom";
 
 const Login = ({
   email,
@@ -44,13 +45,22 @@ const Login = ({
     }
   ])
 
+  const history = useHistory(); 
+
   const makeUserLogin = async (data) => {
     const response = await requestLogin(email, password, items[0].key)
-    if (response.errors) {
-      console.log("Algo deu errado.\n", response.errors)
-    } else {
+    console.log("status", response)
+    if (response.authorization != "") {
       setToken(response.authorization);
       setUser(response.user)
+      sessionService.saveSession({ token: response.authorization })
+        .then(() => {
+          sessionService.saveUser(response.user)
+            .then(() => {
+              history.push('/panel')
+            })
+        })
+      
     }
   }
 

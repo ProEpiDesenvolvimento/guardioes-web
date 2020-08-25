@@ -49,3 +49,18 @@ export const NavTo = styled(Link)`
       font-size: 15px;
     };
 `;
+
+export const Logout = styled.p`
+  text-decoration: none;
+    font-family: argumentum, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.825rem;
+    color: #FFFFFF;
+    margin-left: 10px;
+
+    @media ${device.mobileL} {
+      font-size: 15px;
+    };
+`;

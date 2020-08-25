@@ -6,6 +6,7 @@ import {
   SET_ADMIN_CATEGORIES,
   SET_APPS,
   SET_SYMPTOMS,
+  SET_CONTENTS,
   SET_GROUP_MANAGERS
 } from 'constants/action-types';
 
@@ -22,5 +23,7 @@ export const setAdminCategories = (payload) => ({ type: SET_ADMIN_CATEGORIES, pa
 export const setApps = (payload) => ({ type: SET_APPS, payload });
 
 export const setSymptoms = (payload) => ({ type: SET_SYMPTOMS, payload });
+
+export const setContents = (payload) => ({type: SET_CONTENTS, payload});
 
 export const setGroupManagers = (payload) => ({ type: SET_GROUP_MANAGERS, payload });
