@@ -9,7 +9,6 @@ const getAllGroupManagers = async (token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA", data)
     return data
   })
   .catch((e) => {
