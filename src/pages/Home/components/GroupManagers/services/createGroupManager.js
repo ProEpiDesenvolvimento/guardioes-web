@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const createGroupManagers = async (data, token) =>
-  api.post(`/group_managers`, data,
+  api.post(`/group_manager/signup`, data,
     {
       headers: {
         "Authorization": token,
