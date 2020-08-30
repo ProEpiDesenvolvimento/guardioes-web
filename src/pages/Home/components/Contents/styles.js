@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 65%;
 
   @media (min-width: 500px) {
     width: 100%;
@@ -13,19 +13,15 @@ export const Container = styled.div`
 export const AddContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 20rem;
+  height: 22rem;
   width: 90%;
   align-content: center;
   margin: 0% 5%;
-  margin-bottom: 2%;
+  margin-bottom: 2rem;
   background-color: #E5E5E5;
   border-radius: 10px;
   font-family: argumentum, sans-serif;
   font-style: normal;
-
-  @media (min-width: 500px) {
-    width: 90%;
-  }
 `;
 
 export const ContainerHeader = styled.div`
@@ -33,7 +29,7 @@ export const ContainerHeader = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #5DD39E;
-  height: 60px;
+  height: 70px;
   border-radius: 10px;
   border-bottom: 2px solid rgba(0,0,0,0.125);
 `;
@@ -44,6 +40,7 @@ export const ContainerTitle = styled.h3`
   font-size: 24;
   color: white;
   text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
+  text-align: center;
 `;
 
 export const ContainerForm = styled.div`
@@ -97,4 +94,13 @@ export const SubmitButton = styled.button`
   @media (min-width: 500px) {
     width: 14rem;
   }
+`;
+
+export const EditInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  margin-bottom: 1rem;
 `;

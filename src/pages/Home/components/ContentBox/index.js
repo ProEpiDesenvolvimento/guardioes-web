@@ -36,6 +36,8 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
                             {fields.map(field => (
                                 <ContentBoxTableHeader>{field.value}</ContentBoxTableHeader>
                             ))}
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
 

@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const editApp = async (id, data, token) => {
-    api.patch(`/apps/${id}`, data,
+    await api.patch(`/apps/${id}`, data,
     {
       headers: {
         "Authorization": token,

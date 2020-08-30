@@ -7,13 +7,15 @@ import {
     ContainerForm,
     InputBlock,
     Input,
-    SubmitButton
+    SubmitButton,
+    EditInput
   } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import getAllContents from './services/getAllContents'
 import deleteContent from './services/deleteContent'
 import createContent from './services/createContent'
+import editContent from './services/editContent';
 import { connect } from 'react-redux';
 import {
   setContents,
@@ -21,6 +23,7 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
+import Modal from 'react-bootstrap/Modal';
 
 const Contents = ({
   contents,
@@ -56,33 +59,74 @@ const Contents = ({
   const [body, setBody] = useState("");
   const [content_type, setContentType] = useState("text")
   const [source_link, setSourceLink] = useState("")
+  const [modalShow, setModalShow] = useState(false);
+  const [editingContent, setEditingContent] = useState({});
+  const [editTitle, setEditTitle] = useState("");
+  const [editBody, setEditBody] = useState("");
+  const [editSourceLink, setEditSourceLink] = useState("");
 
 
   const _getContents = async (token) => {
     const response = await getAllContents(token)
+    console.log(response)
     setContents(response.contents)
   }
 
-  const _createContent = () => {
+  const _createContent = async () => {
     const data = {
       "content": {
         title,
         body,
         content_type,
         source_link,
-        app_id: user.app_id
+        app_id: 17
       }
     }
     console.log(data)
-    createContent(data, token)
+    await createContent(data, token)
+    setTitle("");
+    setBody("");
+    setSourceLink("");
+    _getContents(token)
   }
 
-  
-
-  const _deleteContent = (id, token) => {
-    deleteContent(id, token)
+  const _editContent = async () => {
+    const data = {
+      "title": editTitle,
+      "body": editBody,
+      content_type,
+      "source_link": editSourceLink,
+      app_id: 17
+    };
+    await editContent(editingContent.id, data, token);
+    setModalShow(false);
+    _getContents(token);
   }
-  
+
+  const handleEdit = (content) => {
+    setEditingContent(content);
+    setEditTitle(content.title);
+    setEditBody(content.body);
+    setEditSourceLink(content.source_link);
+    setModalShow(!modalShow);
+  }
+
+  const handleEditTitle = (value) => {
+    setEditTitle(value);
+  }
+
+  const handleEditBody = (value) => {
+    setEditBody(value);
+  }
+
+  const handleEditSourceLink = (value) => {
+    setEditSourceLink(value);
+  }
+
+  const _deleteContent = async (id, token) => {
+    await deleteContent(id, token)
+    _getContents(token);
+  }
 
   useEffect(() => {
     const _loadSession = async () => {
@@ -109,59 +153,109 @@ const Contents = ({
     setSourceLink(value)
   }
   return (
-    <Container>
-        <ContentBox 
-          title="Conteúdos" 
-          fields={fields}
-          delete_function={_deleteContent}
-          contents={contents ? contents : []}
-          token={token}
-          />
-
-      <AddContentContainer className="shadow-sm">
-        <ContainerHeader>
-          <ContainerTitle>Adicionar Conteudo</ContainerTitle>
-        </ContainerHeader>
-        <ContainerForm>
-          <form id="addContent" onSubmit={handleSubmit(_createContent)}>
-            <InputBlock>
-              <label htmlFor="title">Title</label>
+    <>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Editar Conteúdo
+          </Modal.Title>  
+        </Modal.Header>  
+        <form id="editContent" onSubmit={handleSubmit(_editContent)}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="edit_title">Título</label>
               <input
                 type="text"
-                id="title"
-                value={title}
-                onChange={(e) => handleTitle(e.target.value)}
+                id="edit_title"
+                value={editTitle}
+                onChange={(e) => handleEditTitle(e.target.value)}
               />
-            </InputBlock>
+            </EditInput>
 
-            <InputBlock>
-              <label htmlFor="body">Body</label>
+            <EditInput>
+              <label htmlFor="edit_body">Conteúdo</label>
               <textarea
                 type="textarea"
-                id="body"
-                value={body}
-                onChange={(e) => handleBody(e.target.value)} />
-            </InputBlock>
+                id="edit_body"
+                value={editBody}
+                onChange={(e) => handleEditBody(e.target.value)}
+              />
+            </EditInput>
 
-            <InputBlock>
-              <label htmlFor="body">Source Link</label>
+            <EditInput>
+              <label htmlFor="edit_source_link">Link da Fonte</label>
               <input
                 type="text"
-                id="source_link"
-                value={source_link}
-                onChange={(e) => handleSourceLink(e.target.value)} />
-            </InputBlock>
+                id="edit_source_link"
+                value={editSourceLink}
+                onChange={(e) => handleEditSourceLink(e.target.value)}
+              />
+            </EditInput>
+          </Modal.Body>
+          <Modal.Footer>
+            <SubmitButton type="submit">Editar</SubmitButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Container>
+          <ContentBox 
+            title="Conteúdos" 
+            fields={fields}
+            delete_function={_deleteContent}
+            contents={contents ? contents : []}
+            token={token}
+            handleEdit={handleEdit}
+            />
+
+        <AddContentContainer className="shadow-sm">
+          <ContainerHeader>
+            <ContainerTitle>Adicionar Conteúdo</ContainerTitle>
+          </ContainerHeader>
+          <ContainerForm>
+            <form id="addContent" onSubmit={handleSubmit(_createContent)}>
+              <InputBlock>
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => handleTitle(e.target.value)}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="body">Body</label>
+                <textarea
+                  type="textarea"
+                  id="body"
+                  value={body}
+                  onChange={(e) => handleBody(e.target.value)} />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="body">Source Link</label>
+                <input
+                  type="text"
+                  id="source_link"
+                  value={source_link}
+                  onChange={(e) => handleSourceLink(e.target.value)} />
+              </InputBlock>
 
 
 
-            {/* <Input type="submit" className="shadow-sm" /> */}
-            <SubmitButton type="submit">
-              Criar Conteudo
-            </SubmitButton>
-          </form>
-        </ContainerForm>
-      </AddContentContainer>
-    </Container>
+              {/* <Input type="submit" className="shadow-sm" /> */}
+              <SubmitButton type="submit">
+                Criar Conteudo
+              </SubmitButton>
+            </form>
+          </ContainerForm>
+        </AddContentContainer>
+      </Container>
+    </>
   );
 }
 

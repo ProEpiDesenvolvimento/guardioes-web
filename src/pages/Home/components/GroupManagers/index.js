@@ -81,6 +81,9 @@ const GroupManagers = ({
 
   const loadGroupManagers = async (response) => {
     let aux_managers = [];
+    if (!response.group_managers) {
+      response.group_managers = [];
+    }
     response.group_managers.map(manager => {
       aux_managers.push({
         "id": manager.id,
@@ -89,7 +92,7 @@ const GroupManagers = ({
         "group_name": manager.group_name
       })
     })
-    setGroupManagers(aux_managers)
+    await setGroupManagers(aux_managers)
   }
 
   useEffect(() => {
@@ -107,7 +110,7 @@ const GroupManagers = ({
     },
     {
       key: "email",
-      value: "E-mail",
+      value: "Email",
     },
     {
       key: "group_name",
@@ -143,7 +146,7 @@ const GroupManagers = ({
               <InputBlock>
                 <label htmlFor="email">E-mail</label>
                 <Input
-                  type="text"
+                  type="email"
                   id="email"
                   value={managerEmail}
                   onChange={(e) => setManagerEmail(e.target.value)}

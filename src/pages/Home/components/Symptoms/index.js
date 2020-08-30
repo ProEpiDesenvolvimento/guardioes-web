@@ -69,6 +69,8 @@ const Symptoms = ({
 
   const loadSymptoms = async (response) => {
     let aux_symptoms = [];
+    if (!response.symptoms)
+      response.symptoms = [];
     response.symptoms.map(symptom => {
       aux_symptoms.push({
         "id": symptom.id,
