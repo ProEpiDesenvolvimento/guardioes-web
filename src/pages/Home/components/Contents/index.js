@@ -79,7 +79,7 @@ const Contents = ({
         body,
         content_type,
         source_link,
-        app_id: 17
+        app_id: user.app_id
       }
     }
     console.log(data)
@@ -96,7 +96,7 @@ const Contents = ({
       "body": editBody,
       content_type,
       "source_link": editSourceLink,
-      app_id: 17
+      app_id: user.app_id
     };
     await editContent(editingContent.id, data, token);
     setModalShow(false);
