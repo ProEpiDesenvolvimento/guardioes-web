@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import getAllGroupManagers from './services/getAllGroupManagers'
 import createGroupManager from './services/createGroupManager'
 import deleteGroupManager from './services/deleteGroupManager'
+import editGroupManager from './services/editGroupManager';
 
 import {
   Container,
@@ -22,10 +23,14 @@ import {
   InputBlock,
   Input,
   SubmitButton,
-  Label
+  Label,
+  EditInput,
+  EditButton,
+  EditCheckbox,
+  EditCheckboxInput
 } from './styles';
 import { useForm } from "react-hook-form";
-
+import Modal from 'react-bootstrap/Modal';
 import ContentBox from '../ContentBox';
 
 const GroupManagers = ({
@@ -44,6 +49,14 @@ const GroupManagers = ({
   const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState(false)
   const [groupManagerLengthIdentificationCode, setGroupManagerLengthIdentificationCode] = useState(0)
   const [groupManagerPassword, setGroupManagerPassword] = useState("")
+  const [modalShow, setModalShow] = useState(false);
+  const [editingGroupManager, setEditingGroupManager] = useState({});
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editTwitter, setEditTwitter] = useState("");
+  const [editGroup, setEditGroup] = useState("");
+  const [editIDCode, setEditIDCode] = useState(false);
+  const [editLengthIDCode, setEditLengthIDCode] = useState(0);
 
   const _createGroupManager = async () => {
     const data = {
@@ -72,6 +85,58 @@ const GroupManagers = ({
   const _deleteGroupManager = async (id, token) => {
     await deleteGroupManager(id, token)
     _getAllGroupManagers(token)
+  }
+
+  const _editGroupManager = async () => {
+    const data = {
+      "group_manager": {
+        "email": editEmail,
+        "name": editName,
+        "group_name": editGroup,
+        "twitter": editTwitter,
+        "app_id": 1,
+        "require_id": editIDCode,
+        "id_code_length": editIDCode ? editLengthIDCode : null
+      }
+    };
+    await editGroupManager(editingGroupManager.id, data, token);
+    setModalShow(false);
+    _getAllGroupManagers(token);
+  }
+
+  const handleEdit = (content) => {
+    setEditingGroupManager(content);
+    setEditName(content.name);
+    setEditEmail(content.email);
+    setEditGroup(content.group_name);
+    setEditTwitter(content.twitter);
+    setEditIDCode(content.require_id);
+    setEditLengthIDCode(content.id_code_length);
+    setModalShow(!modalShow);
+  }
+
+  const handleEditName = (value) => {
+    setEditName(value);
+  }
+
+  const handleEditEmail = (value) => {
+    setEditEmail(value);
+  }
+
+  const handleEditGroup = (value) => {
+    setEditGroup(value);
+  }
+
+  const handleEditTwitter = (value) => {
+    setEditTwitter(value);
+  }
+
+  const handleEditIDCode = (value) => {
+    setEditIDCode(value);
+  }
+
+  const handleEditLengthIDCode = (value) => {
+    setEditLengthIDCode(value);
   }
 
   const _getAllGroupManagers = async (token) => {
@@ -118,94 +183,174 @@ const GroupManagers = ({
     }];
 
   return (
-    <Container>
-      <ContentBox
-        title="Gerentes de Instituições"
-        token={token}
-        contents={groupManagers ? groupManagers : []}
-        fields={fields}
-        delete_function={_deleteGroupManager}
-      />
+    <>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Editar Gerente de Instituição
+          </Modal.Title>
+        </Modal.Header>
+        <form id="editGroupManager" onSubmit={handleSubmit(_editGroupManager)}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="edit_name">Nome</label>
+              <input
+                type="text"
+                id="edit_name"
+                value={editName}
+                onChange={(e) => handleEditName(e.target.value)}
+              />
+            </EditInput>
 
-      <AddAppContainer className="shadow-sm">
-        <ContainerHeader>
-          <ContainerTitle>Adicionar Gerente</ContainerTitle>
-        </ContainerHeader>
-        <ContainerForm>
-          <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>
-            <Inputs>
-              <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <Input
-                  type="text"
-                  id="name"
-                  value={groupManagerName}
-                  onChange={(e) => setGroupManagerName(e.target.value)}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="email">E-mail</label>
-                <Input
-                  type="text"
-                  id="email"
-                  value={groupManagerEmail}
-                  onChange={(e) => setGroupManagerEmail(e.target.value)}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="group">Grupo</label>
-                <Input
-                  type="text"
-                  id="group"
-                  value={groupManagerGroup}
-                  onChange={(e) => setGroupManagerGroup(e.target.value)}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="twitter">Twitter</label>
-                <Input
-                  type="text"
-                  id="twitter"
-                  value={groupManagerTwitter}
-                  onChange={(e) => setGroupManagerTwitter(e.target.value)}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="password">Senha</label>
-                <Input
-                  type="password"
-                  id="password"
-                  value={groupManagerPassword}
-                  onChange={(e) => setGroupManagerPassword(e.target.value)}
-                />
-              </InputBlock>
-              <CheckboxInputBlock>
-                <Label htmlFor="id_code">Código de Identificação</Label>
-                <CheckboxInput
-                  type="checkbox"
-                  id="id_code"
-                  value={groupManagerIdentificationCode}
-                  onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
-                />
-              </CheckboxInputBlock>
-              {groupManagerIdentificationCode ? <InputBlock>
-                <label htmlFor="len_id_code">Quantidade de caracteres</label>
-                <Input
-                  type="text"
-                  id="len_id_code"
-                  value={groupManagerLengthIdentificationCode}
-                  onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
-                />
-              </InputBlock>
-                : null}
-            </Inputs>
-            <SubmitButton type="submit">
-              Adicionar
-            </SubmitButton>
-          </Form>
-        </ContainerForm>
-      </AddAppContainer>
-    </Container >
+            <EditInput>
+              <label htmlFor="edit_email">E-mail</label>
+              <input
+                type="email"
+                id="edit_email"
+                value={editEmail}
+                onChange={(e) => handleEditEmail(e.targer.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_group">Grupo</label>
+              <input
+                type="text"
+                id="edit_group"
+                value={editGroup}
+                onChange={(e) => handleEditGroup(e.targer.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_twitter">Twitter</label>
+              <input
+                type="text"
+                id="edit_twitter"
+                value={editTwitter}
+                onChange={(e) => handleEditTwitter(e.targer.value)}
+              />
+            </EditInput>
+
+            <EditCheckbox>
+              <label htmlFor="edit_id_code">Código de Identificação</label>
+              <EditCheckboxInput
+                type="checkbox"
+                id="edit_id_code"
+                value={editIDCode}
+                onChange={() => handleEditIDCode(!editIDCode)}
+              />
+            </EditCheckbox>
+
+            {editIDCode ? <EditInput>
+                  <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
+                  <input
+                    type="number"
+                    id="edit_len_id_code"
+                    value={editLengthIDCode}
+                    onChange={(e) => handleEditLengthIDCode(e.target.value)}
+                  />
+              </EditInput> : null}
+          </Modal.Body>
+          <Modal.Footer>
+            <EditButton type="submit">Editar</EditButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Container>
+        <ContentBox
+          title="Gerentes de Instituições"
+          token={token}
+          contents={groupManagers ? groupManagers : []}
+          fields={fields}
+          delete_function={_deleteGroupManager}
+          handleEdit={handleEdit}
+        />
+
+        <AddAppContainer className="shadow-sm">
+          <ContainerHeader>
+            <ContainerTitle>Adicionar Gerente</ContainerTitle>
+          </ContainerHeader>
+          <ContainerForm>
+            <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>
+              <Inputs>
+                <InputBlock>
+                  <label htmlFor="name">Nome</label>
+                  <Input
+                    type="text"
+                    id="name"
+                    value={groupManagerName}
+                    onChange={(e) => setGroupManagerName(e.target.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="email">E-mail</label>
+                  <Input
+                    type="text"
+                    id="email"
+                    value={groupManagerEmail}
+                    onChange={(e) => setGroupManagerEmail(e.target.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="group">Grupo</label>
+                  <Input
+                    type="text"
+                    id="group"
+                    value={groupManagerGroup}
+                    onChange={(e) => setGroupManagerGroup(e.target.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="twitter">Twitter</label>
+                  <Input
+                    type="text"
+                    id="twitter"
+                    value={groupManagerTwitter}
+                    onChange={(e) => setGroupManagerTwitter(e.target.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="password">Senha</label>
+                  <Input
+                    type="password"
+                    id="password"
+                    value={groupManagerPassword}
+                    onChange={(e) => setGroupManagerPassword(e.target.value)}
+                  />
+                </InputBlock>
+                <CheckboxInputBlock>
+                  <Label htmlFor="id_code">Código de Identificação</Label>
+                  <CheckboxInput
+                    type="checkbox"
+                    id="id_code"
+                    value={groupManagerIdentificationCode}
+                    onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
+                  />
+                </CheckboxInputBlock>
+                {groupManagerIdentificationCode ? <InputBlock>
+                  <label htmlFor="len_id_code">Quantidade de caracteres</label>
+                  <Input
+                    type="text"
+                    id="len_id_code"
+                    value={groupManagerLengthIdentificationCode}
+                    onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
+                  />
+                </InputBlock>
+                  : null}
+              </Inputs>
+              <SubmitButton type="submit">
+                Adicionar
+              </SubmitButton>
+            </Form>
+          </ContainerForm>
+        </AddAppContainer>
+      </Container >
+    </>
   );
 }
 
