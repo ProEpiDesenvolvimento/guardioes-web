@@ -20,7 +20,8 @@ const initialState = {
 		symptoms: false,
 		syndromes: false,
 		contents: false,
-		dashboard: false
+		dashboard: false,
+		group_managers: false
 	},
 	apps: [],
 	contents: [],

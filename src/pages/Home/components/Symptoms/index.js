@@ -22,7 +22,6 @@ import {
   SubmitButton
 } from './styles';
 import { useForm } from "react-hook-form";
-
 import ContentBox from '../ContentBox';
 
 const Symptoms = ({
