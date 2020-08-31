@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import {
-  setSymptoms
+  setSymptoms, setToken
 } from 'actions/';
 
 import { bindActionCreators } from 'redux';
@@ -23,17 +22,15 @@ import {
   SubmitButton
 } from './styles';
 import { useForm } from "react-hook-form";
-
 import ContentBox from '../ContentBox';
 
 const Symptoms = ({
   token,
   user,
   symptoms,
-  setSymptoms
+  setSymptoms,
+  setToken
 }) => {
-
-  // const [symptoms, setSymptoms] = useState()
 
   const { handleSubmit } = useForm()
   const [symptomName, setSymptomName] = useState("")
@@ -54,12 +51,12 @@ const Symptoms = ({
     const response = await createSymptom(data, token)
     setSymptomName("")
     setSymptomDescription("")
-    _getAllSymptoms(response)
+    _getAllSymptoms(token)
   }
 
   const _deleteSymptom = async (id, token) => {
     const response = await deleteSymptom(id, token)
-    _getAllSymptoms(response)
+    _getAllSymptoms(token)
   }
 
   const _getAllSymptoms = async (token) => {
@@ -81,6 +78,7 @@ const Symptoms = ({
 
   useEffect(() => {
     _getAllSymptoms(token)
+    setToken(token)
   }, []);
 
   const fields = [{
@@ -150,7 +148,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setSymptoms
+    setSymptoms,
+    setToken
   },
   dispatch,
 );
@@ -159,5 +158,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Symptoms);
-
-// export default Symptoms;

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import {
-  setGroupManagers
+  setGroupManagers, setToken
 } from 'actions/';
 
 import { bindActionCreators } from 'redux';
@@ -33,44 +32,45 @@ const GroupManagers = ({
   token,
   user,
   groupManagers,
-  setGroupManagers
+  setGroupManagers,
+  setToken
 }) => {
 
   const { handleSubmit } = useForm()
-  const [managerName, setManagerName] = useState("")
-  const [managerEmail, setManagerEmail] = useState("")
-  const [managerTwitter, setManagerTwitter] = useState("")
-  const [managerGroup, setManagerGroup] = useState("")
-  const [managerIdentificationCode, setManagerIdentificationCode] = useState(false)
-  const [managerLengthIdentificationCode, setManagerLengthIdentificationCode] = useState(0)
-  const [managerPassword, setManagerPassword] = useState("")
+  const [groupManagerName, setGroupManagerName] = useState("")
+  const [groupManagerEmail, setGroupManagerEmail] = useState("")
+  const [groupManagerTwitter, setGroupManagerTwitter] = useState("")
+  const [groupManagerGroup, setGroupManagerGroup] = useState("")
+  const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState(false)
+  const [groupManagerLengthIdentificationCode, setGroupManagerLengthIdentificationCode] = useState(0)
+  const [groupManagerPassword, setGroupManagerPassword] = useState("")
 
   const _createGroupManager = async () => {
     const data = {
       "group_manager": {
-        "password": managerPassword,
-        "email": managerEmail,
-        "name": managerName,
-        "group_name": managerGroup,
-        "twitter": managerTwitter,
+        "password": groupManagerPassword,
+        "email": groupManagerEmail,
+        "name": groupManagerName,
+        "group_name": groupManagerGroup,
+        "twitter": groupManagerTwitter,
         "app_id": 1,
-        "require_id": managerIdentificationCode,
-        "id_code_length": managerIdentificationCode ? managerLengthIdentificationCode : undefined
+        "require_id": groupManagerIdentificationCode,
+        "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : undefined
       }
     }
-    const reponse = await createGroupManager(data, token)
-    setManagerName("")
-    setManagerPassword("")
-    setManagerEmail("")
-    setManagerGroup("")
-    setManagerIdentificationCode(false)
-    setManagerLengthIdentificationCode(0)
-    setManagerTwitter("")
+    await createGroupManager(data, token)
+    setGroupManagerName("")
+    setGroupManagerPassword("")
+    setGroupManagerEmail("")
+    setGroupManagerGroup("")
+    setGroupManagerIdentificationCode(false)
+    setGroupManagerLengthIdentificationCode(0)
+    setGroupManagerTwitter("")
     _getAllGroupManagers(token);
   }
 
   const _deleteGroupManager = async (id, token) => {
-    deleteGroupManager(id, token)
+    await deleteGroupManager(id, token)
     _getAllGroupManagers(token)
   }
 
@@ -80,20 +80,23 @@ const GroupManagers = ({
   }
 
   const loadGroupManagers = async (response) => {
-    let aux_managers = [];
-    response.group_managers.map(manager => {
-      aux_managers.push({
-        "id": manager.id,
-        "name": manager.name,
-        "email": manager.email,
-        "group_name": manager.group_name
+    let aux_group_managers = [];
+    response.group_managers.map(group_manager => {
+      aux_group_managers.push({
+        "id": group_manager.id,
+        "name": group_manager.name,
+        "email": group_manager.email,
+        "group_name": group_manager.group_name
       })
     })
-    setGroupManagers(aux_managers)
+    console.log(groupManagers, aux_group_managers)
+    await setGroupManagers(aux_group_managers)
+    console.log(groupManagers)
   }
 
   useEffect(() => {
     _getAllGroupManagers(token)
+    setToken(token)
   }, []);
 
   const fields =
@@ -117,7 +120,7 @@ const GroupManagers = ({
   return (
     <Container>
       <ContentBox
-        title="Gerentes"
+        title="Gerentes de Instituições"
         token={token}
         contents={groupManagers ? groupManagers : []}
         fields={fields}
@@ -136,8 +139,8 @@ const GroupManagers = ({
                 <Input
                   type="text"
                   id="name"
-                  value={managerName}
-                  onChange={(e) => setManagerName(e.target.value)}
+                  value={groupManagerName}
+                  onChange={(e) => setGroupManagerName(e.target.value)}
                 />
               </InputBlock>
               <InputBlock>
@@ -145,8 +148,8 @@ const GroupManagers = ({
                 <Input
                   type="text"
                   id="email"
-                  value={managerEmail}
-                  onChange={(e) => setManagerEmail(e.target.value)}
+                  value={groupManagerEmail}
+                  onChange={(e) => setGroupManagerEmail(e.target.value)}
                 />
               </InputBlock>
               <InputBlock>
@@ -154,8 +157,8 @@ const GroupManagers = ({
                 <Input
                   type="text"
                   id="group"
-                  value={managerGroup}
-                  onChange={(e) => setManagerGroup(e.target.value)}
+                  value={groupManagerGroup}
+                  onChange={(e) => setGroupManagerGroup(e.target.value)}
                 />
               </InputBlock>
               <InputBlock>
@@ -163,8 +166,8 @@ const GroupManagers = ({
                 <Input
                   type="text"
                   id="twitter"
-                  value={managerTwitter}
-                  onChange={(e) => setManagerTwitter(e.target.value)}
+                  value={groupManagerTwitter}
+                  onChange={(e) => setGroupManagerTwitter(e.target.value)}
                 />
               </InputBlock>
               <InputBlock>
@@ -172,8 +175,8 @@ const GroupManagers = ({
                 <Input
                   type="password"
                   id="password"
-                  value={managerPassword}
-                  onChange={(e) => setManagerPassword(e.target.value)}
+                  value={groupManagerPassword}
+                  onChange={(e) => setGroupManagerPassword(e.target.value)}
                 />
               </InputBlock>
               <CheckboxInputBlock>
@@ -181,17 +184,17 @@ const GroupManagers = ({
                 <CheckboxInput
                   type="checkbox"
                   id="id_code"
-                  value={managerIdentificationCode}
-                  onChange={(e) => setManagerIdentificationCode(!managerIdentificationCode)}
+                  value={groupManagerIdentificationCode}
+                  onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
                 />
               </CheckboxInputBlock>
-              {managerIdentificationCode ? <InputBlock>
+              {groupManagerIdentificationCode ? <InputBlock>
                 <label htmlFor="len_id_code">Quantidade de caracteres</label>
                 <Input
                   type="text"
                   id="len_id_code"
-                  value={managerLengthIdentificationCode}
-                  onChange={(e) => setManagerLengthIdentificationCode(e.target.value)}
+                  value={groupManagerLengthIdentificationCode}
+                  onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
                 />
               </InputBlock>
                 : null}
@@ -209,12 +212,13 @@ const GroupManagers = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  managers: state.user.managers
+  groupManagers: state.user.group_managers
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setGroupManagers
+    setGroupManagers,
+    setToken
   },
   dispatch,
 );

@@ -154,39 +154,39 @@ const Apps = ({
           handleEdit={handleEdit} />
 
 
-      <AddAppContainer className="shadow-sm">
-        <ContainerHeader>
-          <ContainerTitle>Adicionar App</ContainerTitle>
-        </ContainerHeader>
-        <ContainerForm>
-          <form id="addApp" onSubmit={handleSubmit(_createApp)}>
-            <InputBlock>
-              <label htmlFor="name">Nome</label>
-              <input
-                type="text"
-                id="name"
-                value={appName}
-                onChange={(e) => handleAppName(e.target.value)}
-              />
-            </InputBlock>
+        <AddAppContainer className="shadow-sm">
+          <ContainerHeader>
+            <ContainerTitle>Adicionar App</ContainerTitle>
+          </ContainerHeader>
+          <ContainerForm>
+            <form id="addApp" onSubmit={handleSubmit(_createApp)}>
+              <InputBlock>
+                <label htmlFor="name">Nome</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={appName}
+                  onChange={(e) => handleAppName(e.target.value)}
+                />
+              </InputBlock>
 
-            <InputBlock>
-              <label htmlFor="country">País</label>
-              <input
-                type="text"
-                id="country"
-                value={ownerCountry}
-                onChange={(e) => handleOwnerCountry(e.target.value)} />
-            </InputBlock>
+              <InputBlock>
+                <label htmlFor="country">País</label>
+                <input
+                  type="text"
+                  id="country"
+                  value={ownerCountry}
+                  onChange={(e) => handleOwnerCountry(e.target.value)} />
+              </InputBlock>
 
-            {/* <Input type="submit" className="shadow-sm" /> */}
-            <SubmitButton type="submit">
-              Criar App
+              {/* <Input type="submit" className="shadow-sm" /> */}
+              <SubmitButton type="submit">
+                Criar App
             </SubmitButton>
-          </form>
-        </ContainerForm>
-      </AddAppContainer>
-    </Container>
+            </form>
+          </ContainerForm>
+        </AddAppContainer>
+      </Container>
     </>
   );
 }
