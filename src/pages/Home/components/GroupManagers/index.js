@@ -57,6 +57,7 @@ const GroupManagers = ({
   const [editGroup, setEditGroup] = useState("");
   const [editIDCode, setEditIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(0);
+  const [editPassword, setEditPassword] = useState("");
 
   const _createGroupManager = async () => {
     const data = {
@@ -90,6 +91,7 @@ const GroupManagers = ({
   const _editGroupManager = async () => {
     const data = {
       "group_manager": {
+        "password": editPassword,
         "email": editEmail,
         "name": editName,
         "group_name": editGroup,
@@ -109,9 +111,6 @@ const GroupManagers = ({
     setEditName(content.name);
     setEditEmail(content.email);
     setEditGroup(content.group_name);
-    setEditTwitter(content.twitter);
-    setEditIDCode(content.require_id);
-    setEditLengthIDCode(content.id_code_length);
     setModalShow(!modalShow);
   }
 
@@ -137,6 +136,10 @@ const GroupManagers = ({
 
   const handleEditLengthIDCode = (value) => {
     setEditLengthIDCode(value);
+  }
+
+  const handleEditPassword = (value) => {
+    setEditPassword(value);
   }
 
   const _getAllGroupManagers = async (token) => {
@@ -211,7 +214,17 @@ const GroupManagers = ({
                 type="email"
                 id="edit_email"
                 value={editEmail}
-                onChange={(e) => handleEditEmail(e.targer.value)}
+                onChange={(e) => handleEditEmail(e.target.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_password">Senha</label>
+              <input
+                type="password"
+                id="edit_password"
+                value={editPassword}
+                onChange={(e) => handleEditPassword(e.target.value)}
               />
             </EditInput>
 
@@ -221,7 +234,7 @@ const GroupManagers = ({
                 type="text"
                 id="edit_group"
                 value={editGroup}
-                onChange={(e) => handleEditGroup(e.targer.value)}
+                onChange={(e) => handleEditGroup(e.target.value)}
               />
             </EditInput>
 
@@ -231,7 +244,7 @@ const GroupManagers = ({
                 type="text"
                 id="edit_twitter"
                 value={editTwitter}
-                onChange={(e) => handleEditTwitter(e.targer.value)}
+                onChange={(e) => handleEditTwitter(e.target.value)}
               />
             </EditInput>
 
@@ -251,6 +264,7 @@ const GroupManagers = ({
                     type="number"
                     id="edit_len_id_code"
                     value={editLengthIDCode}
+                    min="1"
                     onChange={(e) => handleEditLengthIDCode(e.target.value)}
                   />
               </EditInput> : null}
