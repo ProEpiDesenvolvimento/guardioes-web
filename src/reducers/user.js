@@ -1,10 +1,12 @@
 import {
-    SET_EMAIL, 
-    SET_TOKEN, 
+	SET_EMAIL,
+	SET_TOKEN,
 	SET_USER,
 	SET_ADMIN_CATEGORIES,
 	SET_APPS,
-	SET_CONTENTS
+	SET_CONTENTS,
+	SET_SYMPTOMS,
+	SET_GROUP_MANAGERS
 } from 'constants/action-types';
 
 const initialState = {
@@ -18,10 +20,13 @@ const initialState = {
 		symptoms: false,
 		syndromes: false,
 		contents: false,
-		dashboard: false
+		dashboard: false,
+		group_managers: false
 	},
 	apps: [],
-	contents: []
+	contents: [],
+	symptoms: [],
+	group_managers: []
 };
 
 const User = (state = initialState, action) => {
@@ -40,7 +45,7 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				token: action.payload,
-			};	
+			};
 		case SET_ADMIN_CATEGORIES:
 			return {
 				...state,
@@ -55,6 +60,16 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				contents: action.payload
+			};
+		case SET_SYMPTOMS:
+			return {
+				...state,
+				symptoms: action.payload
+			};
+		case SET_GROUP_MANAGERS:
+			return {
+				...state,
+				group_managers: action.payload
 			};
 		default:
 			return {

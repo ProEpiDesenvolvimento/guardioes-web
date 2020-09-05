@@ -49,10 +49,10 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
                                 ))}
                                 <td>
                                     <Link to="/panel">
-                                        <ContentBoxTableIcon 
-                                            src={editIcon} 
+                                        <ContentBoxTableIcon
+                                            src={editIcon}
                                             alt="Editar"
-                                            onClick={() => {setEditingContent(content)}}
+                                            onClick={() => { setEditingContent(content) }}
                                         />
                                     </Link>
                                 </td>
