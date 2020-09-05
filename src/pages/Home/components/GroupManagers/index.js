@@ -80,19 +80,21 @@ const GroupManagers = ({
   }
 
   const loadGroupManagers = async (response) => {
-    let aux_managers = [];
+    let aux_group_managers = [];
     if (!response.group_managers) {
       response.group_managers = [];
     }
-    response.group_managers.map(manager => {
-      aux_managers.push({
-        "id": manager.id,
-        "name": manager.name,
-        "email": manager.email,
-        "group_name": manager.group_name
+    response.group_managers.map(group_manager => {
+      aux_group_managers.push({
+        "id": group_manager.id,
+        "name": group_manager.name,
+        "email": group_manager.email,
+        "group_name": group_manager.group_name
       })
     })
-    await setGroupManagers(aux_managers)
+    console.log(groupManagers, aux_group_managers)
+    await setGroupManagers(aux_group_managers)
+    console.log(groupManagers)
   }
 
   useEffect(() => {

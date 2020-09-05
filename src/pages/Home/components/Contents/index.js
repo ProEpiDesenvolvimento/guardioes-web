@@ -8,7 +8,8 @@ import {
     InputBlock,
     Input,
     SubmitButton,
-    EditInput
+    EditInput,
+    TextArea
   } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
@@ -177,11 +178,13 @@ const Contents = ({
 
             <EditInput>
               <label htmlFor="edit_body">Conteúdo</label>
-              <textarea
-                type="textarea"
+              <TextArea
+                type="text"
                 id="edit_body"
                 value={editBody}
                 onChange={(e) => handleEditBody(e.target.value)}
+                rows="4"
+                cols="50"
               />
             </EditInput>
 
@@ -230,7 +233,6 @@ const Contents = ({
               <InputBlock>
                 <label htmlFor="body">Body</label>
                 <textarea
-                  type="textarea"
                   id="body"
                   value={body}
                   onChange={(e) => handleBody(e.target.value)} />
