@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import getAllSymptoms from './services/getAllSymptoms'
 import createSymptom from './services/createSymptom'
 import deleteSymptom from './services/deleteSymptom'
+import editSymptom from './services/editSymptom';
 
 import {
   Container,
@@ -19,10 +20,14 @@ import {
   Inputs,
   InputBlock,
   Input,
-  SubmitButton
+  SubmitButton,
+  EditInput,
+  TextArea,
+  EditButton
 } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
+import Modal from 'react-bootstrap/Modal';
 
 const Symptoms = ({
   token,
@@ -35,6 +40,10 @@ const Symptoms = ({
   const { handleSubmit } = useForm()
   const [symptomName, setSymptomName] = useState("")
   const [symptomDescription, setSymptomDescription] = useState("")
+  const [modalShow, setModalShow] = useState(false);
+  const [editingSymptom, setEditingSymptom] = useState({});
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
 
   const _createSymptom = async () => {
     const data = {
@@ -62,6 +71,35 @@ const Symptoms = ({
   const _getAllSymptoms = async (token) => {
     const response = await getAllSymptoms(token)
     loadSymptoms(response)
+  }
+
+  const _editSymptom = async () => {
+    const data = {
+      "description": editName,
+      "code": editName.trim().replace(' ', ''),
+      "priority": 1,
+      "details": editDescription,
+      "message": null,
+      "app_id": 1
+    };
+    await editSymptom(editingSymptom.id, data, token);
+    setModalShow(false);
+    _getAllSymptoms(token);
+  }
+
+  const handleEdit = (content) => {
+    setEditingSymptom(content);
+    setEditName(content.name);
+    setEditDescription(content.description);
+    setModalShow(!modalShow);
+  }
+
+  const handleEditName = (value) => {
+    setEditName(value);
+  }
+
+  const handleEditDescription = (value) => {
+    setEditDescription(value);
   }
 
   const loadSymptoms = async (response) => {
@@ -95,48 +133,90 @@ const Symptoms = ({
   }];
 
   return (
-    <Container>
-      <ContentBox
-        title="Sintomas"
-        token={token}
-        contents={symptoms ? symptoms : []}
-        fields={fields}
-        delete_function={_deleteSymptom}
-      />
+    <>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Editar Sintoma
+          </Modal.Title>
+        </Modal.Header>
+        <form id="editSymptom" onSubmit={handleSubmit(_editSymptom)}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="edit_name">Nome</label>
+              <input
+                type="text"
+                id="edit_name"
+                value={editName}
+                onChange={(e) => handleEditName(e.target.value)}
+              />
+            </EditInput>
 
-      <AddAppContainer className="shadow-sm">
-        <ContainerHeader>
-          <ContainerTitle>Adicionar Sintoma</ContainerTitle>
-        </ContainerHeader>
-        <ContainerForm>
-          <Form id="addApp" onSubmit={handleSubmit(_createSymptom)}>
-            <Inputs>
-              <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <Input
-                  type="text"
-                  id="name"
-                  value={symptomName}
-                  onChange={(e) => setSymptomName(e.target.value)}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="name">Descrição</label>
-                <Input
-                  type="text"
-                  id="description"
-                  value={symptomDescription}
-                  onChange={(e) => setSymptomDescription(e.target.value)}
-                />
-              </InputBlock>
-            </Inputs>
-            <SubmitButton type="submit">
-              Adicionar
-            </SubmitButton>
-          </Form>
-        </ContainerForm>
-      </AddAppContainer>
-    </Container >
+            <EditInput>
+              <label htmlFor="edit_description">Descrição</label>
+              <TextArea
+                type="text"
+                id="edit_description"
+                value={editDescription}
+                onChange={(e) => handleEditDescription(e.target.value)}
+                rows="4"
+                cols="50"
+              />
+            </EditInput>
+          </Modal.Body>
+          <Modal.Footer>
+            <EditButton type="submit">Editar</EditButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Container>
+        <ContentBox
+          title="Sintomas"
+          token={token}
+          contents={symptoms ? symptoms : []}
+          fields={fields}
+          delete_function={_deleteSymptom}
+          handleEdit={handleEdit}
+        />
+
+        <AddAppContainer className="shadow-sm">
+          <ContainerHeader>
+            <ContainerTitle>Adicionar Sintoma</ContainerTitle>
+          </ContainerHeader>
+          <ContainerForm>
+            <Form id="addApp" onSubmit={handleSubmit(_createSymptom)}>
+              <Inputs>
+                <InputBlock>
+                  <label htmlFor="name">Nome</label>
+                  <Input
+                    type="text"
+                    id="name"
+                    value={symptomName}
+                    onChange={(e) => setSymptomName(e.target.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="name">Descrição</label>
+                  <Input
+                    type="text"
+                    id="description"
+                    value={symptomDescription}
+                    onChange={(e) => setSymptomDescription(e.target.value)}
+                  />
+                </InputBlock>
+              </Inputs>
+              <SubmitButton type="submit">
+                Adicionar
+              </SubmitButton>
+            </Form>
+          </ContainerForm>
+        </AddAppContainer>
+      </Container >
+    </>
   );
 }
 
