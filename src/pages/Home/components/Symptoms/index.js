@@ -40,10 +40,12 @@ const Symptoms = ({
   const { handleSubmit } = useForm()
   const [symptomName, setSymptomName] = useState("")
   const [symptomDescription, setSymptomDescription] = useState("")
-  const [modalShow, setModalShow] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
   const [editingSymptom, setEditingSymptom] = useState({});
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [symptomShow, setSymptomShow] = useState({});
+  const [modalShow, setModalShow] = useState(false);
 
   const _createSymptom = async () => {
     const data = {
@@ -83,15 +85,20 @@ const Symptoms = ({
       "app_id": 1
     };
     await editSymptom(editingSymptom.id, data, token);
-    setModalShow(false);
+    setModalEdit(false);
     _getAllSymptoms(token);
+  }
+
+  const handleShow = (content) => {
+    setSymptomShow(content);
+    setModalShow(!modalShow);
   }
 
   const handleEdit = (content) => {
     setEditingSymptom(content);
     setEditName(content.name);
     setEditDescription(content.description);
-    setModalShow(!modalShow);
+    setModalEdit(!modalEdit);
   }
 
   const handleEditName = (value) => {
@@ -128,10 +135,6 @@ const Symptoms = ({
   {
     key: "name",
     value: "Nome",
-  },
-  {
-    key: "description",
-    value: "Descrição"
   }];
 
   return (
@@ -139,6 +142,55 @@ const Symptoms = ({
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Sintoma
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={symptomShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={symptomShow.name}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Descrição</label>
+            <TextArea
+              className="text-dark"
+              type="text"
+              value={symptomShow.description}
+              disabled
+              rows="4"
+              cols="50"
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <EditButton onClick={() => setModalShow(false)}>Voltar</EditButton>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={modalEdit}
+        onHide={() => setModalEdit(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -183,6 +235,7 @@ const Symptoms = ({
           fields={fields}
           delete_function={_deleteSymptom}
           handleEdit={handleEdit}
+          handleShow={handleShow}
         />
 
         <AddAppContainer className="shadow-sm">

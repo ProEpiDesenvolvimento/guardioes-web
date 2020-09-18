@@ -115,4 +115,8 @@ export const TextArea = styled.textarea`
     border: solid 2px #007bff;
     padding: 4px 4px 9px 9px;
   }
+
+  &:disabled {
+    background: #f8f9fa;
+  }
 `;

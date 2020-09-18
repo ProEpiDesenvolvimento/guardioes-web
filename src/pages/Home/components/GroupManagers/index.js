@@ -49,7 +49,7 @@ const GroupManagers = ({
   const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState(false)
   const [groupManagerLengthIdentificationCode, setGroupManagerLengthIdentificationCode] = useState(0)
   const [groupManagerPassword, setGroupManagerPassword] = useState("")
-  const [modalShow, setModalShow] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
   const [editingGroupManager, setEditingGroupManager] = useState({});
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
@@ -58,6 +58,8 @@ const GroupManagers = ({
   const [editIDCode, setEditIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(0);
   const [editPassword, setEditPassword] = useState("");
+  const [groupManagerShow, setGroupManagerShow] = useState({});
+  const [modalShow, setModalShow] = useState(false);
 
   const _createGroupManager = async () => {
     const data = {
@@ -102,8 +104,13 @@ const GroupManagers = ({
       }
     };
     await editGroupManager(editingGroupManager.id, data, token);
-    setModalShow(false);
+    setModalEdit(false);
     _getAllGroupManagers(token);
+  }
+
+  const handleShow = (content) => {
+    setGroupManagerShow(content);
+    setModalShow(!modalShow);
   }
 
   const handleEdit = (content) => {
@@ -111,7 +118,7 @@ const GroupManagers = ({
     setEditName(content.name);
     setEditEmail(content.email);
     setEditGroup(content.group_name);
-    setModalShow(!modalShow);
+    setModalEdit(!modalEdit);
   }
 
   const handleEditName = (value) => {
@@ -178,14 +185,6 @@ const GroupManagers = ({
     {
       key: "name",
       value: "Nome",
-    },
-    {
-      key: "email",
-      value: "Email",
-    },
-    {
-      key: "group_name",
-      value: "Grupo",
     }];
 
   return (
@@ -193,6 +192,63 @@ const GroupManagers = ({
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Gerente de Instituição
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.name}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>E-mail</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.email}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Grupo</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.group_name}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <EditButton onClick={() => setModalShow(false)}>Voltar</EditButton>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={modalEdit}
+        onHide={() => setModalEdit(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -286,6 +342,7 @@ const GroupManagers = ({
           fields={fields}
           delete_function={_deleteGroupManager}
           handleEdit={handleEdit}
+          handleShow={handleShow}
         />
 
         <AddAppContainer className="shadow-sm">
