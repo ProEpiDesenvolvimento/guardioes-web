@@ -16,7 +16,8 @@ import {
   ContainerForm,
   InputBlock,
   EditInput,
-  SubmitButton
+  SubmitButton,
+  Input
 } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';

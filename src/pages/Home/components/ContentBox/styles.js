@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    height: 24rem;
+    height: 26rem;
     width: 90%;
     align-content: center;
     margin: 2.5% 5%;
@@ -22,7 +22,7 @@ export const ContentBoxHeader = styled.div`
     justify-content: center;
     align-items: center;
     background-color: #5DD39E;
-    height: 60px;
+    height: 70px;
     border-radius: 10px 10px 10px 10px;
     border-bottom: 2px solid rgba(0,0,0,0.125);
 `;
@@ -38,7 +38,7 @@ export const ContentBoxTitle = styled.h3`
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;
-    max-height: 18rem;
+    max-height: 20rem;
 `;
 
 export const ContentBoxTableHeader = styled.th`
