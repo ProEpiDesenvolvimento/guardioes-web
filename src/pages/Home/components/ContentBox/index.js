@@ -14,7 +14,7 @@ import {
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
 
-const ContentBox = ({ title, fields, contents, delete_function, token, handleEdit }) => {
+const ContentBox = ({ title, fields, contents, delete_function, token, handleEdit, handleShow }) => {
 
     const _deleteApp = (id, token) => {
         delete_function(id, token)
@@ -22,6 +22,10 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
 
     const setEditingContent = (content) => {
         handleEdit(content);
+    }
+
+    const setContentShow = (content) => {
+        handleShow(content);
     }
 
     return (
@@ -47,6 +51,13 @@ const ContentBox = ({ title, fields, contents, delete_function, token, handleEdi
                                 {fields.map(field => (
                                     <td>{content[field.key]}</td>
                                 ))}
+                                <td>
+                                    <Link to="/panel">
+                                        <button className="btn btn-info" onClick={() => { setContentShow(content) }}>
+                                            Visualizar
+                                        </button>
+                                    </Link>
+                                </td>
                                 <td>
                                     <Link to="/panel">
                                         <ContentBoxTableIcon

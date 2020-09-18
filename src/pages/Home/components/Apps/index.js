@@ -30,13 +30,15 @@ const Apps = ({
   setApps,
   setToken
 }) => {
-  const [modalShow, setModalShow] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
   const [editingApp, setEditingApp] = useState({});
   const { handleSubmit } = useForm()
   const [appName, setAppName] = useState("")
   const [ownerCountry, setOwnerCountry] = useState("")
   const [editName, setEditName] = useState("");
   const [editCountry, setEditCountry] = useState("");
+  const [modalShow, setModalShow] = useState(false);
+  const [appShow, setAppShow] = useState({});
 
   const handleAppName = (value) => {
     setAppName(value);
@@ -75,15 +77,20 @@ const Apps = ({
       "owner_country": editCountry
     };
     await editApp(editingApp.id, data, token);
-    setModalShow(false);
+    setModalEdit(false);
     _getApps(token);
+  }
+
+  const handleShow = (content) => {
+    setAppShow(content);
+    setModalShow(!modalShow);
   }
 
   const handleEdit = (content) => {
     setEditingApp(content);
     setEditName(content.app_name);
     setEditCountry(content.owner_country);
-    setModalShow(!modalShow);
+    setModalEdit(!modalEdit);
   }
 
   const handleEditName = (value) => {
@@ -103,7 +110,6 @@ const Apps = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "app_name", value: "Nome" },
-    { key: "owner_country", value: "País" }
   ];
 
   return (
@@ -111,6 +117,53 @@ const Apps = ({
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do App
+          </Modal.Title>
+        </Modal.Header>
+        
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.app_name}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>País</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.owner_country}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <SubmitButton onClick={() => setModalShow(false)}>Voltar</SubmitButton>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={modalEdit}
+        onHide={() => setModalEdit(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -152,7 +205,9 @@ const Apps = ({
           contents={apps ? apps : []}
           fields={fields}
           delete_function={_deleteApp}
-          handleEdit={handleEdit} />
+          handleEdit={handleEdit} 
+          handleShow={handleShow}  
+        />
 
 
         <AddAppContainer className="shadow-sm">

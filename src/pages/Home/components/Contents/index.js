@@ -42,29 +42,19 @@ const Contents = ({
       key: "title",
       value: "Title",
     },
-    {
-      key: "body",
-      value: "Body"
-    },
-    {
-      key: "content_type",
-      value: "Content Type"
-    },
-    {
-      key: "source_link",
-      value: "Source Link"
-    }
   ];
   const { handleSubmit } = useForm()
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [content_type, setContentType] = useState("text")
   const [source_link, setSourceLink] = useState("")
-  const [modalShow, setModalShow] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
   const [editingContent, setEditingContent] = useState({});
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
   const [editSourceLink, setEditSourceLink] = useState("");
+  const [modalShow, setModalShow] = useState(false);
+  const [contentShow, setContentShow] = useState({});
 
 
   const _getContents = async (token) => {
@@ -100,8 +90,13 @@ const Contents = ({
       app_id: user.app_id
     };
     await editContent(editingContent.id, data, token);
-    setModalShow(false);
+    setModalEdit(false);
     _getContents(token);
+  }
+
+  const handleShow = (content) => {
+    setContentShow(content);
+    setModalShow(!modalShow);
   }
 
   const handleEdit = (content) => {
@@ -109,7 +104,7 @@ const Contents = ({
     setEditTitle(content.title);
     setEditBody(content.body);
     setEditSourceLink(content.source_link);
-    setModalShow(!modalShow);
+    setModalEdit(!modalEdit);
   }
 
   const handleEditTitle = (value) => {
@@ -158,6 +153,75 @@ const Contents = ({
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Conteúdo
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={contentShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Título</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={contentShow.title}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Conteúdo</label>
+            <TextArea
+              className="text-dark"
+              type="text"
+              value={contentShow.body}
+              disabled
+              rows="4"
+              cols="50"
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Tipo</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={contentShow.content_type}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Fonte</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={contentShow.source_link}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <SubmitButton onClick={() => setModalShow(false)}>Voltar</SubmitButton>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={modalEdit}
+        onHide={() => setModalEdit(false)}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -212,6 +276,7 @@ const Contents = ({
             contents={contents ? contents : []}
             token={token}
             handleEdit={handleEdit}
+            handleShow={handleShow}
             />
 
         <AddContentContainer className="shadow-sm">
