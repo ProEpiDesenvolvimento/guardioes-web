@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    height: 26rem;
+    height: ${props => props.component_height ? props.component_height + '6rem' : '26rem'};
+    /* 50 */
     width: 90%;
     align-content: center;
     margin: 2.5% 5%;
@@ -38,7 +39,8 @@ export const ContentBoxTitle = styled.h3`
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;
-    max-height: 20rem;
+    max-height: ${props => props.component_height ? props.component_height : '20rem'};
+    /* 40 */
 `;
 
 export const ContentBoxTableHeader = styled.th`

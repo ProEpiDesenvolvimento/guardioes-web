@@ -132,6 +132,7 @@ const Users = ({
           fields={fields}
           contents={users ? users : []}
           handleShow={handleShow}
+          component_height={'40rem'}
         />
       </Container>
     </>
