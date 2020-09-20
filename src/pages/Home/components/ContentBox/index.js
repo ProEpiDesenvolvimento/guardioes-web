@@ -14,10 +14,21 @@ import {
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
 
-const ContentBox = ({ title, fields, contents, delete_function, token, handleEdit, handleShow, component_height }) => {
+const ContentBox = ({ 
+    title,
+    fields,
+    contents,
+    delete_function,
+    token,
+    handleEdit,
+    handleShow,
+    component_height
+  }) => {
 
-    const _deleteApp = (id, token) => {
-        delete_function(id, token)
+    const _deleteApp = async (id, token) => {
+        console.log("id",id)
+        console.log("token", token)
+        await delete_function(id, token)
     }
 
     const setEditingContent = (content) => {

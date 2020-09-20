@@ -15,6 +15,7 @@ import ContentBox from '../ContentBox';
 import getAllUsers from './services/getAllUsers';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment'
+import deleteUser from './services/deleteUser';
 
 const Users = ({
   setUsers,
@@ -45,6 +46,12 @@ const Users = ({
     const response = await getAllUsers(token)
     console.log(response.users)
     setUsers(response.users)
+  }
+
+  const _deleteUser = async (id, token) => {
+    const response = await deleteUser(id, token)
+    console.log(response)
+    _getUsers(token);
   }
 
   useEffect(() => {
@@ -133,6 +140,8 @@ const Users = ({
           contents={users ? users : []}
           handleShow={handleShow}
           component_height={'40rem'}
+          delete_function={_deleteUser}
+          token={token}
         />
       </Container>
     </>
