@@ -16,6 +16,7 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
+import Users from './components/Users';
 
 const Home = ({
   token,
@@ -65,7 +66,7 @@ const Home = ({
       },
       {
         key: "users",
-        value: "Usuários"
+        value: Users
       },
       {
         key: "dashboard",
