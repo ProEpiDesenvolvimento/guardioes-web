@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-   display: flex;
+  display: flex;
   flex-direction: column;
   width: 65%;
 
@@ -36,4 +36,10 @@ export const SubmitButton = styled.button`
   @media (min-width: 500px) {
     width: 14rem;
   }
+`;
+
+export const SearchView = styled.div`
+  width: 50%;
+  align-self: center;
+  margin-top: 1.25rem
 `;
