@@ -4,7 +4,7 @@ import { Container } from './styles';
 function Dashboard() {
   return (
       <Container>
-
+          Salve
       </Container>
   );
 }
