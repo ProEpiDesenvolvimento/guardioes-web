@@ -12,7 +12,8 @@ import GroupManagers from './components/GroupManagers';
 import Contents from './components/Contents';
 import { connect } from 'react-redux';
 import {
-  setToken
+  setToken,
+  setUser
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
@@ -21,15 +22,19 @@ import Users from './components/Users';
 const Home = ({
   token,
   setToken,
+  user,
+  setUser
 }) => {
 
   useEffect(() => {
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
+      const auxUser = await sessionService.loadUser()
       setToken(auxSession.token)
+      setUser(auxUser)
     }
     _loadSession();
-  }, []);
+  }, [token]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -104,11 +109,13 @@ const Home = ({
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
+  user: state.user.user
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setToken
+    setToken,
+    setUser
   },
   dispatch,
 );

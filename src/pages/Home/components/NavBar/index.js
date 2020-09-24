@@ -11,7 +11,10 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 
-const NavBar = ({ user, setComponentCallback }) => {
+const NavBar = ({ 
+  user,
+  setComponentCallback
+ }) => {
 
   const allCategories = [
     {
@@ -53,12 +56,12 @@ const NavBar = ({ user, setComponentCallback }) => {
   ]
 
   const loadCategories = () => {
-    const user = { type: "admin_god" }
+    console.log("User type:", user.type)
     if (user.type === "admin") {
-      allCategories.splice(0, 2);
+
     } else if (user.type === "manager") {
       allCategories.splice(0, 4);
-    } else if (user.type === "manager_group") {
+    } else if (user.type === "group_manager") {
       allCategories.splice(0, 7);
     }
     setCategories(allCategories)
@@ -68,6 +71,7 @@ const NavBar = ({ user, setComponentCallback }) => {
 
   useEffect(() => {
     loadCategories();
+    console.log(user)
   }, [])
 
   const [categories, setCategories] = useState([])
