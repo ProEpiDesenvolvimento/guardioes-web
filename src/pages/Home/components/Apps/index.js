@@ -22,6 +22,7 @@ import {
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
+import { sessionService } from 'redux-react-session';
 
 const Apps = ({
   token,
@@ -102,9 +103,12 @@ const Apps = ({
   }
 
   useEffect(() => {
+    const _loadSession = async () => {
+      const auxSession = await sessionService.loadSession()
+      setToken(auxSession.token)
+    }
+    _loadSession();
     _getApps(token)
-    setToken(token)
-    console.log(token)
   }, [token]);
 
   const fields = [

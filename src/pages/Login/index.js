@@ -36,8 +36,8 @@ const Login = ({
   const [password, setPassword] = useState("")
   const [items, setItems] = useState([
     {
-      key: "manager",
-      value: 'Gerente',
+      key: "group_manager",
+      value: 'Manager',
     },
     {
       key: "admin",
