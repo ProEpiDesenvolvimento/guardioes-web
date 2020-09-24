@@ -18,6 +18,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Users from './components/Users';
+import { useHistory } from "react-router-dom";
 
 const Home = ({
   token,
@@ -25,6 +26,8 @@ const Home = ({
   user,
   setUser
 }) => {
+
+  const history = useHistory()
 
   useEffect(() => {
     const _loadSession = async () => {
@@ -86,6 +89,10 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
+    if (token == "") {
+      history.push("/login")
+    }
+    console.log(token)
   }, [])
 
   const setComponentCallback = (component) => {
