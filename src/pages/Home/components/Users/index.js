@@ -143,6 +143,17 @@ const Users = ({
         <form id="editUser" onSubmit={handleSubmit(_editUser)}>
           <Modal.Body>
             <EditInput>
+              <label htmlFor="email">E-mail</label>
+              <input
+                className="text-dark"
+                type="text"
+                id="email"
+                value={editingUser.email}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
               <label htmlFor="edit_name">Nome</label>
               <input 
                 type="text"
