@@ -10,6 +10,7 @@ import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
 import Contents from './components/Contents';
+import Syndromes from './components/Syndromes';
 import { connect } from 'react-redux';
 import {
   setToken
@@ -57,7 +58,7 @@ const Home = ({
       },
       {
         key: "syndromes",
-        value: "Síndromes"
+        value: Syndromes
       },
       {
         key: "contents",

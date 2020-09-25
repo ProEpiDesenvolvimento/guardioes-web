@@ -15,3 +15,5 @@ export const SET_SYMPTOMS = 'SET_SYMPTOMS'
 export const SET_CONTENTS = 'SET_CONTENTS'
 
 export const SET_GROUP_MANAGERS = 'SET_GROUP_MANAGERS'
+
+export const SET_SYNDROMES = 'SET_SYNDROMES';
