@@ -5,10 +5,10 @@ import {
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
-
 import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
+import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import { connect } from 'react-redux';
 import {
@@ -78,7 +78,7 @@ const Home = ({
       },
       {
         key: "dashboard",
-        value: "Visualizações"
+        value: Dashboard
       }
     ])
     setComponent({
@@ -102,7 +102,7 @@ const Home = ({
   return (
     <Container>
       <Header />
-      <Body>
+      <Body style={{ overflowX: 'hidden' }}>
         <NavBar setComponentCallback={setComponentCallback} />
         {components.map((comp) => {
           if (comp.key === component.key) {
