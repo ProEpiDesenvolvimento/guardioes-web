@@ -121,8 +121,8 @@ export const SendButtonName = styled.p`
 `;
 
 export const QuestionPopupOrgType = styled(Popup)`
-    width: 230px;
-    height: 20px;
+    width: 15%;
+    height: 5%;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid gray;
@@ -132,8 +132,8 @@ export const QuestionPopupOrgType = styled(Popup)`
 `;
 
 export const QuestionPopupCat = styled(Popup)`
-    width: 300px;
-    height: 40px;
+    width: 25%;
+    height: 5%;
     padding: 10px;
     border-radius: 15px;
     border: 1px solid gray;
