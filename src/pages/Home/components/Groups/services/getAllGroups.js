@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
-  .get('/apps', {
+const getAllGroups = async (token, id) => api
+  .get('/groups?group_manager=true', {
     headers: {
       "Authorization": token,
     },
@@ -9,7 +9,6 @@ const getAllApps = async (token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    console.log(data)
     return data
   })
   .catch((e) => {
@@ -17,4 +16,4 @@ const getAllApps = async (token) => api
     return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default getAllGroups;

@@ -84,7 +84,7 @@ const User = (state = initialState, action) => {
 		case SET_GROUPS:
 			return {
 				...state,
-				users: action.payload
+				groups: action.payload
 			}
 		default:
 			return {

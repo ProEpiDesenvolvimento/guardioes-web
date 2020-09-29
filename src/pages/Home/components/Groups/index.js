@@ -4,7 +4,7 @@ import {
   setGroups, setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
-// import getAllApps from './services/getAllApps'
+import getAllGroups from './services/getAllGroups'
 // import createApp from './services/createApp'
 // import deleteApp from './services/deleteApp'
 // import editApp from './services/editApp';
@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
+import getAllGroupManagers from '../GroupManagers/services/getAllGroupManagers';
 
 const Groups = ({
   token,
@@ -50,10 +51,14 @@ const Groups = ({
   //   setOwnerCountry("")
   // }
 
-  // const _getApps = async (token) => {
-  //   const response = await getAllApps(token)
-  //   setApps(response.apps)
-  // }
+  const fetchData = async (token) => {
+    const response = await getAllGroups(token)
+    const aux_groups =  response.groups.map((group) => {
+                          group.parent = group.parent.name;
+                          return group
+                        })
+    setGroups(aux_groups)
+  }
 
   // const _deleteApp = async (id, token) => {
   //   await deleteApp(id, token)
@@ -88,17 +93,19 @@ const Groups = ({
       setToken(auxSession.token)
     }
     _loadSession();
-    // _getApps(token)
+    fetchData(token)
   }, [token]);
 
   const fields = [
     { key: "id", value: "ID" },
-    // { key: "group_name", value: "Nome" },
+    { key: "description", value: "Nome" },
+    { key: "children_label", value: "Descrição dos Filhos" },
+    { key: "parent", value: "Descrição dos Pais" }
   ];
 
   return (
     <>
-      <Modal
+      {/* <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
       >
@@ -109,7 +116,7 @@ const Groups = ({
         </Modal.Header>
         
         <Modal.Body>
-          {/* <EditInput>
+          <EditInput>
             <label>ID</label>
             <input
               className="text-dark"
@@ -137,7 +144,7 @@ const Groups = ({
               value={appShow.owner_country}
               disabled
             />
-          </EditInput> */}
+          </EditInput>
         </Modal.Body>
 
         <Modal.Footer>
@@ -145,7 +152,7 @@ const Groups = ({
         </Modal.Footer>
       </Modal>
 
-      {/* <Modal
+      <Modal
         show={modalEdit}
         onHide={() => setModalEdit(false)}
       >
@@ -215,7 +222,7 @@ const Groups = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  apps: state.user.apps
+  groups: state.user.groups
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
