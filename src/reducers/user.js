@@ -7,7 +7,8 @@ import {
 	SET_CONTENTS,
 	SET_SYMPTOMS,
 	SET_GROUP_MANAGERS,
-	SET_USERS
+	SET_USERS,
+	SET_GROUPS
 } from 'constants/action-types';
 
 const initialState = {
@@ -22,13 +23,15 @@ const initialState = {
 		syndromes: false,
 		contents: false,
 		dashboard: false,
-		group_managers: false
+		group_managers: false,
+		groups: false
 	},
 	apps: [],
 	contents: [],
 	symptoms: [],
 	group_managers: [],
-	users: []
+	users: [],
+	groups: []
 };
 
 const User = (state = initialState, action) => {
@@ -74,6 +77,11 @@ const User = (state = initialState, action) => {
 				group_managers: action.payload
 			};
 		case SET_USERS:
+			return {
+				...state,
+				users: action.payload
+			}
+		case SET_GROUPS:
 			return {
 				...state,
 				users: action.payload

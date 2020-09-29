@@ -6,6 +6,7 @@ import {
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
+import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
 import Dashboard from './components/Dashboard';
@@ -61,6 +62,10 @@ const Home = ({
         value: GroupManagers
       },
       {
+        key: "groups",
+        value: Groups
+      },
+      {
         key: "symptoms",
         value: Symptoms
       },
@@ -104,11 +109,12 @@ const Home = ({
       <Header />
       <Body style={{ overflowX: 'hidden' }}>
         <NavBar setComponentCallback={setComponentCallback} />
-        {components.map((comp) => {
+        <Groups />
+        {/* {components.map((comp) => {
           if (comp.key === component.key) {
             return <comp.value />
           }
-        })}
+        })} */}
       </Body>
     </Container>
   );

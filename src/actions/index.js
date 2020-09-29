@@ -8,7 +8,8 @@ import {
   SET_SYMPTOMS,
   SET_CONTENTS,
   SET_GROUP_MANAGERS,
-  SET_USERS
+  SET_USERS,
+  SET_GROUPS
 } from 'constants/action-types';
 
 export const loadMakes = (payload) => ({ type: LOAD_MAKES, payload });
@@ -30,3 +31,5 @@ export const setContents = (payload) => ({ type: SET_CONTENTS, payload });
 export const setGroupManagers = (payload) => ({ type: SET_GROUP_MANAGERS, payload });
 
 export const setUsers = (payload) => ({ type: SET_USERS, payload });
+
+export const setGroups = (payload) => ({ type: SET_GROUPS, payload });
