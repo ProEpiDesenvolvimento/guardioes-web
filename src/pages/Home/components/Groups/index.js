@@ -24,7 +24,6 @@ import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
-import getAllGroupManagers from '../GroupManagers/services/getAllGroupManagers';
 
 const Groups = ({
   token,
@@ -150,18 +149,55 @@ const Groups = ({
             />
           </EditInput>
 
-          {groupShow.require_id ?
-            <EditInput>
-              <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
+          <EditInput>
+              <label htmlFor="edit_code">Código</label>
               <input
-                type="number"
-                id="edit_len_id_code"
-                value={groupShow.id_code_length}
-                min="1"
+                type="text"
+                id="edit_code"
+                value={editingGroup.code}
                 disabled
               />
             </EditInput>
-          : null}
+
+            <EditInput>
+              <label htmlFor="edit_address">Endereço</label>
+              <input
+                type="text"
+                id="edit_address"
+                value={editingGroup.address}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_cep">CEP</label>
+              <input
+                type="text"
+                id="edit_cep"
+                value={editingGroup.cep}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_phone">Telefone</label>
+              <input
+                type="text"
+                id="edit_phone"
+                value={editingGroup.phone}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_name">Email</label>
+              <input
+                type="text"
+                id="edit_email"
+                value={editingGroup.email}
+                disabled
+              />
+            </EditInput>
         </Modal.Body>
 
         <Modal.Footer>
@@ -190,26 +226,55 @@ const Groups = ({
               />
             </EditInput>
 
-            <EditCheckbox>
-              <label htmlFor="edit_id_code">Código de Identificação</label>
-              <EditCheckboxInput
-                type="checkbox"
-                id="edit_id_code"
-                value={editingGroup.require_id}
-                onChange={(e) => setEditingGroup({...editingGroup, require_id: e.target.value})}
-              />
-            </EditCheckbox>
-
-            {editingGroup.require_id ? <EditInput>
-              <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
+            <EditInput>
+              <label htmlFor="edit_code">Código</label>
               <input
-                type="number"
-                id="edit_len_id_code"
-                value={editingGroup.id_code_length}
-                min="1"
-                onChange={(e) => setEditingGroup({...editingGroup, id_code_length: e.target.value})}
+                type="text"
+                id="edit_code"
+                value={editingGroup.code}
+                onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
               />
-            </EditInput> : null}
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_address">Endereço</label>
+              <input
+                type="text"
+                id="edit_address"
+                value={editingGroup.address}
+                onChange={(e) => setEditingGroup({...editingGroup, address: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_cep">CEP</label>
+              <input
+                type="text"
+                id="edit_cep"
+                value={editingGroup.cep}
+                onChange={(e) => setEditingGroup({...editingGroup, cep: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_phone">Telefone</label>
+              <input
+                type="text"
+                id="edit_phone"
+                value={editingGroup.phone}
+                onChange={(e) => setEditingGroup({...editingGroup, phone: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_name">Email</label>
+              <input
+                type="text"
+                id="edit_email"
+                value={editingGroup.email}
+                onChange={(e) => setEditingGroup({...editingGroup, email: e.target.value})}
+              />
+            </EditInput>
 
           </Modal.Body>
           <Modal.Footer>
