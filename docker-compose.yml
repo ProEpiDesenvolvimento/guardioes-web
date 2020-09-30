@@ -51,14 +51,14 @@ services:
     #   - traefik.backend=myapp
     #   - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
     #   - traefik.docker.network=web
-    #   - traefik.port=8081
+    #   - traefik.port=80
     command: npx serve -s build
     ports:
-      - "8081:8081"
+      - "80:80"
     depends_on:
       - kibana
     environment: 
-      - PORT=8081
+      - PORT=80
     stdin_open: true
 
 volumes:
