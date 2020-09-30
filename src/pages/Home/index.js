@@ -31,6 +31,7 @@ const Home = ({
 
   useEffect(() => {
     const _loadSession = async () => {
+      // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
       // const auxSession = await sessionService.loadSession()
       // const auxUser = await sessionService.loadUser()
       // setToken(auxSession.token)
@@ -89,6 +90,8 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
+      // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
+
     // if (token == "") {
     //   history.push("/login")
     // }
