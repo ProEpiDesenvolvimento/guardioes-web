@@ -90,8 +90,7 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
-      // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
-
+    // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
     // if (token == "") {
     //   history.push("/login")
     // }
