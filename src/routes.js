@@ -11,7 +11,7 @@ export default function Routes() {
     <BrowserRouter>
       <Switch>
         <Route path='/' exact component={PreRegister} />
-        <Route onEnter={sessionService.checkAuth} path='/panel' exact component={Home} />
+        <Route /* onEnter={sessionService.checkAuth} */ path='/panel' exact component={Home} />
         <Route path='/login' exact component={Login} />
       </Switch>
     </BrowserRouter>

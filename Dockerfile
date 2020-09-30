@@ -7,14 +7,17 @@ WORKDIR /myapp
 # Add `/app/node_modules/.bin` to $PATH
 ENV PATH /myapp/node_modules/.bin:$PATH
 
-# Install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-RUN npm install react-scripts@3.4.1 -g
-
-# Load app into container
+# Copy all files to docker container
 COPY . ./
 
+# Install app dependencies
+RUN npm install
+RUN npm install react-scripts@3.4.1 -g
+RUN npm install serve
+
+# Load app into container
+
+RUN npm run-script build
+
 # Start app
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build"]

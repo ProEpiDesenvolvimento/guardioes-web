@@ -31,10 +31,10 @@ const Home = ({
 
   useEffect(() => {
     const _loadSession = async () => {
-      const auxSession = await sessionService.loadSession()
-      const auxUser = await sessionService.loadUser()
-      setToken(auxSession.token)
-      setUser(auxUser)
+      // const auxSession = await sessionService.loadSession()
+      // const auxUser = await sessionService.loadUser()
+      // setToken(auxSession.token)
+      // setUser(auxUser)
     }
     _loadSession();
   }, [token]);
@@ -89,9 +89,9 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
-    if (token == "") {
-      history.push("/login")
-    }
+    // if (token == "") {
+    //   history.push("/login")
+    // }
     console.log(token)
   }, [])
 
