@@ -31,8 +31,8 @@ services:
     command: serve -s build
     ports:
       - "8080:8080"
-    # depends_on:
-    #   - kibana
+    depends_on:
+      - kibana
     environment: 
       - PORT=8080
     stdin_open: true
