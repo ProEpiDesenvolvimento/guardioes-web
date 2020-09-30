@@ -406,15 +406,16 @@ const GroupManagers = ({
                     onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
                   />
                 </CheckboxInputBlock>
-                {groupManagerIdentificationCode ? <InputBlock>
-                  <label htmlFor="len_id_code">Quantidade de caracteres</label>
-                  <Input
-                    type="text"
-                    id="len_id_code"
-                    value={groupManagerLengthIdentificationCode}
-                    onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
-                  />
-                </InputBlock>
+                {groupManagerIdentificationCode ?
+                  <InputBlock>
+                    <label htmlFor="len_id_code">Quantidade de caracteres</label>
+                    <Input
+                      type="text"
+                      id="len_id_code"
+                      value={groupManagerLengthIdentificationCode}
+                      onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
+                    />
+                  </InputBlock>
                   : null}
               </Inputs>
               <SubmitButton type="submit">

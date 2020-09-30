@@ -9,6 +9,6 @@ const getAllGroups = async (token, id) => {
                                 }
                     )
   return response.data
-                              }
+}
 
 export default getAllGroups;

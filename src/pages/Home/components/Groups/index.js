@@ -17,7 +17,8 @@ import {
   InputBlock,
   EditInput,
   SubmitButton,
-  Input
+  EditCheckbox,
+  EditCheckboxInput
 } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
@@ -102,6 +103,8 @@ const Groups = ({
     { key: "parentName", value: "Nome do Grupo Pai" }
   ];
 
+  console.log(editingGroup.require_id)
+
   return (
     <>
       <Modal
@@ -116,16 +119,6 @@ const Groups = ({
         
         <Modal.Body>
           <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
             <label>Nome</label>
             <input
               className="text-dark"
@@ -135,15 +128,17 @@ const Groups = ({
             />
           </EditInput>
 
-          <EditInput>
-            <label>Tipo dos Grupos Filhos</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.children_label}
-              disabled
-            />
-          </EditInput>
+          {groupShow.children_label ? 
+            <EditInput>
+              <label>Tipo dos Grupos Filhos</label>
+              <input
+                className="text-dark"
+                type="text"
+                value={groupShow.children_label}
+                disabled
+              />
+            </EditInput>
+            : null }
 
           <EditInput>
             <label>Nome do Grupo Pai</label>
@@ -155,15 +150,18 @@ const Groups = ({
             />
           </EditInput>
 
-          <EditInput>
-            <label>Tamanho da Matrícula</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.id_code_length}
-              disabled
-            />
-          </EditInput>
+          {groupShow.require_id ?
+            <EditInput>
+              <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
+              <input
+                type="number"
+                id="edit_len_id_code"
+                value={groupShow.id_code_length}
+                min="1"
+                disabled
+              />
+            </EditInput>
+          : null}
         </Modal.Body>
 
         <Modal.Footer>
@@ -192,15 +190,26 @@ const Groups = ({
               />
             </EditInput>
 
-            <EditInput>
-              <label>Tamanho da Matrícula</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={editingGroup.id_code_length}
-                disabled
+            <EditCheckbox>
+              <label htmlFor="edit_id_code">Código de Identificação</label>
+              <EditCheckboxInput
+                type="checkbox"
+                id="edit_id_code"
+                value={editingGroup.require_id}
+                onChange={(e) => setEditingGroup({...editingGroup, require_id: e.target.value})}
               />
-            </EditInput>
+            </EditCheckbox>
+
+            {editingGroup.require_id ? <EditInput>
+              <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
+              <input
+                type="number"
+                id="edit_len_id_code"
+                value={editingGroup.id_code_length}
+                min="1"
+                onChange={(e) => setEditingGroup({...editingGroup, id_code_length: e.target.value})}
+              />
+            </EditInput> : null}
 
           </Modal.Body>
           <Modal.Footer>

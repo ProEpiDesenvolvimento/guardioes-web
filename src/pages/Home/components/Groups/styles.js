@@ -102,4 +102,29 @@ export const EditInput = styled.div`
   font-size: 20;
   color: #348EAC;
   margin-bottom: 1rem;
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  input[type=number] {
+      -moz-appearance:textfield; /* Firefox */
+  }
+`;
+
+export const EditCheckbox = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  margin-bottom: 1rem;
+  align-items: center;
+`;
+
+export const EditCheckboxInput = styled.input`
+  margin-bottom: .5rem;
+  margin-left: .5rem;
 `;
