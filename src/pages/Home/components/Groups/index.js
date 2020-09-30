@@ -6,8 +6,8 @@ import {
 import { bindActionCreators } from 'redux';
 import getAllGroups from './services/getAllGroups'
 // import createApp from './services/createApp'
-// import deleteApp from './services/deleteApp'
-// import editApp from './services/editApp';
+import deleteGroup from './services/deleteGroup'
+import editGroup from './services/editGroup';
 import {
   Container,
   AddGroupContainer,
@@ -53,27 +53,28 @@ const Groups = ({
 
   const fetchData = async (token) => {
     const response = await getAllGroups(token)
-    const aux_groups =  response.groups.map((group) => {
-                          group.parent = group.parent.name;
+    const aux_groups = response.groups.map((group) => {
+                          group.parentName = group.parent.name;
                           return group
                         })
     setGroups(aux_groups)
   }
 
-  // const _deleteApp = async (id, token) => {
-  //   await deleteApp(id, token)
-  //   _getApps(token)
-  // }
+  const handleDelete = async (id, token) => {
+    await deleteGroup(id, token)
+    fetchData(token)
+  }
 
-  // const _editApp = async () => {
-  //   const data = {
-  //     "app_name": editName,
-  //     "owner_country": editCountry
-  //   };
-  //   await editApp(editingApp.id, data, token);
-  //   setModalEdit(false);
-  //   _getApps(token);
-  // }
+  const _editGroup = async () => {
+    const data = {
+      description: editingGroup.description,
+      require_id: editingGroup.require_id,
+      id_code_length: editingGroup.require_id ? editingGroup.require_id : null
+    }
+    await editGroup(editingGroup.id, data, token);
+    setModalEdit(false);
+    fetchData(token);
+  }
 
   const handleShow = (content) => {
     setGroupShow(content);
@@ -81,10 +82,8 @@ const Groups = ({
   }
 
   const handleEdit = (content) => {
-    // setEditingApp(content);
-    // setEditName(content.app_name);
-    // setEditCountry(content.owner_country);
-    // setModalEdit(!modalEdit);
+    setEditingGroup(content);
+    setModalEdit(!modalEdit);
   }
 
   useEffect(() => {
@@ -99,13 +98,13 @@ const Groups = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "description", value: "Nome" },
-    { key: "children_label", value: "Descrição dos Filhos" },
-    { key: "parent", value: "Descrição dos Pais" }
+    { key: "children_label", value: "Tipo dos Grupos Filhos" },
+    { key: "parentName", value: "Nome do Grupo Pai" }
   ];
 
   return (
     <>
-      {/* <Modal
+      <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
       >
@@ -121,7 +120,7 @@ const Groups = ({
             <input
               className="text-dark"
               type="text"
-              value={appShow.id}
+              value={groupShow.id}
               disabled
             />
           </EditInput>
@@ -131,17 +130,37 @@ const Groups = ({
             <input
               className="text-dark"
               type="text"
-              value={appShow.app_name}
+              value={groupShow.description}
               disabled
             />
           </EditInput>
 
           <EditInput>
-            <label>País</label>
+            <label>Tipo dos Grupos Filhos</label>
             <input
               className="text-dark"
               type="text"
-              value={appShow.owner_country}
+              value={groupShow.children_label}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome do Grupo Pai</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupShow.parentName}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Tamanho da Matrícula</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupShow.id_code_length}
               disabled
             />
           </EditInput>
@@ -161,15 +180,25 @@ const Groups = ({
             Editar Instituição
           </Modal.Title>
         </Modal.Header>
-        <form id="editApp" onSubmit={() => {}}>
+        <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
               <input
                 type="text"
                 id="edit_name"
-                value={editName}
-                onChange={(e) => {}}
+                value={editingGroup.description}
+                onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label>Tamanho da Matrícula</label>
+              <input
+                className="text-dark"
+                type="text"
+                value={editingGroup.id_code_length}
+                disabled
               />
             </EditInput>
 
@@ -178,7 +207,7 @@ const Groups = ({
             <SubmitButton type="submit">Editar</SubmitButton>
           </Modal.Footer>
         </form>
-      </Modal> */}
+      </Modal>
 
       <Container>
         <ContentBox
@@ -186,8 +215,8 @@ const Groups = ({
           token={token}
           contents={groups ? groups : []}
           fields={fields}
-          delete_function={() => {}}
-          handleEdit={handleEdit} 
+          delete_function={handleDelete}
+          handleEdit={handleEdit}
           handleShow={handleShow}  
         />
 

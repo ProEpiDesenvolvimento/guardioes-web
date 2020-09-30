@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const deleteApp = async (id, token) => api
-  .delete(`/apps/${id}`, {
+const deleteGroup = async (id, token) => api
+  .delete(`/groups/${id}`, {
     headers: {
       "Authorization": token,
     },
@@ -9,11 +9,11 @@ const deleteApp = async (id, token) => api
   )
   .then(async (res) => {
     const { data } = res;
-    alert("App deletado")
+    alert("Grupo deletado")
     return data
   })
   .catch((e) => {
     console.log(e);
   });
 
-export default deleteApp;
+export default deleteGroup;

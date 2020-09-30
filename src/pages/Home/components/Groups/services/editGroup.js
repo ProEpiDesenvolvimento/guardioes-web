@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const editApp = async (id, data, token) => {
-    await api.patch(`/apps/${id}`, data,
+const editGroup = async (id, data, token) => {
+    await api.patch(`/groups/${id}`, data,
     {
       headers: {
         "Authorization": token,
@@ -9,7 +9,7 @@ const editApp = async (id, data, token) => {
     }
   )
     .then(async (res) => {
-      alert('App Editado!');
+      alert('Grupo Editado!');
       const response = { data: res.data };
       return response;
     })
@@ -19,4 +19,4 @@ const editApp = async (id, data, token) => {
       return { data: {}, errors: e };
     });
 }
-export default editApp;
+export default editGroup;
