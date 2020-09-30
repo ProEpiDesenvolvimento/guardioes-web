@@ -35,7 +35,6 @@ services:
       - elasticsearch
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
-    
     # The following is a traefik configuration (homolog only)
     # labels:
     #   - traefik.backend=painel
@@ -47,6 +46,7 @@ services:
     networks:
       - internal
       - web
+    # The following is a traefik configuration (homolog only)
     # labels:
     #   - traefik.backend=myapp
     #   - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
