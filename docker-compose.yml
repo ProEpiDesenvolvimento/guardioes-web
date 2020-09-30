@@ -10,10 +10,22 @@ services:
     volumes:
       - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata:/usr/share/elasticsearch/data
-
+      - /root/backup:/usr/share/elasticsearch/backup
+    networks:
+      - internal
+      - web
+    # The following is a traefik configuration (homolog only)
+    # labels:
+    #   - traefik.backend=elastic
+    #   - traefik.frontend.rule=Host:elastic.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=9200
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.1
     restart: unless-stopped
+    networks:
+      - internal
+      - web
     ports:
       - "5601:5601"
     environment:
@@ -22,20 +34,38 @@ services:
     depends_on:
       - elasticsearch
     volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-  web:
+      - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
+    # The following is a traefik configuration (homolog only)
+    # labels:
+    #   - traefik.backend=painel
+    #   - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=5601
+  painel:
     build: .
-    volumes:
-      - .:/myapp
-    working_dir: /myapp
-    command: npm start
+    networks:
+      - internal
+      - web
+    # The following is a traefik configuration (homolog only)
+    # labels:
+    #   - traefik.backend=myapp
+    #   - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=8081
+    command: npx serve -s build
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       - kibana
     environment: 
-      - PORT=8080
+      - PORT=8081
     stdin_open: true
 
 volumes:
   esdata:
+     
+networks:
+  web:
+    external: true
+  internal:
+    external: false
