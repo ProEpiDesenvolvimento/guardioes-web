@@ -28,7 +28,7 @@ services:
       - internal
       - web
       - kibana
-      ports:
+    ports:
       - "5601:5601"
     environment:
       - SERVER_PORT=5601
@@ -40,6 +40,7 @@ services:
       - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
   # painel:
   #   build: .
+  #   restart: unless-stopped
   #   networks:
   #     - internal
   #     - web
@@ -59,6 +60,7 @@ services:
   #   stdin_open: true
   nginx:
     image: nginx
+    restart: unless-stopped
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
