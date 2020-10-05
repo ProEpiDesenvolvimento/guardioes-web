@@ -5,7 +5,7 @@ export const DropdownDiv = styled.div`
   min-height: 38px;
   flex-wrap: wrap;
   float: right;
-  width: 200px;
+  width: 250px;
   `;
 
 export const Header = styled.div`
@@ -13,13 +13,11 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  width: 125px;
   padding: 0 20px;
   `;
 
 export const SelectionDiv = styled.div`
   z-index: 2;
-  width: 125px;
   height: 25px;
   margin: 0;
   margin-top: 20px;
@@ -51,7 +49,7 @@ export const DownIcon = styled.img`
 export const List = styled.ul`
   padding: 0;
   margin: 0;
-  width: 200px;
+  width: 100%;
   z-index: 2;
 `;
 
@@ -70,7 +68,7 @@ export const ListItemButton = styled.button`
   }
   margin-top: 5px;
   border-radius: 4px;
-  width: 125px;
+  width: 100%;
   height: 25px;
   font-family: Argentum Sans;
   font-style: normal;

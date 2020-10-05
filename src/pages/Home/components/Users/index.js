@@ -5,6 +5,7 @@ import {
   SubmitButton,
   EditCheckbox,
   EditCheckboxInput
+  SearchView
 } from './styles';
 import { connect } from 'react-redux';
 import {
@@ -38,6 +39,8 @@ const Users = ({
   const [editRace, setEditRace] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
   const { handleSubmit } = useForm();
+  const [userSearch, setUserSearch] = useState("");
+  const [userList, setUserList] = useState([]);
 
 
   const fields = [
@@ -51,15 +54,32 @@ const Users = ({
     }
   ]
 
+  const search = (userSearch) => {
+    const filteredUsers = users.filter((user) => {
+      if ( userSearch.length > 1) {
+        return user.user_name && user.user_name.indexOf(userSearch) >= 0; 
+      }
+      else {
+        return users
+      }
+    });
+    setUserList(filteredUsers)
+  }
+
   const handleShow = (user) => {
     setUserShow(user);
     setModalShow(!modalShow);
   }
 
+  const handleSearch = (value) => {
+    setUserSearch(value)
+    search(userSearch)
+  }
   const _getUsers = async (token) => {
     const response = await getAllUsers(token)
     console.log(response.users)
     setUsers(response.users)
+    setUserList(response.users)
   }
 
   const _deleteUser = async (id, token) => {
@@ -288,10 +308,20 @@ const Users = ({
       </Modal>
 
       <Container>
+        <SearchView>
+          <EditInput>
+            <label>Search Users</label>
+            <input 
+              type="text"
+              value={userSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </EditInput>
+        </SearchView>
         <ContentBox 
           title="Users"
           fields={fields}
-          contents={users ? users : []}
+          contents={userList ? userList : []}
           handleShow={handleShow}
           component_height={'40rem'}
           delete_function={_deleteUser}

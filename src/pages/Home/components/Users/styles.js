@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-   display: flex;
+  display: flex;
   flex-direction: column;
   width: 65%;
 
@@ -52,3 +52,10 @@ export const EditCheckboxInput = styled.input`
   margin-bottom: .5rem;
   margin-left: .5rem;
 `;
+
+export const SearchView = styled.div`
+  width: 50%;
+  align-self: center;
+  margin-top: 1.25rem
+`;
+
