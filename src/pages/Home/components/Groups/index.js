@@ -5,7 +5,7 @@ import {
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import getAllGroups from './services/getAllGroups'
-// import createApp from './services/createApp'
+import createGroup from './services/createGroup'
 import deleteGroup from './services/deleteGroup'
 import editGroup from './services/editGroup';
 import {
@@ -17,6 +17,9 @@ import {
   InputBlock,
   EditInput,
   SubmitButton,
+  Input,
+  SelectInput,
+  Form,
   EditCheckbox,
   EditCheckboxInput
 } from './styles';
@@ -38,18 +41,24 @@ const Groups = ({
   const [modalShow, setModalShow] = useState(false);
   const [groupShow, setGroupShow] = useState({});
 
-  // const _createApp = async () => {
-  //   const data = {
-  //     "app_name": appName,
-  //     "owner_country": ownerCountry
-  //   }
-  //   console.log(data)
-  //   const reponse = await createApp(data, token)
-  //   console.log(reponse)
-  //   _getApps(token)
-  //   setAppName("")
-  //   setOwnerCountry("")
-  // }
+  const [creatingCourse, setCreatingCourse] = useState({
+    parent_id: 0,
+    address: "",
+    cep: "",
+    code: "",
+    description: "",
+    email: "",
+    parent_id: 0,
+    phone: "",
+    children_label: null
+  })
+
+  const _createCourse = async () => {
+    console.log(creatingCourse)
+    const response = await createGroup(creatingCourse, token)
+    console.log(response)
+    fetchData(token)
+  }
 
   const fetchData = async (token) => {
     const response = await getAllGroups(token, user.type)
@@ -125,6 +134,8 @@ const Groups = ({
     { key: "type", value: "Tipo" },
     { key: "parentName", value: "Pertence a(o)" }
   ];
+
+  console.log(creatingCourse.parent_id)
 
   return (
     <>
@@ -339,7 +350,7 @@ const Groups = ({
         />
 
 
-        <AddGroupContainer className="shadow-sm">
+        {/* <AddGroupContainer className="shadow-sm">
           <ContainerHeader>
             <ContainerTitle>Adicionar Instituição</ContainerTitle>
           </ContainerHeader>
@@ -359,6 +370,93 @@ const Groups = ({
                 Criar Instituição
             </SubmitButton>
             </form>
+          </ContainerForm>
+        </AddGroupContainer> */}
+
+        <AddGroupContainer className="shadow-sm">
+          <ContainerHeader>
+            <ContainerTitle>Adicionar Curso</ContainerTitle>
+          </ContainerHeader>
+          <ContainerForm>
+            <Form id="addCourse" onSubmit={handleSubmit(_createCourse)}>
+              <InputBlock>
+                <label htmlFor="name">Nome</label>
+                <Input
+                  type="text"
+                  id="name"
+                  value={creatingCourse.description}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, description: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">Código</label>
+                <Input
+                  type="text"
+                  id="code"
+                  value={creatingCourse.code}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, code: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">Endereço</label>
+                <Input
+                  type="text"
+                  id="address"
+                  value={creatingCourse.address}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, address: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">CEP</label>
+                <Input
+                  type="text"
+                  id="cep"
+                  value={creatingCourse.cep}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, cep: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">Telefone</label>
+                <Input
+                  type="text"
+                  id="phone"
+                  value={creatingCourse.phone}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, phone: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">Email</label>
+                <Input
+                  type="text"
+                  id="email"
+                  value={creatingCourse.email}
+                  onChange={(e) => setCreatingCourse({...creatingCourse, email: e.target.value})}
+                />
+              </InputBlock>
+
+              <InputBlock>
+                <label htmlFor="name">Instituição</label>
+                <SelectInput
+                  type="select"
+                  id="name"
+                  onChange={(e) => setCreatingCourse({...creatingCourse, parent_id: e.target.value})}
+                >
+                  <option value="" selected disabled hidden>Escolha aqui</option>
+                  {groups.filter((g) => g.children_label === "CURSO").map((g) => {
+                    return <option key={g.id} value={g.id}>{g.description}</option>
+                  })}
+                </SelectInput>
+              </InputBlock>
+
+              <SubmitButton type="submit">
+                Criar Curso
+              </SubmitButton>
+            </Form>
           </ContainerForm>
         </AddGroupContainer>
       </Container>

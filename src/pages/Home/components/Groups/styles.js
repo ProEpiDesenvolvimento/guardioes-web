@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const AddGroupContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 20rem;
+  height: 25rem;
   width: 90%;
   align-content: center;
   margin: 0% 5%;
@@ -45,7 +45,12 @@ export const ContainerTitle = styled.h3`
 
 export const ContainerForm = styled.div`
   margin: 1rem 1.8rem;
-  max-height: 14rem;
+  height: 20 rem;
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-flow: row wrap;
 `;
 
 export const InputBlock = styled.div`
@@ -55,16 +60,33 @@ export const InputBlock = styled.div`
   font-size: 20;
   color: #348EAC;
   text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
+  margin: 1rem;
 `;
 
 export const Input = styled.input`
-  width: 100%;
+  width: 50%;
   background-color: white;
   border: 2px solid #348EAC;
   border-radius: 5px; 
   height: 2.2rem;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (min-width: 500px) {
+    width: 14rem;
+  }
+`;
+
+export const SelectInput = styled.select`
+  width: 50%;
+  background-color: white;
+  border: 2px solid #348EAC;
+  border-radius: 5px;
   cursor: pointer;
+  height: 2.2rem;
   transition: opacity 0.2s;
 
   &:hover {
@@ -79,12 +101,15 @@ export const Input = styled.input`
 export const SubmitButton = styled.button`
   width: 100%;
   background-color: #5DD39E;
+  margin: 1rem;
   color: white;
   border: 0;
   border-radius: 5px;
   height: 2.2rem;
   cursor: pointer;
   transition: opacity 0.2s;
+
+  align-self: flex-end;
 
   &:hover {
     opacity: 0.7;

@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const createApp = async (data, token) =>
-  api.post(`/apps`, data,
+const createGroup = async (data, token) =>
+  api.post(`/groups`, data,
     {
       headers: {
         "Authorization": token,
@@ -9,7 +9,9 @@ const createApp = async (data, token) =>
     }
   )
     .then(async (res) => {
-      alert('App criado!');
+      console.log("AAAAAAAAAAAAAA")
+      console.log(res)
+      alert('Grupo criado!');
       const response = { data: res.data };
       return response
     })
@@ -18,4 +20,4 @@ const createApp = async (data, token) =>
       console.log(e);
       return { data: {}, errors: e }
     });
-export default createApp;
+export default createGroup;
