@@ -2,10 +2,10 @@
 FROM node:10-alpine
 
 # Set working directory
-WORKDIR .
+WORKDIR /code
 
 # Copy all files to docker container
-COPY . ./
+COPY . .
 
 # Install app dependencies
 RUN npm install
