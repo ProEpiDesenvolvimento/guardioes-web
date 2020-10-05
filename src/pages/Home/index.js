@@ -94,7 +94,7 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
-    if (token == "") {
+    if (token === "") {
       history.push("/login")
     }
   }, [])
@@ -108,12 +108,12 @@ const Home = ({
       <Header />
       <Body style={{ overflowX: 'hidden' }}>
         <NavBar setComponentCallback={setComponentCallback} />
-        <Groups />
-        {/* {components.map((comp) => {
+        {/* <Groups /> */}
+        {components.map((comp) => {
           if (comp.key === component.key) {
             return <comp.value />
           }
-        })} */}
+        })}
       </Body>
     </Container>
   );

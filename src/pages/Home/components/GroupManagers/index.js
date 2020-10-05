@@ -159,7 +159,7 @@ const GroupManagers = ({
     if (!response.group_managers) {
       response.group_managers = [];
     }
-    response.group_managers.map(group_manager => {
+    response.group_managers.forEach(group_manager => {
       aux_group_managers.push({
         "id": group_manager.id,
         "name": group_manager.name,
@@ -167,9 +167,8 @@ const GroupManagers = ({
         "group_name": group_manager.group_name
       })
     })
-    console.log(groupManagers, aux_group_managers)
     await setGroupManagers(aux_group_managers)
-    console.log(groupManagers)
+    return
   }
 
   useEffect(() => {

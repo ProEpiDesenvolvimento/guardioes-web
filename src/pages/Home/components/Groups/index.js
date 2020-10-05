@@ -47,15 +47,33 @@ const Groups = ({
     code: "",
     description: "",
     email: "",
-    parent_id: 0,
     phone: "",
     children_label: null
   })
 
+  useEffect(() => {
+    if (creating === "group")
+      setCreatingCourse({...creatingCourse, children_label: "CURSO"})
+    else
+    setCreatingCourse({...creatingCourse, children_label: null})
+  }, [creating])
+
   const _createCourse = async () => {
-    console.log(creatingCourse)
+    if (creating === "group") {
+      setCreatingCourse({...creatingCourse, children_label: "CURSO"})
+    }
     const response = await createGroup(creatingCourse, token)
-    console.log(response)
+    if (!response.errors)
+      setCreatingCourse({
+        parent_id: 0,
+        address: "",
+        cep: "",
+        code: "",
+        description: "",
+        email: "",
+        phone: "",
+        children_label: null
+      })
     fetchData(token)
   }
 
@@ -81,6 +99,8 @@ const Groups = ({
           break;
         case null:
           group.type = "Curso"
+          break;
+        default:
           break;
       }
       group.parentName = group.parent.name;
@@ -133,8 +153,6 @@ const Groups = ({
     { key: "type", value: "Tipo" },
     { key: "parentName", value: "Pertence a(o)" }
   ];
-
-  console.log(creatingCourse.parent_id)
 
   return (
     <>

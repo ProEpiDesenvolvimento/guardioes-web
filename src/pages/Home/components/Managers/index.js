@@ -61,8 +61,7 @@ const Managers = ({
   }
 
   useEffect(() => {
-    console.log(token)
-    // loadManagers(token)
+    loadManagers(token)
   }, [token]);
 
   const fields =

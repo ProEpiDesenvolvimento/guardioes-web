@@ -9,8 +9,6 @@ const createGroup = async (data, token) =>
     }
   )
     .then(async (res) => {
-      console.log("AAAAAAAAAAAAAA")
-      console.log(res)
       alert('Grupo criado!');
       const response = { data: res.data };
       return response

@@ -3,8 +3,7 @@ import {
   Container,
   Logo,
   HeaderNav,
-  NavTo,
-  Logout
+  NavTo
 } from './styles';
 import logo from 'utils/assets/logo.png';
 import { sessionService } from 'redux-react-session';
