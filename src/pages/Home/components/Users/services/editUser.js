@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const editUser = async (id, data, token) => {
-        await api.patch(`/users/${id}`, data,
+        await api.patch(`/admin_update/${id}`, data,
         {
             headers: {
                 "Authorization": token,
