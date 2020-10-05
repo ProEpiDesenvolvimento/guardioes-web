@@ -1,14 +1,19 @@
 import api from 'services/api';
 
-const getAllGroups = async (token, id) => {
-  const response =  await api.get('/groups?group_manager=true',
-                                {
-                                  headers: {
-                                    "Authorization": token,
-                                  },
-                                }
-                    )
-  return response.data
-}
+const getAllGroups = async (token, filter) => api
+  .get(`/groups?filter_by=${filter}`, {
+    headers: {
+      "Authorization": token,
+    },
+  }
+  )
+  .then(async (res) => {
+    const { data } = res;
+    return data
+  })
+  .catch((e) => {
+    console.log(e);
+    return { data: {}, errors: e }
+  });
 
 export default getAllGroups;

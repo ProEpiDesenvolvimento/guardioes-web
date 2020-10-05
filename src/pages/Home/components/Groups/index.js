@@ -52,11 +52,32 @@ const Groups = ({
   // }
 
   const fetchData = async (token) => {
-    const response = await getAllGroups(token)
-    const aux_groups = response.groups.map((group) => {
-                          group.parentName = group.parent.name;
-                          return group
-                        })
+    const response = await getAllGroups(token, user.type)
+
+    if (!response && !response.groups)
+      return
+    
+    let aux_groups = response.groups
+    aux_groups = aux_groups.filter((group) => group.children_label !== "ESTADO")
+    aux_groups = aux_groups.filter((group) => group.children_label !== "Pais")
+    aux_groups = aux_groups.map((group) => {
+      switch(group.children_label) {
+        case "MUNICIPIO":
+          group.type = "Estado"
+          break;
+        case "GRUPO":
+          group.type = "Município"
+          break;
+        case "CURSO":
+          group.type = "Instituição"
+          break;
+        case null:
+          group.type = "Curso"
+          break;
+      }
+      group.parentName = group.parent.name;
+      return group
+    })
     setGroups(aux_groups)
   }
 
@@ -68,8 +89,11 @@ const Groups = ({
   const _editGroup = async () => {
     const data = {
       description: editingGroup.description,
-      require_id: editingGroup.require_id,
-      id_code_length: editingGroup.require_id ? editingGroup.require_id : null
+      code: editingGroup.code,
+      address: editingGroup.address,
+      cep: editingGroup.cep,
+      phone: editingGroup.phone,
+      email: editingGroup.email
     }
     await editGroup(editingGroup.id, data, token);
     setModalEdit(false);
@@ -98,11 +122,9 @@ const Groups = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "description", value: "Nome" },
-    { key: "children_label", value: "Tipo dos Grupos Filhos" },
-    { key: "parentName", value: "Nome do Grupo Pai" }
+    { key: "type", value: "Tipo" },
+    { key: "parentName", value: "Pertence a(o)" }
   ];
-
-  console.log(editingGroup.require_id)
 
   return (
     <>
@@ -127,6 +149,16 @@ const Groups = ({
             />
           </EditInput>
 
+          <EditInput>
+            <label>Tipo</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupShow.type}
+              disabled
+            />
+          </EditInput>
+
           {groupShow.children_label ? 
             <EditInput>
               <label>Tipo dos Grupos Filhos</label>
@@ -137,67 +169,79 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-            : null }
+          : null }
 
-          <EditInput>
-            <label>Nome do Grupo Pai</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.parentName}
-              disabled
-            />
-          </EditInput>
+          {groupShow.parentName ?
+            <EditInput>
+              <label>Nome do Grupo Pai</label>
+              <input
+                className="text-dark"
+                type="text"
+                value={groupShow.parentName}
+                disabled
+              />
+            </EditInput>
+          : null }
 
-          <EditInput>
+          {groupShow.code ?
+            <EditInput>
               <label htmlFor="edit_code">Código</label>
               <input
                 type="text"
                 id="edit_code"
-                value={editingGroup.code}
+                value={groupShow.code}
                 disabled
               />
             </EditInput>
+          : null }  
 
+          { groupShow.address ?
             <EditInput>
               <label htmlFor="edit_address">Endereço</label>
               <input
                 type="text"
                 id="edit_address"
-                value={editingGroup.address}
+                value={groupShow.address}
                 disabled
               />
             </EditInput>
+          : null }
 
+          {groupShow.cep ?
             <EditInput>
               <label htmlFor="edit_cep">CEP</label>
               <input
                 type="text"
                 id="edit_cep"
-                value={editingGroup.cep}
+                value={groupShow.cep}
                 disabled
               />
             </EditInput>
+          : null }
 
+          {groupShow.phone ?
             <EditInput>
               <label htmlFor="edit_phone">Telefone</label>
               <input
                 type="text"
                 id="edit_phone"
-                value={editingGroup.phone}
+                value={groupShow.phone}
                 disabled
               />
             </EditInput>
+          : null }
 
+          {groupShow.email ?
             <EditInput>
               <label htmlFor="edit_name">Email</label>
               <input
                 type="text"
                 id="edit_email"
-                value={editingGroup.email}
+                value={groupShow.email}
                 disabled
               />
             </EditInput>
+          : null }
         </Modal.Body>
 
         <Modal.Footer>
@@ -312,7 +356,7 @@ const Groups = ({
               </InputBlock>
 
               <SubmitButton type="submit">
-                Criar App
+                Criar Instituição
             </SubmitButton>
             </form>
           </ContainerForm>

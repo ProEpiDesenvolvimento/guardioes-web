@@ -97,7 +97,6 @@ const Home = ({
     if (token == "") {
       history.push("/login")
     }
-    console.log(token)
   }, [])
 
   const setComponentCallback = (component) => {
