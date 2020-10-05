@@ -138,18 +138,3 @@ export const EditInput = styled.div`
       -moz-appearance:textfield; /* Firefox */
   }
 `;
-
-export const EditCheckbox = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  margin-bottom: 1rem;
-  align-items: center;
-`;
-
-export const EditCheckboxInput = styled.input`
-  margin-bottom: .5rem;
-  margin-left: .5rem;
-`;

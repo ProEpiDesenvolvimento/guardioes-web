@@ -19,9 +19,7 @@ import {
   SubmitButton,
   Input,
   SelectInput,
-  Form,
-  EditCheckbox,
-  EditCheckboxInput
+  Form
 } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
@@ -41,6 +39,7 @@ const Groups = ({
   const [modalShow, setModalShow] = useState(false);
   const [groupShow, setGroupShow] = useState({});
 
+  const [creating, setCreating] = useState(null)
   const [creatingCourse, setCreatingCourse] = useState({
     parent_id: 0,
     address: "",
@@ -339,43 +338,25 @@ const Groups = ({
       </Modal>
 
       <Container>
-        <ContentBox
-          title="Instituições"
-          token={token}
-          contents={groups ? groups : []}
-          fields={fields}
-          delete_function={handleDelete}
-          handleEdit={handleEdit}
-          handleShow={handleShow}  
-        />
-
-
-        {/* <AddGroupContainer className="shadow-sm">
-          <ContainerHeader>
-            <ContainerTitle>Adicionar Instituição</ContainerTitle>
-          </ContainerHeader>
-          <ContainerForm>
-            <form id="addGroup" onSubmit={() => {}}>
-              <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={"arroz"}
-                  onChange={(e) => {}}
-                />
-              </InputBlock>
-
-              <SubmitButton type="submit">
-                Criar Instituição
-            </SubmitButton>
-            </form>
-          </ContainerForm>
-        </AddGroupContainer> */}
-
+          <ContentBox
+            title="Instituições"
+            token={token}
+            contents={groups ? groups : []}
+            fields={fields}
+            delete_function={handleDelete}
+            handleEdit={handleEdit}
+            handleShow={handleShow}  
+          />
+        
         <AddGroupContainer className="shadow-sm">
+          {user.type === "admin" ?
+            <div style={{display: 'flex', justifyContent: 'space-around'}}>
+              <SubmitButton style={{alignSelf: 'flex-start'}} onClick={() => setCreating("group")}>Add Instituição</SubmitButton>
+              <SubmitButton style={{justifySelf: 'flex-end'}} onClick={() => setCreating("course")}>Add Curso</SubmitButton>  
+            </div>
+          : null}
           <ContainerHeader>
-            <ContainerTitle>Adicionar Curso</ContainerTitle>
+            <ContainerTitle>{creating === "group" ? "Adicionar Instituição" : "Adicionar Curso"}</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <Form id="addCourse" onSubmit={handleSubmit(_createCourse)}>
@@ -440,21 +421,25 @@ const Groups = ({
               </InputBlock>
 
               <InputBlock>
-                <label htmlFor="name">Instituição</label>
+                <label htmlFor="name">{creating === "group" ? "Município" : "Instituição"}</label>
                 <SelectInput
                   type="select"
                   id="name"
                   onChange={(e) => setCreatingCourse({...creatingCourse, parent_id: e.target.value})}
                 >
                   <option value="" selected disabled hidden>Escolha aqui</option>
-                  {groups.filter((g) => g.children_label === "CURSO").map((g) => {
+                  {creating === "group" ?
+                    groups.filter((g) => g.children_label === "GRUPO").map((g) => {
+                    return <option key={g.id} value={g.id}>{g.description}</option>
+                  }) :
+                    groups.filter((g) => g.children_label === "CURSO").map((g) => {
                     return <option key={g.id} value={g.id}>{g.description}</option>
                   })}
                 </SelectInput>
               </InputBlock>
 
               <SubmitButton type="submit">
-                Criar Curso
+                {creating === "group" ? "Criar Instituição" : "Criar Curso"}
               </SubmitButton>
             </Form>
           </ContainerForm>
