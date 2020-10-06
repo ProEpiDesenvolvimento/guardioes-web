@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Popup } from 'semantic-ui-react'
+import { device } from 'utils/devices';
 
 export const Span = styled.span`
   color: red;
@@ -129,6 +130,11 @@ export const QuestionPopupOrgType = styled(Popup)`
     background: #FFFFFF;
     margin-bottom: 7px;
     box-shadow: 1px 1px 1px gray;
+
+    @media ${device.laptopL} {
+      height: 5%;
+      width: 25%;
+    };
 `;
 
 export const QuestionPopupCat = styled(Popup)`
@@ -140,4 +146,10 @@ export const QuestionPopupCat = styled(Popup)`
     background: #FFFFFF;
     margin-bottom: 7px;
     box-shadow: 1px 1px 1px gray;
+
+    @media ${device.laptopL} {
+      height: 5%;
+      width: 40%;
+    };
+
 `;
