@@ -4,7 +4,7 @@ import {
   EditInput,
   SubmitButton,
   EditCheckbox,
-  EditCheckboxInput
+  EditCheckboxInput,
   SearchView
 } from './styles';
 import { connect } from 'react-redux';
