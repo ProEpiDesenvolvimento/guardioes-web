@@ -38,6 +38,7 @@ services:
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
       - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
+    # The following is a traefik configuration (homolog only)
     labels:
       - traefik.backend=kibana
       - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
@@ -57,11 +58,11 @@ services:
       - traefik.port=8081
     command: npx serve -s build
     ports:
-      - "8081:8081"
+      - "80:80"
     depends_on:
       - kibana
     environment: 
-      - PORT=8081
+      - PORT=80
     stdin_open: true
   nginx:
     image: nginx
@@ -76,6 +77,7 @@ services:
       - kibana
     depends_on:
       - kibana
+    # The following is a traefik configuration (homolog only)
     labels:
       - traefik.backend=nginx
       - traefik.frontend.rule=Host:kibanaproxy.guardioes.lappis.rocks
