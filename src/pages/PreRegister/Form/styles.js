@@ -140,7 +140,7 @@ export const QuestionPopupOrgType = styled(Popup)`
 export const QuestionPopupCat = styled(Popup)`
     width: 25%;
     height: 5%;
-    padding: 10px;
+    padding: 5px;
     border-radius: 15px;
     border: 1px solid gray;
     background: #FFFFFF;
