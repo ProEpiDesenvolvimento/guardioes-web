@@ -124,7 +124,7 @@ export const SendButtonName = styled.p`
 export const QuestionPopupOrgType = styled(Popup)`
     width: 15%;
     height: 5%;
-    padding: 10px;
+    padding: 5px;
     border-radius: 15px;
     border: 1px solid gray;
     background: #FFFFFF;
