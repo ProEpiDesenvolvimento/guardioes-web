@@ -4,9 +4,14 @@ import {
   setGroups, setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
+import { useForm } from "react-hook-form";
+import { Link } from 'react-router-dom';
 import getAllGroups from './services/getAllGroups'
 import createGroup from './services/createGroup'
 import deleteGroup from './services/deleteGroup'
+
+import editIcon from '../assets/edit-solid.svg';
+import deleteIcon from '../assets/trash-solid.svg';
 import editGroup from './services/editGroup';
 import {
   Container,
@@ -19,10 +24,15 @@ import {
   SubmitButton,
   Input,
   SelectInput,
-  Form
+  Form,
+  ContainerContent,
+  ContentBoxHeader,
+  ContentBoxTitle,
+  ContentBoxTable,
+  ContentBoxTableHeader,
+  ContentBoxTableIcon,
 } from './styles';
-import { useForm } from "react-hook-form";
-import ContentBox from '../ContentBox';
+import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
 
@@ -39,7 +49,19 @@ const Groups = ({
   const [modalShow, setModalShow] = useState(false);
   const [groupShow, setGroupShow] = useState({});
 
-  const [creating, setCreating] = useState(null)
+  const [states, setStates] = useState([]);
+  const [counties, setCounties] = useState([]);
+  const [schools, setSchools] = useState([]);
+  const [courses, setCourses] = useState([]);
+
+  const [country, setCountry] = useState({});
+  const [state, setState] = useState({});
+  const [countie, setCountie] = useState({});
+  const [school, setSchool] = useState({});
+
+  const [goBack, setGoBack] = useState(false);
+
+  const [creating, setCreating] = useState(null);
   const [creatingCourse, setCreatingCourse] = useState({
     parent_id: 0,
     address: "",
@@ -84,29 +106,43 @@ const Groups = ({
       return
     
     let aux_groups = response.groups
+    setCountry(aux_groups[1])
     aux_groups = aux_groups.filter((group) => group.children_label !== "ESTADO")
     aux_groups = aux_groups.filter((group) => group.children_label !== "Pais")
+    let aux_states = []
+    let aux_counties = []
+    let aux_schools = []
+    let aux_courses = []
+
     aux_groups = aux_groups.map((group) => {
+      group.parentName = group.parent.name;
       switch(group.children_label) {
         case "MUNICIPIO":
           group.type = "Estado"
+          aux_states.push(group)
           break;
         case "GRUPO":
           group.type = "Município"
+          aux_counties.push(group)
           break;
         case "CURSO":
           group.type = "Instituição"
+          aux_schools.push(group)
           break;
         case null:
           group.type = "Curso"
+          aux_courses.push(group)
           break;
         default:
           break;
       }
-      group.parentName = group.parent.name;
       return group
     })
-    setGroups(aux_groups)
+    setStates(aux_states)
+    setCounties(aux_counties)
+    setSchools(aux_schools)
+    setCourses(aux_courses)
+    setGroups(aux_groups.filter((g) => g.children_label === "MUNICIPIO"))
   }
 
   const handleDelete = async (id, token) => {
@@ -136,6 +172,52 @@ const Groups = ({
   const handleEdit = (content) => {
     setEditingGroup(content);
     setModalEdit(!modalEdit);
+  }
+
+  const handleNavigate = (group, goback=false) => {
+    if (group.type === "Estado" && goback === false)
+      setGoBack(true)
+
+    // if (goback) {
+    //   setGoBack(false)
+    //   console.log(country)
+    //   setGroups(states.filter((state) => state.parent.name === country.description))
+    //   return
+    // }
+    switch(group.type) {
+      case "Estado":
+        if (!goback) {
+          setGroups(counties.filter((countie) => countie.parent.name === group.description))
+          setState(group)
+        }
+        break;
+      case "Município":
+        if (goback) {
+          console.log("AAAAAAAAAA")
+          setGroups(states.filter((state) => state.parent.name === country.description))
+          setCountie({})
+        } else {
+          setGroups(schools.filter((school) => school.parent.name === group.description))
+          setCountie(group)
+        }
+        break;
+      case "Instituição":
+        if (goback) {
+          setGroups(counties.filter((countie) => countie.parent.name === state.description))
+          setSchool({})
+        } else {
+          setGroups(courses.filter((course) => course.parent.name === group.description))
+          setSchool(group)
+        }
+        break;
+      case "Curso":
+        if (goback) {
+          setGroups(schools.filter((school) => school.parent.name === countie.description))
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   useEffect(() => {
@@ -223,7 +305,7 @@ const Groups = ({
             </EditInput>
           : null }  
 
-          { groupShow.address ?
+          {groupShow.address ?
             <EditInput>
               <label htmlFor="edit_address">Endereço</label>
               <input
@@ -298,6 +380,7 @@ const Groups = ({
               />
             </EditInput>
 
+            {editingGroup.code ?
             <EditInput>
               <label htmlFor="edit_code">Código</label>
               <input
@@ -307,7 +390,9 @@ const Groups = ({
                 onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
               />
             </EditInput>
+            : null}
 
+            {editingGroup.address ?
             <EditInput>
               <label htmlFor="edit_address">Endereço</label>
               <input
@@ -317,7 +402,9 @@ const Groups = ({
                 onChange={(e) => setEditingGroup({...editingGroup, address: e.target.value})}
               />
             </EditInput>
+            : null}
 
+            {editingGroup.cep ?
             <EditInput>
               <label htmlFor="edit_cep">CEP</label>
               <input
@@ -327,7 +414,9 @@ const Groups = ({
                 onChange={(e) => setEditingGroup({...editingGroup, cep: e.target.value})}
               />
             </EditInput>
+            : null}
 
+            {editingGroup.phone ?
             <EditInput>
               <label htmlFor="edit_phone">Telefone</label>
               <input
@@ -337,7 +426,9 @@ const Groups = ({
                 onChange={(e) => setEditingGroup({...editingGroup, phone: e.target.value})}
               />
             </EditInput>
+            : null}
 
+            {editingGroup.email ?    
             <EditInput>
               <label htmlFor="edit_name">Email</label>
               <input
@@ -347,6 +438,7 @@ const Groups = ({
                 onChange={(e) => setEditingGroup({...editingGroup, email: e.target.value})}
               />
             </EditInput>
+            : null}
 
           </Modal.Body>
           <Modal.Footer>
@@ -356,15 +448,73 @@ const Groups = ({
       </Modal>
 
       <Container>
-          <ContentBox
-            title="Instituições"
-            token={token}
-            contents={groups ? groups : []}
-            fields={fields}
-            delete_function={handleDelete}
-            handleEdit={handleEdit}
-            handleShow={handleShow}  
-          />
+        <ContainerContent>
+          <ContentBoxHeader>
+            <ContentBoxTitle>Instituições</ContentBoxTitle>
+          </ContentBoxHeader>
+          <ContentBoxTable>
+            <Table responsive>
+              <thead>
+              {goBack ?
+              <tr>
+                <td>
+                  <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups[0], true)}>
+                    Voltar
+                  </button>
+                </td>
+              </tr>
+              : null }
+                <tr>
+                  {fields.map(field => (
+                      <ContentBoxTableHeader>{field.value}</ContentBoxTableHeader>
+                  ))}
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {groups.map(group => (
+                  <tr>
+                    {fields.map(field => (
+                      <td>{group[field.key]}</td>
+                    ))}
+                    <td>
+                      <button className="btn btn-info" onClick={() => handleShow(group)}>
+                        Detalhes
+                      </button>
+                    </td>
+                    {group.children_label !== null ?
+                    <td>
+                      <button className="btn btn-info" onClick={() => handleNavigate(group)}>
+                        Ver filhos
+                      </button>
+                    </td>
+                    : null}
+                    <td>
+                      <Link to="/panel">
+                        <ContentBoxTableIcon
+                          src={editIcon}
+                          alt="Editar"
+                          onClick={() => { handleEdit(group) }}
+                        />
+                      </Link>
+                    </td>
+                    <td>
+                      <Link to="/panel">
+                        <ContentBoxTableIcon
+                          src={deleteIcon}
+                          alt="Deletar"
+                          onClick={() => { handleDelete(group.id, token) }}
+                        />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </ContentBoxTable>
+        </ContainerContent>
         
         <AddGroupContainer className="shadow-sm">
           {user.type === "admin" ?
