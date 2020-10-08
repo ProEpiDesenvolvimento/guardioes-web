@@ -7,6 +7,7 @@ import {
 	SET_CONTENTS,
 	SET_SYMPTOMS,
 	SET_GROUP_MANAGERS,
+	SET_SYNDROMES,
 	SET_USERS
 } from 'constants/action-types';
 
@@ -28,6 +29,7 @@ const initialState = {
 	contents: [],
 	symptoms: [],
 	group_managers: [],
+	syndromes: [],
 	users: []
 };
 
@@ -73,11 +75,16 @@ const User = (state = initialState, action) => {
 				...state,
 				group_managers: action.payload
 			};
+		case SET_SYNDROMES:
+			return {
+				...state,
+				syndromes: action.payload
+			};
 		case SET_USERS:
 			return {
 				...state,
 				users: action.payload
-			}
+			};
 		default:
 			return {
 				...state,
