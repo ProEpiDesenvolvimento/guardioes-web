@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getAllGroups = async (token, filter) => api
-  .get(`/groups?filter_by=${filter}`, {
+const getAllGroups = async (token) => api
+  .get(`/groups`, {
     headers: {
       "Authorization": token,
     },

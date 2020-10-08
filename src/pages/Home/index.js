@@ -108,7 +108,6 @@ const Home = ({
       <Header />
       <Body style={{ overflowX: 'hidden' }}>
         <NavBar setComponentCallback={setComponentCallback} />
-        {/* <Groups /> */}
         {components.map((comp) => {
           if (comp.key === component.key) {
             return <comp.value />

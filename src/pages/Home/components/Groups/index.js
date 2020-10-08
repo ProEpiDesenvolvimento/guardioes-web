@@ -57,12 +57,11 @@ const Groups = ({
   const [country, setCountry] = useState({});
   const [state, setState] = useState({});
   const [countie, setCountie] = useState({});
-  const [school, setSchool] = useState({});
 
   const [goBack, setGoBack] = useState(false);
 
-  const [creating, setCreating] = useState(null);
-  const [creatingCourse, setCreatingCourse] = useState({
+  const [creating, setCreating] = useState("course");
+  const [creatingGroup, setCreatingGroup] = useState({
     parent_id: 0,
     address: "",
     cep: "",
@@ -72,50 +71,71 @@ const Groups = ({
     phone: "",
     children_label: null
   })
+  const [creatingState, setCreatingState] = useState("");
+  const [creatingCountie, setCreatingCountie] = useState("");
 
   useEffect(() => {
     if (creating === "group")
-      setCreatingCourse({...creatingCourse, children_label: "CURSO"})
+      setCreatingGroup({...creatingGroup, children_label: "CURSO"})
     else
-    setCreatingCourse({...creatingCourse, children_label: null})
+    setCreatingGroup({...creatingGroup, children_label: null})
   }, [creating])
 
-  const _createCourse = async () => {
-    if (creating === "group") {
-      setCreatingCourse({...creatingCourse, children_label: "CURSO"})
-    }
-    const response = await createGroup(creatingCourse, token)
+  const _createGroup = async () => {
+    if (creating === "group")
+      setCreatingGroup({...creatingGroup, children_label: "CURSO"})
+    const response = await createGroup(creatingGroup, token)
     if (!response.errors)
-      setCreatingCourse({
-        parent_id: 0,
-        address: "",
-        cep: "",
-        code: "",
-        description: "",
-        email: "",
-        phone: "",
-        children_label: null
-      })
+      clearData()
     fetchData(token)
   }
 
+  const validatePermissions = (group) => {
+    if (user.type === "admin")
+      return true
+
+    if (group.group_manager)
+      if(user.group_manager.id === group.group_manager.id)
+        return true
+        
+    return false
+  }
+
+  const clearData = () => {
+    setCreatingGroup({
+      parent_id: 0,
+      address: "",
+      cep: "",
+      code: "",
+      description: "",
+      email: "",
+      phone: "",
+      children_label: null
+    })
+    setCreatingCountie("")
+    setCreatingState("")
+    setEditingGroup({})
+    setGroupShow({})
+    setCreating("course")
+  }
+
   const fetchData = async (token) => {
-    const response = await getAllGroups(token, user.type)
+    const response = await getAllGroups(token)
 
     if (!response && !response.groups)
       return
     
     let aux_groups = response.groups
     setCountry(aux_groups[1])
-    aux_groups = aux_groups.filter((group) => group.children_label !== "ESTADO")
     aux_groups = aux_groups.filter((group) => group.children_label !== "Pais")
+    aux_groups = aux_groups.filter((group) => group.children_label !== "ESTADO")
     let aux_states = []
     let aux_counties = []
     let aux_schools = []
     let aux_courses = []
 
     aux_groups = aux_groups.map((group) => {
-      group.parentName = group.parent.name;
+      group.parentName = group.parent.name
       switch(group.children_label) {
         case "MUNICIPIO":
           group.type = "Estado"
@@ -178,36 +198,42 @@ const Groups = ({
     if (group.type === "Estado" && goback === false)
       setGoBack(true)
 
-    // if (goback) {
-    //   setGoBack(false)
-    //   console.log(country)
-    //   setGroups(states.filter((state) => state.parent.name === country.description))
-    //   return
-    // }
+    if (group.type === "Município" && goback === true) {
+      setGoBack(false)
+      setGroups(states.filter((state) => state.parent.name === country.description))
+      return
+    }
+
     switch(group.type) {
       case "Estado":
         if (!goback) {
-          setGroups(counties.filter((countie) => countie.parent.name === group.description))
+          const aux_groups = counties.filter((countie) => countie.parent.name === group.description)
+          if (aux_groups.length === 0)
+            return alert("O grupo não possui filhos")
+          setGroups(aux_groups)
           setState(group)
         }
         break;
       case "Município":
         if (goback) {
-          console.log("AAAAAAAAAA")
           setGroups(states.filter((state) => state.parent.name === country.description))
           setCountie({})
         } else {
-          setGroups(schools.filter((school) => school.parent.name === group.description))
+          const aux_groups = schools.filter((school) => school.parent.name === group.description)
+          if (aux_groups.length === 0)
+            return alert("O grupo não possui filhos")
+          setGroups(aux_groups)
           setCountie(group)
         }
         break;
       case "Instituição":
         if (goback) {
           setGroups(counties.filter((countie) => countie.parent.name === state.description))
-          setSchool({})
         } else {
-          setGroups(courses.filter((course) => course.parent.name === group.description))
-          setSchool(group)
+          const aux_groups = courses.filter((course) => course.parent.name === group.description)
+          if (aux_groups.length === 0)
+            return alert("O grupo não possui filhos")
+          setGroups(aux_groups)
         }
         break;
       case "Curso":
@@ -455,7 +481,7 @@ const Groups = ({
           <ContentBoxTable>
             <Table responsive>
               <thead>
-              {goBack ?
+              {goBack ? 
               <tr>
                 <td>
                   <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups[0], true)}>
@@ -466,7 +492,7 @@ const Groups = ({
               : null }
                 <tr>
                   {fields.map(field => (
-                      <ContentBoxTableHeader>{field.value}</ContentBoxTableHeader>
+                      <ContentBoxTableHeader key={field.value}>{field.value}</ContentBoxTableHeader>
                   ))}
                   <th></th>
                   <th></th>
@@ -475,9 +501,9 @@ const Groups = ({
 
               <tbody>
                 {groups.map(group => (
-                  <tr>
+                  <tr key={group.id}>
                     {fields.map(field => (
-                      <td>{group[field.key]}</td>
+                      <td key={field.value}>{group[field.key]}</td>
                     ))}
                     <td>
                       <button className="btn btn-info" onClick={() => handleShow(group)}>
@@ -491,24 +517,28 @@ const Groups = ({
                       </button>
                     </td>
                     : null}
-                    <td>
-                      <Link to="/panel">
-                        <ContentBoxTableIcon
-                          src={editIcon}
-                          alt="Editar"
-                          onClick={() => { handleEdit(group) }}
-                        />
-                      </Link>
-                    </td>
-                    <td>
-                      <Link to="/panel">
-                        <ContentBoxTableIcon
-                          src={deleteIcon}
-                          alt="Deletar"
-                          onClick={() => { handleDelete(group.id, token) }}
-                        />
-                      </Link>
-                    </td>
+                    {validatePermissions(group) ?
+                    <>
+                      <td>
+                        <Link to="/panel">
+                          <ContentBoxTableIcon
+                            src={editIcon}
+                            alt="Editar"
+                            onClick={() => { handleEdit(group) }}
+                          />
+                        </Link>
+                      </td>
+                      <td>
+                        <Link to="/panel">
+                          <ContentBoxTableIcon
+                            src={deleteIcon}
+                            alt="Deletar"
+                            onClick={() => { handleDelete(group.id, token) }}
+                          />
+                        </Link>
+                      </td>
+                    </>
+                    : null}
                   </tr>
                 ))}
               </tbody>
@@ -517,24 +547,34 @@ const Groups = ({
         </ContainerContent>
         
         <AddGroupContainer className="shadow-sm">
-          {user.type === "admin" ?
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
-              <SubmitButton style={{alignSelf: 'flex-start'}} onClick={() => setCreating("group")}>Add Instituição</SubmitButton>
-              <SubmitButton style={{justifySelf: 'flex-end'}} onClick={() => setCreating("course")}>Add Curso</SubmitButton>  
+              <SubmitButton
+                style={{alignSelf: 'flex-start'}}
+                onClick={() => {
+                  clearData()
+                  setCreating("group")
+                }}
+              >Add Instituição</SubmitButton>
+              <SubmitButton
+                style={{justifySelf: 'flex-end'}}
+                onClick={() => {
+                  clearData()
+                  setCreating("course")
+                }}
+              >Add Curso</SubmitButton>  
             </div>
-          : null}
           <ContainerHeader>
             <ContainerTitle>{creating === "group" ? "Adicionar Instituição" : "Adicionar Curso"}</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
-            <Form id="addCourse" onSubmit={handleSubmit(_createCourse)}>
+            <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
               <InputBlock>
                 <label htmlFor="name">Nome</label>
                 <Input
                   type="text"
                   id="name"
-                  value={creatingCourse.description}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, description: e.target.value})}
+                  value={creatingGroup.description}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
                 />
               </InputBlock>
 
@@ -543,8 +583,8 @@ const Groups = ({
                 <Input
                   type="text"
                   id="code"
-                  value={creatingCourse.code}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, code: e.target.value})}
+                  value={creatingGroup.code}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, code: e.target.value})}
                 />
               </InputBlock>
 
@@ -553,8 +593,8 @@ const Groups = ({
                 <Input
                   type="text"
                   id="address"
-                  value={creatingCourse.address}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, address: e.target.value})}
+                  value={creatingGroup.address}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, address: e.target.value})}
                 />
               </InputBlock>
 
@@ -563,8 +603,8 @@ const Groups = ({
                 <Input
                   type="text"
                   id="cep"
-                  value={creatingCourse.cep}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, cep: e.target.value})}
+                  value={creatingGroup.cep}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, cep: e.target.value})}
                 />
               </InputBlock>
 
@@ -573,8 +613,8 @@ const Groups = ({
                 <Input
                   type="text"
                   id="phone"
-                  value={creatingCourse.phone}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, phone: e.target.value})}
+                  value={creatingGroup.phone}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, phone: e.target.value})}
                 />
               </InputBlock>
 
@@ -583,28 +623,68 @@ const Groups = ({
                 <Input
                   type="text"
                   id="email"
-                  value={creatingCourse.email}
-                  onChange={(e) => setCreatingCourse({...creatingCourse, email: e.target.value})}
+                  value={creatingGroup.email}
+                  onChange={(e) => setCreatingGroup({...creatingGroup, email: e.target.value})}
                 />
               </InputBlock>
 
               <InputBlock>
-                <label htmlFor="name">{creating === "group" ? "Município" : "Instituição"}</label>
+                <label htmlFor="name">Estado</label>
                 <SelectInput
                   type="select"
                   id="name"
-                  onChange={(e) => setCreatingCourse({...creatingCourse, parent_id: e.target.value})}
+                  onChange={(e) => setCreatingState(e.target.value)}
+                  value={creatingState}
                 >
                   <option value="" selected disabled hidden>Escolha aqui</option>
-                  {creating === "group" ?
-                    groups.filter((g) => g.children_label === "GRUPO").map((g) => {
-                    return <option key={g.id} value={g.id}>{g.description}</option>
-                  }) :
-                    groups.filter((g) => g.children_label === "CURSO").map((g) => {
+                  {states.filter((g) => g.type === "Estado").map((g) => {
+                    return <option value={g.description}>{g.description}</option>
+                  })}
+                </SelectInput>
+              </InputBlock>
+
+              {Object.keys(creatingState).length !== 0 ?
+              <InputBlock>
+                <label htmlFor="name">Município</label>
+                <SelectInput
+                  type="select"
+                  id="name"
+                  onChange={(e) => {
+                    const id = parseInt(e.target.value, 10)
+                    if (creating === "group")
+                      setCreatingGroup({...creatingGroup, parent_id: id})
+                    const aux_description = counties.find(countie => countie.id === id).description
+                    setCreatingCountie(aux_description)
+                  }}
+                  value={creatingCountie}
+                >
+                  <option value="" selected disabled hidden>Escolha aqui</option>
+                  {counties.filter((g) => g.parent.name === creatingState).map((g) => {
                     return <option key={g.id} value={g.id}>{g.description}</option>
                   })}
                 </SelectInput>
               </InputBlock>
+              : null}
+
+              {creating === "course" && Object.keys(creatingCountie).length !== 0 ?
+              <InputBlock>
+                <label htmlFor="name">Instituição</label>
+                <SelectInput
+                  type="select"
+                  id="name"
+                  onChange={(e) => {
+                    const id = parseInt(e.target.value, 10)
+                    if (creating === "course")
+                      setCreatingGroup({...creatingGroup, parent_id: id})
+                  }}
+                >
+                  <option value="" selected disabled hidden>Escolha aqui</option>
+                  {schools.filter((g) => g.parent.name === creatingCountie).map((g) => {
+                    return <option key={g.id} value={g.id}>{g.description}</option>
+                  })}
+                </SelectInput>
+              </InputBlock>
+              : null}
 
               <SubmitButton type="submit">
                 {creating === "group" ? "Criar Instituição" : "Criar Curso"}
