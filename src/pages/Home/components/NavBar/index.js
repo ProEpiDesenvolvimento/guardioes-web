@@ -60,7 +60,9 @@ const NavBar = ({
   ]
 
   const loadCategories = () => {
-    if (user.type === "manager") {
+    if (user.type === "admin") {	
+
+    } else if (user.type === "manager") {
       allCategories.splice(0, 4);
     } else if (user.type === "group_manager") {
       allCategories.splice(0, 7);
