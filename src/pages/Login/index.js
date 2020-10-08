@@ -36,8 +36,8 @@ const Login = ({
   const [password, setPassword] = useState("")
   const [items, setItems] = useState([
     {
-      key: "manager",
-      value: 'Gerente',
+      key: "group_manager",
+      value: 'Group Manager',
     },
     {
       key: "admin",
@@ -49,13 +49,19 @@ const Login = ({
 
   const makeUserLogin = async (data) => {
     const response = await requestLogin(email, password, items[0].key)
-    console.log("status", response)
-    if (response.authorization != "") {
+    const responseUser = response.user
+    if (response.authorization !== "") {
       setToken(response.authorization);
-      setUser(response.user)
+      setUser({
+        ...responseUser,
+        type: items[0].key
+      })
       sessionService.saveSession({ token: response.authorization })
         .then(() => {
-          sessionService.saveUser(response.user)
+          sessionService.saveUser({
+            ...responseUser,
+            type: items[0].key
+          })
             .then(() => {
               history.push('/panel')
             })
@@ -110,7 +116,7 @@ const Login = ({
       </Body>
     </Container>
   );
-}
+} 
 const mapStateToProps = (state) => ({
   email: state.user.email,
   token: state.user.token,
