@@ -5,7 +5,7 @@ export const Container = styled.div`
     flex-direction: column;
     width: 65%;
 
-    @media (min-width: 500px) {
+    @media (min-width: 750px) {
         width: 100%;
     }
 `;
@@ -58,6 +58,20 @@ export const InputBlock = styled.div`
     margin-bottom: 1rem;
 `;
 
+export const ButtonBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    font-size: 20;
+    color: #348EAC;
+    text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
+    margin-bottom: 1rem;
+
+    @media (min-width: 750px) {
+        flex-direction: row;
+    }
+`;
+
 export const SubmitButton = styled.button`
     width: 100%;
     background-color: #5DD39E;
@@ -72,13 +86,15 @@ export const SubmitButton = styled.button`
         opacity: 0.7;
     }
 
-    @media (min-width: 500px) {
+    @media (min-width: 750px) {
         width: 14rem;
     }
 `;
 
-export const SymptomsButton = styled.button`
+export const SymptomsButton = styled.div`
+    display: flex;
     width: 100%;
+    font-weight: 500;
     background-color: #348EAC;
     color: white;
     border: 0;
@@ -86,12 +102,16 @@ export const SymptomsButton = styled.button`
     height: 2.2rem;
     cursor: pointer;
     transition: opacity 0.2s;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
 
     &:hover {
         opacity: 0.7;
     }
 
-    @media (min-width: 500px) {
+    @media (min-width: 750px) {
         width: 14rem;
     }
 `;
