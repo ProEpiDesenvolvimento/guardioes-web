@@ -6,6 +6,7 @@ import {
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
+import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
 import Dashboard from './components/Dashboard';
@@ -62,6 +63,10 @@ const Home = ({
         value: GroupManagers
       },
       {
+        key: "groups",
+        value: Groups
+      },
+      {
         key: "symptoms",
         value: Symptoms
       },
@@ -90,10 +95,9 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
-    if (token == "") {
+    if (token === "") {
       history.push("/login")
     }
-    console.log(token)
   }, [])
 
   const setComponentCallback = (component) => {
