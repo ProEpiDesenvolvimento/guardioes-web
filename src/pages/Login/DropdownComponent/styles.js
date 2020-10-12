@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 
 export const DropdownDiv = styled.div`
-  display: flex;
   min-height: 38px;
   flex-wrap: wrap;
   float: right;
   width: 250px;
-  `;
+  margin-right: 38px;
+  margin-top: 25px;
+`;
+
+export const DropdownTitle = styled.text`
+  margin-right: 10px;
+  margin-top: 25px;
+  font-size: 24px;
+`;
 
 export const Header = styled.div`
   @include styling();
@@ -14,7 +21,7 @@ export const Header = styled.div`
   justify-content: space-between;
   cursor: pointer;
   padding: 0 20px;
-  `;
+`;
 
 export const SelectionDiv = styled.div`
   z-index: 2;
