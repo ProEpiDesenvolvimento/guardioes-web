@@ -6,29 +6,16 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 const DropdownComponent = (props) => {
   const [userType, setUserType] = useState('Selecione Usuário');
-  const [open, setOpen] = useState(false);
 
   const handleOnClick = (event) => {
     setUserType(event.target.value)
     props.setItemsCallback(event.target.value)
   }
 
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
   return (
     <DropdownDiv>
       <DropdownTitle>Tipo de Usuário: </DropdownTitle>
         <Select
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
           onChange={handleOnClick}
           value={userType}
         >
