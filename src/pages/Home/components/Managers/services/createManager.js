@@ -17,4 +17,5 @@ const createManagers = async (data, token) =>
       console.log(e);
       return { data: {}, errors: e }
     });
+    
 export default createManagers;
