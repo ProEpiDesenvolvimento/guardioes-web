@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import getAllManagers from './services/getAllManagers'
 import createManager from './services/createManager'
 import deleteManager from './services/deleteManager'
-import editManager from './services/editGroupManager';
+import editManager from './services/editManager';
 
 import {
   Container,
@@ -31,7 +31,7 @@ import ContentBox from '../ContentBox';
 const Managers = ({
   token,
   user,
-  groupManagers,
+  managers,
   setManagers,
   setToken
 }) => {
@@ -150,7 +150,7 @@ const Managers = ({
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Informações do Gerente de Instituição
+            Informações do Gerente
           </Modal.Title>
         </Modal.Header>
 
@@ -252,7 +252,7 @@ const Managers = ({
         <ContentBox
           title="Gerentes de Instituições"
           token={token}
-          contents={groupManagers ? groupManagers : []}
+          contents={managers ? managers : []}
           fields={fields}
           delete_function={_deleteManager}
           handleEdit={handleEdit}

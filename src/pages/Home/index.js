@@ -8,6 +8,7 @@ import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
+import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import { connect } from 'react-redux';
@@ -59,6 +60,10 @@ const Home = ({
       {
         key: "managersGroup",
         value: GroupManagers
+      },
+      {
+        key: "managers",
+        value: Managers
       },
       {
         key: "symptoms",
