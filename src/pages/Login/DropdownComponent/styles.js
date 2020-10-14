@@ -10,14 +10,18 @@ export const DropdownDiv = styled.div`
 `;
 
 export const DropdownTitle = styled.text`
+  text-align: left;
+  margin: 0;
+  margin-left: 5px;
   font-family: Argentum Sans;
   font-style: normal;
-  margin-right: 10px;
-  margin-top: 25px;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  color: #FFFFFF;
   @media (min-width: 500px) {
     padding: 0 20px 30px 30px;
-    font-size: 22px;
+    font-size: 20px;
   }
 `;
 
@@ -51,12 +55,6 @@ export const Title = styled.p`
   font-size: 20px;
   line-height: 25px;
   color: #FFFFFF;
-`;
-
-export const DownIcon = styled.img`
-  width: 10px;
-  height: 10px;
-  margin: 8px;
 `;
 
 export const List = styled.ul`
