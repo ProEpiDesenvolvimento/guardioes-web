@@ -10,9 +10,15 @@ export const DropdownDiv = styled.div`
 `;
 
 export const DropdownTitle = styled.text`
+  font-family: Argentum Sans;
+  font-style: normal;
   margin-right: 10px;
   margin-top: 25px;
-  font-size: 24px;
+  font-size: 12px;
+  @media (min-width: 500px) {
+    padding: 0 20px 30px 30px;
+    font-size: 22px;
+  }
 `;
 
 export const Header = styled.div`

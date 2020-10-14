@@ -250,7 +250,7 @@ const Managers = ({
 
       <Container>
         <ContentBox
-          title="Gerentes de Instituições"
+          title="Gerentes"
           token={token}
           contents={managers ? managers : []}
           fields={fields}
