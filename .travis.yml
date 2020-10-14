@@ -8,7 +8,7 @@ branches:
 
 env:
   global:
-    - CC_TEST_REPORTER_ID=0f594ecd1c19874759be811508bfc0c3ff0f78d3b432adefd355e9e56ce67110
+    - CC_TEST_REPORTER_ID=d0e700fa1b9f454cf7cf2bab8c0f00a8d0b1168d7ccd3fd08650bad2e32d73d3
 cache:
   directories:
     - node_modules
