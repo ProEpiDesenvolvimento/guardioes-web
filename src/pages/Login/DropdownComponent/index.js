@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { DropdownDiv, DropdownTitle, Header, SelectionDiv } from './styles.js'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 
 
 export default function DropdownComponent(props){  
@@ -18,18 +17,21 @@ export default function DropdownComponent(props){
     <DropdownDiv>
       <Header>
         <SelectionDiv>
-          <DropdownTitle>Selecione: </DropdownTitle>
+          <DropdownTitle>Usuário: </DropdownTitle>
             <Select
               onChange={handleOnClick}
               value={userType}
-              style={{color: '#fff'}}
+              style={{
+                color: '#fff',
+                fontFamily: 'Argentum Sans'
+              }}
             >
               <MenuItem disabled value="">
                 <em>Tipos de Usuário</em>
               </MenuItem>
-              <MenuItem value={'group_manager'}>Group Manager</MenuItem>
-              <MenuItem value={'manager'}>Manager</MenuItem>
-              <MenuItem value={'admin'}>Admin</MenuItem>
+              <MenuItem value={'group_manager'} style={{ fontFamily: 'Argentum Sans' }}>Group Manager</MenuItem>
+              <MenuItem value={'manager'} style={{ fontFamily: 'Argentum Sans' }}>Manager</MenuItem>
+              <MenuItem value={'admin'} style={{ fontFamily: 'Argentum Sans' }}>Admin</MenuItem>
             </Select>
         </SelectionDiv>
       </Header>

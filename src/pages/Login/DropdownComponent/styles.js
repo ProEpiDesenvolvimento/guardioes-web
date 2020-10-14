@@ -5,8 +5,8 @@ export const DropdownDiv = styled.div`
   flex-wrap: wrap;
   float: right;
   width: 250px;
-  margin-right: 38px;
-  margin-top: 25px;
+  margin-right: 20%;
+  margin-top: 10px;
 `;
 
 export const DropdownTitle = styled.text`
@@ -21,7 +21,7 @@ export const DropdownTitle = styled.text`
   color: #FFFFFF;
   @media (min-width: 500px) {
     padding: 0 20px 30px 30px;
-    font-size: 20px;
+    font-size: 18px;
   }
 `;
 
@@ -55,13 +55,6 @@ export const Title = styled.p`
   font-size: 20px;
   line-height: 25px;
   color: #FFFFFF;
-`;
-
-export const List = styled.ul`
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  z-index: 2;
 `;
 
 export const ListItem = styled.li`
