@@ -1,0 +1,16 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "search.exclude": {
+    "**/bower_components": true,
+    "**/dist": true
+  },
+    "prettier.printWidth": 180,
+    "prettier.trailingComma": "all",
+    "prettier.singleQuote": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.tslint": true,
+        "source.fixAll.eslint": true,
+    },
+    "eslint.validate": ["javascript"]
+}
