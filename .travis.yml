@@ -25,7 +25,7 @@ jobs:
   include:
     - stage: tests
       script: npm run build
-      script: npm run test --coverage --watch-all
+      script: npm run test
 
 after_success:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT -t lcov coverage/lcov.info
