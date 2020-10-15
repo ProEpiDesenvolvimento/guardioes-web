@@ -23,10 +23,8 @@ before_script:
 
 jobs:
   include:
-    - stage: build
+    - stage: tests
       script: npm run build
-
-    - stage: test
       script: npm run test --coverage --watch-all
 
 after_success:
