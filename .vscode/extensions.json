@@ -1,9 +1,0 @@
-{
-  "recommendations": [
-    "davidanson.vscode-markdownlint",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "donjayamanne.githistory",
-    "eamodio.gitlens"
-  ]
-}
