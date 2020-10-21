@@ -10,9 +10,6 @@ branches:
 env:
   global:
     - CC_TEST_REPORTER_ID=27dd146710c70f3d67ffe244bd1effff61cbae4cce257fe1b4026439fccc25c7
-cache:
-  directories:
-    - node_modules
 
 install:
   - npm install
