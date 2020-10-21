@@ -12,7 +12,7 @@ env:
     - CC_TEST_REPORTER_ID=27dd146710c70f3d67ffe244bd1effff61cbae4cce257fe1b4026439fccc25c7
 
 install:
-  - npm install
+  - npm install --legacy-peer-deps
 
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
