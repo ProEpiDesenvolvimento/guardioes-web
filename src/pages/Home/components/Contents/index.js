@@ -32,29 +32,43 @@ const Contents = ({
   user,
   setContents
 }) => {
-  const fields =
-    [{
+  const fields = [
+    {
       key: "id",
       value: "ID"
     },
     {
       key: "title",
       value: "Title",
-    },
+    }
   ];
-  const { handleSubmit } = useForm()
+
+  const { handleSubmit } = useForm();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const content_type = useState("text")
-  const [source_link, setSourceLink] = useState("")
+  const [icon, setIcon] = useState("");
+  const [content_type, setContentType] = useState("");
+  const [source_link, setSourceLink] = useState("");
+
   const [modalEdit, setModalEdit] = useState(false);
   const [editingContent, setEditingContent] = useState({});
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
+  const [editContentType, setEditContentType] = useState("");
   const [editSourceLink, setEditSourceLink] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [contentShow, setContentShow] = useState({});
 
+  const contentTypeSelect = [
+    {
+      key: "Conselho",
+      value: "text"
+    },
+    {
+      key: "Redirecionamento",
+      value: "redirect"
+    }
+  ];
 
   const _getContents = async (token) => {
     const response = await getAllContents(token)
@@ -82,7 +96,7 @@ const Contents = ({
     const data = {
       "title": editTitle,
       "body": editBody,
-      content_type,
+      "content_type": editContentType,
       "source_link": editSourceLink,
       app_id: user.app_id
     };
@@ -100,20 +114,9 @@ const Contents = ({
     setEditingContent(content);
     setEditTitle(content.title);
     setEditBody(content.body);
+    setEditContentType(content.content_type)
     setEditSourceLink(content.source_link);
     setModalEdit(!modalEdit);
-  }
-
-  const handleEditTitle = (value) => {
-    setEditTitle(value);
-  }
-
-  const handleEditBody = (value) => {
-    setEditBody(value);
-  }
-
-  const handleEditSourceLink = (value) => {
-    setEditSourceLink(value);
   }
 
   const _deleteContent = async (id, token) => {
@@ -130,17 +133,6 @@ const Contents = ({
     _getContents(token)
   }, [token]);
 
-  const handleTitle = (value) => {
-    setTitle(value)
-  }
-
-  const handleBody = (value) => {
-    setBody(value)
-  }
-
-  const handleSourceLink = (value) => {
-    setSourceLink(value)
-  }
   return (
     <>
       <Modal
@@ -188,12 +180,15 @@ const Contents = ({
 
           <EditInput>
             <label>Tipo</label>
-            <input
-              className="text-dark"
-              type="text"
+            <select
               value={contentShow.content_type}
+              className="form-control"
               disabled
-            />
+            >
+              {contentTypeSelect.map((type, index) => (
+                <option key={index} value={type.value}>{type.key}</option>
+              ))}
+            </select>
           </EditInput>
 
           <EditInput>
@@ -229,7 +224,7 @@ const Contents = ({
                 type="text"
                 id="edit_title"
                 value={editTitle}
-                onChange={(e) => handleEditTitle(e.target.value)}
+                onChange={(e) => setEditTitle(e.target.value)}
               />
             </EditInput>
 
@@ -239,10 +234,23 @@ const Contents = ({
                 type="text"
                 id="edit_body"
                 value={editBody}
-                onChange={(e) => handleEditBody(e.target.value)}
+                onChange={(e) => setEditBody(e.target.value)}
                 rows="4"
                 cols="50"
               />
+            </EditInput>
+
+            <EditInput>
+              <label>Tipo</label>
+              <select
+                value={editContentType}
+                onChange={e => setEditContentType(e.target.value)}
+                className="form-control"
+              >
+                {contentTypeSelect.map((type, index) => (
+                  <option key={index} value={type.value}>{type.key}</option>
+                ))}
+              </select>
             </EditInput>
 
             <EditInput>
@@ -251,7 +259,7 @@ const Contents = ({
                 type="text"
                 id="edit_source_link"
                 value={editSourceLink}
-                onChange={(e) => handleEditSourceLink(e.target.value)}
+                onChange={(e) => setEditSourceLink(e.target.value)}
               />
             </EditInput>
           </Modal.Body>
@@ -270,7 +278,7 @@ const Contents = ({
             token={token}
             handleEdit={handleEdit}
             handleShow={handleShow}
-            />
+          />
 
         <AddContentContainer className="shadow-sm">
           <ContainerHeader>
@@ -279,33 +287,46 @@ const Contents = ({
           <ContainerForm>
             <form id="addContent" onSubmit={handleSubmit(_createContent)}>
               <InputBlock>
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title">Título</label>
                 <input
                   type="text"
                   id="title"
                   value={title}
-                  onChange={(e) => handleTitle(e.target.value)}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </InputBlock>
 
               <InputBlock>
-                <label htmlFor="body">Body</label>
+                <label htmlFor="body">Conteúdo</label>
                 <textarea
                   id="body"
                   value={body}
-                  onChange={(e) => handleBody(e.target.value)} />
+                  onChange={(e) => setBody(e.target.value)}
+                />
               </InputBlock>
 
+              <EditInput>
+                <label>Tipo</label>
+                <select
+                  onChange={e => setContentType(e.target.value)}
+                  className="form-control"
+                  required
+                >
+                  {contentTypeSelect.map((type, index) => (
+                    <option key={index} value={type.value}>{type.key}</option>
+                  ))}
+                </select>
+              </EditInput>
+
               <InputBlock>
-                <label htmlFor="body">Source Link</label>
+                <label htmlFor="body">Link da Fonte</label>
                 <input
                   type="text"
                   id="source_link"
                   value={source_link}
-                  onChange={(e) => handleSourceLink(e.target.value)} />
+                  onChange={(e) => setSourceLink(e.target.value)}
+                />
               </InputBlock>
-
-
 
               {/* <Input type="submit" className="shadow-sm" /> */}
               <SubmitButton type="submit">
