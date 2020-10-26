@@ -6,11 +6,13 @@ import {
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
+import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
 import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
+import Syndromes from './components/Syndromes';
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -38,7 +40,7 @@ const Home = ({
       setUser(auxUser)
     }
     _loadSession();
-  }, [token]);
+  }, [setToken, setUser, token]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -66,12 +68,16 @@ const Home = ({
         value: Managers
       },
       {
+        key: "groups",
+        value: Groups
+      },
+      {
         key: "symptoms",
         value: Symptoms
       },
       {
         key: "syndromes",
-        value: "Síndromes"
+        value: Syndromes
       },
       {
         key: "contents",
@@ -94,11 +100,10 @@ const Home = ({
 
   useEffect(() => {
     loadComponents();
-    if (token == "") {
+    if (token === "") {
       history.push("/login")
     }
-    console.log(token)
-  }, [])
+  }, [history, token])
 
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });
