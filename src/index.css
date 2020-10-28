@@ -16,10 +16,10 @@ code {
 
 @font-face {
   font-family: 'Lovelo';
-  src: local('Lovelo'), url(utils/assets/fonts/Lovelo-Black.ttf) format('truetype');
+  src: local('Lovelo'), url(assets/fonts/Lovelo-Black.ttf) format('truetype');
 }
 
 @font-face {
   font-family: 'Argumentum';
-  src: local('Argumentum'), url(utils/assets/fonts/ArgentumSans-Regular.otf) format('otf');
+  src: local('Argumentum'), url(assets/fonts/ArgentumSans-Regular.otf) format('otf');
 }
