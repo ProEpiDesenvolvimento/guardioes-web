@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Container,
-    AddContentContainer,
-    ContainerHeader,
-    ContainerTitle,
-    ContainerForm,
-    InputBlock,
-    SubmitButton,
-    EditInput,
-    TextArea
-  } from './styles';
+  Container,
+  AddContentContainer,
+  ContainerHeader,
+  ContainerTitle,
+  ContainerForm,
+  InputBlock,
+  SubmitButton,
+  EditInput,
+  ImageSelector,
+  ImageContainer,
+  ImgContent,
+  TextArea
+} from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import getAllContents from './services/getAllContents'
 import deleteContent from './services/deleteContent'
 import createContent from './services/createContent'
 import editContent from './services/editContent';
+import { contentIcons } from '../../../../utils/contentIcons';
 import { connect } from 'react-redux';
 import {
   setContents,
@@ -54,6 +58,7 @@ const Contents = ({
   const [editingContent, setEditingContent] = useState({});
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
+  const [editIcon, setEditIcon] = useState("");
   const [editContentType, setEditContentType] = useState("");
   const [editSourceLink, setEditSourceLink] = useState("");
   const [modalShow, setModalShow] = useState(false);
@@ -80,29 +85,44 @@ const Contents = ({
       "content": {
         title,
         body,
+        icon,
         content_type,
         source_link,
         app_id: user.app_id
       }
     }
-    await createContent(data, token)
-    setTitle("");
-    setBody("");
-    setSourceLink("");
-    _getContents(token)
+    await createContent(data, token).then((response) => {
+      if (!response.errors) {
+        setTitle("");
+        setBody("");
+        setIcon("");
+        setContentType("");
+        setSourceLink("");
+        _getContents(token)
+      }
+    })
   }
 
   const _editContent = async () => {
     const data = {
-      "title": editTitle,
-      "body": editBody,
-      "content_type": editContentType,
-      "source_link": editSourceLink,
+      title: editTitle,
+      body: editBody,
+      icon: editIcon,
+      content_type: editContentType,
+      source_link: editSourceLink,
       app_id: user.app_id
     };
     await editContent(editingContent.id, data, token);
     setModalEdit(false);
     _getContents(token);
+  }
+
+  const isIconSelected = (current) => {
+    return current === icon; 
+  }
+
+  const isEditIconSelected = (current) => {
+    return current === editIcon; 
   }
 
   const handleShow = (content) => {
@@ -114,7 +134,8 @@ const Contents = ({
     setEditingContent(content);
     setEditTitle(content.title);
     setEditBody(content.body);
-    setEditContentType(content.content_type)
+    setEditIcon(content.icon);
+    setEditContentType(content.content_type);
     setEditSourceLink(content.source_link);
     setModalEdit(!modalEdit);
   }
@@ -172,11 +193,29 @@ const Contents = ({
               className="text-dark"
               type="text"
               value={contentShow.body}
+              rows="10"
               disabled
-              rows="4"
-              cols="50"
             />
           </EditInput>
+
+          <EditInput>
+              <label>Ícone</label>
+              <ImageSelector>
+                {contentIcons.map((icon, index) => {
+                  if (contentShow.icon === icon.value)
+                    return (
+                      <ImageContainer key={index}>
+                        <ImgContent
+                          src={require(`../../../../${icon.uri}`)}
+                          width={80}
+                          alt="content-icon"
+                        />
+                      </ImageContainer>
+                    )
+                  else return null
+                  })}
+              </ImageSelector>
+            </EditInput>
 
           <EditInput>
             <label>Tipo</label>
@@ -235,9 +274,25 @@ const Contents = ({
                 id="edit_body"
                 value={editBody}
                 onChange={(e) => setEditBody(e.target.value)}
-                rows="4"
-                cols="50"
+                rows="10"
               />
+            </EditInput>
+
+            <EditInput>
+              <label>Ícone</label>
+              <ImageSelector>
+                {contentIcons.map((icon, index) => (
+                  <ImageContainer key={index}>
+                    <ImgContent
+                      src={require(`../../../../${icon.uri}`)}
+                      width={80}
+                      onClick={() => setEditIcon(icon.value)}
+                      selected={isEditIconSelected(icon.value)}
+                      alt="content-icon"
+                    />
+                  </ImageContainer>
+                ))}
+              </ImageSelector>
             </EditInput>
 
             <EditInput>
@@ -264,7 +319,7 @@ const Contents = ({
             </EditInput>
           </Modal.Body>
           <Modal.Footer>
-            <SubmitButton type="submit">Editar</SubmitButton>
+            <SubmitButton type="submit">Salvar</SubmitButton>
           </Modal.Footer>
         </form>
       </Modal>
@@ -302,12 +357,31 @@ const Contents = ({
                   id="body"
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
+                  rows="2"
                 />
               </InputBlock>
 
               <EditInput>
+                <label>Ícone</label>
+                <ImageSelector>
+                  {contentIcons.map((icon, index) => (
+                    <ImageContainer key={index}>
+                      <ImgContent
+                        src={require(`../../../../${icon.uri}`)}
+                        width={80}
+                        onClick={() => setIcon(icon.value)}
+                        selected={isIconSelected(icon.value)}
+                        alt="content-icon"
+                      />
+                    </ImageContainer>
+                  ))}
+                </ImageSelector>
+              </EditInput>
+
+              <EditInput>
                 <label>Tipo</label>
                 <select
+                  value={content_type}
                   onChange={e => setContentType(e.target.value)}
                   className="form-control"
                   required
@@ -330,7 +404,7 @@ const Contents = ({
 
               {/* <Input type="submit" className="shadow-sm" /> */}
               <SubmitButton type="submit">
-                Criar Conteudo
+                Criar
               </SubmitButton>
             </form>
           </ContainerForm>
