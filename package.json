@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@agney/react-loading": "^0.1.2",
     "@material-ui/core": "^3.9.4",
     "@material-ui/icons": "^3.0.2",
     "@trendmicro/react-sidenav": "^0.4.5",
