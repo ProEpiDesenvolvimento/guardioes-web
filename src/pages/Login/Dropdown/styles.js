@@ -13,7 +13,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
-  padding: 0 20px;
+  margin: 0 20px;
   `;
 
 export const SelectionDiv = styled.div`
