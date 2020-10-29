@@ -6,7 +6,7 @@ import {
   NavTo,
   Logout
 } from './styles';
-import logo from 'utils/assets/logo.png';
+import logo from 'assets/img/logo.png';
 import { sessionService } from 'redux-react-session';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
