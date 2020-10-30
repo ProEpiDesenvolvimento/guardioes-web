@@ -6,7 +6,7 @@ export const DropdownDiv = styled.div`
   flex-wrap: wrap;
   float: right;
   width: 250px;
-  `;
+`;
 
 export const Header = styled.div`
   @include styling();
@@ -14,7 +14,8 @@ export const Header = styled.div`
   justify-content: space-between;
   cursor: pointer;
   margin: 0 20px;
-  `;
+  outline: 0;
+`;
 
 export const SelectionDiv = styled.div`
   z-index: 2;
