@@ -12,7 +12,10 @@ const getAllContents = async (token) => api
     return data
   })
   .catch((e) => {
-    console.log(e);
+    if (e.response.data.error === "You are not authorized to access this page.") {
+      alert("Você não pode ler os conteúdos")
+    }
+    console.log("status", e.response.data.error);
     return { data: {}, errors: e }
   });
 

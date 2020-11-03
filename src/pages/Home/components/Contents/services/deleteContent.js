@@ -13,7 +13,7 @@ const deleteContent = async (id, token) => api
     return data
   })
   .catch((e) => {
-    console.log(e);
+    console.log("status", e.status);
   });
 
 export default deleteContent;
