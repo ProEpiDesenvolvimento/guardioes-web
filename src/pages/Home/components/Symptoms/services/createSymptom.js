@@ -13,7 +13,11 @@ const createSymptoms = async (data, token) =>
       return response
     })
     .catch((e) => {
-      alert('Algo deu errado, tente novamente!');
+      if (e.response.data.error === "You are not authorized to access this page.") {
+        alert("Você não tem permissão para criar Sintomas.");
+      } else {
+        alert('Algo deu errado, tente novamente!');
+      }
       console.log(e);
       return { data: {}, errors: e }
     });

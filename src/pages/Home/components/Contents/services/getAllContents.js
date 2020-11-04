@@ -13,9 +13,9 @@ const getAllContents = async (token) => api
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não pode ler os conteúdos")
+      alert("Você não tem permissão para visualizar Conteúdos.");
     }
-    console.log("status", e.response.data.error);
+    console.log(e);
     return { data: {}, errors: e }
   });
 
