@@ -7,6 +7,7 @@ import {
 	SET_CONTENTS,
 	SET_SYMPTOMS,
 	SET_GROUP_MANAGERS,
+	SET_MANAGERS,
 	SET_GROUPS,
 	SET_SYNDROMES,
 	SET_USERS
@@ -30,6 +31,7 @@ const initialState = {
 	apps: [],
 	contents: [],
 	symptoms: [],
+	managers: [],
 	group_managers: [],
 	groups: [],
 	syndromes: [],
@@ -77,6 +79,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				group_managers: action.payload
+			};
+		case SET_MANAGERS:
+			return {
+				...state,
+				managers: action.payloa
 			};
 		case SET_SYNDROMES:
 			return {

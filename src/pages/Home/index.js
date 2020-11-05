@@ -9,6 +9,7 @@ import Apps from './components/Apps';
 import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
+import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import Syndromes from './components/Syndromes';
@@ -39,7 +40,7 @@ const Home = ({
       setUser(auxUser)
     }
     _loadSession();
-  }, [token]);
+  }, [setToken, setUser, token]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -61,6 +62,10 @@ const Home = ({
       {
         key: "managersGroup",
         value: GroupManagers
+      },
+      {
+        key: "managers",
+        value: Managers
       },
       {
         key: "groups",
@@ -98,7 +103,7 @@ const Home = ({
     if (token === "") {
       history.push("/login")
     }
-  }, [])
+  }, [history, token])
 
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });

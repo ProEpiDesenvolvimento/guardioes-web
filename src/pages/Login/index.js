@@ -20,7 +20,7 @@ import {
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
-import Dropdown from './Dropdown'
+import DropdownComponent from './DropdownComponent'
 import { useHistory } from "react-router-dom";
 
 const Login = ({
@@ -34,33 +34,24 @@ const Login = ({
   const { register, handleSubmit, errors } = useForm();
 
   const [password, setPassword] = useState("")
-  const [items, setItems] = useState([
-    {
-      key: "group_manager",
-      value: 'Group Manager',
-    },
-    {
-      key: "admin",
-      value: 'Admin',
-    }
-  ])
+  const [option, setOption] = useState('admin');
 
   const history = useHistory(); 
 
   const makeUserLogin = async (data) => {
-    const response = await requestLogin(email, password, items[0].key)
+    const response = await requestLogin(email, password, option)
     const responseUser = response.user
     if (response.authorization !== "") {
       setToken(response.authorization);
       setUser({
         ...responseUser,
-        type: items[0].key
+        type: option
       })
       sessionService.saveSession({ token: response.authorization })
         .then(() => {
           sessionService.saveUser({
             ...responseUser,
-            type: items[0].key
+            type: option
           })
             .then(() => {
               history.push('/panel')
@@ -70,8 +61,8 @@ const Login = ({
     }
   }
 
-  const setItemsCallback = (items) => {
-    setItems(items)
+  const setItemsCallback = (option) => {
+    setOption(option)
   }
 
   useEffect(() => {
@@ -82,7 +73,7 @@ const Login = ({
       <Header />
       <HeadSection>
         <Backicon />
-        <Dropdown title="Gerente" items={items} setItemsCallback={setItemsCallback} />
+        <DropdownComponent setItemsCallback={setItemsCallback} />
       </HeadSection>
       <Body>
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
