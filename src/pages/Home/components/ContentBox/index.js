@@ -6,12 +6,8 @@ import {
   Container,
   ContentBoxHeader,
   ContentBoxTitle,
-  ContentBoxTable,
-  ContentBoxTableHeader,
-  ContentBoxTableIcon,
+  ContentBoxTable
 } from './styles';
-import editIcon from '../assets/edit-solid.svg';
-import deleteIcon from '../assets/trash-solid.svg';
 
 const ContentBox = ({
   title,
@@ -26,26 +22,16 @@ const ContentBox = ({
 
   const _deleteApp = async (id, token) => {
     await delete_function(id, token)
-  }
+  };
 
   const setEditingContent = (content) => {
     handleEdit(content);
-  }
+  };
 
   const setContentShow = (content) => {
     handleShow(content);
-  }
+  };
 
-  const _renderTable = () => {
-      return <TableComponent
-        contents={contents}
-        fields={fields}
-        _deleteApp={_deleteApp}
-        setContentShow={setContentShow}
-        setEditingContent={setEditingContent}
-        token={token}
-      />
-  }
   return (
     <Container
       className="shadow-sm"
@@ -71,6 +57,6 @@ const ContentBox = ({
       </ContentBoxTable>
     </Container>
   );
-}
+};
 
 export default ContentBox;

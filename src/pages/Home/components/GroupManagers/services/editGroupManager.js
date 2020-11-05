@@ -14,7 +14,11 @@ const editGroupManager = async (id, data, token) => {
         return response;
     })
     .catch((e) => {
-        alert(e);
+        if (e.response.data.error === "You are not authorized to access this page.") {
+            alert("Você não tem permissão para editar Gerentes de Instituições.");
+        } else {
+            alert('Algo deu errado, tente novamente!');
+        }
         console.log(e);
         return { data: {}, errors: e };
     });

@@ -12,6 +12,9 @@ const getAllGroupManagers = async (token) => api
     return data
   })
   .catch((e) => {
+    if (e.response.data.error === "You are not authorized to access this page.") {
+      alert("Você não tem permissão para visualizar Gerentes de Instituições.");
+    }
     console.log(e);
     return { data: {}, errors: e }
   });

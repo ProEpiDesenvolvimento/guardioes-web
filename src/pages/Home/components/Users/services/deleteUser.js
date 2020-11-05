@@ -13,7 +13,9 @@ const deleteUser = async (id, token) => api
     return data
   })
   .catch((e) => {
-    alert("Erro ao deletar usuário")
+    if (e.response.data.error === "You are not authorized to access this page.") {
+      alert("Você não tem permissão para deletar Usuários.");
+    }
     console.log(e);
   });
 

@@ -13,6 +13,9 @@ const deleteGroup = async (id, token) => api
     return data
   })
   .catch((e) => {
+    if (e.response.data.error === "You are not authorized to access this page.") {
+      alert("Você não tem permissão para deletar Instituições.");
+    }
     console.log(e);
   });
 
