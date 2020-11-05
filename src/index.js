@@ -10,8 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import '@fortawesome/fontawesome-free/css/all.min.css';
 // import 'mdbreact/dist/css/mdb.css';
-import 'utils/assets/fonts/Lovelo-Black.ttf';
-import 'utils/assets/fonts/ArgentumSans-Regular.otf';
+import 'assets/fonts/Lovelo-Black.ttf';
+import 'assets/fonts/ArgentumSans-Regular.otf';
 global.jQuery = require('jquery');
 require('bootstrap/dist/js/bootstrap');
 

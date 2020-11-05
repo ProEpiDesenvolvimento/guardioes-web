@@ -9,7 +9,7 @@ export const Container = styled.div`
   right: 0%;
   top: 0%;
   bottom: 0%;
-  height: 8vh;
+  height: 70px;
   background: #5dd39e;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
   display: flex;

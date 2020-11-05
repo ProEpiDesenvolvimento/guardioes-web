@@ -112,7 +112,7 @@ const Home = ({
   return (
     <Container>
       <Header />
-      <Body style={{ overflowX: 'hidden' }}>
+      <Body>
         <NavBar setComponentCallback={setComponentCallback} />
         {components.map((comp) => {
           if (comp.key === component.key) {
