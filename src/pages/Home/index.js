@@ -108,7 +108,7 @@ const Home = ({
   }
 
   useEffect(() => {	
-    loadComponents();	
+    loadComponents();
   }, [history, token])
 
   return (

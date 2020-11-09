@@ -13,17 +13,21 @@ import { bindActionCreators } from 'redux';
 import {
   setUser
 } from 'actions/';
+import { useHistory } from "react-router-dom";
 
 const Header = ({
   authenticated,
   setUser
 }) => {
-  const logout = () => {
+  const history = useHistory(); 
+
+  const logout = async () => {
     if (authenticated === true ) {
-      sessionService.deleteSession()
-      sessionService.deleteUser()
+      await sessionService.deleteSession()
+      await sessionService.deleteUser()
       setUser("")
-    } 
+    }
+    history.push("/login")
   }
   return (
     <Container>
@@ -42,7 +46,7 @@ const Header = ({
             Estatísticas
           </NavTo>
         : null}
-        <NavTo to="/login" onClick={() => logout()}>
+        <NavTo onClick={logout}>
           {authenticated === true ? "Logout" : "Login"}
         </NavTo>
         <NavTo to="/contact">

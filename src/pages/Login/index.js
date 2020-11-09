@@ -66,6 +66,16 @@ const Login = ({
   }
 
   useEffect(() => {
+    const _loadSession = async () => {
+      try {
+        const auxSession = await sessionService.loadSession()
+        const auxUser = await sessionService.loadUser()
+        history.push("/panel")
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    _loadSession();
   }, []);
 
   return (
