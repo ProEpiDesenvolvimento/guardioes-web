@@ -107,6 +107,10 @@ const Home = ({
     setComponent({ key: component.key, value: component.value });
   }
 
+  useEffect(() => {	
+    loadComponents();	
+  }, [history, token])
+
   return (
     <Container>
       <Header />
@@ -114,7 +118,7 @@ const Home = ({
         <NavBar setComponentCallback={setComponentCallback} />
         {components.map((comp) => {
           if (comp.key === component.key) {
-            return <comp.value />
+            return <comp.value key={comp.key} />
           }
         })}
       </Body>
