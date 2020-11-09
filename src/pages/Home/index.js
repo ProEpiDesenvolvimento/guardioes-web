@@ -31,13 +31,18 @@ const Home = ({
 }) => {
 
   const history = useHistory()
+  const [logged, setLogged] = useState(0)
 
   useEffect(() => {
     const _loadSession = async () => {
-      const auxSession = await sessionService.loadSession()
-      const auxUser = await sessionService.loadUser()
-      setToken(auxSession.token)
-      setUser(auxUser)
+      try {
+        const auxSession = await sessionService.loadSession()
+        const auxUser = await sessionService.loadUser()
+        setToken(auxSession.token)
+        setUser(auxUser)
+      } catch (err) {
+        history.push("/login")
+      }
     }
     _loadSession();
   }, [setToken, setUser, token]);
@@ -98,16 +103,13 @@ const Home = ({
     })
   }
 
-  useEffect(() => {
-    loadComponents();
-    if (token === "") {
-      history.push("/login")
-    }
-  }, [history, token])
-
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });
   }
+
+  useEffect(() => {	
+    loadComponents();
+  }, [history, token])
 
   return (
     <Container>
@@ -116,7 +118,7 @@ const Home = ({
         <NavBar setComponentCallback={setComponentCallback} />
         {components.map((comp) => {
           if (comp.key === component.key) {
-            return <comp.value />
+            return <comp.value key={comp.key} />
           }
         })}
       </Body>
