@@ -48,6 +48,13 @@ const Managers = ({
   const [managerShow, setManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
+  const [modelsCreate, setModelsCreate] = useState([]);
+  const [modelsUpdate, setModelsUpdate] = useState([]);
+
+  const handleModelsPermissions = () => {
+    return null;
+  }
+
   const _createManager = async () => {
     const data = {
       "manager": {
@@ -292,6 +299,64 @@ const Managers = ({
                     value={managerPassword}
                     onChange={(e) => setManagerPassword(e.target.value)}
                   />
+                </InputBlock>
+
+                <InputBlock>
+                  <label htmlFor="password">Permissões para contents</label>
+
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="content-create"
+                    />
+                    <label className="form-check-label" htmlFor="content-create">Criar</label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="content-update"
+                    />
+                    <label className="form-check-label" htmlFor="content-update">Editar</label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="content-destroy"
+                    />
+                    <label className="form-check-label" htmlFor="content-destroy">Apagar</label>
+                  </div>
+                </InputBlock>
+
+                <InputBlock>
+                  <label htmlFor="password">Permissões para sintomas</label>
+
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="symptom-create"
+                    />
+                    <label className="form-check-label" htmlFor="symptom-create">Criar</label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id="symptom-update"
+                    />
+                    <label className="form-check-label" htmlFor="symptom-update">Editar</label>
+                  </div>
+                  <div className="form-check">
+                    <input 
+                      type="checkbox"
+                      className="form-check-input"
+                      id="symptom-destroy"
+                    />
+                    <label className="form-check-label" htmlFor="symptom-destroy">Apagar</label>
+                  </div>
                 </InputBlock>
               </Inputs>
               <SubmitButton type="submit">
