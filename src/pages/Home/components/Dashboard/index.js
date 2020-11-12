@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import getGraphs from './services/getGraphs'
 import queryString from 'query-string';
 import { isEmpty } from "lodash";
 import './styles.css';
@@ -6,6 +7,16 @@ import './styles.css';
 function Dashboard(props) {
   const [currentNav, setCurrentNav] = useState({})
   const hashes = queryString.parse(window.location.hash)
+
+  // const data = [];
+
+  // const graphs = await getGraphs(token, data); 
+
+  const graphs = ['http://localhost:3002/public/question/e287c23c-9ea0-4b22-bff9-dd3980055f4d',
+    'http://localhost:3002/public/question/8752d781-37e0-4555-812b-031667995933',
+    'http://localhost:3002/public/question/e287c23c-9ea0-4b22-bff9-dd3980055f4d',
+    'http://localhost:3002/public/question/e287c23c-9ea0-4b22-bff9-dd3980055f4d'
+  ]
 
   useEffect(() => {
     if (isEmpty(hashes)) {
@@ -35,6 +46,9 @@ function Dashboard(props) {
         </li>
         <li className="nav-item">
           <a className={`nav-link ${isCurrentNav('dados') ? 'active' : ''}`} href="#dados">Tabelas de dados</a>
+        </li>
+        <li className="nav-item">
+          <a className={`nav-link ${isCurrentNav('metabase') ? 'active' : ''}`} href="#metabase">Metabase</a>
         </li>
       </ul>
 
@@ -66,6 +80,24 @@ function Dashboard(props) {
           height="1250"
           width="100%"
         />
+      </div>
+
+      <div className={`dash visualizations ${isCurrentNav('metabase') ? '' : 'd-none'}`}>
+        <div style={{display:'flex', justifyContent:'space-around', flexWrap:'wrap'}}>
+          {graphs.map((url) => {
+            return (
+              <div style={{ margin: 10 }}>
+                <iframe
+                  src={url}
+                  frameborder="0"
+                  width="600"
+                  height="400"
+                  allowtransparency
+                />
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       <i className={"note"}>NOTA: caso você encontre problemas nessa página, use o navegador Firefox</i>
