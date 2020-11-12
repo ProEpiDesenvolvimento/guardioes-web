@@ -47,7 +47,7 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     text-align: flex-start;
-    margin-top: 30px;
+    margin-top: 20px;
 
     @media ${device.laptopL}{
         font-size: 3rem;
@@ -63,7 +63,7 @@ export const Subtitle = styled.p`
     line-height: 2rem;
     color: #282828;
     text-align: flex-start;
-    margin-top: 30px;
+    margin-bottom: 30px;
 
     @media ${device.laptopL}{
         font-size: 2rem;

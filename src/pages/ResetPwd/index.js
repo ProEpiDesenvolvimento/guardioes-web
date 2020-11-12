@@ -79,7 +79,6 @@ const ResetPwd = () => {
       <Header />
       <HeadSection>
         <Backicon backTo="/login" />
-        {slide === 0 && <DropdownComponent setItemsCallback={setUserTypeCallback} />}
       </HeadSection>
       <Body>
         {slide === 0? (
@@ -90,6 +89,7 @@ const ResetPwd = () => {
           <Subtitle>
             Informe seu email para verificação
           </Subtitle>
+          <DropdownComponent setItemsCallback={setUserTypeCallback} />
           <Field
             placeholder="E-mail"
             name='email'

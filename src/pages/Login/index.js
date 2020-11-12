@@ -88,13 +88,13 @@ const Login = ({
       <Header />
       <HeadSection>
         <Backicon />
-        <DropdownComponent setItemsCallback={setItemsCallback} />
       </HeadSection>
       <Body>
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
           <Title>
             Login
         </Title>
+          <DropdownComponent setItemsCallback={setItemsCallback} />
           <Field
             placeholder="E-mail"
             name='email'

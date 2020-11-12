@@ -49,7 +49,7 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     text-align: flex-start;
-    margin-top: 30px;
+    margin: 30px;
 
     @media ${device.laptopL}{
         font-size: 3rem;
@@ -61,7 +61,7 @@ export const Title = styled.p`
 export const Field = styled.input`
     width: max(250px, 30vw);
     height: 50px;
-    margin: 20px auto;
+    margin: 15px auto;
     border: 2px solid #348EAC;
     box-sizing: border-box;
     border-radius: 15px;
