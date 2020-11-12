@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import {
   Container,
@@ -19,7 +19,7 @@ import { resetPassword, confirmToken, sendToken } from "./services/resetPassword
 import DropdownComponent from '../../sharedComponents/DropdownComponent'
 
 const ResetPwd = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const history = useHistory();
 
@@ -31,6 +31,11 @@ const ResetPwd = () => {
   const [userType, setUserType] = useState('admin');
   const [slide, setSlide] = useState(0)
 
+  const refToken = useRef(null)
+  const refPassword = useRef(null)
+  const refConfirmPassword = useRef(null)
+  const [errors, setErrors] = useState({})
+
   const setUserTypeCallback = (userType) => {
     setUserType(userType)
   }
@@ -41,6 +46,10 @@ const ResetPwd = () => {
   }
 
   const handleConfirmToken = async (e) => {
+    if (token === "") {
+      setErrors({token: true})
+      return
+    }
     const response = await confirmToken(token, userType)
     if (response.status == 200) {
         setSlide(2);
@@ -49,6 +58,17 @@ const ResetPwd = () => {
   }
 
   const handleResetPassword = async (e) => {
+    if (password === "") {
+      setErrors({password: true})
+      return
+    }
+    if (confirmPassword === "") {
+      setErrors({confirmPassword: true})
+      return
+    }
+    if (password !== confirmPassword) {
+      return
+    }
     const response = await resetPassword(resetPasswordToken, password, confirmPassword, userType)
     if (response.status == 200)
         history.push("/login");
@@ -85,7 +105,7 @@ const ResetPwd = () => {
           </SendButtonName>
           </SendButton>
         </LoginBox>
-        ) : null}
+        ) : <> </>}
         {slide === 1? (
         <LoginBox onSubmit={handleSubmit(handleConfirmToken)}>
           <Title>
@@ -95,12 +115,13 @@ const ResetPwd = () => {
             Informe o código enviado no seu email
           </Subtitle>
           <Field
+            autoFocus
             placeholder="Token"
             name='token'
             type='text'
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            ref={register({ required: true })}
+            ref={refToken}
           />
           {errors.token && <Span>O token é obrigatório</Span>}
           <SendButton type='submit'>
@@ -124,7 +145,8 @@ const ResetPwd = () => {
             name='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            ref={register({ required: true })}
+            ref={refPassword}
+            style={{margin: '0px'}}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
           <Field
@@ -133,9 +155,9 @@ const ResetPwd = () => {
             name='confirmpassword'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            ref={register({ required: true })}
+            ref={refConfirmPassword}
           />
-          {errors.confirmpassword && <Span>A confirmação da senha é obrigatória</Span>}
+          {errors.confirmPassword && <Span>A confirmação da senha é obrigatória</Span>}
           {password !== "" && password !== confirmPassword && <Span>As senhas precisam ser iguais</Span>}
           <SendButton type='submit'>
             <SendButtonName>
