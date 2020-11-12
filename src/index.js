@@ -8,6 +8,10 @@ import { CookiesProvider } from 'react-cookie';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import 'utils/assets/fonts/Lovelo-Black.ttf'
+import 'utils/assets/fonts/ArgentumSans-Regular.otf'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
