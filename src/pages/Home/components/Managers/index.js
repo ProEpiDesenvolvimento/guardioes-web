@@ -9,6 +9,7 @@ import getAllManagers from './services/getAllManagers'
 import createManager from './services/createManager'
 import deleteManager from './services/deleteManager'
 import editManager from './services/editManager';
+import { modelsPermissions } from './modelsPermissions';
 
 import {
   Container,
@@ -50,10 +51,7 @@ const Managers = ({
 
   const [modelsCreate, setModelsCreate] = useState([]);
   const [modelsUpdate, setModelsUpdate] = useState([]);
-
-  const handleModelsPermissions = () => {
-    return null;
-  }
+  const [modelsDestroy, setModelsDestroy] = useState([]);
 
   const _createManager = async () => {
     const data = {
@@ -62,13 +60,61 @@ const Managers = ({
         "email": managerEmail,
         "name": managerName,
         "app_id": 1,
+        "permission_attributes": {
+          "models_read": ["content", "symptom"],
+          "models_create": modelsCreate,
+          "models_update": modelsUpdate,
+          "models_destroy": modelsDestroy,
+          "models_manage": []
+        }
       }
     }
-    await createManager(data, token)
-    setManagerName("")
-    setManagerPassword("")
-    setManagerEmail("")
-    _getAllManagers(token);
+    const response = await createManager(data, token)
+    if (!response.errors) {
+      setManagerName("")
+      setManagerPassword("")
+      setManagerEmail("")
+      setModelsCreate([]);
+      setModelsUpdate([]);
+      setModelsDestroy([]);
+      _getAllManagers(token);
+    }
+  }
+
+  const handleModelsPermissions = (model, type) => {
+    if (type === "create") {
+      if (modelsCreate.includes(model)) {
+        let create = modelsCreate.filter((m) => m !== model);
+        setModelsCreate(create);
+      }
+      else {
+        let create = modelsCreate.slice();
+        create.push(model);
+        setModelsCreate(create);
+      }
+    }
+    else if (type === "update") {
+      if (modelsUpdate.includes(model)) {
+        let update = modelsUpdate.filter((m) => m !== model);
+        setModelsUpdate(update);
+      }
+      else {
+        let update = modelsUpdate.slice();
+        update.push(model);
+        setModelsUpdate(update);
+      }
+    }
+    else if (type === "destroy") {
+      if (modelsDestroy.includes(model)) {
+        let destroy = modelsDestroy.filter((m) => m !== model);
+        setModelsDestroy(destroy);
+      }
+      else {
+        let destroy = modelsDestroy.slice();
+        destroy.push(model);
+        setModelsDestroy(destroy);
+      }
+    }
   }
 
   const _deleteManager = async (id, token) => {
@@ -304,59 +350,37 @@ const Managers = ({
                 <InputBlock>
                   <label htmlFor="password">Permissões para contents</label>
 
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="content-create"
-                    />
-                    <label className="form-check-label" htmlFor="content-create">Criar</label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="content-update"
-                    />
-                    <label className="form-check-label" htmlFor="content-update">Editar</label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="content-destroy"
-                    />
-                    <label className="form-check-label" htmlFor="content-destroy">Apagar</label>
-                  </div>
+                  {modelsPermissions.map((permission) => (
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`content-${permission.value}`}
+                        onChange={() => handleModelsPermissions("content", permission.value)}
+                      />
+                      <label className="form-check-label" htmlFor={`content-${permission.value}`}>
+                        {permission.label}
+                      </label>
+                    </div>
+                  ))}
                 </InputBlock>
 
                 <InputBlock>
                   <label htmlFor="password">Permissões para sintomas</label>
 
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="symptom-create"
-                    />
-                    <label className="form-check-label" htmlFor="symptom-create">Criar</label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="symptom-update"
-                    />
-                    <label className="form-check-label" htmlFor="symptom-update">Editar</label>
-                  </div>
-                  <div className="form-check">
-                    <input 
-                      type="checkbox"
-                      className="form-check-input"
-                      id="symptom-destroy"
-                    />
-                    <label className="form-check-label" htmlFor="symptom-destroy">Apagar</label>
-                  </div>
+                  {modelsPermissions.map((permission) => (
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`symptom-${permission.value}`}
+                        onChange={() => handleModelsPermissions("symptom", permission.value)}
+                      />
+                      <label className="form-check-label" htmlFor={`symptom-${permission.value}`}>
+                        {permission.label}
+                      </label>
+                    </div>
+                  ))}
                 </InputBlock>
               </Inputs>
               <SubmitButton type="submit">
