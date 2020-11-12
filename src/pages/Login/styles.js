@@ -29,7 +29,7 @@ export const LoginBox = styled.form`
     margin: 0 auto;
     background: linear-gradient(180deg, #FFFFFF 99.99%, rgba(255, 255, 255, 0) 100%);
     box-shadow: 4px 4px 50px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +61,7 @@ export const Field = styled.input`
     margin: 20px auto;
     border: 2px solid #348EAC;
     box-sizing: border-box;
-    border-radius: 20px;
+    border-radius: 15px;
 
     text-decoration: none;
     font-family: Argentum Sans;
@@ -71,7 +71,7 @@ export const Field = styled.input`
     line-height: 30px;
     color: #000000;
     text-align: center;
-
+    outline: 0;
     cursor: text;
 
     &::placeholder {

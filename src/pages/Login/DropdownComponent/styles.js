@@ -1,12 +1,29 @@
 import styled from 'styled-components';
 
 export const DropdownDiv = styled.div`
-  display: flex;
   min-height: 38px;
   flex-wrap: wrap;
   float: right;
   width: 250px;
-  `;
+  margin-right: 20%;
+  margin-top: 10px;
+`;
+
+export const DropdownTitle = styled.text`
+  text-align: left;
+  margin: 0;
+  margin-left: 5px;
+  font-family: Argentum Sans;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 25px;
+  color: #FFFFFF;
+  @media (min-width: 500px) {
+    padding: 0 20px 30px 30px;
+    font-size: 18px;
+  }
+`;
 
 export const Header = styled.div`
   @include styling();
@@ -14,7 +31,7 @@ export const Header = styled.div`
   justify-content: space-between;
   cursor: pointer;
   padding: 0 20px;
-  `;
+`;
 
 export const SelectionDiv = styled.div`
   z-index: 2;
@@ -38,19 +55,6 @@ export const Title = styled.p`
   font-size: 20px;
   line-height: 25px;
   color: #FFFFFF;
-`;
-
-export const DownIcon = styled.img`
-  width: 10px;
-  height: 10px;
-  margin: 8px;
-`;
-
-export const List = styled.ul`
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  z-index: 2;
 `;
 
 export const ListItem = styled.li`

@@ -13,7 +13,6 @@ export const Container = styled.div`
 export const AddContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 22rem;
   width: 90%;
   align-content: center;
   margin: 0% 5%;
@@ -45,7 +44,6 @@ export const ContainerTitle = styled.h3`
 
 export const ContainerForm = styled.div`
   margin: 1rem 1.8rem;
-  max-height: 14rem;
 `;
 
 export const InputBlock = styled.div`
@@ -105,8 +103,37 @@ export const EditInput = styled.div`
   margin-bottom: 1rem;
 `;
 
+export const ImageSelector = styled.div`
+  background-color: #ffffff;
+  border: solid 1px #cccccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem;
+
+  &:after {
+    content: "";
+    flex: auto;
+  }
+`;
+
+export const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem;
+`;
+
+export const ImgContent = styled.img`
+  border: ${props => props.selected ? 'solid 2px #007bff': '0px'};
+  border-radius: 5px;
+  cursor: pointer;
+  padding: ${props => props.selected ? '2px': '0px'};
+`;
+
 export const TextArea = styled.textarea`
-  resize: none;
   border: solid 1px #CCCCCC;
   border-radius: 5px;
   padding: 5px 5px 10px 10px;
