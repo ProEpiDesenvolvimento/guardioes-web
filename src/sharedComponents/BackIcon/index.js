@@ -5,9 +5,9 @@ import {
 } from './styles';
 import backIcon from './assets/back_icon.svg'
 
-const Backicon = () => {
+const Backicon = ({backTo="/"}) => {
   return (
-    <BackLink to='/'>
+    <BackLink to={backTo}>
       <BackIcon src={backIcon} />
     </BackLink>
   );

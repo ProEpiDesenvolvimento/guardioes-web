@@ -16,11 +16,12 @@ import {
   Field,
   SendButton,
   SendButtonName,
-  Span
+  Span,
+  ResetLink
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
-import DropdownComponent from './DropdownComponent'
+import DropdownComponent from '../../sharedComponents/DropdownComponent'
 import { useHistory } from "react-router-dom";
 
 const Login = ({
@@ -61,6 +62,10 @@ const Login = ({
     }
   }
 
+  const handleResetPwd = (e) => {
+    history.push("/reset")
+  }
+
   const setItemsCallback = (option) => {
     setOption(option)
   }
@@ -83,13 +88,13 @@ const Login = ({
       <Header />
       <HeadSection>
         <Backicon />
-        <DropdownComponent setItemsCallback={setItemsCallback} />
       </HeadSection>
       <Body>
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
           <Title>
             Login
         </Title>
+          <DropdownComponent setItemsCallback={setItemsCallback} />
           <Field
             placeholder="E-mail"
             name='email'
@@ -108,6 +113,7 @@ const Login = ({
             ref={register({ required: true })}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
+          <ResetLink onClick={handleResetPwd}>Esqueci a senha</ResetLink>
           <SendButton type='submit'>
             <SendButtonName>
               ENVIAR
