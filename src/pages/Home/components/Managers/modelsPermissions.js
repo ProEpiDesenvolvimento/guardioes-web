@@ -1,14 +1,18 @@
-export const modelsPermissions = [
+export const modelsCheckboxes = [
     {
-        label: "Criar",
-        value: "create"
+        label: "Gerir Usuários",
+        value: "user"
     },
     {
-        label: "Editar",
-        value: "update"
+        label: "Gerir Conteúdos",
+        value: "content"
     },
     {
-        label: "Apagar",
-        value: "destroy"
+        label: "Gerir Sintomas",
+        value: "symptom"
+    },
+    {
+        label: "Gerir Síndromes",
+        value: "syndrome"
     }
 ];

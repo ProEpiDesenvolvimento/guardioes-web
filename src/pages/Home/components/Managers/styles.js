@@ -45,7 +45,6 @@ export const ContainerTitle = styled.h3`
 
 export const ContainerForm = styled.div`
   margin: 30px auto;
-  max-height: 14rem;
   width: 70vw;
   width: 95%;
 `;

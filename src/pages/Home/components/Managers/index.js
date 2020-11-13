@@ -9,7 +9,7 @@ import getAllManagers from './services/getAllManagers'
 import createManager from './services/createManager'
 import deleteManager from './services/deleteManager'
 import editManager from './services/editManager';
-import { modelsPermissions } from './modelsPermissions';
+import { modelsCheckboxes } from './modelsPermissions';
 
 import {
   Container,
@@ -49,9 +49,7 @@ const Managers = ({
   const [managerShow, setManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
-  const [modelsCreate, setModelsCreate] = useState([]);
-  const [modelsUpdate, setModelsUpdate] = useState([]);
-  const [modelsDestroy, setModelsDestroy] = useState([]);
+  const [modelsManage, setModelsManage] = useState([]);
 
   const _createManager = async () => {
     const data = {
@@ -61,59 +59,33 @@ const Managers = ({
         "name": managerName,
         "app_id": 1,
         "permission_attributes": {
-          "models_read": ["content", "symptom"],
-          "models_create": modelsCreate,
-          "models_update": modelsUpdate,
-          "models_destroy": modelsDestroy,
-          "models_manage": []
+          "models_create": [],
+          "models_read": [],
+          "models_update": [],
+          "models_destroy": [],
+          "models_manage": modelsManage
         }
       }
     }
     const response = await createManager(data, token)
     if (!response.errors) {
-      setManagerName("")
-      setManagerPassword("")
-      setManagerEmail("")
-      setModelsCreate([]);
-      setModelsUpdate([]);
-      setModelsDestroy([]);
+      setManagerName("");
+      setManagerPassword("");
+      setManagerEmail("");
+      setModelsManage([]);
       _getAllManagers(token);
     }
   }
 
-  const handleModelsPermissions = (model, type) => {
-    if (type === "create") {
-      if (modelsCreate.includes(model)) {
-        let create = modelsCreate.filter((m) => m !== model);
-        setModelsCreate(create);
-      }
-      else {
-        let create = modelsCreate.slice();
-        create.push(model);
-        setModelsCreate(create);
-      }
+  const handleModelsPermissions = (model) => {
+    if (modelsManage.includes(model)) {
+      let newModelsManage = modelsManage.filter((m) => m !== model);
+      setModelsManage(newModelsManage);
     }
-    else if (type === "update") {
-      if (modelsUpdate.includes(model)) {
-        let update = modelsUpdate.filter((m) => m !== model);
-        setModelsUpdate(update);
-      }
-      else {
-        let update = modelsUpdate.slice();
-        update.push(model);
-        setModelsUpdate(update);
-      }
-    }
-    else if (type === "destroy") {
-      if (modelsDestroy.includes(model)) {
-        let destroy = modelsDestroy.filter((m) => m !== model);
-        setModelsDestroy(destroy);
-      }
-      else {
-        let destroy = modelsDestroy.slice();
-        destroy.push(model);
-        setModelsDestroy(destroy);
-      }
+    else {
+      let newModelsManage = modelsManage.slice();
+      newModelsManage.push(model);
+      setModelsManage(newModelsManage);
     }
   }
 
@@ -346,38 +318,20 @@ const Managers = ({
                     onChange={(e) => setManagerPassword(e.target.value)}
                   />
                 </InputBlock>
-
                 <InputBlock>
-                  <label htmlFor="password">Permissões para contents</label>
+                  <label htmlFor="permissions">Permissões do Gerente:</label>
 
-                  {modelsPermissions.map((permission) => (
+                  {modelsCheckboxes.map((model) => (
                     <div className="form-check">
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id={`content-${permission.value}`}
-                        onChange={() => handleModelsPermissions("content", permission.value)}
+                        id={`manage-${model.value}`}
+                        checked={modelsManage.includes(model.value)}
+                        onChange={() => handleModelsPermissions(model.value)}
                       />
-                      <label className="form-check-label" htmlFor={`content-${permission.value}`}>
-                        {permission.label}
-                      </label>
-                    </div>
-                  ))}
-                </InputBlock>
-
-                <InputBlock>
-                  <label htmlFor="password">Permissões para sintomas</label>
-
-                  {modelsPermissions.map((permission) => (
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id={`symptom-${permission.value}`}
-                        onChange={() => handleModelsPermissions("symptom", permission.value)}
-                      />
-                      <label className="form-check-label" htmlFor={`symptom-${permission.value}`}>
-                        {permission.label}
+                      <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                        {model.label}
                       </label>
                     </div>
                   ))}
