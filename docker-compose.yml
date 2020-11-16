@@ -44,6 +44,38 @@ services:
       - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
       - traefik.docker.network=web
       - traefik.port=5601
+
+  pgsql-metabase-docker:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+  metabase-docker:
+    image: metabase/metabase
+    restart: always
+    ports:
+      - 3002:3000
+    volumes:
+      - ./metabase-data:/metabase-data
+    environment:
+      JAVA_TOOL_OPTIONS: -Xmx4g
+      MB_DB_PORT: 5432  
+      MB_DB_TYPE: "${MB_DB_TYPE}" 
+      MB_DB_DBNAME: "${MB_DB_DBNAME}" 
+      MB_DB_USER: "${MB_DB_USER}" 
+      MB_DB_PASS: "${MB_DB_PASS}" 
+      MB_DB_HOST: "${MB_DB_HOST}" 
+      MB_JETTY_MAXTHREADS: 300
+    depends_on:
+      - pgsql-metabase-docker
+    links:
+      - pgsql-metabase-docker
   painel:
     build: .
     restart: unless-stopped

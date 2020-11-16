@@ -9,6 +9,7 @@ import getAllManagers from './services/getAllManagers'
 import createManager from './services/createManager'
 import deleteManager from './services/deleteManager'
 import editManager from './services/editManager';
+import { modelsCheckboxes } from './modelsPermissions';
 
 import {
   Container,
@@ -48,6 +49,8 @@ const Managers = ({
   const [managerShow, setManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
+  const [modelsManage, setModelsManage] = useState([]);
+
   const _createManager = async () => {
     const data = {
       "manager": {
@@ -55,13 +58,35 @@ const Managers = ({
         "email": managerEmail,
         "name": managerName,
         "app_id": 1,
+        "permission_attributes": {
+          "models_create": [],
+          "models_read": [],
+          "models_update": [],
+          "models_destroy": [],
+          "models_manage": modelsManage
+        }
       }
     }
-    await createManager(data, token)
-    setManagerName("")
-    setManagerPassword("")
-    setManagerEmail("")
-    _getAllManagers(token);
+    const response = await createManager(data, token)
+    if (!response.errors) {
+      setManagerName("");
+      setManagerPassword("");
+      setManagerEmail("");
+      setModelsManage([]);
+      _getAllManagers(token);
+    }
+  }
+
+  const handleModelsPermissions = (model) => {
+    if (modelsManage.includes(model)) {
+      let newModelsManage = modelsManage.filter((m) => m !== model);
+      setModelsManage(newModelsManage);
+    }
+    else {
+      let newModelsManage = modelsManage.slice();
+      newModelsManage.push(model);
+      setModelsManage(newModelsManage);
+    }
   }
 
   const _deleteManager = async (id, token) => {
@@ -292,6 +317,24 @@ const Managers = ({
                     value={managerPassword}
                     onChange={(e) => setManagerPassword(e.target.value)}
                   />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="permissions">Permissões do Gerente:</label>
+
+                  {modelsCheckboxes.map((model) => (
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`manage-${model.value}`}
+                        checked={modelsManage.includes(model.value)}
+                        onChange={() => handleModelsPermissions(model.value)}
+                      />
+                      <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                        {model.label}
+                      </label>
+                    </div>
+                  ))}
                 </InputBlock>
               </Inputs>
               <SubmitButton type="submit">
