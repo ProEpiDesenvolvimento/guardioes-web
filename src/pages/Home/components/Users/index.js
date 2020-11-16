@@ -49,12 +49,12 @@ const Users = ({
 
   const fields = [
     {
-      key: "id",
-      value: "ID"
-    },
-    {
       key: "user_name",
       value: "Nome"
+    },
+    {
+      key: "email",
+      value: "Email"
     }
   ]
 
