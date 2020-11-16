@@ -1,18 +1,15 @@
 import styled from 'styled-components';
 
 export const DropdownDiv = styled.div`
-  min-height: 38px;
-  flex-wrap: wrap;
-  float: right;
-  width: 250px;
-  margin-right: 20%;
-  margin-top: 10px;
+  width: max(250px, 30vw);
+  height: 50px;
+  margin: 20px auto;
 `;
 
 export const DropdownTitle = styled.text`
   text-align: left;
-  margin: 0;
-  margin-left: 5px;
+  heigth: 100%;
+  margin: auto 10px;
   font-family: Argentum Sans;
   font-style: normal;
   font-weight: 500;
@@ -20,8 +17,7 @@ export const DropdownTitle = styled.text`
   line-height: 25px;
   color: #FFFFFF;
   @media (min-width: 500px) {
-    padding: 0 20px 30px 30px;
-    font-size: 18px;
+    font-size: 20px;
   }
 `;
 
@@ -35,9 +31,9 @@ export const Header = styled.div`
 
 export const SelectionDiv = styled.div`
   z-index: 2;
-  height: 25px;
-  margin: 0;
-  margin-top: 20px;
+  width: 80%;
+  height: 40px;
+  margin: 0 auto;
   background: #63D5A2;
   display: flex;
   justify-content: space-between;
@@ -77,10 +73,9 @@ export const ListItemButton = styled.button`
   font-family: Argentum Sans;
   font-style: normal;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 25px;
   line-height: 25px;
   color: #FFFFFF;
   text-align: left;
   padding-left: 5px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
 `;

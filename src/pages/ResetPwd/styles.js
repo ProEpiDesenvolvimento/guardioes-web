@@ -1,8 +1,5 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
-import {
-    Link,
-  } from "react-router-dom";
 
 export const Span = styled.span`
   color: red;
@@ -39,6 +36,7 @@ export const LoginBox = styled.form`
     position: absolute;
     left: calc(50vw - max(300px, 35vw)/2);
     z-index: 1;
+    padding: 20px;
 `;
 
 export const Title = styled.p`
@@ -49,7 +47,7 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     text-align: flex-start;
-    margin: 30px;
+    margin-top: 20px;
 
     @media ${device.laptopL}{
         font-size: 3rem;
@@ -58,10 +56,26 @@ export const Title = styled.p`
     } 
 `;
 
+export const Subtitle = styled.p`
+    font-family: Lovelo-Normal;
+    font-style: normal;
+    font-size: 2rem;
+    line-height: 2rem;
+    color: #282828;
+    text-align: flex-start;
+    margin-bottom: 30px;
+
+    @media ${device.laptopL}{
+        font-size: 2rem;
+        line-height: 2rem;
+        text-align: center;
+    } 
+`;
+
 export const Field = styled.input`
     width: max(250px, 30vw);
     height: 50px;
-    margin: 15px auto;
+    margin: 20px auto;
     border: 2px solid #348EAC;
     box-sizing: border-box;
     border-radius: 15px;
@@ -117,6 +131,7 @@ export const SendButton = styled.button`
     background: #63D5A2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
+    outline: none;
 `;
 
 export const SendButtonName = styled.p`
@@ -131,12 +146,10 @@ export const SendButtonName = styled.p`
     color: #FFFFFF;
 `;
 
-export const ResetLink = styled(Link)`
+export const ResetLink = styled.a`
     cursor: pointer;
     color: #348EAC;
     &:hover {
         color: #5dd39e;
     }
-    border: none;
-    background: #ffffff;
 `;
