@@ -312,8 +312,9 @@ const Syndromes = ({
                     </EditInput>
 
                     {syndromeShow.symptoms ? syndromeShow.symptoms.map(symptom => (
+                    <>
                         <EditInput className="bg-light p-2">
-                            <h6>{symptom.label}</h6>
+                            <h6>{symptom.description}</h6>
                             <label htmlFor={`percentage-${symptom.id}`}>Porcentagem</label>
                             <input
                                 type="number"
@@ -324,7 +325,9 @@ const Syndromes = ({
                                 value={symptom.percentage}
                                 disabled
                             />
+                            <h6>{symptom.label}</h6>
                         </EditInput>
+                    </>
                     )) : null }
                 </Modal.Body>
 
