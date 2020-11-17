@@ -167,8 +167,10 @@ const GroupManagers = ({
         "group_name": group_manager.group_name
       })
     })
+    if (aux_group_managers.length === 0) {
+      aux_group_managers = null
+    }
     await setGroupManagers(aux_group_managers)
-    return
   }
 
   useEffect(() => {
@@ -337,7 +339,7 @@ const GroupManagers = ({
         <ContentBox
           title="Gerentes de Instituições"
           token={token}
-          contents={groupManagers ? groupManagers : []}
+          contents={groupManagers}
           fields={fields}
           delete_function={_deleteGroupManager}
           handleEdit={handleEdit}

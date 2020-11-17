@@ -64,6 +64,9 @@ const Apps = ({
 
   const _getApps = async (token) => {
     const response = await getAllApps(token)
+    if (!response.apps || response.apps.length === 0) {
+      response.apps = null;
+    }
     setApps(response.apps)
   }
 
@@ -206,7 +209,7 @@ const Apps = ({
         <ContentBox
           title="Apps"
           token={token}
-          contents={apps ? apps : []}
+          contents={apps}
           fields={fields}
           delete_function={_deleteApp}
           handleEdit={handleEdit} 

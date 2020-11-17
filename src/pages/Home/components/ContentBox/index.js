@@ -43,16 +43,18 @@ const ContentBox = ({
       <ContentBoxTable
         component_height={component_height}
       >
-      { contents.length > 0 ? 
-        <TableComponent
-          contents={contents}
-          fields={fields}
-          _deleteApp={_deleteApp}
-          setContentShow={setContentShow}
-          setEditingContent={setEditingContent}
-          token={token}
-        /> : 
-        <Loading isLoading={true} />
+      {contents !== null ?
+        contents.length > 0 ?
+          <TableComponent
+            contents={contents}
+            fields={fields}
+            _deleteApp={_deleteApp}
+            setContentShow={setContentShow}
+            setEditingContent={setEditingContent}
+            token={token}
+          /> :
+          <Loading isLoading={true} />
+        : null
       }
       </ContentBoxTable>
     </Container>

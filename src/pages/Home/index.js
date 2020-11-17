@@ -62,15 +62,11 @@ const Home = ({
       },
       {
         key: "managers",
-        value: "Gerentes"
+        value: Managers
       },
       {
         key: "managersGroup",
         value: GroupManagers
-      },
-      {
-        key: "managers",
-        value: Managers
       },
       {
         key: "groups",

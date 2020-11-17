@@ -83,7 +83,7 @@ const User = (state = initialState, action) => {
 		case SET_MANAGERS:
 			return {
 				...state,
-				managers: action.payloa
+				managers: action.payload
 			};
 		case SET_SYNDROMES:
 			return {
