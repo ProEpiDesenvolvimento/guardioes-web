@@ -1,11 +1,15 @@
 import api from 'services/api';
 
-const getAllUsers = async (token) => api
-  .get('/users', {
-    headers: {
-      "Authorization": token,
+const getAllUsers = async (token, page, email) => api
+  .get(`/user/panel?page=${page}&email=${email}`,
+    {
+      headers: {
+        "Authorization": token,
+      }
     },
-  }
+    {
+      email
+    },
   )
   .then(async (res) => {
     const { data } = res;
@@ -15,7 +19,6 @@ const getAllUsers = async (token) => api
     if (e.response.data.error === "You are not authorized to access this page.") {
       alert("Você não tem permissão para visualizar Usuários.");
     }
-    console.log(e);
     return { data: {}, errors: e }
   });
 

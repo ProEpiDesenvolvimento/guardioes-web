@@ -54,8 +54,32 @@ export const EditCheckboxInput = styled.input`
 `;
 
 export const SearchView = styled.div`
-  width: 50%;
+  width: 100%;
   align-self: center;
-  margin-top: 1.25rem
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center
 `;
 
+export const PaginationDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+`;
+
+export const SearchInputDiv  = styled(EditInput)`
+  width: 60%;
+`;
+
+export const SearchBtn = styled(EditInput)`
+  align-self: flex-end;
+  margin-left: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  justify-content: center;
+  align-content: center;
+`
