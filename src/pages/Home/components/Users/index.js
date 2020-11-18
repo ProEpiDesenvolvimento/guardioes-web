@@ -5,7 +5,10 @@ import {
   SubmitButton,
   EditCheckbox,
   EditCheckboxInput,
-  SearchView
+  SearchView,
+  PaginationDiv,
+  SearchInputDiv,
+  SearchBtn
 } from './styles';
 import { connect } from 'react-redux';
 import {
@@ -21,6 +24,7 @@ import moment from 'moment'
 import deleteUser from './services/deleteUser';
 import editUser from './services/editUser';
 import { useForm } from "react-hook-form";
+import Pagination from "react-js-pagination";
 
 const Users = ({
   setUsers,
@@ -41,30 +45,18 @@ const Users = ({
   const { handleSubmit } = useForm();
   const [userSearch, setUserSearch] = useState("");
   const [userList, setUserList] = useState([]);
-
+  const [activePage, setActivePage] = useState(1);
 
   const fields = [
     {
-      key: "id",
-      value: "ID"
-    },
-    {
       key: "user_name",
       value: "Nome"
+    },
+    {
+      key: "email",
+      value: "Email"
     }
   ]
-
-  const search = (userSearch) => {
-    const filteredUsers = users.filter((user) => {
-      if ( userSearch.length > 1) {
-        return user.user_name && user.user_name.indexOf(userSearch) >= 0; 
-      }
-      else {
-        return users
-      }
-    });
-    setUserList(filteredUsers)
-  }
 
   const handleShow = (user) => {
     setUserShow(user);
@@ -73,11 +65,14 @@ const Users = ({
 
   const handleSearch = (value) => {
     setUserSearch(value)
-    search(userSearch)
   }
-  const _getUsers = async (token) => {
-    const response = await getAllUsers(token)
-    console.log(response.users)
+
+  const getSearch = async (token, page) => {
+    const response = await getAllUsers(token, page, userSearch)
+    setUserList(response.users)
+  }
+  const _getUsers = async (token, page) => {
+    const response = await getAllUsers(token, page, userSearch)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
@@ -85,10 +80,18 @@ const Users = ({
     setUserList(response.users)
   }
 
+  const handlePageChange = (page) => {
+    setActivePage(page)
+    if (userSearch === ""){
+      _getUsers(token, page)
+    }else{
+      getSearch(token, page)
+    }
+  }
+
   const _deleteUser = async (id, token) => {
     const response = await deleteUser(id, token)
-    console.log(response)
-    _getUsers(token);
+    _getUsers(token, 1);
   }
 
   const _editUser = async () => {
@@ -102,10 +105,9 @@ const Users = ({
         "is_professional": editProfessional
       }
     };
-    console.log(data);
     await editUser(editingUser.id, data, token);
     setModalEdit(false);
-    _getUsers(token);
+    _getUsers(token, 1);
   }
 
   const handleEdit = (content) => {
@@ -149,7 +151,7 @@ const Users = ({
       setToken(auxSession.token)
     }
     _loadSession();
-    _getUsers(token)
+    _getUsers(token, 1)
   }, [token]);
 
   return (
@@ -264,6 +266,17 @@ const Users = ({
             />
           </EditInput>
 
+
+          <EditInput>
+            <label>Email</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={userShow.email}
+              disabled
+            />
+          </EditInput>
+
           <EditInput>
             <label>Country</label>
             <input
@@ -312,25 +325,38 @@ const Users = ({
 
       <Container>
         <SearchView>
-          <EditInput>
-            <label>Search Users</label>
+          <SearchInputDiv>
+            <label>Pesquisa por email:</label>
             <input 
               type="text"
               value={userSearch}
               onChange={(e) => handleSearch(e.target.value)}
             />
-          </EditInput>
+          </SearchInputDiv>
+          <SearchBtn onClick={() => getSearch(token, 1)}>
+            <label>Buscar</label>
+          </SearchBtn>
         </SearchView>
         <ContentBox 
           title="Users"
           fields={fields}
           contents={userList}
           handleShow={handleShow}
-          component_height={'40rem'}
+          component_height={'35rem'}
           delete_function={_deleteUser}
           token={token}
           handleEdit={handleEdit}
         />
+        <PaginationDiv>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={50}
+            totalItemsCount={22715}
+            pageRangeDisplayed={10}
+            onChange={handlePageChange.bind(this)}
+            itemClass={EditInput}
+          />
+        </PaginationDiv>
       </Container>
     </>
   );
