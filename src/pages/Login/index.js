@@ -41,7 +41,7 @@ const Login = ({
 
   const makeUserLogin = async (data) => {
     const response = await requestLogin(email, password, option)
-    const responseUser = response.user
+    const responseUser = response.user[option]
     if (response.authorization !== "") {
       setToken(response.authorization);
       setUser({
