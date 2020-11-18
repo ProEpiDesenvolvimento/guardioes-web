@@ -2,6 +2,7 @@ import React from 'react';
 import TableComponent from './Table'
 import { Link } from 'react-router-dom';
 import Loading from 'sharedComponents/Loading'
+import { Table } from 'react-bootstrap';
 import {
   Container,
   ContentBoxHeader,
@@ -43,16 +44,30 @@ const ContentBox = ({
       <ContentBoxTable
         component_height={component_height}
       >
-      { contents.length > 0 ? 
-        <TableComponent
-          contents={contents}
-          fields={fields}
-          _deleteApp={_deleteApp}
-          setContentShow={setContentShow}
-          setEditingContent={setEditingContent}
-          token={token}
-        /> : 
-        <Loading isLoading={true} />
+      {contents !== null ?
+        contents.length > 0 ?
+          <TableComponent
+            contents={contents}
+            fields={fields}
+            _deleteApp={_deleteApp}
+            setContentShow={setContentShow}
+            setEditingContent={setEditingContent}
+            token={token}
+          /> :
+          <Loading isLoading={true} />
+        :
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>{title} vazio</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>Não há nada cadastrado em {title}.</td>
+                </tr>
+            </tbody>
+          </Table>
       }
       </ContentBoxTable>
     </Container>

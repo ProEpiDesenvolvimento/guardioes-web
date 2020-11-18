@@ -72,6 +72,9 @@ const Syndromes = ({
 
     const _getSyndromes = async (token) => {
         const response = await getAllSyndromes(token);
+        if (!response.syndromes || response.syndromes.length === 0) {
+            response.syndromes = null;
+        }
         setSyndromes(response.syndromes);
     }
 
@@ -337,7 +340,7 @@ const Syndromes = ({
                 <ContentBox
                     title="Síndromes"
                     token={token}
-                    contents={syndromes ? syndromes : []}
+                    contents={syndromes}
                     fields={fields}
                     delete_function={_deleteSyndrome}
                     handleShow={handleShow}

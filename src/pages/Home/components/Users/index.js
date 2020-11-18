@@ -73,6 +73,9 @@ const Users = ({
   }
   const _getUsers = async (token, page) => {
     const response = await getAllUsers(token, page, userSearch)
+    if (!response.users || response.users.length === 0) {
+      response.users = null;
+    }
     setUsers(response.users)
     setUserList(response.users)
   }
@@ -337,7 +340,7 @@ const Users = ({
         <ContentBox 
           title="Users"
           fields={fields}
-          contents={userList ? userList : []}
+          contents={userList}
           handleShow={handleShow}
           component_height={'35rem'}
           delete_function={_deleteUser}

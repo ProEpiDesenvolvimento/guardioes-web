@@ -111,8 +111,9 @@ const Symptoms = ({
 
   const loadSymptoms = async (response) => {
     let aux_symptoms = [];
-    if (!response.symptoms)
+    if (!response.symptoms) {
       response.symptoms = [];
+    }
     response.symptoms.forEach(symptom => {
       aux_symptoms.push({
         "id": symptom.id,
@@ -120,6 +121,9 @@ const Symptoms = ({
         "description": symptom.details
       })
     })
+    if (aux_symptoms.length === 0) {
+      aux_symptoms = null
+    }
     setSymptoms(aux_symptoms)
   }
 
@@ -231,7 +235,7 @@ const Symptoms = ({
         <ContentBox
           title="Sintomas"
           token={token}
-          contents={symptoms ? symptoms : []}
+          contents={symptoms}
           fields={fields}
           delete_function={_deleteSymptom}
           handleEdit={handleEdit}

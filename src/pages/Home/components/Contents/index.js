@@ -77,6 +77,9 @@ const Contents = ({
 
   const _getContents = async (token) => {
     const response = await getAllContents(token)
+    if (!response.contents || response.contents.length === 0) {
+      response.contents = null;
+    }
     setContents(response.contents)
   }
 
@@ -329,7 +332,7 @@ const Contents = ({
             title="Conteúdos" 
             fields={fields}
             delete_function={_deleteContent}
-            contents={contents ? contents : []}
+            contents={contents}
             token={token}
             handleEdit={handleEdit}
             handleShow={handleShow}

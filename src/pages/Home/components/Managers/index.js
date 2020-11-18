@@ -142,13 +142,16 @@ const Managers = ({
     if (!response.managers) {
       response.managers = [];
     }
-    response.managers.map(manager => {
+    response.managers.forEach(manager => {
       aux_managers.push({
         "id": manager.id,
         "name": manager.name,
         "email": manager.email,
       })
     })
+    if (aux_managers.length === 0) {
+      aux_managers = null
+    }
     await setManagers(aux_managers)
   }
 
@@ -277,7 +280,7 @@ const Managers = ({
         <ContentBox
           title="Gerentes"
           token={token}
-          contents={managers ? managers : []}
+          contents={managers}
           fields={fields}
           delete_function={_deleteManager}
           handleEdit={handleEdit}
@@ -321,8 +324,8 @@ const Managers = ({
                 <InputBlock>
                   <label htmlFor="permissions">Permissões do Gerente:</label>
 
-                  {modelsCheckboxes.map((model) => (
-                    <div className="form-check">
+                  {modelsCheckboxes.map((model, key) => (
+                    <div className="form-check" key={key}>
                       <input
                         type="checkbox"
                         className="form-check-input"
