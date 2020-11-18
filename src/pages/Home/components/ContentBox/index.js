@@ -2,6 +2,7 @@ import React from 'react';
 import TableComponent from './Table'
 import { Link } from 'react-router-dom';
 import Loading from 'sharedComponents/Loading'
+import { Table } from 'react-bootstrap';
 import {
   Container,
   ContentBoxHeader,
@@ -54,7 +55,19 @@ const ContentBox = ({
             token={token}
           /> :
           <Loading isLoading={true} />
-        : null
+        :
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>{title} vazio</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>Não há nada cadastrado em {title}.</td>
+                </tr>
+            </tbody>
+          </Table>
       }
       </ContentBoxTable>
     </Container>
