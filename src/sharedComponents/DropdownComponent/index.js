@@ -15,7 +15,7 @@ export default function DropdownComponent(props){
 
   return (
     <SelectionDiv>
-      <DropdownTitle>Tipo de Usuário: </DropdownTitle>
+      <DropdownTitle>Logar como </DropdownTitle>
         <Select
           onChange={handleOnClick}
           value={userType}
@@ -27,9 +27,9 @@ export default function DropdownComponent(props){
             borderBottom: '0px'
           }}
         >
-          <MenuItem value={'group_manager'} style={{ fontFamily: 'Argentum Sans' }}>Group Manager</MenuItem>
-          <MenuItem value={'manager'} style={{ fontFamily: 'Argentum Sans' }}>Manager</MenuItem>
-          <MenuItem value={'admin'} style={{ fontFamily: 'Argentum Sans' }}>Admin</MenuItem>
+          <MenuItem value={'group_manager'} style={{ fontFamily: 'Argentum Sans' }}>Instituição</MenuItem>
+          <MenuItem value={'manager'} style={{ fontFamily: 'Argentum Sans' }}>Gerente</MenuItem>
+          <MenuItem value={'admin'} style={{ fontFamily: 'Argentum Sans' }}>Administrador</MenuItem>
         </Select>
     </SelectionDiv>
   );
