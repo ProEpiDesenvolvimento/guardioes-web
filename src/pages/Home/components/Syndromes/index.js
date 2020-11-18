@@ -89,7 +89,7 @@ const Syndromes = ({
                 label: symptom.description, 
                 value: symptom.id,
                 percentage: 0,
-                app_id: 1
+                app_id: user.app_id
             };
             s.push(option);
         });
