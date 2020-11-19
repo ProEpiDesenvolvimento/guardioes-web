@@ -60,7 +60,8 @@ const Syndromes = ({
             "syndrome": {
                 "description": syndromeDescription,
                 "details": syndromeDetails,
-                "symptom": symptoms
+                "symptom": symptoms,
+                "app_id": user.app_id
             }
         }
         const response = await createSyndrome(data, token);
