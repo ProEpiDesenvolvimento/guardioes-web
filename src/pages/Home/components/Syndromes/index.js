@@ -213,10 +213,10 @@ const Syndromes = ({
                                     type="number"
                                     id={`edit_percentage-${s.value}`}
                                     min={0}
-                                    max={1}
-                                    step={0.01}
-                                    value={s.percentage}
-                                    onChange={(e) => handleEditPercentage(e.target.value, s)}
+                                    max={100}
+                                    step={1}
+                                    value={s.percentage * 100}
+                                    onChange={(e) => handleEditPercentage(e.target.value/100, s)}
                                 />
                             </EditInput>
                         ))}                        
