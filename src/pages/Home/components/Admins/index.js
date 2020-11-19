@@ -26,7 +26,6 @@ import { useForm } from 'react-hook-form';
 import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
-import { EditCheckboxInput } from '../GroupManagers/styles';
 
 const Admins = ({
     token,
@@ -76,6 +75,7 @@ const Admins = ({
     }
 
     const _getAdmins = async (token) => {
+        console.log("Token:", token)
         const response = await getAllAdmins(token);
         setAdmins(response);
     }
