@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const createAdmin = async (data, token) => {
-    api.post(`/admin/signup`, data, {
+    await api.post(`/admin/signup`, data, {
         headers: {
             "Authorization": token,
         }

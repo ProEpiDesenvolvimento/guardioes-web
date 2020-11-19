@@ -13,7 +13,7 @@ export const Container = styled.div`
 export const AddAdminContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 20rem;
+    height: 60rem;
     width: 90%;
     align-content: center;
     margin: 0% 5%;
@@ -58,24 +58,6 @@ export const InputBlock = styled.div`
     margin-bottom: 1rem;
 `;
 
-export const Input = styled.input`
-    width: 100%;
-    background-color: white;
-    border: 2px solid #348EAC;
-    border-radius: 5px;
-    height: 2.2rem;
-    cursor: pointer;
-    transition: opacity 0.2s;
-
-    &:hover {
-        opacity: 0.7;
-    }
-
-    @media (min-width: 500px) {
-        width: 14rem;
-    }
-`;
-
 export const SubmitButton = styled.button`
     width: 100%;
     background-color: #5DD39E;
@@ -102,4 +84,44 @@ export const EditInput = styled.div`
     font-size: 20;
     color: #348EAC;
     margin-bottom: 1rem;
+`;
+
+export const CheckboxInputBlock = styled.div`
+  width: 250px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-weight: 700;
+  color: #348EAC;
+  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
+  margin-bottom: 1rem;
+  margin-right: 50px;
+`;
+
+export const CheckboxInput = styled.input` 
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  transition: opacity 0.2s;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
+export const Label = styled.label` 
+  margin: 0;
+  padding-right: 20px;
+`;
+
+export const EditCheckbox = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  margin-bottom: 1rem;
+  align-items: center;
+`;
+
+export const EditCheckboxInput = styled.input`
+  margin-bottom: .5rem;
+  margin-left: .5rem;
 `;

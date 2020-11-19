@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const deleteAdmin = async (id, token) => {
-    await api.delete(`/admins/${id}`, {
+    await api.delete(`/admin/${id}`, {
         headers: {
             "Authorization": token,
         },
@@ -9,7 +9,7 @@ const deleteAdmin = async (id, token) => {
     )
     .then(async (res) => {
         const { data } = res;
-        alert("App deletado!");
+        alert("Admin deletado!");
         return data;
     })
     .catch((e) => {

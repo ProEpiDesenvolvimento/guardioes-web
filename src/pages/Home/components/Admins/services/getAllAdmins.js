@@ -1,7 +1,7 @@
 import api from 'services/api';
 
 const getAllAdmins = async (token) => {
-    await api.get('/admin', {
+    api.get('/admin', {
         headers: {
             "Authorization": token,
         },

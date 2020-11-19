@@ -100,7 +100,7 @@ const Home = ({
     ])
     setComponent({
       key: "admins",
-      value: "Admins"
+      value: Admins
     })
   }
 
