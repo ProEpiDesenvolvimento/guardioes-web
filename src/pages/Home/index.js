@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Body
+  Body,
+  Divider
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
@@ -112,11 +113,13 @@ const Home = ({
       <Header />
       <Body>
         <NavBar setComponentCallback={setComponentCallback} />
-        {components.map((comp) => {
-          if (comp.key === component.key) {
-            return <comp.value key={comp.key} />
-          }
-        })}
+        <Divider>
+          {components.map((comp) => {
+            if (comp.key === component.key) {
+              return <comp.value key={comp.key} />
+            }
+          })}
+        </Divider>
       </Body>
     </Container>
   );

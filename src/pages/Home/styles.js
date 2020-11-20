@@ -14,5 +14,11 @@ export const Body = styled.div`
     display: flex;
     flex-direction: row;
     background-size: cover;
-    overflow-x: hidden;
+    overflow: hidden;
+`;
+
+export const Divider = styled.div`
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
 `;

@@ -60,7 +60,8 @@ const Syndromes = ({
             "syndrome": {
                 "description": syndromeDescription,
                 "details": syndromeDetails,
-                "symptom": symptoms
+                "symptom": symptoms,
+                "app_id": user.app_id
             }
         }
         const response = await createSyndrome(data, token);
@@ -118,23 +119,26 @@ const Syndromes = ({
                 "symptom": symptoms
             }
         };
+        console.log(data)
         await editSyndrome(editingSyndrome.id, data, token);
         setEditModal(false);
         _getSyndromes(token);
     }
 
     const handlePercentage = (value, symptom) => {
+        const newValue = parseFloat(value) / 100
         setSelected(
             selected.map(s => 
-                s.value === symptom.value ? {... s, percentage: parseFloat(value)} : s
+                s.value === symptom.value ? {... s, percentage: newValue} : s
             )
         );
     }
 
     const handleEditPercentage = (value, symptom) => {
+        const newValue = parseFloat(value) / 100
         setEditSymptoms(
             editSymptoms.map(s => 
-                s.value === symptom.value ? {...s, percentage: parseFloat(value)} : s
+                s.value === symptom.value ? {...s, percentage: newValue} : s
             )
         )
     }
@@ -226,9 +230,9 @@ const Syndromes = ({
                                     type="number"
                                     id={`edit_percentage_${s.value}`}
                                     min={0}
-                                    max={1}
-                                    step={0.01}
-                                    value={s.percentage}
+                                    max={100}
+                                    step={1}
+                                    value={Math.round(s.percentage * 100)}
                                     onChange={(e) => handleEditPercentage(e.target.value, s)}
                                 />
                             </EditInput>
@@ -270,9 +274,9 @@ const Syndromes = ({
                                 type="number"
                                 id={`percentage_${s.value}`}
                                 min={0}
-                                max={1}
-                                step={0.01}
-                                value={s.percentage}
+                                max={100}
+                                step={1}
+                                value={Math.round(s.percentage * 100)}
                                 onChange={(e) => handlePercentage(e.target.value, s)}
                             />
                         </EditInput>
@@ -334,12 +338,10 @@ const Syndromes = ({
                             <input
                                 type="number"
                                 id={`show_percentage_${symptom.id}`}
-                                min={0}
-                                max={1}
-                                step={0.01}
-                                value={symptom.percentage}
+                                value={Math.round(symptom.percentage * 100)}
                                 disabled
                             />
+                            <h6>{symptom.label}</h6>
                         </EditInput>
                     )) : null}
                 </Modal.Body>

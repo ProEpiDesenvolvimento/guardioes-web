@@ -69,7 +69,7 @@ const GroupManagers = ({
         "name": groupManagerName,
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
-        "app_id": 1,
+        "app_id": user.app_id,
         "require_id": groupManagerIdentificationCode,
         "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : undefined
       }
@@ -98,7 +98,7 @@ const GroupManagers = ({
         "name": editName,
         "group_name": editGroup,
         "twitter": editTwitter,
-        "app_id": 1,
+        "app_id": user.app_id,
         "require_id": editIDCode,
         "id_code_length": editIDCode ? editLengthIDCode : null
       }

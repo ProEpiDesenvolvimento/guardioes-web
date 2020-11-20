@@ -54,10 +54,7 @@ const Symptoms = ({
       "priority": 1,
       "details": symptomDescription,
       "message": null,
-      "app_id": 1
-      // Por enquanto esta sendo usado o 1, mas quando for corrigido as rotas
-      // será usado o app_id do user logado, como feito abaixo
-      // "app_id": user.app_id
+      "app_id": user.app_id
     }
     await createSymptom(data, token)
     setSymptomName("")
@@ -82,7 +79,7 @@ const Symptoms = ({
       "priority": 1,
       "details": editDescription,
       "message": null,
-      "app_id": 1
+      "app_id": user.app_id
     };
     await editSymptom(editingSymptom.id, data, token);
     setModalEdit(false);

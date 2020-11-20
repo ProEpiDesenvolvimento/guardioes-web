@@ -163,8 +163,6 @@ const Groups = ({
     setSchools(aux_schools)
     setCourses(aux_courses)
     setGroups(aux_groups.filter((g) => g.children_label === "MUNICIPIO"))
-    // setCreatingCountie(aux_counties[0].description)
-    // setCreatingState(aux_states[0].description)
   }
 
   const handleDelete = async (id, token) => {

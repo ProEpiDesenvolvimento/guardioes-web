@@ -57,7 +57,7 @@ const Managers = ({
         "password": managerPassword,
         "email": managerEmail,
         "name": managerName,
-        "app_id": 1,
+        "app_id": user.app_id,
         "permission_attributes": {
           "models_create": [],
           "models_read": [],
@@ -100,7 +100,7 @@ const Managers = ({
         "password": editPassword,
         "email": editEmail,
         "name": editName,
-        "app_id": 1,
+        "app_id": user.app_id,
       }
     };
     await editManager(editingManager.id, data, token);
