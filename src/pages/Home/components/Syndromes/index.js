@@ -55,7 +55,7 @@ const Syndromes = ({
                 percentage: s.percentage,
                 app_id: s.app_id
             })
-        })
+        });
         const data = {
             "syndrome": {
                 "description": syndromeDescription,
@@ -64,10 +64,12 @@ const Syndromes = ({
             }
         }
         const response = await createSyndrome(data, token);
-        _getSyndromes(token);
-        setSyndromeDescription("");
-        setSyndromeDetails("");
-        setSelected([]);
+        if (!response.errors) {
+            _getSyndromes(token);
+            setSyndromeDescription("");
+            setSyndromeDetails("");
+            setSelected([]);
+        }
     }
 
     const _getSyndromes = async (token) => {
@@ -80,20 +82,19 @@ const Syndromes = ({
 
     const _getSymptoms = async (token) => {
         const response = await getAllSymptoms(token);
-        let s = [];
+        let options = [];
         if (!response.symptoms) {
             response.symptoms = [];
         }
-        response.symptoms.map(async symptom => {
-            const option = {
+        response.symptoms.map(symptom => {
+            options.push({
                 label: symptom.description, 
                 value: symptom.id,
                 percentage: 0,
-                app_id: 1
-            };
-            s.push(option);
+                app_id: symptom.app_id
+            })
         });
-        setOptions(s);
+        setOptions(options);
     }
 
     const _deleteSyndrome = async (id, token) => {
@@ -109,11 +110,13 @@ const Syndromes = ({
                 percentage: s.percentage,
                 app_id: s.app_id
             })
-        })
+        });
         const data = {
-            "description": editDescription,
-            "details": editDetails,
-            "symptom": symptoms
+            "syndrome": {
+                "description": editDescription,
+                "details": editDetails,
+                "symptom": symptoms
+            }
         };
         await editSyndrome(editingSyndrome.id, data, token);
         setEditModal(false);
@@ -123,7 +126,7 @@ const Syndromes = ({
     const handlePercentage = (value, symptom) => {
         setSelected(
             selected.map(s => 
-                s.value === symptom.value ? {... s, percentage: value} : s
+                s.value === symptom.value ? {... s, percentage: parseFloat(value)} : s
             )
         );
     }
@@ -131,16 +134,26 @@ const Syndromes = ({
     const handleEditPercentage = (value, symptom) => {
         setEditSymptoms(
             editSymptoms.map(s => 
-                s.value === symptom.value ? {... s, percentage: value} : s
+                s.value === symptom.value ? {...s, percentage: parseFloat(value)} : s
             )
         )
     }
 
     const handleEdit = (content) => {
+        let editSymptoms = []
+        content.symptoms.map(symptom => {
+            editSymptoms.push({
+                label: symptom.description, 
+                value: symptom.id,
+                percentage: symptom.percentage,
+                app_id: symptom.app_id
+            })
+        });
+
         setEditingSyndrome(content);
         setEditDescription(content.description);
         setEditDetails(content.details);
-        setEditSymptoms(content.symptoms);
+        setEditSymptoms(editSymptoms);
         setEditModal(!editModal);
     }
 
@@ -205,13 +218,13 @@ const Syndromes = ({
                             />
                         </EditInput>
 
-                        {editSymptoms.map(s => (
-                            <EditInput className="bg-light p-2">
+                        {editSymptoms.map((s) => (
+                            <EditInput className="bg-light p-2" key={s.value}>
                                 <h6>{s.label}</h6>
-                                <label htmlFor={`edit_percentage-${s.value}`}>Porcentagem</label>
+                                <label htmlFor={`edit_percentage_${s.value}`}>Porcentagem</label>
                                 <input
                                     type="number"
-                                    id={`edit_percentage-${s.value}`}
+                                    id={`edit_percentage_${s.value}`}
                                     min={0}
                                     max={1}
                                     step={0.01}
@@ -249,13 +262,13 @@ const Syndromes = ({
                         />
                     </EditInput>
 
-                    {selected.map(s => (
-                        <EditInput className="bg-light p-2">
+                    {selected.map((s) => (
+                        <EditInput className="bg-light p-2" key={s.value}>
                             <h6>{s.label}</h6>
-                            <label htmlFor={`percentage=${s.value}`}>Porcentagem</label>
+                            <label htmlFor={`percentage_${s.value}`}>Porcentagem</label>
                             <input
                                 type="number"
-                                id={`percentage-${s.value}`}
+                                id={`percentage_${s.value}`}
                                 min={0}
                                 max={1}
                                 step={0.01}
@@ -314,13 +327,13 @@ const Syndromes = ({
                         />
                     </EditInput>
 
-                    {syndromeShow.symptoms ? syndromeShow.symptoms.map(symptom => (
-                        <EditInput className="bg-light p-2">
-                            <h6>{symptom.label}</h6>
-                            <label htmlFor={`percentage-${symptom.id}`}>Porcentagem</label>
+                    {syndromeShow.symptoms ? syndromeShow.symptoms.map((symptom) => (
+                        <EditInput className="bg-light p-2" key={symptom.id}>
+                            <h6>{symptom.description}</h6>
+                            <label htmlFor={`show_percentage_${symptom.id}`}>Porcentagem</label>
                             <input
                                 type="number"
-                                id={`percentage-${symptom.id}`}
+                                id={`show_percentage_${symptom.id}`}
                                 min={0}
                                 max={1}
                                 step={0.01}
@@ -328,7 +341,7 @@ const Syndromes = ({
                                 disabled
                             />
                         </EditInput>
-                    )) : null }
+                    )) : null}
                 </Modal.Body>
 
                 <Modal.Footer>
