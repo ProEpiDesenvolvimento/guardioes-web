@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Container,
   Logo,
   HeaderNav,
   NavTo,
-  Logout
+  UserName
 } from './styles';
 import logo from 'assets/img/logo.png';
 import { sessionService } from 'redux-react-session';
@@ -17,9 +17,20 @@ import { useHistory } from "react-router-dom";
 
 const Header = ({
   authenticated,
-  setUser
+  setUser,
+  user
 }) => {
   const history = useHistory(); 
+
+  const usersTypes = {
+    "admin": "Administrador",
+    "manager": "Gerente",
+    "group_manager": "Instituição"
+  }
+
+  useEffect(() => {
+    console.log("AAA", user)
+  }, [user])
 
   const logout = async () => {
     if (authenticated === true ) {
@@ -32,6 +43,13 @@ const Header = ({
   return (
     <Container>
       <Logo src={logo} style={{ fill: "#fff" }} />
+      {authenticated === true ? (
+      <div>
+        <UserName>
+        {usersTypes[user.type]} - {user.type === "admin" ? user.first_name + " " + user.last_name : user.name}<br/> {user.email}
+        </UserName>
+      </div>
+      ) : null}
       <HeaderNav>
         <NavTo to="/">
           Home
@@ -58,11 +76,12 @@ const Header = ({
 }
 const mapStateToProps = (state) => ({
   authenticated: state.session.authenticated,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
-    setUser
+    setUser,
   },
   dispatch,
 );
