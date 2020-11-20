@@ -38,7 +38,6 @@ const Users = ({
   const [editingUser, setEditingUser] = useState({});
   const [editName, setEditName] = useState("");
   const [editBirthdate, setEditBirthdate] = useState(new Date());
-  const [editCountry, setEditCountry] = useState("");
   const [editGender, setEditGender] = useState("");
   const [editRace, setEditRace] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
@@ -99,7 +98,6 @@ const Users = ({
       "user": {
         "user_name": editName,
         "birthdate": editBirthdate,
-        "country": editCountry,
         "gender": editGender,
         "race": editRace,
         "is_professional": editProfessional
@@ -114,7 +112,6 @@ const Users = ({
     setEditingUser(content);
     setEditName(content.user_name);
     setEditBirthdate(content.birthdate);
-    setEditCountry(content.country);
     setEditGender(content.gender);
     setEditRace(content.race);
     setEditProfessional(content.is_professional);
@@ -127,10 +124,6 @@ const Users = ({
 
   const handleEditBirthdate = (value) => {
     setEditBirthdate(value);
-  }
-
-  const handleEditCountry = (value) => {
-    setEditCountry(value);
   }
 
   const handleEditGender = (value) => {
@@ -185,16 +178,6 @@ const Users = ({
                 id="edit_name"
                 value={editName}
                 onChange={(e) => handleEditName(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_country">País</label>
-              <input 
-                type="text"
-                id="edit_country"
-                value={editCountry}
-                onChange={(e) => handleEditCountry(e.target.value)}
               />
             </EditInput>
 
@@ -273,16 +256,6 @@ const Users = ({
               className="text-dark"
               type="text"
               value={userShow.email}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Country</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.country}
               disabled
             />
           </EditInput>
