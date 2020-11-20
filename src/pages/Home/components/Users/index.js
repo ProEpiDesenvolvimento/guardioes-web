@@ -270,6 +270,16 @@ const Users = ({
             />
           </EditInput>
 
+          <EditInput>	
+            <label>Country</label>	
+            <input	
+              className="text-dark"	
+              type="text"	
+              value={userShow.country}	
+              disabled	
+            />	
+          </EditInput>
+
           <EditInput>
             <label>Race</label>
             <input
