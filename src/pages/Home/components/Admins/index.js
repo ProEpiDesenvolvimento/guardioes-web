@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import { connect } from 'react-redux';
 import { setAdmins, setToken } from 'actions/';
 import { bindActionCreators } from 'redux';
@@ -35,6 +36,7 @@ const Admins = ({
     setToken
 }) => {
     const { handleSubmit } = useForm();
+    const [apps, setApps] = useState([]);
     const [editingAdmin, setEditingAdmin] = useState({});
     const [adminShow, setAdminShow] = useState({});
     const [modalEdit, setModalEdit] = useState(false);
@@ -48,10 +50,8 @@ const Admins = ({
     const [editFirstName, setEditFirstName] = useState("");
     const [editLastName, setEditLastName] = useState("");
     const [editEmail, setEditEmail] = useState("");
-    const [editPassword, setEditPassword] = useState("");
     const [editIsGod, setEditIsGod] = useState(false);
-    const [editAppId, setEditAppId] = useState(0);
-    const [options, setOptions] = useState([]);
+    const [editApp, setEditApp] = useState({});
 
     const _createAdmin = async () => {
         const data = {
@@ -64,7 +64,7 @@ const Admins = ({
                 "app_id": appId
             }
         }
-        const response = await createAdmin(data, token);
+        await createAdmin(data, token);
         _getAdmins(token);
         setFirstName("");
         setLastName("");
@@ -75,7 +75,6 @@ const Admins = ({
     }
 
     const _getAdmins = async (token) => {
-        console.log("Token:", token)
         const response = await getAllAdmins(token);
         setAdmins(response);
     }
@@ -86,14 +85,14 @@ const Admins = ({
         if (!response.apps) {
             response.apps = [];
         }
-        response.apps.map(async app => {
+        response.apps.map(app => {
             const option = {
-                name: app.app_name,
-                app_id: app.id 
+                label: app.app_name, 
+                value: app.id,
             };
             a.push(option);
         });
-        setOptions(a);
+        setApps(a);
     }
 
     const _deleteAdmin = async (id, token) => {
@@ -105,11 +104,10 @@ const Admins = ({
         const data = {
             "admin": {
                 "email": editEmail,
-                "password": editPassword,
                 "first_name": editFirstName,
                 "last_name": editLastName,
                 "is_god": editIsGod,
-                "app_id": editAppId
+                "app_id": editApp
             }
         }
         await editAdmin(editingAdmin.id, data, token);
@@ -118,18 +116,27 @@ const Admins = ({
     }
     
     const handleShow = (content) => {
+        const a = apps.filter(app => {
+            if (app.value === content.app_id)
+                return app.label;
+        })
+        content.app_name = a[0].label;
         setAdminShow(content);
         setModalShow(!modalShow);
     }
 
     const handleEdit = (content) => {
+        const a = apps.filter(app => {
+            if (app.value === content.app_id)
+                return app.label;
+        })
+        content.app = a[0];
         setEditingAdmin(content);
         setEditFirstName(content.first_name);
         setEditLastName(content.last_name);
         setEditEmail(content.email);
-        setEditPassword("");
         setEditIsGod(content.is_god);
-        setEditAppId(content.app_id);
+        setEditApp(content.app);
         setModalEdit(!modalEdit);
     }
 
@@ -202,7 +209,7 @@ const Admins = ({
                         <EditCheckboxInput
                             type="checkbox"
                             id="is_god"
-                            value={adminShow.is_god}
+                            checked={adminShow.is_god}
                             disabled
                         />
                     </EditCheckbox>
@@ -263,27 +270,14 @@ const Admins = ({
                         </EditInput>
 
                         <EditInput>
-                            <label htmlFor="edit_password">Senha</label>
-                            <input
-                                type="password"
-                                id="edit_password"
-                                value={editPassword}
-                                onChange={(e) => setEditPassword(e.target.value)}
-                            />
-                        </EditInput>
-
-                        <EditInput>
                             <label htmlFor="app_id">App</label>
-                            <select
-                            id="app_id"
-                            value={editAppId}
-                            onChange={(e) => setEditAppId(e.target.value)}
-                            className="form-control"
-                            >
-                                {options.map(app => (
-                                    <option key={app.id} value={app.id}>{app.app_name}</option>
-                                ))}
-                            </select>
+                            <Select 
+                                id="app_id"
+                                isSearchable={true}
+                                options={apps}
+                                defaultValue={editApp}
+                                onChange={(e) => setEditApp(e.value)}
+                            />
                         </EditInput>
 
                         <EditCheckbox>
@@ -291,7 +285,7 @@ const Admins = ({
                             <EditCheckboxInput
                                 type="checkbox"
                                 id="is_god"
-                                value={editIsGod}
+                                checked={editIsGod}
                                 onChange={(e) => setEditIsGod(!isGod)}
                             />
                         </EditCheckbox>
@@ -342,7 +336,7 @@ const Admins = ({
                             <InputBlock>
                                 <label htmlFor="email">Email</label>
                                 <input
-                                type="text"
+                                type="email"
                                 id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -361,16 +355,12 @@ const Admins = ({
 
                             <InputBlock>
                                 <label htmlFor="app_id">App</label>
-                                <select
+                                <Select 
                                 id="app_id"
-                                value={appId}
-                                onChange={(e) => setAppId(e.target.value)}
-                                className="form-control"
-                                >
-                                    {options.map(app => (
-                                        <option key={app.id} value={app.id}>{app.app_name}</option>
-                                    ))}
-                                </select>
+                                isSearchable={true}
+                                options={apps}
+                                onChange={(e) => setAppId(e.value)}
+                                />
                             </InputBlock>
 
                             <CheckboxInputBlock>

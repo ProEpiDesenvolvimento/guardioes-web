@@ -13,7 +13,6 @@ export const Container = styled.div`
 export const AddAdminContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 60rem;
     width: 90%;
     align-content: center;
     margin: 0% 5%;
@@ -45,7 +44,6 @@ export const ContainerTitle = styled.h3`
 
 export const ContainerForm = styled.div`
     margin: 1rem 1.8rem;
-    max-height: 14rem;
 `;
 
 export const InputBlock = styled.div`
@@ -122,6 +120,5 @@ export const EditCheckbox = styled.div`
 `;
 
 export const EditCheckboxInput = styled.input`
-  margin-bottom: .5rem;
   margin-left: .5rem;
 `;
