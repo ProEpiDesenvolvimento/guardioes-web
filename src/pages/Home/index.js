@@ -14,6 +14,7 @@ import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import Syndromes from './components/Syndromes';
+import Admins from './components/Admins';
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -55,7 +56,7 @@ const Home = ({
     setComponents([
       {
         key: "admins",
-        value: "Admins"
+        value: Admins
       },
       {
         key: "configApps",
@@ -96,7 +97,7 @@ const Home = ({
     ])
     setComponent({
       key: "admins",
-      value: "Admins"
+      value: Admins
     })
   }
 

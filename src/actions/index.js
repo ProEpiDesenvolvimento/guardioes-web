@@ -11,7 +11,8 @@ import {
   SET_MANAGERS,
   SET_GROUPS,
   SET_SYNDROMES,
-  SET_USERS
+  SET_USERS,
+  SET_ADMINS
 } from 'constants/action-types';
 
 export const loadMakes = (payload) => ({ type: LOAD_MAKES, payload });
@@ -39,3 +40,5 @@ export const setUsers = (payload) => ({ type: SET_USERS, payload });
 export const setGroups = (payload) => ({ type: SET_GROUPS, payload });
 
 export const setSyndromes = (payload) => ({ type: SET_SYNDROMES, payload });
+
+export const setAdmins = (payload) => ({ type: SET_ADMINS, payload });
