@@ -259,16 +259,6 @@ const Managers = ({
                 onChange={(e) => handleEditEmail(e.target.value)}
               />
             </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_password">Senha</label>
-              <input
-                type="password"
-                id="edit_password"
-                value={editPassword}
-                onChange={(e) => handleEditPassword(e.target.value)}
-              />
-            </EditInput>
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
