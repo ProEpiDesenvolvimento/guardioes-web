@@ -16,7 +16,10 @@ const NavBar = ({
   setComponentCallback
  }) => {
 
-  const allCategories = [
+  const [categories, setCategories] = useState([]);
+  const [selected, setSelected] = useState("");
+
+  let allCategories = [
     {
       key: "admins",
       value: "Admins"
@@ -57,27 +60,30 @@ const NavBar = ({
       key: "groups",
       value: "Instituições"
     },
-  ]
+  ];
 
   const loadCategories = () => {
-    if (user.type === "admin") {	
+    let defaultCat = {};
 
+    if (user.type === "admin") {	
+      allCategories.splice(0, 0);
+      defaultCat = allCategories[0];
     } else if (user.type === "manager") {
       allCategories.splice(0, 4);
+      defaultCat = allCategories[0];
     } else if (user.type === "group_manager") {
       allCategories.splice(0, 7);
+      defaultCat = allCategories[1];
     }
-    setCategories(allCategories)
-    setSelected(allCategories[0].key)
-    setComponentCallback(allCategories[0])
+
+    setCategories(allCategories);
+    setSelected(defaultCat.key);
+    setComponentCallback(defaultCat);
   }
 
   useEffect(() => {
     loadCategories();
-  }, [])
-
-  const [categories, setCategories] = useState([])
-  const [selected, setSelected] = useState("");
+  }, [user.type]);
 
   return (
     <Container>
@@ -101,6 +107,7 @@ const NavBar = ({
     </Container>
   )
 }
+
 const mapStateToProps = (state) => ({
   email: state.user.email,
   token: state.user.token,

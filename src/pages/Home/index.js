@@ -33,7 +33,6 @@ const Home = ({
 }) => {
 
   const history = useHistory()
-  const [logged, setLogged] = useState(0)
 
   useEffect(() => {
     const _loadSession = async () => {
@@ -47,7 +46,7 @@ const Home = ({
       }
     }
     _loadSession();
-  }, [setToken, setUser, token]);
+  }, [setToken, setUser, token, history]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -95,10 +94,6 @@ const Home = ({
         value: Dashboard
       }
     ])
-    setComponent({
-      key: "admins",
-      value: Admins
-    })
   }
 
   const setComponentCallback = (component) => {
