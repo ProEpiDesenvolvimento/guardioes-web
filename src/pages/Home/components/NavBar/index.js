@@ -16,8 +16,8 @@ const NavBar = ({
   setComponentCallback
  }) => {
 
-  const [categories, setCategories] = useState([]);
-  const [selected, setSelected] = useState("");
+  const [categories, setCategories] = useState([])
+  const [selected, setSelected] = useState("")
 
   let allCategories = [
     {
@@ -63,10 +63,9 @@ const NavBar = ({
   ];
 
   const loadCategories = () => {
-    let defaultCat = {};
+    let defaultCat = {}
 
-    if (user.type === "admin") {	
-      allCategories.splice(0, 0);
+    if (user.type === "admin") {
       defaultCat = allCategories[0];
     } else if (user.type === "manager") {
       allCategories.splice(0, 4);
@@ -76,13 +75,13 @@ const NavBar = ({
       defaultCat = allCategories[1];
     }
 
-    setCategories(allCategories);
-    setSelected(defaultCat.key);
-    setComponentCallback(defaultCat);
+    setCategories(allCategories)
+    setSelected(defaultCat.key)
+    setComponentCallback(defaultCat)
   }
 
   useEffect(() => {
-    loadCategories();
+    loadCategories()
   }, [user.type]);
 
   return (
