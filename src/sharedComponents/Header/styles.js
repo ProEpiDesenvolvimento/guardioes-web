@@ -50,17 +50,16 @@ export const NavTo = styled(Link)`
     };
 `;
 
-export const Logout = styled.p`
-  text-decoration: none;
+export const UserName = styled.h1`
+    text-decoration: none;
     font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 22px;
     line-height: 1.825rem;
     color: #FFFFFF;
-    margin-left: 10px;
-
     @media ${device.mobileL} {
       font-size: 15px;
     };
+    margin-right: 150px;
 `;
