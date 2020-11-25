@@ -86,12 +86,12 @@ const Home = ({
         value: Contents
       },
       {
-        key: "users",
-        value: Users
-      },
-      {
         key: "dashboard",
         value: Dashboard
+      },
+      {
+        key: "users",
+        value: Users
       }
     ])
   }

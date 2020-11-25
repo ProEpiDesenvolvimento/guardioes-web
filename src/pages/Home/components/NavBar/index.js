@@ -49,12 +49,12 @@ const NavBar = ({
       value: "Conteúdos"
     },
     {
-      key: "users",
-      value: "Usuários"
-    },
-    {
       key: "dashboard",
       value: "Visualizações"
+    },
+    {
+      key: "users",
+      value: "Usuários"
     },
     {
       key: "groups",
@@ -66,13 +66,13 @@ const NavBar = ({
     let defaultCat = {}
 
     if (user.type === "admin") {
-      defaultCat = allCategories[0];
+      defaultCat = allCategories[7];
     } else if (user.type === "manager") {
       allCategories.splice(0, 4);
-      defaultCat = allCategories[0];
+      defaultCat = allCategories[3];
     } else if (user.type === "group_manager") {
       allCategories.splice(0, 7);
-      defaultCat = allCategories[1];
+      defaultCat = allCategories[0];
     }
 
     setCategories(allCategories)
