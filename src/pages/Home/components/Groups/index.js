@@ -159,19 +159,25 @@ const Groups = ({
         return alert("O grupo não possui filhos")
       }
 
-      setPrevGroup([...prevGroup, groups])
       setCount(count + 1)
-      setGroups(response.children)
+      setPrevGroup([...prevGroup, groups])
+      let aux_groups = response.children
+
+      aux_groups = aux_groups.map((group_map) => {
+        group_map.parentName = group.description
+        group_map.children_label = group_map.label
+      return group_map
+    })
+      setGroups(aux_groups)
       setGoBack(false)
     }
     
     if (goback === true) {
-      let aux_prev = prevGroup[count - 1]
-      //console.log('ARRAY QUE VAI VOLTAR', aux_prev)
       setGroups(prevGroup[count - 1])
 
       setCount(count - 1)
-      if(count <= 0){
+      if(count <= 1){
+        setPrevGroup([])
         setGoBack(false)
       }
     } else {
@@ -433,8 +439,8 @@ const Groups = ({
               </thead>
 
               <tbody>
-                {/* {console.log('GRUPOS QUE SERÃO MOSTRADOS -> ', groups)}
-                {console.log('GRUPOS PARA VOLTAR -> ', prevGroup)} */}
+                {console.log('GRUPOS QUE SERÃO MOSTRADOS -> ', groups)}
+                {console.log('GRUPOS PARA VOLTAR -> ', prevGroup)}
                 {console.log('CONTADOR -> ', count)}
                 {groups.map(group => (
                   <tr key={group.id}>
