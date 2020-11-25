@@ -45,11 +45,11 @@ const Managers = ({
   const [editingManager, setEditingManager] = useState({});
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
-  const [editPassword, setEditPassword] = useState("");
   const [managerShow, setManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
   const [modelsManage, setModelsManage] = useState([]);
+  const [showModelsManage, setShowModelsManage] = useState([]);
 
   const _createManager = async () => {
     const data = {
@@ -97,12 +97,12 @@ const Managers = ({
   const _editManager = async () => {
     const data = {
       "manager": {
-        "password": editPassword,
-        "email": editEmail,
-        "name": editName,
+        "email": editingManager.email,
+        "name": editingManager.name,
         "app_id": user.app_id,
+        "permissions": editingManager.permissions
       }
-    };
+    }
     await editManager(editingManager.id, data, token);
     setModalEdit(false);
     _getAllManagers(token);
@@ -115,8 +115,6 @@ const Managers = ({
 
   const handleEdit = (content) => {
     setEditingManager(content);
-    setEditName(content.name);
-    setEditEmail(content.email);
     setModalEdit(!modalEdit);
   }
 
@@ -128,10 +126,6 @@ const Managers = ({
     setEditEmail(value);
   }
 
-  const handleEditPassword = (value) => {
-    setEditPassword(value);
-  }
-
   const _getAllManagers = async (token) => {
     const response = await getAllManagers(token)
     loadManagers(response)
@@ -139,14 +133,15 @@ const Managers = ({
 
   const loadManagers = async (response) => {
     let aux_managers = [];
-    if (!response.managers) {
+    if (!response.managers.length === 0) {
       response.managers = [];
     }
     response.managers.forEach(manager => {
       aux_managers.push({
-        "id": manager.id,
-        "name": manager.name,
-        "email": manager.email,
+        "id": manager.manager.id,
+        "name": manager.manager.name,
+        "email": manager.manager.email,
+        "permissions": manager.permissions.models_manage
       })
     })
     if (aux_managers.length === 0) {
@@ -212,16 +207,23 @@ const Managers = ({
               disabled
             />
           </EditInput>
+          <InputBlock>
+            <label htmlFor="permissions">Permissões do Gerente:</label>
 
-          <EditInput>
-            <label>Grupo</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={managerShow.group_name}
-              disabled
-            />
-          </EditInput>
+            {modelsCheckboxes.map((model, key) => (
+              <div className="form-check" key={key}>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={managerShow.permissions ? managerShow.permissions.includes(model.value) : null}
+                  disabled
+                />
+                <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                  {model.label}
+                </label>
+              </div>
+            ))}
+          </InputBlock>
         </Modal.Body>
 
         <Modal.Footer>
@@ -245,8 +247,8 @@ const Managers = ({
               <input
                 type="text"
                 id="edit_name"
-                value={editName}
-                onChange={(e) => handleEditName(e.target.value)}
+                value={editingManager.name}
+                onChange={(e) => setEditingManager({...editingManager, name: e.target.value})}
               />
             </EditInput>
 
@@ -255,20 +257,36 @@ const Managers = ({
               <input
                 type="email"
                 id="edit_email"
-                value={editEmail}
-                onChange={(e) => handleEditEmail(e.target.value)}
+                value={editingManager.email}
+                onChange={(e) => setEditingManager({...editingManager, email: e.target.value})}
               />
             </EditInput>
 
-            <EditInput>
-              <label htmlFor="edit_password">Senha</label>
-              <input
-                type="password"
-                id="edit_password"
-                value={editPassword}
-                onChange={(e) => handleEditPassword(e.target.value)}
-              />
-            </EditInput>
+            <InputBlock>
+            <label htmlFor="permissions">Permissões do Gerente:</label>
+
+            {modelsCheckboxes.map((model, key) => (
+              <div className="form-check" key={key}>
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  checked={editingManager.permissions ? editingManager.permissions.includes(model.value) : null}
+                  onChange={(e) => {
+                    let newPermissions = editingManager.permissions
+                    if (editingManager.permissions.includes(model.value)) {
+                      newPermissions = newPermissions.filter((p) => p != model.value)
+                    } else {
+                      newPermissions.push(model.value)
+                    }
+                    setEditingManager({...editingManager, permissions: newPermissions})
+                  }}
+                />
+                <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                  {model.label}
+                </label>
+              </div>
+            ))}
+          </InputBlock>
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
