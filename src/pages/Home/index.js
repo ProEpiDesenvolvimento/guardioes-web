@@ -14,6 +14,7 @@ import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import Syndromes from './components/Syndromes';
+import Admins from './components/Admins';
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -32,7 +33,6 @@ const Home = ({
 }) => {
 
   const history = useHistory()
-  const [logged, setLogged] = useState(0)
 
   useEffect(() => {
     const _loadSession = async () => {
@@ -46,7 +46,7 @@ const Home = ({
       }
     }
     _loadSession();
-  }, [setToken, setUser, token]);
+  }, [setToken, setUser, token, history]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -54,8 +54,12 @@ const Home = ({
   const loadComponents = () => {
     setComponents([
       {
+        key: "dashboard",
+        value: Dashboard
+      },
+      {
         key: "admins",
-        value: "Admins"
+        value: Admins
       },
       {
         key: "configApps",
@@ -88,16 +92,8 @@ const Home = ({
       {
         key: "users",
         value: Users
-      },
-      {
-        key: "dashboard",
-        value: Dashboard
       }
     ])
-    setComponent({
-      key: "admins",
-      value: "Admins"
-    })
   }
 
   const setComponentCallback = (component) => {
