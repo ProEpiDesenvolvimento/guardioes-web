@@ -293,6 +293,7 @@ const GroupManagers = ({
               <input
                 type="text"
                 id="edit_group"
+                disabled={true}
                 value={editGroup}
                 onChange={(e) => handleEditGroup(e.target.value)}
               />
