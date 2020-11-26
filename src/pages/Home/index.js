@@ -54,6 +54,10 @@ const Home = ({
   const loadComponents = () => {
     setComponents([
       {
+        key: "dashboard",
+        value: Dashboard
+      },
+      {
         key: "admins",
         value: Admins
       },
@@ -84,10 +88,6 @@ const Home = ({
       {
         key: "contents",
         value: Contents
-      },
-      {
-        key: "dashboard",
-        value: Dashboard
       },
       {
         key: "users",
