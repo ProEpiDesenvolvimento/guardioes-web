@@ -187,7 +187,7 @@ export const ContentBoxSubTitle = styled.h3`
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;
-    max-height: ${props => props.component_height ? props.component_height : '20rem'};
+    max-height: ${props => props.component_height ? props.component_height : '18rem'};
     /* 40 */
 `;
 
