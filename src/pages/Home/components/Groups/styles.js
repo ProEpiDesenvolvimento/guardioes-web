@@ -142,7 +142,7 @@ export const EditInput = styled.div`
 export const ContainerContent = styled.div`
     display: flex;
     flex-direction: column;
-    height: 26rem;
+    height: 50rem;
     /* 50 */
     width: 90%;
     align-content: center;
@@ -187,7 +187,7 @@ export const ContentBoxSubTitle = styled.h3`
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;
-    max-height: ${props => props.component_height ? props.component_height : '18rem'};
+    max-height: ${props => props.component_height ? props.component_height : '40rem'};
     /* 40 */
 `;
 

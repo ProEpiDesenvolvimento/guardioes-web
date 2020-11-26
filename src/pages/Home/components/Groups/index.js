@@ -511,7 +511,7 @@ const Groups = ({
           </ContentBoxTable>
         </ContainerContent>
         
-        {user.type === "group_manager" ?
+        {/* {user.type === "group_manager" ?
         <AddGroupContainer className="shadow-sm">
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
               <SubmitButton
@@ -657,7 +657,7 @@ const Groups = ({
             </Form>
           </ContainerForm>
         </AddGroupContainer>
-        : null}
+        : null} */}
       </Container>
     </>
   );
