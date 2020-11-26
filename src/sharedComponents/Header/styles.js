@@ -27,7 +27,7 @@ export const Logo = styled.img`
 export const HeaderNav = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: max(200px, 30vw);
     margin-right: 20px;
     @media ${device.mobileL} {

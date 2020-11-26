@@ -356,7 +356,7 @@ const Contents = ({
 
               <InputBlock>
                 <label htmlFor="body">Conteúdo</label>
-                <textarea
+                <TextArea
                   id="body"
                   value={body}
                   onChange={(e) => setBody(e.target.value)}

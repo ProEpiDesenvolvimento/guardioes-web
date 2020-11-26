@@ -51,7 +51,7 @@ const ResetPwd = () => {
       return
     }
     const response = await confirmToken(token, userType)
-    if (response.status == 200) {
+    if (response.status === 200) {
         setSlide(2);
         setResetPasswordToken(response.data.reset_password_token)
     }
@@ -70,7 +70,7 @@ const ResetPwd = () => {
       return
     }
     const response = await resetPassword(resetPasswordToken, password, confirmPassword, userType)
-    if (response.status == 200)
+    if (response.status === 200)
         history.push("/login");
   }
 

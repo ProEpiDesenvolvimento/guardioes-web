@@ -274,7 +274,7 @@ const Managers = ({
                   onChange={(e) => {
                     let newPermissions = editingManager.permissions
                     if (editingManager.permissions.includes(model.value)) {
-                      newPermissions = newPermissions.filter((p) => p != model.value)
+                      newPermissions = newPermissions.filter((p) => p !== model.value)
                     } else {
                       newPermissions.push(model.value)
                     }

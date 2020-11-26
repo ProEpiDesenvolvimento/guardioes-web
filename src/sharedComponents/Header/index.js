@@ -51,14 +51,16 @@ const Header = ({
       </div>
       ) : null}
       <HeaderNav>
-        <NavTo to="/">
-          Home
-        </NavTo>
-        {authenticated === true ?
+        {authenticated === false ?
+          <NavTo to="/">
+            Faça Parte
+          </NavTo>
+        : null}
+        {/*authenticated === true ?
           <NavTo to="/panel">
             Painel
           </NavTo>
-        : null}
+        : null*/}
         {authenticated === false ?
           <NavTo to="/statistics">
             Estatísticas
