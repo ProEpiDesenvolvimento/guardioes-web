@@ -176,6 +176,14 @@ export const ContentBoxTitle = styled.h3`
     text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
 `;
 
+export const ContentBoxSubTitle = styled.h3`
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18;
+    color: #348EAC;
+`;
+
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;

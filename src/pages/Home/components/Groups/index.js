@@ -33,6 +33,7 @@ import {
   ContentBoxTable,
   ContentBoxTableHeader,
   ContentBoxTableIcon,
+  ContentBoxSubTitle,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
@@ -55,6 +56,8 @@ const Groups = ({
   const [counties, setCounties] = useState([]);
   const [schools, setSchools] = useState([]);
 
+
+  const [groupLabel, setGroupLabel] = useState('');
   const [prevGroup, setPrevGroup] = useState([]);
   const [count, setCount] = useState(0);
 
@@ -122,7 +125,15 @@ const Groups = ({
       return group
     })
 
+    await getGroupLabel(aux_groups[0].parent.id)
+
     setGroups(aux_groups)
+  }
+
+  const getGroupLabel = async (label_group_id) => {
+    const response = await getChildrenGroups(label_group_id)
+
+    setGroupLabel(response.children[0].label)
   }
 
   const handleDelete = async (id, token) => {
@@ -165,19 +176,24 @@ const Groups = ({
       setCount(count + 1)
       setPrevGroup([...prevGroup, groups])
       let aux_groups = response.children
-
+      
+      await getGroupLabel(group.id)
       aux_groups = aux_groups.map((group_map) => {
         group_map.parentName = group.description
         group_map.children_label = group_map.label
-      return group_map
-    })
+        return group_map
+      })
       setGroups(aux_groups)
       setGoBack(false)
     }
     
     if (goback === true) {
-      setGroups(prevGroup[count - 1])
+      let aux_label = prevGroup[count - 1]
 
+      aux_label[0].hasOwnProperty('parent') ? 
+        getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
+
+      setGroups(prevGroup[count - 1])
       setCount(count - 1)
       if(count <= 1){
         setPrevGroup([])
@@ -200,7 +216,7 @@ const Groups = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "description", value: "Nome" },
-    { key: "children_label", value: "Tipo" },
+    
     { key: "parentName", value: "Pertence a(o)" }
   ];
 
@@ -430,6 +446,7 @@ const Groups = ({
           <ContentBoxHeader>
             <ContentBoxTitle>Instituições</ContentBoxTitle>
           </ContentBoxHeader>
+            <ContentBoxSubTitle>{groupLabel}</ContentBoxSubTitle>
           <ContentBoxTable>
             <Table responsive>
               <thead>
@@ -452,9 +469,6 @@ const Groups = ({
               </thead>
 
               <tbody>
-                {console.log('GRUPOS QUE SERÃO MOSTRADOS -> ', groups)}
-                {console.log('GRUPOS PARA VOLTAR -> ', prevGroup)}
-                {console.log('CONTADOR -> ', count)}
                 {groups.map(group => (
                   <tr key={group.id}>
                     {fields.map(field => (
