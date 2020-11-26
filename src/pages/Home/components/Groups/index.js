@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import {
-  setGroups, setToken
-} from 'actions/';
+import { setGroups, setToken } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
-import getAllGroups from './services/getAllGroups'
-import createGroup from './services/createGroup'
-import deleteGroup from './services/deleteGroup'
-
+import getAllGroups from './services/getAllGroups';
+import createGroup from './services/createGroup';
+import deleteGroup from './services/deleteGroup';
+import validatePermissions from './services/validatePermissions';
+import ModalShow from './components/ModalShow';
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
 import editGroup from './services/editGroup';
@@ -33,7 +32,6 @@ import {
   ContentBoxTableIcon,
 } from './styles';
 import { Table } from 'react-bootstrap';
-import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
 
 const Groups = ({
@@ -47,7 +45,7 @@ const Groups = ({
   const [editingGroup, setEditingGroup] = useState({});
   const { handleSubmit } = useForm()
   const [modalShow, setModalShow] = useState(false);
-  const [groupShow, setGroupShow] = useState({});
+  const [setGroupShow] = useState({});
 
   const [states, setStates] = useState([]);
   const [counties, setCounties] = useState([]);
@@ -88,17 +86,6 @@ const Groups = ({
     if (!response.errors)
       clearData()
     fetchData(token)
-  }
-
-  const validatePermissions = (group) => {
-    if (user.type === "admin")
-      return false
-
-    if (group.group_manager)
-      if(user.group_manager.id === group.group_manager.id)
-        return true
-        
-    return false
   }
 
   const clearData = () => {
@@ -264,126 +251,10 @@ const Groups = ({
 
   return (
     <>
-      <Modal
+      <ModalShow
         show={modalShow}
         onHide={() => setModalShow(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Informações da Instituição
-          </Modal.Title>
-        </Modal.Header>
-        
-        <Modal.Body>
-          <EditInput>
-            <label>Nome</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.description}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Tipo</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.type}
-              disabled
-            />
-          </EditInput>
-
-          {groupShow.children_label ? 
-            <EditInput>
-              <label>Tipo dos Grupos Filhos</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={groupShow.children_label}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.parentName ?
-            <EditInput>
-              <label>Nome do Grupo Pai</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={groupShow.parentName}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.code ?
-            <EditInput>
-              <label htmlFor="edit_code">Código</label>
-              <input
-                type="text"
-                id="edit_code"
-                value={groupShow.code}
-                disabled
-              />
-            </EditInput>
-          : null }  
-
-          {groupShow.address ?
-            <EditInput>
-              <label htmlFor="edit_address">Endereço</label>
-              <input
-                type="text"
-                id="edit_address"
-                value={groupShow.address}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.cep ?
-            <EditInput>
-              <label htmlFor="edit_cep">CEP</label>
-              <input
-                type="text"
-                id="edit_cep"
-                value={groupShow.cep}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.phone ?
-            <EditInput>
-              <label htmlFor="edit_phone">Telefone</label>
-              <input
-                type="text"
-                id="edit_phone"
-                value={groupShow.phone}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.email ?
-            <EditInput>
-              <label htmlFor="edit_name">Email</label>
-              <input
-                type="text"
-                id="edit_email"
-                value={groupShow.email}
-                disabled
-              />
-            </EditInput>
-          : null }
-        </Modal.Body>
-
-        <Modal.Footer>
-          <SubmitButton onClick={() => setModalShow(false)}>Voltar</SubmitButton>
-        </Modal.Footer>
-      </Modal>
+      />
 
       <Modal
         show={modalEdit}
