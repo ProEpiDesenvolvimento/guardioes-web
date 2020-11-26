@@ -97,7 +97,6 @@ const Managers = ({
   const _editManager = async () => {
     const data = {
       "manager": {
-        "password": editPassword,
         "email": editEmail,
         "name": editName,
         "app_id": user.app_id,
