@@ -1,11 +1,15 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
+import {
+  EditInput,
+  SubmitButton
+} from './styles';
 
 const [modalShow, setModalShow] = useState(false);
 const [groupShow] = useState({});
 
 const ModalShow = ({
-
+  
     }) => (
     <ModalShow
         show={modalShow}
@@ -88,10 +92,10 @@ const ModalShow = ({
 
           {groupShow.cep ?
             <EditInput>
-              <label htmlFor="edit_cep">CEP</label>
+              <label htmlFor='edit_cep'>CEP</label>
               <input
-                type="text"
-                id="edit_cep"
+                type='text'
+                id='edit_cep'
                 value={groupShow.cep}
                 disabled
               />
@@ -100,9 +104,9 @@ const ModalShow = ({
 
           {groupShow.phone ?
             <EditInput>
-              <label htmlFor="edit_phone">Telefone</label>
+              <label htmlFor='edit_phone'>Telefone</label>
               <input
-                type="text"
+                type='text'
                 id="edit_phone"
                 value={groupShow.phone}
                 disabled
@@ -112,7 +116,7 @@ const ModalShow = ({
 
           {groupShow.email ?
             <EditInput>
-              <label htmlFor="edit_name">Email</label>
+              <label htmlFor="edit_email">Email</label>
               <input
                 type="text"
                 id="edit_email"

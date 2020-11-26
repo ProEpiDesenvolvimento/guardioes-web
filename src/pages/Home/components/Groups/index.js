@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { setGroups, setToken } from 'actions/';
 import { bindActionCreators } from 'redux';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import getAllGroups from './services/getAllGroups';
 import createGroup from './services/createGroup';
 import deleteGroup from './services/deleteGroup';
 import validatePermissions from './services/validatePermissions';
 import ModalShow from './components/ModalShow';
+import ModalEdit from './components/ModalEdit';
+import handleNavigate from './components/handleNavigate';
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
-import editGroup from './services/editGroup';
 import {
   Container,
   AddGroupContainer,
@@ -50,14 +51,10 @@ const Groups = ({
   const [states, setStates] = useState([]);
   const [counties, setCounties] = useState([]);
   const [schools, setSchools] = useState([]);
-  const [courses, setCourses] = useState([]);
-
-  const [country, setCountry] = useState({});
-  const [state, setState] = useState({});
-  const [countie, setCountie] = useState({});
 
   const [goBack, setGoBack] = useState(false);
-
+  const [courses, setCourses] = useState([]);
+  const [country, setCountry] = useState([]);
   const [creating, setCreating] = useState("course");
   const [creatingGroup, setCreatingGroup] = useState({
     parent_id: 0,
@@ -99,8 +96,6 @@ const Groups = ({
       phone: "",
       children_label: null
     })
-    // setCreatingCountie(counties[0].description)
-    // setCreatingState(states[0].description)
     setEditingGroup({})
     setGroupShow({})
     setCreating("course")
@@ -157,20 +152,6 @@ const Groups = ({
     fetchData(token)
   }
 
-  const _editGroup = async () => {
-    const data = {
-      description: editingGroup.description,
-      code: editingGroup.code,
-      address: editingGroup.address,
-      cep: editingGroup.cep,
-      phone: editingGroup.phone,
-      email: editingGroup.email
-    }
-    await editGroup(editingGroup.id, data, token);
-    setModalEdit(false);
-    fetchData(token);
-  }
-
   const handleShow = (content) => {
     setGroupShow(content);
     setModalShow(!modalShow);
@@ -179,58 +160,6 @@ const Groups = ({
   const handleEdit = (content) => {
     setEditingGroup(content);
     setModalEdit(!modalEdit);
-  }
-
-  const handleNavigate = (group, goback=false) => {
-    if (group.type === "Estado" && goback === false)
-      setGoBack(true)
-
-    if (group.type === "Município" && goback === true) {
-      setGoBack(false)
-      setGroups(states.filter((state) => state.parent.name === country.description))
-      return
-    }
-
-    switch(group.type) {
-      case "Estado":
-        if (!goback) {
-          const aux_groups = counties.filter((countie) => countie.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-          setState(group)
-        }
-        break;
-      case "Município":
-        if (goback) {
-          setGroups(states.filter((state) => state.parent.name === country.description))
-          setCountie({})
-        } else {
-          const aux_groups = schools.filter((school) => school.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-          setCountie(group)
-        }
-        break;
-      case "Instituição":
-        if (goback) {
-          setGroups(counties.filter((countie) => countie.parent.name === state.description))
-        } else {
-          const aux_groups = courses.filter((course) => course.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-        }
-        break;
-      case "Curso":
-        if (goback) {
-          setGroups(schools.filter((school) => school.parent.name === countie.description))
-        }
-        break;
-      default:
-        break;
-    }
   }
 
   useEffect(() => {
@@ -256,93 +185,10 @@ const Groups = ({
         onHide={() => setModalShow(false)}
       />
 
-      <Modal
+      <ModalEdit
         show={modalEdit}
         onHide={() => setModalEdit(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Editar Instituição
-          </Modal.Title>
-        </Modal.Header>
-        <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
-          <Modal.Body>
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editingGroup.description}
-                onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
-              />
-            </EditInput>
-
-            {editingGroup.code ?
-            <EditInput>
-              <label htmlFor="edit_code">Código</label>
-              <input
-                type="text"
-                id="edit_code"
-                value={editingGroup.code}
-                onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
-              />
-            </EditInput>
-            : null}
-
-            {editingGroup.address ?
-            <EditInput>
-              <label htmlFor="edit_address">Endereço</label>
-              <input
-                type="text"
-                id="edit_address"
-                value={editingGroup.address}
-                onChange={(e) => setEditingGroup({...editingGroup, address: e.target.value})}
-              />
-            </EditInput>
-            : null}
-
-            {editingGroup.cep ?
-            <EditInput>
-              <label htmlFor="edit_cep">CEP</label>
-              <input
-                type="text"
-                id="edit_cep"
-                value={editingGroup.cep}
-                onChange={(e) => setEditingGroup({...editingGroup, cep: e.target.value})}
-              />
-            </EditInput>
-            : null}
-
-            {editingGroup.phone ?
-            <EditInput>
-              <label htmlFor="edit_phone">Telefone</label>
-              <input
-                type="text"
-                id="edit_phone"
-                value={editingGroup.phone}
-                onChange={(e) => setEditingGroup({...editingGroup, phone: e.target.value})}
-              />
-            </EditInput>
-            : null}
-
-            {editingGroup.email ?    
-            <EditInput>
-              <label htmlFor="edit_name">Email</label>
-              <input
-                type="text"
-                id="edit_email"
-                value={editingGroup.email}
-                onChange={(e) => setEditingGroup({...editingGroup, email: e.target.value})}
-              />
-            </EditInput>
-            : null}
-
-          </Modal.Body>
-          <Modal.Footer>
-            <SubmitButton type="submit">Editar</SubmitButton>
-          </Modal.Footer>
-        </form>
-      </Modal>
+      />
 
       <Container>
         <ContainerContent>
