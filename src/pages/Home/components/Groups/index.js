@@ -107,6 +107,9 @@ const Groups = ({
   }
 
   const fetchData = async (token) => {
+    setGoBack(false)
+    setPrevGroup([])
+    setCount(0)
     const response = await getAllGroups(token)
 
     if (!response && !response.groups)
@@ -337,12 +340,22 @@ const Groups = ({
           <Modal.Body>
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editingGroup.description}
-                onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
-              />
+              {user.group_name === editingGroup.description ? 
+                <input
+                  type="text"
+                  id="edit_name"
+                  disabled={true}
+                  value={editingGroup.description}
+                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                /> : 
+                <input
+                  type="text"
+                  id="edit_name"
+                  value={editingGroup.description}
+                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                />
+              }
+              
             </EditInput>
 
             {editingGroup.code ?
