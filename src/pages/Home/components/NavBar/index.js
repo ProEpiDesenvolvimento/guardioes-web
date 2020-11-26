@@ -16,7 +16,14 @@ const NavBar = ({
   setComponentCallback
  }) => {
 
+  const [categories, setCategories] = useState([])
+  const [selected, setSelected] = useState("")
+
   const allCategories = [
+    {
+      key: "dashboard",
+      value: "Visualizações"
+    },
     {
       key: "admins",
       value: "Admins"
@@ -50,34 +57,30 @@ const NavBar = ({
       value: "Usuários"
     },
     {
-      key: "dashboard",
-      value: "Visualizações"
-    },
-    {
       key: "groups",
       value: "Instituições"
     },
-  ]
+  ];
 
   const loadCategories = () => {
-    if (user.type === "admin") {	
+    let categories = allCategories.slice(0, 1);
 
+    if (user.type === "admin") {
+      categories = categories.concat(allCategories.slice(1));
     } else if (user.type === "manager") {
-      allCategories.splice(0, 4);
+      categories = categories.concat(allCategories.slice(5));
     } else if (user.type === "group_manager") {
-      allCategories.splice(0, 7);
+      categories = categories.concat(allCategories.slice(8));
     }
-    setCategories(allCategories)
-    setSelected(allCategories[0].key)
-    setComponentCallback(allCategories[0])
+
+    setCategories(categories)
+    setSelected(categories[0].key)
+    setComponentCallback(categories[0])
   }
 
   useEffect(() => {
-    loadCategories();
-  }, [])
-
-  const [categories, setCategories] = useState([])
-  const [selected, setSelected] = useState("");
+    loadCategories()
+  }, [user.type]);
 
   return (
     <Container>
@@ -101,6 +104,7 @@ const NavBar = ({
     </Container>
   )
 }
+
 const mapStateToProps = (state) => ({
   email: state.user.email,
   token: state.user.token,
