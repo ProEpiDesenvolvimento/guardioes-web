@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -66,9 +67,9 @@ const NavBar = ({
     let categories = allCategories.slice(0, 1);
 
     if (user.type === "admin") {
-      categories = categories.concat(allCategories.slice(1));
+      categories = categories.concat(allCategories.slice(1, -1));
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5));
+      categories = categories.concat(allCategories.slice(5, -1));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }
