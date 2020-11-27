@@ -15,4 +15,5 @@ export const ContentBoxTableIcon = styled.img`
     &:hover {
         opacity: 0.7;
     }
+    cursor: ${props => props.cursor ? "pointer" : "default"}
 `;
