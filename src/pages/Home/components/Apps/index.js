@@ -158,6 +158,26 @@ const Apps = ({
               disabled
             />
           </EditInput>
+
+          <EditInput>
+            <label>Twitter</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={`@${appShow.twitter}`}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Administrador</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.admins}
+              disabled
+            />
+          </EditInput>
         </Modal.Body>
 
         <Modal.Footer>
