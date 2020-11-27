@@ -13,7 +13,7 @@ export const sendToken = async (email, userType) => {
                 }
             }
         )
-        if (response.status == 200)
+        if (response.status === 200)
             return response
     } catch(e) {
         alert('Algo deu errado, tente novamente!');
@@ -35,7 +35,7 @@ export const confirmToken = async (code, userType) => {
                 }
             }
         )
-        if (response.status == 200)
+        if (response.status === 200)
             return response
     } catch(e) {
         alert('Algo deu errado, tente novamente!');
@@ -59,7 +59,7 @@ export const resetPassword = async (token, password, confirmPassword, userType) 
                 }
             }
         )
-        if (response.status == 200)
+        if (response.status === 200)
             return response
     } catch(e) {
         alert('Algo deu errado, tente novamente!');
