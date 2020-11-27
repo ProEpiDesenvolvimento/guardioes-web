@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom';
 import getAllGroups from './services/getAllGroups'
 import createGroup from './services/createGroup'
 import deleteGroup from './services/deleteGroup'
+import getChildrenGroups from './services/getChildrenGroups'
 
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
@@ -31,6 +33,7 @@ import {
   ContentBoxTable,
   ContentBoxTableHeader,
   ContentBoxTableIcon,
+  ContentBoxSubTitle,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
@@ -52,11 +55,11 @@ const Groups = ({
   const [states, setStates] = useState([]);
   const [counties, setCounties] = useState([]);
   const [schools, setSchools] = useState([]);
-  const [courses, setCourses] = useState([]);
 
-  const [country, setCountry] = useState({});
-  const [state, setState] = useState({});
-  const [countie, setCountie] = useState({});
+
+  const [groupLabel, setGroupLabel] = useState('');
+  const [prevGroup, setPrevGroup] = useState([]);
+  const [count, setCount] = useState(0);
 
   const [goBack, setGoBack] = useState(false);
 
@@ -90,17 +93,6 @@ const Groups = ({
     fetchData(token)
   }
 
-  const validatePermissions = (group) => {
-    if (user.type === "admin")
-      return false
-
-    if (group.group_manager)
-      if(user.group_manager.id === group.group_manager.id)
-        return true
-        
-    return false
-  }
-
   const clearData = () => {
     setCreatingGroup({
       parent_id: 0,
@@ -112,57 +104,36 @@ const Groups = ({
       phone: "",
       children_label: null
     })
-    // setCreatingCountie(counties[0].description)
-    // setCreatingState(states[0].description)
     setEditingGroup({})
     setGroupShow({})
     setCreating("course")
   }
 
   const fetchData = async (token) => {
+    setGoBack(false)
+    setPrevGroup([])
+    setCount(0)
     const response = await getAllGroups(token)
 
     if (!response && !response.groups)
       return
     
     let aux_groups = response.groups
-    setCountry(aux_groups[1])
-    aux_groups = aux_groups.filter((group) => group.children_label !== "Pais")
-    aux_groups = aux_groups.filter((group) => group.children_label !== "ESTADO")
-    let aux_states = []
-    let aux_counties = []
-    let aux_schools = []
-    let aux_courses = []
 
     aux_groups = aux_groups.map((group) => {
       group.parentName = group.parent.name
-      switch(group.children_label) {
-        case "MUNICIPIO":
-          group.type = "Estado"
-          aux_states.push(group)
-          break;
-        case "GRUPO":
-          group.type = "Município"
-          aux_counties.push(group)
-          break;
-        case "CURSO":
-          group.type = "Instituição"
-          aux_schools.push(group)
-          break;
-        case null:
-          group.type = "Curso"
-          aux_courses.push(group)
-          break;
-        default:
-          break;
-      }
       return group
     })
-    setStates(aux_states)
-    setCounties(aux_counties)
-    setSchools(aux_schools)
-    setCourses(aux_courses)
-    setGroups(aux_groups.filter((g) => g.children_label === "MUNICIPIO"))
+
+    await getGroupLabel(aux_groups[0].parent.id)
+
+    setGroups(aux_groups)
+  }
+
+  const getGroupLabel = async (label_group_id) => {
+    const response = await getChildrenGroups(label_group_id)
+
+    setGroupLabel(response.children[0].label)
   }
 
   const handleDelete = async (id, token) => {
@@ -194,55 +165,42 @@ const Groups = ({
     setModalEdit(!modalEdit);
   }
 
-  const handleNavigate = (group, goback=false) => {
-    if (group.type === "Estado" && goback === false)
-      setGoBack(true)
+  const handleNavigate = async (group, goback=false) => {
+    if (goback === false) {
+      const response = await getChildrenGroups(group.id)
 
-    if (group.type === "Município" && goback === true) {
+      if (response.children.length === 0){
+        return alert("O grupo não possui filhos")
+      }
+
+      setCount(count + 1)
+      setPrevGroup([...prevGroup, groups])
+      let aux_groups = response.children
+      
+      await getGroupLabel(group.id)
+      aux_groups = aux_groups.map((group_map) => {
+        group_map.parentName = group.description
+        group_map.children_label = group_map.label
+        return group_map
+      })
+      setGroups(aux_groups)
       setGoBack(false)
-      setGroups(states.filter((state) => state.parent.name === country.description))
-      return
     }
+    
+    if (goback === true) {
+      let aux_label = prevGroup[count - 1]
 
-    switch(group.type) {
-      case "Estado":
-        if (!goback) {
-          const aux_groups = counties.filter((countie) => countie.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-          setState(group)
-        }
-        break;
-      case "Município":
-        if (goback) {
-          setGroups(states.filter((state) => state.parent.name === country.description))
-          setCountie({})
-        } else {
-          const aux_groups = schools.filter((school) => school.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-          setCountie(group)
-        }
-        break;
-      case "Instituição":
-        if (goback) {
-          setGroups(counties.filter((countie) => countie.parent.name === state.description))
-        } else {
-          const aux_groups = courses.filter((course) => course.parent.name === group.description)
-          if (aux_groups.length === 0)
-            return alert("O grupo não possui filhos")
-          setGroups(aux_groups)
-        }
-        break;
-      case "Curso":
-        if (goback) {
-          setGroups(schools.filter((school) => school.parent.name === countie.description))
-        }
-        break;
-      default:
-        break;
+      aux_label[0].hasOwnProperty('parent') ? 
+        getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
+
+      setGroups(prevGroup[count - 1])
+      setCount(count - 1)
+      if(count <= 1){
+        setPrevGroup([])
+        setGoBack(false)
+      }
+    } else {
+      setGoBack(true)
     }
   }
 
@@ -258,7 +216,7 @@ const Groups = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "description", value: "Nome" },
-    { key: "type", value: "Tipo" },
+    
     { key: "parentName", value: "Pertence a(o)" }
   ];
 
@@ -398,12 +356,22 @@ const Groups = ({
           <Modal.Body>
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editingGroup.description}
-                onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
-              />
+              {user.group_name === editingGroup.description ? 
+                <input
+                  type="text"
+                  id="edit_name"
+                  disabled={true}
+                  value={editingGroup.description}
+                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                /> : 
+                <input
+                  type="text"
+                  id="edit_name"
+                  value={editingGroup.description}
+                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                />
+              }
+              
             </EditInput>
 
             {editingGroup.code ?
@@ -478,13 +446,14 @@ const Groups = ({
           <ContentBoxHeader>
             <ContentBoxTitle>Instituições</ContentBoxTitle>
           </ContentBoxHeader>
+            <ContentBoxSubTitle>{groupLabel}</ContentBoxSubTitle>
           <ContentBoxTable>
             <Table responsive>
               <thead>
               {goBack ? 
               <tr>
                 <td>
-                  <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups[0], true)}>
+                  <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
                     Voltar
                   </button>
                 </td>
@@ -517,8 +486,6 @@ const Groups = ({
                       </button>
                     </td>
                     : null}
-                    {validatePermissions(group) ?
-                    <>
                       <td>
                         <Link to="/panel">
                           <ContentBoxTableIcon
@@ -537,8 +504,6 @@ const Groups = ({
                           />
                         </Link>
                       </td>
-                    </>
-                    : null}
                   </tr>
                 ))}
               </tbody>
@@ -546,7 +511,7 @@ const Groups = ({
           </ContentBoxTable>
         </ContainerContent>
         
-        {user.type === "group_manager" ?
+        {/* {user.type === "group_manager" ?
         <AddGroupContainer className="shadow-sm">
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
               <SubmitButton
@@ -692,7 +657,7 @@ const Groups = ({
             </Form>
           </ContainerForm>
         </AddGroupContainer>
-        : null}
+        : null} */}
       </Container>
     </>
   );

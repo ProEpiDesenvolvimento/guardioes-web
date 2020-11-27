@@ -142,7 +142,7 @@ export const EditInput = styled.div`
 export const ContainerContent = styled.div`
     display: flex;
     flex-direction: column;
-    height: 26rem;
+    height: 50rem;
     /* 50 */
     width: 90%;
     align-content: center;
@@ -176,10 +176,18 @@ export const ContentBoxTitle = styled.h3`
     text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
 `;
 
+export const ContentBoxSubTitle = styled.h3`
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18;
+    color: #348EAC;
+`;
+
 export const ContentBoxTable = styled.div`
     display: flex;
     margin: 1rem 1.8rem;
-    max-height: ${props => props.component_height ? props.component_height : '20rem'};
+    max-height: ${props => props.component_height ? props.component_height : '40rem'};
     /* 40 */
 `;
 
