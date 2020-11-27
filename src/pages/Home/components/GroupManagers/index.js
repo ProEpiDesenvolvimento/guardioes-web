@@ -57,7 +57,6 @@ const GroupManagers = ({
   const [editGroup, setEditGroup] = useState("");
   const [editIDCode, setEditIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(0);
-  const [editPassword, setEditPassword] = useState("");
   const [groupManagerShow, setGroupManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
@@ -93,7 +92,6 @@ const GroupManagers = ({
   const _editGroupManager = async () => {
     const data = {
       "group_manager": {
-        "password": editPassword,
         "email": editEmail,
         "name": editName,
         "group_name": editGroup,
@@ -145,9 +143,6 @@ const GroupManagers = ({
     setEditLengthIDCode(value);
   }
 
-  const handleEditPassword = (value) => {
-    setEditPassword(value);
-  }
 
   const _getAllGroupManagers = async (token) => {
     const response = await getAllGroupManagers(token)
@@ -275,16 +270,6 @@ const GroupManagers = ({
                 id="edit_email"
                 value={editEmail}
                 onChange={(e) => handleEditEmail(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_password">Senha</label>
-              <input
-                type="password"
-                id="edit_password"
-                value={editPassword}
-                onChange={(e) => handleEditPassword(e.target.value)}
               />
             </EditInput>
 
