@@ -127,7 +127,7 @@ const Apps = ({
             Informações do App
           </Modal.Title>
         </Modal.Header>
-        
+
         <Modal.Body>
           <EditInput>
             <label>ID</label>
@@ -155,6 +155,26 @@ const Apps = ({
               className="text-dark"
               type="text"
               value={appShow.owner_country}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Twitter</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={`@${appShow.twitter}`}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Administrador</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.adminEmail}
               disabled
             />
           </EditInput>
@@ -209,8 +229,8 @@ const Apps = ({
           contents={apps}
           fields={fields}
           delete_function={_deleteApp}
-          handleEdit={handleEdit} 
-          handleShow={handleShow}  
+          handleEdit={handleEdit}
+          handleShow={handleShow}
         />
 
 
@@ -232,7 +252,7 @@ const Apps = ({
 
               <InputBlock>
                 <label htmlFor="country">País</label>
-                <Select 
+                <Select
                   id="app_id"
                   isSearchable={true}
                   options={country}
