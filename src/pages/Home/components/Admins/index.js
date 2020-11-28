@@ -76,7 +76,7 @@ const Admins = ({
 
     const _getAdmins = async (token) => {
         const response = await getAllAdmins(token);
-        setAdmins(response);
+        setAdmins(response.admins);
     }
 
     const _getApps = async (token) => {
