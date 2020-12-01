@@ -266,6 +266,7 @@ const Admins = ({
                                 id="edit_email"
                                 value={editEmail}
                                 onChange={(e) => setEditEmail(e.target.value)}
+                                disabled
                             />
                         </EditInput>
 
@@ -300,7 +301,7 @@ const Admins = ({
                 <ContentBox
                     title="Admins"
                     token={token}
-                    contents={admins ? admins : []}
+                    contents={admins}
                     fields={fields}
                     delete_function={_deleteAdmin}
                     handleEdit={handleEdit}

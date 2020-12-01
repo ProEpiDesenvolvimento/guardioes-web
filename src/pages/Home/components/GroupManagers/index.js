@@ -270,6 +270,7 @@ const GroupManagers = ({
                 id="edit_email"
                 value={editEmail}
                 onChange={(e) => handleEditEmail(e.target.value)}
+                disabled
               />
             </EditInput>
 

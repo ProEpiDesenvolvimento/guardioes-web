@@ -259,6 +259,7 @@ const Managers = ({
                 id="edit_email"
                 value={editingManager.email}
                 onChange={(e) => setEditingManager({...editingManager, email: e.target.value})}
+                disabled
               />
             </EditInput>
 
