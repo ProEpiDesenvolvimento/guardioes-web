@@ -4,7 +4,7 @@ import { device } from 'utils/devices';
 
 export const Span = styled.span`
   color: red;
-  font-size: 8px;
+  font-size: 12px;
 `;
 
 export const RegisterDiv = styled.form`
@@ -54,6 +54,16 @@ export const Input = styled.input`
     box-sizing: border-box;
     border-radius: 5px;
     padding: 10px;
+    margin-top: 2px;
+`;
+
+export const SelectInput = styled.select`
+    height: 5vh;
+    width: 90%;
+    background: #FFFFFF;
+    border: 1px solid #348EAC;
+    box-sizing: border-box;
+    border-radius: 5px;
     margin-top: 2px;
 `;
 

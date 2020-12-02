@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import { states } from "utils/Brasil";
+import { cnpjMask, phoneMask } from "utils/mask";
 
 import {
   RegisterDiv,
@@ -14,7 +16,8 @@ import {
   SendButtonName,
   QuestionPopupCat,
   QuestionPopupOrgType,
-  Span
+  Span,
+  SelectInput
 } from './styles';
 
 import questionIcon from '../assets/question_icon.png'
@@ -31,11 +34,17 @@ const Form = (props) => {
   const [organizationType, setOrganizationType] = useState("")
   const [socialReason, setSocialReason] = useState("")
 
+  const [emailValidation, setEmailValidation] = useState(false)
+
   const onSubmit = async () => {
+    let formattedCnpj = cnpj
+    formattedCnpj = formattedCnpj.replace(/\W/g, '')
+    let formattedPhone = phone
+    formattedPhone = formattedPhone.replace(/\W/g, '')
     const body = {
       pre_register: {
-        cnpj,
-        phone,
+        cnpj: formattedCnpj,
+        phone: formattedPhone,
         organization_kind: organizationType,
         state,
         company_name: socialReason,
@@ -43,8 +52,15 @@ const Form = (props) => {
       }
     }
 
+    console.log(body)
+
     const response = await submitPreRegister(body)
     if (response.errors) {
+      if (response.errors == "O email já está sendo usado.") {
+        setEmailValidation(true)
+        return null
+      }
+      alert('Algo deu errado, tente novamente!');
       console.log("Algo deu errado.\n" + response.errors)
     } else {
       console.log("Registro feito com sucesso.")
@@ -61,9 +77,9 @@ const Form = (props) => {
             name='cnpj'
             type='text'
             value={cnpj}
-            onChange={(e) => setCnpj(e.target.value)}
+            onChange={(e) => setCnpj(cnpjMask(e.target.value))}
             ref={register({ required: true, validate: validateCnpj })}
-          />
+          /><br/>
           {errors.cnpj && errors.cnpj.type === "validate" && <Span>CNPJ inválido</Span>}
           {errors.cnpj && errors.cnpj.type === "required" && <Span>O CNPJ é obrigatório</Span>}
         </FieldName>
@@ -77,7 +93,7 @@ const Form = (props) => {
             value={socialReason}
             onChange={(e) => setSocialReason(e.target.value)}
             ref={register({ required: true })}
-          />
+          /><br/>
           {errors.socialReason && <Span>A razão social é obrigatória</Span>}
         </FieldName>
       </FieldDiv>
@@ -88,9 +104,13 @@ const Form = (props) => {
             name='email'
             type='text'
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmailValidation(false)
+              setEmail(e.target.value)}
+            }
             ref={register({ required: true })}
-          />
+          /><br/>
+          {emailValidation && <Span>O e-mail já está em uso</Span>}
           {errors.email && <Span>O e-mail institucional é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
@@ -100,25 +120,29 @@ const Form = (props) => {
           <Input
             name='phone'
             type='tel'
-            pattern="[0-9]{9,11}$"
             title="Apenas números. DDD + número"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => setPhone(phoneMask(e.target.value))}
             ref={register({ required: true })}
-          />
+          /><br/>
           {errors.phone && <Span>O telefone de contato é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
       <FieldDiv>
         <FieldName>
           Estado
-          <Input
+          <SelectInput
             name='state'
-            type='text'
             value={state}
             onChange={(e) => setState(e.target.value)}
             ref={register({ required: true })}
-          />
+          >
+            {states.map((state) => {
+              return (
+                <option value={state.key}>{state.label}</option>
+              )
+            })}
+          </SelectInput><br/>
           {errors.state && <Span>O Estado é obrigatório</Span>}
         </FieldName>
       </FieldDiv>
@@ -132,21 +156,8 @@ const Form = (props) => {
             value={organizationType}
             onChange={(e) => setOrganizationType(e.target.value)}
             ref={register({ required: true })}
-          />
+          /><br/>
           {errors.organizationType && <Span>O tipo de organização é obrigatório</Span>}
-        </FieldName>
-      </FieldDiv>
-      <FieldDiv>
-        <FieldName>
-          Categorias
-          <QuestionPopupCat content='Faça o download do documento modelo das categorias.' trigger={<QuestionVector src={questionIcon} />} />
-          <ButtonsDiv>
-            <DownloadBtn href='./documents/modelo_categoras.xls' download="modelo_categorias.xls">
-              <ButtonName>
-                Download
-              </ButtonName>
-            </DownloadBtn>
-          </ButtonsDiv>
         </FieldName>
       </FieldDiv>
       <FieldDiv>
