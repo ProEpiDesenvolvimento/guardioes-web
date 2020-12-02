@@ -16,11 +16,11 @@ services:
       - internal
       - web
     # The following is a traefik configuration (homolog only)
-    labels:
-      - traefik.backend=elastic
-      - traefik.frontend.rule=Host:elastic.guardioes.lappis.rocks
-      - traefik.docker.network=web
-      - traefik.port=9200
+    # labels:
+    #   - traefik.backend=elastic
+    #   - traefik.frontend.rule=Host:elastic.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=9200
   kibana:
     image: docker.elastic.co/kibana/kibana:7.6.1
     restart: unless-stopped
@@ -38,12 +38,6 @@ services:
     volumes:
       - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
       - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
-    # The following is a traefik configuration (homolog only)
-    labels:
-      - traefik.backend=kibana
-      - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
-      - traefik.docker.network=web
-      - traefik.port=5601
 
   pgsql-metabase-docker:
     image: postgres
@@ -76,6 +70,13 @@ services:
       - pgsql-metabase-docker
     links:
       - pgsql-metabase-docker
+ # The following is a traefik configuration (homolog only)
+    # labels:
+    #   - traefik.backend=kibana
+    #   - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=5601
+
   painel:
     build: .
     restart: unless-stopped
@@ -83,11 +84,11 @@ services:
       - internal
       - web
     # The following is a traefik configuration (homolog only)
-    labels:
-      - traefik.backend=myapp
-      - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
-      - traefik.docker.network=web
-      - traefik.port=8081
+    # labels:
+    #   - traefik.backend=myapp
+    #   - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=8081
     command: npx serve -s build
     ports:
       - "80:80"
@@ -110,11 +111,11 @@ services:
     depends_on:
       - kibana
     # The following is a traefik configuration (homolog only)
-    labels:
-      - traefik.backend=nginx
-      - traefik.frontend.rule=Host:kibanaproxy.guardioes.lappis.rocks
-      - traefik.docker.network=web
-      - traefik.port=8090
+    # labels:
+    #   - traefik.backend=nginx
+    #   - traefik.frontend.rule=Host:kibanaproxy.guardioes.lappis.rocks
+    #   - traefik.docker.network=web
+    #   - traefik.port=8090
 
 volumes:
   esdata:
