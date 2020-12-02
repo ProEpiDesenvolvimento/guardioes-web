@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     height: 100%;
     margin: 0;
-
-    @media (min-height: 900px) {
-        height: 92vh;
-    }
 `;
 
 export const Body = styled.div`
@@ -16,4 +14,11 @@ export const Body = styled.div`
     display: flex;
     flex-direction: row;
     background-size: cover;
+    overflow: hidden;
+`;
+
+export const Divider = styled.div`
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
 `;

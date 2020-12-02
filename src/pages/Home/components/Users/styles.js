@@ -38,8 +38,48 @@ export const SubmitButton = styled.button`
   }
 `;
 
-export const SearchView = styled.div`
-  width: 50%;
-  align-self: center;
-  margin-top: 1.25rem
+export const EditCheckbox = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+  font-size: 20;
+  color: #348EAC;
+  margin-bottom: 1rem;
+  align-items: center;
 `;
+
+export const EditCheckboxInput = styled.input`
+  margin-bottom: .5rem;
+  margin-left: .5rem;
+`;
+
+export const SearchView = styled.div`
+  width: 100%;
+  align-self: center;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center
+`;
+
+export const PaginationDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+`;
+
+export const SearchInputDiv  = styled(EditInput)`
+  width: 60%;
+`;
+
+export const SearchBtn = styled(EditInput)`
+  align-self: flex-end;
+  margin-left: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  justify-content: center;
+  align-content: center;
+`

@@ -23,6 +23,8 @@ import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
+import Select from 'react-select';
+import { country } from '../../../../utils/selectorUtils';
 
 const Apps = ({
   token,
@@ -64,6 +66,9 @@ const Apps = ({
 
   const _getApps = async (token) => {
     const response = await getAllApps(token)
+    if (!response.apps || response.apps.length === 0) {
+      response.apps = null;
+    }
     setApps(response.apps)
   }
 
@@ -75,7 +80,6 @@ const Apps = ({
   const _editApp = async () => {
     const data = {
       "app_name": editName,
-      "owner_country": editCountry
     };
     await editApp(editingApp.id, data, token);
     setModalEdit(false);
@@ -96,10 +100,6 @@ const Apps = ({
 
   const handleEditName = (value) => {
     setEditName(value);
-  }
-
-  const handleEditCountry = (value) => {
-    setEditCountry(value);
   }
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const Apps = ({
             Informações do App
           </Modal.Title>
         </Modal.Header>
-        
+
         <Modal.Body>
           <EditInput>
             <label>ID</label>
@@ -155,6 +155,26 @@ const Apps = ({
               className="text-dark"
               type="text"
               value={appShow.owner_country}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Twitter</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={`@${appShow.twitter}`}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Administrador</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={appShow.adminEmail}
               disabled
             />
           </EditInput>
@@ -192,7 +212,7 @@ const Apps = ({
                 type="text"
                 id="edit_country"
                 value={editCountry}
-                onChange={(e) => handleEditCountry(e.target.value)}
+                disabled
               />
             </EditInput>
           </Modal.Body>
@@ -206,11 +226,11 @@ const Apps = ({
         <ContentBox
           title="Apps"
           token={token}
-          contents={apps ? apps : []}
+          contents={apps}
           fields={fields}
           delete_function={_deleteApp}
-          handleEdit={handleEdit} 
-          handleShow={handleShow}  
+          handleEdit={handleEdit}
+          handleShow={handleShow}
         />
 
 
@@ -232,11 +252,12 @@ const Apps = ({
 
               <InputBlock>
                 <label htmlFor="country">País</label>
-                <input
-                  type="text"
-                  id="country"
-                  value={ownerCountry}
-                  onChange={(e) => handleOwnerCountry(e.target.value)} />
+                <Select
+                  id="app_id"
+                  isSearchable={true}
+                  options={country}
+                  onChange={(e) => handleOwnerCountry(e.value)}
+                />
               </InputBlock>
 
               {/* <Input type="submit" className="shadow-sm" /> */}

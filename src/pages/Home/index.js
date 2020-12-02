@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Body
+  Body,
+  Divider
 } from './styles';
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
+import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import GroupManagers from './components/GroupManagers';
+import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
+import Syndromes from './components/Syndromes';
+import Admins from './components/Admins';
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -31,14 +36,17 @@ const Home = ({
 
   useEffect(() => {
     const _loadSession = async () => {
-      // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
-      // const auxSession = await sessionService.loadSession()
-      // const auxUser = await sessionService.loadUser()
-      // setToken(auxSession.token)
-      // setUser(auxUser)
+      try {
+        const auxSession = await sessionService.loadSession()
+        const auxUser = await sessionService.loadUser()
+        setToken(auxSession.token)
+        setUser(auxUser)
+      } catch (err) {
+        history.push("/login")
+      }
     }
     _loadSession();
-  }, [token]);
+  }, [setToken, setUser, token, history]);
 
   const [component, setComponent] = useState({})
   const [components, setComponents] = useState([])
@@ -46,8 +54,12 @@ const Home = ({
   const loadComponents = () => {
     setComponents([
       {
+        key: "dashboard",
+        value: Dashboard
+      },
+      {
         key: "admins",
-        value: "Admins"
+        value: Admins
       },
       {
         key: "configApps",
@@ -55,11 +67,15 @@ const Home = ({
       },
       {
         key: "managers",
-        value: "Gerentes"
+        value: Managers
       },
       {
         key: "managersGroup",
         value: GroupManagers
+      },
+      {
+        key: "groups",
+        value: Groups
       },
       {
         key: "symptoms",
@@ -67,7 +83,7 @@ const Home = ({
       },
       {
         key: "syndromes",
-        value: "Síndromes"
+        value: Syndromes
       },
       {
         key: "contents",
@@ -76,41 +92,30 @@ const Home = ({
       {
         key: "users",
         value: Users
-      },
-      {
-        key: "dashboard",
-        value: Dashboard
       }
     ])
-    setComponent({
-      key: "admins",
-      value: "Admins"
-    })
   }
-
-  useEffect(() => {
-    loadComponents();
-    // THIS IS TEMPORARY, JUST FOR HOMOLOGATION
-    // if (token == "") {
-    //   history.push("/login")
-    // }
-    console.log(token)
-  }, [])
 
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });
   }
 
+  useEffect(() => {	
+    loadComponents();
+  }, [history, token])
+
   return (
     <Container>
       <Header />
-      <Body style={{ overflowX: 'hidden' }}>
+      <Body>
         <NavBar setComponentCallback={setComponentCallback} />
-        {components.map((comp) => {
-          if (comp.key === component.key) {
-            return <comp.value />
-          }
-        })}
+        <Divider>
+          {components.map((comp) => {
+            if (comp.key === component.key) {
+              return <comp.value key={comp.key} />
+            }
+          })}
+        </Divider>
       </Body>
     </Container>
   );

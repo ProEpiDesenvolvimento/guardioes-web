@@ -16,11 +16,12 @@ import {
   Field,
   SendButton,
   SendButtonName,
-  Span
+  Span,
+  ResetLink
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
-import Dropdown from './Dropdown'
+import DropdownComponent from '../../sharedComponents/DropdownComponent'
 import { useHistory } from "react-router-dom";
 
 const Login = ({
@@ -34,33 +35,24 @@ const Login = ({
   const { register, handleSubmit, errors } = useForm();
 
   const [password, setPassword] = useState("")
-  const [items, setItems] = useState([
-    {
-      key: "group_manager",
-      value: 'Group Manager',
-    },
-    {
-      key: "admin",
-      value: 'Admin',
-    }
-  ])
+  const [option, setOption] = useState('admin');
 
   const history = useHistory(); 
 
   const makeUserLogin = async (data) => {
-    const response = await requestLogin(email, password, items[0].key)
-    const responseUser = response.user
-    if (response.authorization != "") {
+    const response = await requestLogin(email, password, option)
+    const responseUser = response.user[option]
+    if (response.authorization !== "") {
       setToken(response.authorization);
       setUser({
         ...responseUser,
-        type: items[0].key
+        type: option
       })
       sessionService.saveSession({ token: response.authorization })
         .then(() => {
           sessionService.saveUser({
             ...responseUser,
-            type: items[0].key
+            type: option
           })
             .then(() => {
               history.push('/panel')
@@ -70,11 +62,25 @@ const Login = ({
     }
   }
 
-  const setItemsCallback = (items) => {
-    setItems(items)
+  const handleResetPwd = (e) => {
+    history.push("/reset")
+  }
+
+  const setItemsCallback = (option) => {
+    setOption(option)
   }
 
   useEffect(() => {
+    const _loadSession = async () => {
+      try {
+        const auxSession = await sessionService.loadSession()
+        const auxUser = await sessionService.loadUser()
+        history.push("/panel")
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    _loadSession();
   }, []);
 
   return (
@@ -82,13 +88,13 @@ const Login = ({
       <Header />
       <HeadSection>
         <Backicon />
-        <Dropdown title="Gerente" items={items} setItemsCallback={setItemsCallback} />
       </HeadSection>
       <Body>
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
           <Title>
             Login
         </Title>
+          <DropdownComponent setItemsCallback={setItemsCallback} />
           <Field
             placeholder="E-mail"
             name='email'
@@ -107,6 +113,7 @@ const Login = ({
             ref={register({ required: true })}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
+          <ResetLink onClick={handleResetPwd}>Esqueci a senha</ResetLink>
           <SendButton type='submit'>
             <SendButtonName>
               ENVIAR

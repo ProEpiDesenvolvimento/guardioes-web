@@ -54,19 +54,16 @@ const Symptoms = ({
       "priority": 1,
       "details": symptomDescription,
       "message": null,
-      "app_id": 1
-      // Por enquanto esta sendo usado o 1, mas quando for corrigido as rotas
-      // será usado o app_id do user logado, como feito abaixo
-      // "app_id": user.app_id
+      "app_id": user.app_id
     }
-    const response = await createSymptom(data, token)
+    await createSymptom(data, token)
     setSymptomName("")
     setSymptomDescription("")
     _getAllSymptoms(token)
   }
 
   const _deleteSymptom = async (id, token) => {
-    const response = await deleteSymptom(id, token)
+    await deleteSymptom(id, token)
     _getAllSymptoms(token)
   }
 
@@ -82,7 +79,7 @@ const Symptoms = ({
       "priority": 1,
       "details": editDescription,
       "message": null,
-      "app_id": 1
+      "app_id": user.app_id
     };
     await editSymptom(editingSymptom.id, data, token);
     setModalEdit(false);
@@ -111,15 +108,19 @@ const Symptoms = ({
 
   const loadSymptoms = async (response) => {
     let aux_symptoms = [];
-    if (!response.symptoms)
+    if (!response.symptoms) {
       response.symptoms = [];
-    response.symptoms.map(symptom => {
+    }
+    response.symptoms.forEach(symptom => {
       aux_symptoms.push({
         "id": symptom.id,
         "name": symptom.description,
         "description": symptom.details
       })
     })
+    if (aux_symptoms.length === 0) {
+      aux_symptoms = null
+    }
     setSymptoms(aux_symptoms)
   }
 
@@ -231,7 +232,7 @@ const Symptoms = ({
         <ContentBox
           title="Sintomas"
           token={token}
-          contents={symptoms ? symptoms : []}
+          contents={symptoms}
           fields={fields}
           delete_function={_deleteSymptom}
           handleEdit={handleEdit}

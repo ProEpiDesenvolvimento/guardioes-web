@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
+import {
+    Link,
+  } from "react-router-dom";
 
 export const Span = styled.span`
   color: red;
@@ -29,7 +32,7 @@ export const LoginBox = styled.form`
     margin: 0 auto;
     background: linear-gradient(180deg, #FFFFFF 99.99%, rgba(255, 255, 255, 0) 100%);
     box-shadow: 4px 4px 50px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +49,7 @@ export const Title = styled.p`
     line-height: 5rem;
     color: #282828;
     text-align: flex-start;
-    margin-top: 30px;
+    margin: 30px;
 
     @media ${device.laptopL}{
         font-size: 3rem;
@@ -58,10 +61,10 @@ export const Title = styled.p`
 export const Field = styled.input`
     width: max(250px, 30vw);
     height: 50px;
-    margin: 20px auto;
+    margin: 15px auto;
     border: 2px solid #348EAC;
     box-sizing: border-box;
-    border-radius: 20px;
+    border-radius: 15px;
 
     text-decoration: none;
     font-family: Argentum Sans;
@@ -71,7 +74,7 @@ export const Field = styled.input`
     line-height: 30px;
     color: #000000;
     text-align: center;
-
+    outline: 0;
     cursor: text;
 
     &::placeholder {
@@ -126,4 +129,14 @@ export const SendButtonName = styled.p`
     font-size: 20px;
     line-height: 24px;
     color: #FFFFFF;
+`;
+
+export const ResetLink = styled(Link)`
+    cursor: pointer;
+    color: #348EAC;
+    &:hover {
+        color: #5dd39e;
+    }
+    border: none;
+    background: #ffffff;
 `;

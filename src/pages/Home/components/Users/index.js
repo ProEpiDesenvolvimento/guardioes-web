@@ -3,7 +3,12 @@ import {
   Container,
   EditInput,
   SubmitButton,
-  SearchView
+  EditCheckbox,
+  EditCheckboxInput,
+  SearchView,
+  PaginationDiv,
+  SearchInputDiv,
+  SearchBtn
 } from './styles';
 import { connect } from 'react-redux';
 import {
@@ -17,6 +22,11 @@ import getAllUsers from './services/getAllUsers';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment'
 import deleteUser from './services/deleteUser';
+import editUser from './services/editUser';
+import { useForm } from "react-hook-form";
+import Pagination from "react-js-pagination";
+import { gender, race } from '../../../../utils/selectorUtils';
+import Select from 'react-select';
 
 const Users = ({
   setUsers,
@@ -26,31 +36,28 @@ const Users = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [userShow, setUserShow] = useState({});
+  const [modalEdit, setModalEdit] = useState(false);
+  const [editingUser, setEditingUser] = useState({});
+  const [editName, setEditName] = useState("");
+  const [editBirthdate, setEditBirthdate] = useState(new Date());
+  const [editGender, setEditGender] = useState("");
+  const [editRace, setEditRace] = useState("");
+  const [editProfessional, setEditProfessional] = useState(false);
+  const { handleSubmit } = useForm();
   const [userSearch, setUserSearch] = useState("");
   const [userList, setUserList] = useState([]);
+  const [activePage, setActivePage] = useState(1);
 
   const fields = [
     {
-      key: "id",
-      value: "Id."
+      key: "user_name",
+      value: "Nome"
     },
     {
-      key: "user_name",
-      value: "Name"
+      key: "email",
+      value: "Email"
     }
   ]
-
-  const search = (userSearch) => {
-    const filteredUsers = users.filter((user) => {
-      if ( userSearch.length > 1) {
-        return user.user_name && user.user_name.indexOf(userSearch) >= 0; 
-      }
-      else {
-        return users
-      }
-    });
-    setUserList(filteredUsers)
-  }
 
   const handleShow = (user) => {
     setUserShow(user);
@@ -59,19 +66,78 @@ const Users = ({
 
   const handleSearch = (value) => {
     setUserSearch(value)
-    search(userSearch)
   }
-  const _getUsers = async (token) => {
-    const response = await getAllUsers(token)
-    console.log(response.users)
+
+  const getSearch = async (token, page) => {
+    const response = await getAllUsers(token, page, userSearch)
+    setUserList(response.users)
+  }
+  const _getUsers = async (token, page) => {
+    const response = await getAllUsers(token, page, userSearch)
+    if (!response.users || response.users.length === 0) {
+      response.users = null;
+    }
     setUsers(response.users)
     setUserList(response.users)
   }
 
+  const handlePageChange = (page) => {
+    setActivePage(page)
+    if (userSearch === ""){
+      _getUsers(token, page)
+    }else{
+      getSearch(token, page)
+    }
+  }
+
   const _deleteUser = async (id, token) => {
     const response = await deleteUser(id, token)
-    console.log(response)
-    _getUsers(token);
+    _getUsers(token, 1);
+  }
+
+  const _editUser = async () => {
+    const data = {
+      "user": {
+        "user_name": editName,
+        "birthdate": editBirthdate,
+        "gender": editGender,
+        "race": editRace,
+        "is_professional": editProfessional
+      }
+    };
+    await editUser(editingUser.id, data, token);
+    setModalEdit(false);
+    _getUsers(token, 1);
+  }
+
+  const handleEdit = (content) => {
+    setEditingUser(content);
+    setEditName(content.user_name);
+    setEditBirthdate(content.birthdate);
+    setEditGender(content.gender);
+    setEditRace(content.race);
+    setEditProfessional(content.is_professional);
+    setModalEdit(!modalEdit);
+  }
+
+  const handleEditName = (value) => {
+    setEditName(value);
+  }
+
+  const handleEditBirthdate = (value) => {
+    setEditBirthdate(value);
+  }
+
+  const handleEditGender = (value) => {
+    setEditGender(value);
+  }
+
+  const handleEditRace = (value) => {
+    setEditRace(value);
+  }
+
+  const handleEditProfessional = (value) => {
+    setEditProfessional(value);
   }
 
   useEffect(() => {
@@ -80,11 +146,87 @@ const Users = ({
       setToken(auxSession.token)
     }
     _loadSession();
-    _getUsers(token)
+    _getUsers(token, 1)
   }, [token]);
 
   return (
     <>
+      <Modal
+        show={modalEdit}
+        onHide={() => setModalEdit(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Editar Usuário
+          </Modal.Title>
+        </Modal.Header>
+        <form id="editUser" onSubmit={handleSubmit(_editUser)}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="email">E-mail</label>
+              <input
+                className="text-dark"
+                type="text"
+                id="email"
+                value={editingUser.email}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_name">Nome</label>
+              <input 
+                type="text"
+                id="edit_name"
+                value={editName}
+                onChange={(e) => handleEditName(e.target.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_birthdate">Data de Nascimento</label>
+              <input
+                id="edit_birthdate"
+                type="date"
+                value={moment(editBirthdate).format("YYYY-MM-DD")}
+                onChange={(e) => handleEditBirthdate(e.target.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_gender">Gênero</label>
+              <Select 
+                id="edit_gender"
+                options={gender}
+                onChange={(e) => handleEditGender(e.value)}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_race">Raça</label>
+              <Select 
+                id="edit_race"
+                options={race}
+                onChange={(e) => handleEditRace(e.value)}
+              />
+            </EditInput>
+
+            <EditCheckbox>
+              <label htmlFor="edit_professional">Profissional da Saúde</label>
+              <EditCheckboxInput 
+                id="edit_professional"
+                type="checkbox"
+                value={editProfessional}
+                onChange={() => handleEditProfessional(!editProfessional)}
+              />
+            </EditCheckbox>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <SubmitButton type="submit">Editar</SubmitButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
 
       <Modal
         show={modalShow}
@@ -107,12 +249,13 @@ const Users = ({
             />
           </EditInput>
 
+
           <EditInput>
-            <label>Country</label>
+            <label>Email</label>
             <input
               className="text-dark"
               type="text"
-              value={userShow.country}
+              value={userShow.email}
               disabled
             />
           </EditInput>
@@ -125,6 +268,16 @@ const Users = ({
               value={userShow.gender}
               disabled
             />
+          </EditInput>
+
+          <EditInput>	
+            <label>Country</label>	
+            <input	
+              className="text-dark"	
+              type="text"	
+              value={userShow.country}	
+              disabled	
+            />	
           </EditInput>
 
           <EditInput>
@@ -155,24 +308,38 @@ const Users = ({
 
       <Container>
         <SearchView>
-          <EditInput>
-            <label>Search Users</label>
+          <SearchInputDiv>
+            <label>Pesquisa por email:</label>
             <input 
               type="text"
               value={userSearch}
               onChange={(e) => handleSearch(e.target.value)}
             />
-          </EditInput>
+          </SearchInputDiv>
+          <SearchBtn onClick={() => getSearch(token, 1)}>
+            <label>Buscar</label>
+          </SearchBtn>
         </SearchView>
         <ContentBox 
           title="Users"
           fields={fields}
-          contents={userList ? userList : []}
+          contents={userList}
           handleShow={handleShow}
-          component_height={'40rem'}
+          component_height={'35rem'}
           delete_function={_deleteUser}
           token={token}
+          handleEdit={handleEdit}
         />
+        <PaginationDiv>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={50}
+            totalItemsCount={22715}
+            pageRangeDisplayed={10}
+            onChange={handlePageChange.bind(this)}
+            itemClass={EditInput}
+          />
+        </PaginationDiv>
       </Container>
     </>
   );

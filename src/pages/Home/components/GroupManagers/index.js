@@ -57,7 +57,6 @@ const GroupManagers = ({
   const [editGroup, setEditGroup] = useState("");
   const [editIDCode, setEditIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(0);
-  const [editPassword, setEditPassword] = useState("");
   const [groupManagerShow, setGroupManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
@@ -69,7 +68,7 @@ const GroupManagers = ({
         "name": groupManagerName,
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
-        "app_id": 1,
+        "app_id": user.app_id,
         "require_id": groupManagerIdentificationCode,
         "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : undefined
       }
@@ -93,12 +92,11 @@ const GroupManagers = ({
   const _editGroupManager = async () => {
     const data = {
       "group_manager": {
-        "password": editPassword,
         "email": editEmail,
         "name": editName,
         "group_name": editGroup,
         "twitter": editTwitter,
-        "app_id": 1,
+        "app_id": user.app_id,
         "require_id": editIDCode,
         "id_code_length": editIDCode ? editLengthIDCode : null
       }
@@ -145,9 +143,6 @@ const GroupManagers = ({
     setEditLengthIDCode(value);
   }
 
-  const handleEditPassword = (value) => {
-    setEditPassword(value);
-  }
 
   const _getAllGroupManagers = async (token) => {
     const response = await getAllGroupManagers(token)
@@ -159,7 +154,7 @@ const GroupManagers = ({
     if (!response.group_managers) {
       response.group_managers = [];
     }
-    response.group_managers.map(group_manager => {
+    response.group_managers.forEach(group_manager => {
       aux_group_managers.push({
         "id": group_manager.id,
         "name": group_manager.name,
@@ -167,9 +162,10 @@ const GroupManagers = ({
         "group_name": group_manager.group_name
       })
     })
-    console.log(groupManagers, aux_group_managers)
+    if (aux_group_managers.length === 0) {
+      aux_group_managers = null
+    }
     await setGroupManagers(aux_group_managers)
-    console.log(groupManagers)
   }
 
   useEffect(() => {
@@ -274,16 +270,7 @@ const GroupManagers = ({
                 id="edit_email"
                 value={editEmail}
                 onChange={(e) => handleEditEmail(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_password">Senha</label>
-              <input
-                type="password"
-                id="edit_password"
-                value={editPassword}
-                onChange={(e) => handleEditPassword(e.target.value)}
+                disabled
               />
             </EditInput>
 
@@ -292,6 +279,7 @@ const GroupManagers = ({
               <input
                 type="text"
                 id="edit_group"
+                disabled={true}
                 value={editGroup}
                 onChange={(e) => handleEditGroup(e.target.value)}
               />
@@ -338,7 +326,7 @@ const GroupManagers = ({
         <ContentBox
           title="Gerentes de Instituições"
           token={token}
-          contents={groupManagers ? groupManagers : []}
+          contents={groupManagers}
           fields={fields}
           delete_function={_deleteGroupManager}
           handleEdit={handleEdit}
@@ -406,15 +394,16 @@ const GroupManagers = ({
                     onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
                   />
                 </CheckboxInputBlock>
-                {groupManagerIdentificationCode ? <InputBlock>
-                  <label htmlFor="len_id_code">Quantidade de caracteres</label>
-                  <Input
-                    type="text"
-                    id="len_id_code"
-                    value={groupManagerLengthIdentificationCode}
-                    onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
-                  />
-                </InputBlock>
+                {groupManagerIdentificationCode ?
+                  <InputBlock>
+                    <label htmlFor="len_id_code">Quantidade de caracteres</label>
+                    <Input
+                      type="text"
+                      id="len_id_code"
+                      value={groupManagerLengthIdentificationCode}
+                      onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
+                    />
+                  </InputBlock>
                   : null}
               </Inputs>
               <SubmitButton type="submit">

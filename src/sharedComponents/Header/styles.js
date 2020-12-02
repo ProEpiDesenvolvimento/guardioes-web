@@ -9,7 +9,7 @@ export const Container = styled.div`
   right: 0%;
   top: 0%;
   bottom: 0%;
-  height: 8vh;
+  height: 70px;
   background: #5dd39e;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -27,7 +27,7 @@ export const Logo = styled.img`
 export const HeaderNav = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: max(200px, 30vw);
     margin-right: 20px;
     @media ${device.mobileL} {
@@ -50,17 +50,16 @@ export const NavTo = styled(Link)`
     };
 `;
 
-export const Logout = styled.p`
-  text-decoration: none;
+export const UserName = styled.h1`
+    text-decoration: none;
     font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 22px;
     line-height: 1.825rem;
     color: #FFFFFF;
-    margin-left: 10px;
-
     @media ${device.mobileL} {
       font-size: 15px;
     };
+    margin-right: 150px;
 `;

@@ -7,7 +7,11 @@ import {
 	SET_CONTENTS,
 	SET_SYMPTOMS,
 	SET_GROUP_MANAGERS,
-	SET_USERS
+	SET_MANAGERS,
+	SET_GROUPS,
+	SET_SYNDROMES,
+	SET_USERS,
+	SET_ADMINS
 } from 'constants/action-types';
 
 const initialState = {
@@ -22,13 +26,18 @@ const initialState = {
 		syndromes: false,
 		contents: false,
 		dashboard: false,
-		group_managers: false
+		group_managers: false,
+		groups: false
 	},
 	apps: [],
 	contents: [],
 	symptoms: [],
+	managers: [],
 	group_managers: [],
-	users: []
+	groups: [],
+	syndromes: [],
+	users: [],
+	admins: []
 };
 
 const User = (state = initialState, action) => {
@@ -73,11 +82,31 @@ const User = (state = initialState, action) => {
 				...state,
 				group_managers: action.payload
 			};
+		case SET_MANAGERS:
+			return {
+				...state,
+				managers: action.payload
+			};
+		case SET_SYNDROMES:
+			return {
+				...state,
+				syndromes: action.payload
+			};
 		case SET_USERS:
 			return {
 				...state,
 				users: action.payload
-			}
+			};
+		case SET_GROUPS:
+			return {
+				...state,
+				groups: action.payload
+			};
+		case SET_ADMINS:
+			return {
+				...state,
+				admins: action.payload
+			};
 		default:
 			return {
 				...state,
