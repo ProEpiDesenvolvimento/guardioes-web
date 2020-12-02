@@ -52,8 +52,6 @@ const Form = (props) => {
       }
     }
 
-    console.log(body)
-
     const response = await submitPreRegister(body)
     if (response.errors) {
       if (response.errors == "O email já está sendo usado.") {
