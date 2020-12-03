@@ -212,6 +212,52 @@ const Syndromes = ({
                             />
                         </EditInput>
 
+                        <EditInput className="bg-light p-2">
+                            <label htmlFor="edit_message">Mensagem</label>
+                            <div class="form-group">
+                                <h6>Título</h6>
+                                <input
+                                    type="text"
+                                    id="edit_title"
+                                    //value={editDescription}
+                                    //onChange={(e) => setEditDescription(e.target.value)}
+                                />
+                            </div>
+                            <div class="form-group">
+                                <h6>Mensagem de aviso</h6>
+                                <TextArea
+                                    type="text"
+                                    id="edit_description"
+                                    //value={editDetails}
+                                    //onChange={(e) => setEditDetails(e.target.value)}
+                                    rows="1"
+                                    cols="50"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <h6>Mensagem de feedback</h6>
+                                <TextArea
+                                    type="text"
+                                    id="edit_description"
+                                    //value={editDetails}
+                                    //onChange={(e) => setEditDetails(e.target.value)}
+                                    rows="1"
+                                    cols="50"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <h6>Mensagem de hospitalização</h6>
+                                <TextArea
+                                    type="text"
+                                    id="edit_description"
+                                    //value={editDetails}
+                                    //onChange={(e) => setEditDetails(e.target.value)}
+                                    rows="1"
+                                    cols="50"
+                                />
+                            </div>
+                        </EditInput>
+
                         <EditInput>
                             <label htmlFor="edit_symptoms">Sintomas</label>
                             <MultiSelect
