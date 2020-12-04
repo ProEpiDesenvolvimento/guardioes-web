@@ -70,6 +70,7 @@ const Apps = ({
     _getApps(token)
     setAppName("")
     setOwnerCountry("")
+    setTwitter("")
   }
 
   const _getApps = async (token) => {
@@ -113,7 +114,6 @@ const Apps = ({
   }
   
   const handleEditTwitter = (value) => {
-    // if(value[0] == '@') value = value.substring(1);
     setEditTwitter(value);
     
   }
@@ -293,7 +293,10 @@ const Apps = ({
                     type="text"
                     id="twitter"
                     value={twitter}
-                    onChange={(e) => handleTwitter(e.value)}
+                    onChange={(e) => {
+                      console.log(e.target.value)
+                      handleTwitter(e.target.value)
+                    }}
                   />
                 </InputBlock>
 
