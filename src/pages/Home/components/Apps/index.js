@@ -293,10 +293,7 @@ const Apps = ({
                     type="text"
                     id="twitter"
                     value={twitter}
-                    onChange={(e) => {
-                      console.log(e.target.value)
-                      handleTwitter(e.target.value)
-                    }}
+                    onChange={(e) => handleTwitter(e.target.value)}
                   />
                 </InputBlock>
 
