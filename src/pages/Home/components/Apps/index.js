@@ -16,6 +16,7 @@ import {
   ContainerForm,
   InputBlock,
   EditInput,
+  EditInputField,
   SubmitButton,
   Input
 } from './styles';
@@ -38,8 +39,10 @@ const Apps = ({
   const { handleSubmit } = useForm()
   const [appName, setAppName] = useState("")
   const [ownerCountry, setOwnerCountry] = useState("")
+  const [twitter, setTwitter] = useState("")
   const [editName, setEditName] = useState("");
   const [editCountry, setEditCountry] = useState("");
+  const [editTwitter, setEditTwitter] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [appShow, setAppShow] = useState({});
 
@@ -50,11 +53,16 @@ const Apps = ({
   const handleOwnerCountry = (value) => {
     setOwnerCountry(value)
   }
+  
+  const handleTwitter = (value) => {
+    setTwitter(value)
+  }
 
   const _createApp = async () => {
     const data = {
       "app_name": appName,
-      "owner_country": ownerCountry
+      "owner_country": ownerCountry,
+      "twitter": twitter
     }
     console.log(data)
     const reponse = await createApp(data, token)
@@ -80,6 +88,7 @@ const Apps = ({
   const _editApp = async () => {
     const data = {
       "app_name": editName,
+      "twitter": editTwitter
     };
     await editApp(editingApp.id, data, token);
     setModalEdit(false);
@@ -95,11 +104,18 @@ const Apps = ({
     setEditingApp(content);
     setEditName(content.app_name);
     setEditCountry(content.owner_country);
+    setEditTwitter(content.twitter);
     setModalEdit(!modalEdit);
   }
 
   const handleEditName = (value) => {
     setEditName(value);
+  }
+  
+  const handleEditTwitter = (value) => {
+    // if(value[0] == '@') value = value.substring(1);
+    setEditTwitter(value);
+    
   }
 
   useEffect(() => {
@@ -215,6 +231,16 @@ const Apps = ({
                 disabled
               />
             </EditInput>
+            
+            <EditInput>
+              <label htmlFor="edit_twitter">Twitter</label>
+              <input
+                type="text"
+                id="edit_twitter"
+                value={editTwitter}
+                onChange={(e) => handleEditTwitter(e.target.value)}
+              />
+            </EditInput>
           </Modal.Body>
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
@@ -250,15 +276,28 @@ const Apps = ({
                 />
               </InputBlock>
 
-              <InputBlock>
-                <label htmlFor="country">País</label>
-                <Select
-                  id="app_id"
-                  isSearchable={true}
-                  options={country}
-                  onChange={(e) => handleOwnerCountry(e.value)}
-                />
-              </InputBlock>
+              <EditInputField>
+                
+                <InputBlock>
+                  <label htmlFor="country">País</label>
+                  <Select
+                    id="app_id"
+                    isSearchable={true}
+                    options={country}
+                    onChange={(e) => handleOwnerCountry(e.value)}
+                  />
+                </InputBlock>
+                <InputBlock>
+                  <label htmlFor="twitter">Twitter</label>
+                  <input
+                    type="text"
+                    id="twitter"
+                    value={twitter}
+                    onChange={(e) => handleTwitter(e.value)}
+                  />
+                </InputBlock>
+
+              </EditInputField>
 
               {/* <Input type="submit" className="shadow-sm" /> */}
               <SubmitButton type="submit">
