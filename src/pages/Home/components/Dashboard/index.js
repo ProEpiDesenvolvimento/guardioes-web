@@ -15,8 +15,6 @@ function Dashboard(props) {
     setUrls(response.urls)
   }
 
-  const links = ["http://localhost:3002/embed/question/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZSI6eyJxdWVzdGlvbiI6MTB9LCJwYXJhbXMiOnt9LCJleHAiOjE2MDcxMjY1NzMsImlhdCI6MTYwNzEyNTk3Mn0.6bK1VRHV1wTOxhF6OLMSskO5Q_wsPTW3FqZvazekYeU#bordered=true&titled=true"]
-
   useEffect(() => {
     _getUrls()
     if (isEmpty(hashes)) {
