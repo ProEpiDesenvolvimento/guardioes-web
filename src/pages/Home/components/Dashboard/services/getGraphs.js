@@ -1,11 +1,10 @@
 import api from 'services/api';
+import payloads from './payloads';
 
-const getGraphs = async (data, token) => api
-  .post(`/dashboard/auth`, data, 
+const getGraphs = async () => api
+  .post(`/data_visualization/metabase_urls`, 
   {
-    headers: {
-      "Authorization": token,
-    },
+    "payloads": payloads
   }
   )
   .then(async (res) => {
