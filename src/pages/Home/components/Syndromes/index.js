@@ -46,7 +46,6 @@ const Syndromes = ({
     const [syndromeShow, setSyndromeShow] = useState({});
     const [editDescription, setEditDescription] = useState("");
     const [editDetails, setEditDetails] = useState("");
-    const [editMessageId, setEditMessageId] = useState(0);
     const [editMessageTitle, setEditMessageTitle] = useState("");
     const [editMessageWarning, setEditMessageWarning] = useState("");
     const [editMessageHospital, setEditMessageHospital] = useState("");
@@ -68,7 +67,7 @@ const Syndromes = ({
                 "description": syndromeDescription,
                 "details": syndromeDetails,
                 "symptom": symptoms,
-                "message": {
+                "message_attributes": {
                     "title": syndromeMessageTitle,
                     "warning_message": syndromeMessageWarning,
                     "go_to_hospital_message": syndromeMessageHospital
@@ -76,12 +75,14 @@ const Syndromes = ({
                 "app_id": user.app_id
             }
         }
-        console.log(data)
         const response = await createSyndrome(data, token);
         if (!response.errors) {
             _getSyndromes(token);
             setSyndromeDescription("");
             setSyndromeDetails("");
+            setSyndromeMessageTitle("");
+            setSyndromeMessageWarning("");
+            setSyndromeMessageHospital("");
             setSelected([]);
         }
     }
@@ -105,7 +106,7 @@ const Syndromes = ({
                 label: symptom.description, 
                 value: symptom.id,
                 percentage: 0,
-                app_id: symptom.app_id
+                app_id: symptom.app.id
             })
         });
         setOptions(options);
@@ -130,15 +131,13 @@ const Syndromes = ({
                 "description": editDescription,
                 "details": editDetails,
                 "symptom": symptoms,
-                "message": {
-                    //"id": editMessageId,
+                "message_attributes": {
                     "title": editMessageTitle,
                     "warning_message": editMessageWarning,
                     "go_to_hospital_message": editMessageHospital
                 }
             }
         };
-        console.log(data)
         await editSyndrome(editingSyndrome.id, data, token);
         setEditModal(false);
         _getSyndromes(token);
@@ -176,7 +175,6 @@ const Syndromes = ({
         if (!content.message) {
             content.message = []
         }
-        setEditMessageId(content.message.id);
         setEditMessageTitle(content.message.title);
         setEditMessageWarning(content.message.warning_message);
         setEditMessageHospital(content.message.go_to_hospital_message);
