@@ -47,7 +47,7 @@ function Dashboard(props) {
           <a className={`nav-link ${isCurrentNav('dados') ? 'active' : ''}`} href="#dados">Tabelas de dados</a>
         </li>
         <li className="nav-item">
-          <a className={`nav-link ${isCurrentNav('metabase') ? 'active' : ''}`} href="#metabase">Metabase</a>
+          <a className={`nav-link ${isCurrentNav('dashboard') ? 'active' : ''}`} href="#dashboard">Dashboard</a>
         </li>
       </ul>
 
@@ -81,7 +81,7 @@ function Dashboard(props) {
         />
       </div>
 
-      <div className={`dash visualizations ${isCurrentNav('metabase') ? '' : 'd-none'}`}>
+      <div className={`dash visualizations ${isCurrentNav('dashboard') ? '' : 'd-none'}`}>
         <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
           {urls.length && urls.map((url) => {
             return (
