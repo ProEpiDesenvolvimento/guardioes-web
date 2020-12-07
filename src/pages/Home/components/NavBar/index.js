@@ -67,7 +67,12 @@ const NavBar = ({
     let categories = allCategories.slice(0, 1);
 
     if (user.type === "admin") {
-      categories = categories.concat(allCategories.slice(1, -1));
+      if (user.is_god === true) {
+        categories = categories.concat(allCategories.slice(1, -1));
+      }
+      else {
+        categories = categories.concat(allCategories.slice(3, -1));
+      }
     } else if (user.type === "manager") {
       categories = categories.concat(allCategories.slice(5, -1));
     } else if (user.type === "group_manager") {
