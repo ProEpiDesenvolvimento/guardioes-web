@@ -159,7 +159,8 @@ const GroupManagers = ({
         "id": group_manager.id,
         "name": group_manager.name,
         "email": group_manager.email,
-        "group_name": group_manager.group_name
+        "group_name": group_manager.group_name,
+        "twitter": group_manager.twitter
       })
     })
     if (aux_group_managers.length === 0) {
@@ -232,6 +233,16 @@ const GroupManagers = ({
               className="text-dark"
               type="text"
               value={groupManagerShow.group_name}
+              disabled
+            />
+          </EditInput>
+          
+          <EditInput>
+            <label>Twitter</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.twitter}
               disabled
             />
           </EditInput>
