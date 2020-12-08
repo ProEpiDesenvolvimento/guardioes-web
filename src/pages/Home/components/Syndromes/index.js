@@ -36,6 +36,9 @@ const Syndromes = ({
     const { handleSubmit } = useForm();
     const [syndromeDescription, setSyndromeDescription] = useState("");
     const [syndromeDetails, setSyndromeDetails] = useState("");
+    const [syndromeMessageTitle, setSyndromeMessageTitle] = useState("");
+    const [syndromeMessageWarning, setSyndromeMessageWarning] = useState("");
+    const [syndromeMessageHospital, setSyndromeMessageHospital] = useState("");
     const [createModal, setCreateModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [options, setOptions] = useState([]);
@@ -43,6 +46,9 @@ const Syndromes = ({
     const [syndromeShow, setSyndromeShow] = useState({});
     const [editDescription, setEditDescription] = useState("");
     const [editDetails, setEditDetails] = useState("");
+    const [editMessageTitle, setEditMessageTitle] = useState("");
+    const [editMessageWarning, setEditMessageWarning] = useState("");
+    const [editMessageHospital, setEditMessageHospital] = useState("");
     const [editSymptoms, setEditSymptoms] = useState([]);
     const [editModal, setEditModal] = useState(false);
     const [editingSyndrome, setEditingSyndrome] = useState({});
@@ -61,6 +67,11 @@ const Syndromes = ({
                 "description": syndromeDescription,
                 "details": syndromeDetails,
                 "symptom": symptoms,
+                "message_attributes": {
+                    "title": syndromeMessageTitle,
+                    "warning_message": syndromeMessageWarning,
+                    "go_to_hospital_message": syndromeMessageHospital
+                },
                 "app_id": user.app_id
             }
         }
@@ -69,6 +80,9 @@ const Syndromes = ({
             _getSyndromes(token);
             setSyndromeDescription("");
             setSyndromeDetails("");
+            setSyndromeMessageTitle("");
+            setSyndromeMessageWarning("");
+            setSyndromeMessageHospital("");
             setSelected([]);
         }
     }
@@ -92,7 +106,7 @@ const Syndromes = ({
                 label: symptom.description, 
                 value: symptom.id,
                 percentage: 0,
-                app_id: symptom.app_id
+                app_id: symptom.app.id
             })
         });
         setOptions(options);
@@ -116,10 +130,14 @@ const Syndromes = ({
             "syndrome": {
                 "description": editDescription,
                 "details": editDetails,
-                "symptom": symptoms
+                "symptom": symptoms,
+                "message_attributes": {
+                    "title": editMessageTitle,
+                    "warning_message": editMessageWarning,
+                    "go_to_hospital_message": editMessageHospital
+                }
             }
         };
-        console.log(data)
         await editSyndrome(editingSyndrome.id, data, token);
         setEditModal(false);
         _getSyndromes(token);
@@ -153,6 +171,13 @@ const Syndromes = ({
                 app_id: symptom.app_id
             })
         });
+
+        if (!content.message) {
+            content.message = []
+        }
+        setEditMessageTitle(content.message.title);
+        setEditMessageWarning(content.message.warning_message);
+        setEditMessageHospital(content.message.go_to_hospital_message);
 
         setEditingSyndrome(content);
         setEditDescription(content.description);
@@ -208,8 +233,39 @@ const Syndromes = ({
                                 value={editDetails}
                                 onChange={(e) => setEditDetails(e.target.value)}
                                 rows="1"
-                                cols="50"
                             />
+                        </EditInput>
+
+                        <EditInput className="bg-light p-2">
+                            <label>Mensagem</label>
+
+                            <div className="form-group">
+                                <h6>Título</h6>
+                                <input
+                                    type="text"
+                                    className="w-100"
+                                    value={editMessageTitle}
+                                    onChange={(e) => setEditMessageTitle(e.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <h6>Mensagem de aviso</h6>
+                                <TextArea
+                                    type="text"
+                                    value={editMessageWarning}
+                                    onChange={(e) => setEditMessageWarning(e.target.value)}
+                                    rows="1"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <h6>Mensagem de hospitalização</h6>
+                                <TextArea
+                                    type="text"
+                                    value={editMessageHospital}
+                                    onChange={(e) => setEditMessageHospital(e.target.value)}
+                                    rows="1"
+                                />
+                            </div>
                         </EditInput>
 
                         <EditInput>
@@ -327,9 +383,44 @@ const Syndromes = ({
                             value={syndromeShow.details}
                             disabled
                             rows="1"
-                            cols="50"
                         />
                     </EditInput>
+
+                    {syndromeShow.message ?
+                        <EditInput className="bg-light p-2">
+                            <label>Mensagem</label>
+
+                            <div className="form-group">
+                                <h6>Título</h6>
+                                <input
+                                    type="text"
+                                    className="text-dark w-100"
+                                    value={syndromeShow.message.title}
+                                    disabled
+                                />
+                            </div>
+                            <div className="form-group">
+                                <h6>Mensagem de aviso</h6>
+                                <TextArea
+                                    type="text"
+                                    className="text-dark"
+                                    value={syndromeShow.message.warning_message}
+                                    disabled
+                                    rows="1"
+                                />
+                            </div>
+                            <div className="form-group">
+                                <h6>Mensagem de hospitalização</h6>
+                                <TextArea
+                                    type="text"
+                                    className="text-dark"
+                                    value={syndromeShow.message.go_to_hospital_message}
+                                    disabled
+                                    rows="1"
+                                />
+                            </div>
+                        </EditInput>
+                    : null}
 
                     {syndromeShow.symptoms ? syndromeShow.symptoms.map((symptom) => (
                         <EditInput className="bg-light p-2" key={symptom.id}>
@@ -388,8 +479,39 @@ const Syndromes = ({
                                     value={syndromeDetails}
                                     onChange={(e) => setSyndromeDetails(e.target.value)}
                                     rows="1"
-                                    cols="50"
                                 />
+                            </InputBlock>
+
+                            <InputBlock>
+                                <label>Mensagem</label>
+
+                                <div className="form-group">
+                                    <h6>Título</h6>
+                                    <input
+                                        type="text"
+                                        className="w-100"
+                                        value={syndromeMessageTitle}
+                                        onChange={(e) => setSyndromeMessageTitle(e.target.value)}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <h6>Mensagem de aviso</h6>
+                                    <TextArea
+                                        type="text"
+                                        value={syndromeMessageWarning}
+                                        onChange={(e) => setSyndromeMessageWarning(e.target.value)}
+                                        rows="1"
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <h6>Mensagem de hospitalização</h6>
+                                    <TextArea
+                                        type="text"
+                                        value={syndromeMessageHospital}
+                                        onChange={(e) => setSyndromeMessageHospital(e.target.value)}
+                                        rows="1"
+                                    />
+                                </div>
                             </InputBlock>
 
                             <ButtonBlock>
