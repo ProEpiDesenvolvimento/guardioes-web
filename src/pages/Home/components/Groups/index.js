@@ -51,13 +51,16 @@ const Groups = ({
   const [modalEdit, setModalEdit] = useState(false);
   const [editingGroup, setEditingGroup] = useState({});
   const { handleSubmit } = useForm()
+
   const [modalShow, setModalShow] = useState(false);
+  const [modalAddSubGroup, setModalAddSubGroup] = useState(false);
+  
   const [groupShow, setGroupShow] = useState({});
+  const [addSubGroupShow, setAddSubGroupShow] = useState({});
 
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [cityOnly, setCityOnly] = useState({});
-  const [schools, setSchools] = useState([]);
 
   const [children, setChildren] = useState('');
   const [groupLabel, setGroupLabel] = useState('');
@@ -181,16 +184,14 @@ const Groups = ({
     setModalShow(!modalShow);
   }
 
+  const addSubGroup = (content) => {
+    setAddSubGroupShow(content)
+    setModalAddSubGroup(!modalAddSubGroup)
+  }
+
   const handleEdit = (content) => {
     setEditingGroup(content);
     setModalEdit(!modalEdit);
-  }
-
-  const getGroupName = async (parent_id) => {
-    const response = await getGroup(parent_id, token);
-
-    const parent = await getGroup(response.group.parent.id, token)
-    setChildren(parent.group.children_label)
   }
 
   const handleNavigate = async (group, goback=false) => {
@@ -208,12 +209,11 @@ const Groups = ({
       await getGroupLabel(group.id)
       aux_groups = aux_groups.map((group_map) => {
         group_map.parentName = group.description
-        group_map.children_label = group_map.children_label
+        //group_map.label = group.parent.children_label
         return group_map
       })
       setGroups(aux_groups)
 
-      // VERIFICAR SE É MUNICIPIO ANTES DE SETAR
       getCity(aux_groups[0].id)
       setGoBack(false)
     }
@@ -267,6 +267,7 @@ const Groups = ({
 
   return (
     <>
+      {/* ------- VISUALIZAR MODAL ------- */}  
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -276,8 +277,6 @@ const Groups = ({
             Informações da Instituição
           </Modal.Title>
         </Modal.Header>
-        {console.log(groupShow)}
-        
         <Modal.Body>
           <EditInput>
             <label>Nome</label>
@@ -294,7 +293,7 @@ const Groups = ({
             <input
               className="text-dark"
               type="text"
-              value={groupShow.type}
+              value={groupLabel}
               disabled
             />
           </EditInput>
@@ -335,53 +334,6 @@ const Groups = ({
             </EditInput>
           : null }  
 
-          {groupShow.address ?
-            <EditInput>
-              <label htmlFor="edit_address">Endereço</label>
-              <input
-                type="text"
-                id="edit_address"
-                value={groupShow.address}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.cep ?
-            <EditInput>
-              <label htmlFor="edit_cep">CEP</label>
-              <input
-                type="text"
-                id="edit_cep"
-                value={groupShow.cep}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.phone ?
-            <EditInput>
-              <label htmlFor="edit_phone">Telefone</label>
-              <input
-                type="text"
-                id="edit_phone"
-                value={groupShow.phone}
-                disabled
-              />
-            </EditInput>
-          : null }
-
-          {groupShow.email ?
-            <EditInput>
-              <label htmlFor="edit_name">Email</label>
-              <input
-                type="text"
-                id="edit_email"
-                value={groupShow.email}
-                disabled
-              />
-            </EditInput>
-          : null }
         </Modal.Body>
 
         <Modal.Footer>
@@ -389,6 +341,7 @@ const Groups = ({
         </Modal.Footer>
       </Modal>
 
+      {/* ------- EDITAR MODAL ------- */}  
       <Modal
         show={modalEdit}
         onHide={() => setModalEdit(false)}
@@ -486,7 +439,76 @@ const Groups = ({
           </Modal.Footer>
         </form>
       </Modal>
+      
+      {/* ------- ADICIOANR SUB GRUPO MODAL ------- */}  
+      <Modal
+        show={modalAddSubGroup}
+        onHide={() => setModalAddSubGroup(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Adicionar Sub {groupLabel}
+          </Modal.Title>
+        </Modal.Header>
+        <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
+          <Modal.Body>
+            {/* ----- NOME ----- */}
+            <EditInput>
+              <label htmlFor="name">Nome</label>
+              <input
+                type="text"
+                id="name"
+                value=""
+                onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
+              />
+            </EditInput>
 
+            {/* ----- TIPO ----- */}
+            <EditInput>
+              <label htmlFor="name">Tipo</label>
+              <Input
+                type="text"
+                id="tipo"
+                value=""
+                onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
+              />
+            </EditInput>
+
+            {/* ----- MUNICIPIO ----- */}
+            {groups.length !== 0 && cityOnly.hasOwnProperty('name') ? 
+            <EditInput>
+              <label htmlFor="name">Município</label>
+              <SelectInput
+                type="select"
+                id="name"
+                disabled
+              >
+                <option>{cityOnly.name}</option>                  
+              </SelectInput>
+            </EditInput>
+            : 
+              null
+            }
+
+            {/* ----- Pertence a(o) ----- */}
+            <EditInput>
+              <label>Pertence a(o)</label>
+              <Input
+                className="text-dark"
+                type="text"
+                value={addSubGroupShow.description}
+                disabled
+              />
+            </EditInput>
+            
+          </Modal.Body>
+          <Modal.Footer>
+            <SubmitButton type="submit">Adicionar</SubmitButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      {/* ------- TABELA E FORMULARIO ------- */}
       <Container>
         <ContainerContent>
           <ContentBoxHeader>
@@ -515,7 +537,6 @@ const Groups = ({
               </thead>
 
               <tbody>
-                {console.log('GROUPS ----> ', groups[0])}
                 {groups.map(group => (
                   <tr key={group.id}>
                     {fields.map(field => (
@@ -532,7 +553,13 @@ const Groups = ({
                         Ver filhos
                       </button>
                     </td>
-                    : null}
+                    : 
+                    <td>
+                      <button className="btn btn-info" onClick={() => addSubGroup(group)}>
+                        Adicionar Subgrupo
+                      </button>
+                    </td>
+                    }
                       <td>
                         <Link to="/panel">
                           <ContentBoxTableIcon
@@ -562,16 +589,17 @@ const Groups = ({
           <ContainerHeader>
             <ContainerTitle>ADICIONAR {groupLabel}</ContainerTitle>
           </ContainerHeader>
+
+          {/* ------- FORMULARIO ------- */}  
           <ContainerForm>
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
-              {/* {groups.length !== 0 && groups[0].hasOwnProperty('parent') ? getGroupName(groups[0].parent.id) : null} */}
               {groups.length !== 0 && user.group_name === groups[0].description ? 
               <>
                 <InputBlock>
                   <label htmlFor="name">Nome</label>
                   <Input
                     type="text"
-                    id="name"
+                    id="nameFix"
                     disabled
                     value={groups[0].description}
                   /> 
@@ -601,17 +629,18 @@ const Groups = ({
               </>
               :
               <>
+                {/* ------- NOME ------- */}  
                 <InputBlock>
                   <label htmlFor="name">Nome</label>
                   <Input
                     type="text"
-                    id="name"
+                    id="nameEdit"
                     value=""
                     onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
                   />
                 </InputBlock>
 
-                {/* {groups.length !== 0 ? getCity(groups[0].id) : null} */}
+                {/* ------- MUNICIPIO ------- */}  
                 {console.log(cityOnly)}
                 {groups.length !== 0 && cityOnly.hasOwnProperty('name') ? 
                   <InputBlock>
@@ -630,7 +659,7 @@ const Groups = ({
                 
                 </>
               }
-
+              {/* ------- ESTADO ------- */}  
               <InputBlock>
                   <label htmlFor="name">Estado</label>
                   <SelectInput
@@ -640,7 +669,6 @@ const Groups = ({
                     disabled
                   >
                     <option>{states.description}</option>
-                    {/* {setCreatingState(states.description)} */}
                   </SelectInput>
                 </InputBlock>
 
@@ -654,29 +682,23 @@ const Groups = ({
                 />
               </InputBlock>
 
-              {}
+              {/* ------- TIPO ------- */}  
               <InputBlock>
-                <label htmlFor="name">Instituição</label>
-                <SelectInput
-                  type="select"
-                  id="name"
-                  onChange={(e) => {
-                    const id = parseInt(e.target.value, 10)
-                    if (creating === "course")
-                      setCreatingGroup({...creatingGroup, parent_id: id})
-                  }}
-                >
-                  <option>Escolha</option>
-                  {schools.filter((g) => g.parent.name === creatingCountie).map((g) => {
-                    return <option key={g.id} value={g.id}>{g.description}</option>
-                  })}
-                </SelectInput>
+                <label htmlFor="name">Tipo</label>
+                <Input
+                  type="text"
+                  id="tipo"
+                  value={groupLabel}
+                  disabled
+                  /* onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})} */
+                />
               </InputBlock>
 
               <SubmitButton type="submit">
-                Criar Subgrupo de Instituição
+                Adicionar {groupLabel}
               </SubmitButton>
             </Form>
+
           </ContainerForm>
         </AddGroupContainer>
       </Container>
