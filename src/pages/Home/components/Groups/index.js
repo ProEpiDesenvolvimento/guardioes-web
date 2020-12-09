@@ -8,9 +8,11 @@ import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import getAllGroups from './services/getAllGroups'
+import getGroup from './services/getGroup'
 import createGroup from './services/createGroup'
 import deleteGroup from './services/deleteGroup'
 import getChildrenGroups from './services/getChildrenGroups'
+import buildGroupPath from './services/buildGroupPath'
 
 import editIcon from '../assets/edit-solid.svg';
 import deleteIcon from '../assets/trash-solid.svg';
@@ -53,10 +55,11 @@ const Groups = ({
   const [groupShow, setGroupShow] = useState({});
 
   const [states, setStates] = useState([]);
-  const [counties, setCounties] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [cityOnly, setCityOnly] = useState({});
   const [schools, setSchools] = useState([]);
 
-
+  const [children, setChildren] = useState('');
   const [groupLabel, setGroupLabel] = useState('');
   const [prevGroup, setPrevGroup] = useState([]);
   const [count, setCount] = useState(0);
@@ -74,7 +77,7 @@ const Groups = ({
     phone: "",
     children_label: null
   })
-  const [creatingState, setCreatingState] = useState("");
+
   const [creatingCountie, setCreatingCountie] = useState("");
 
   useEffect(() => {
@@ -126,7 +129,8 @@ const Groups = ({
     })
 
     await getGroupLabel(aux_groups[0].parent.id)
-
+    
+    getBuildPath(aux_groups[0].id, 'ESTADO')
     setGroups(aux_groups)
   }
 
@@ -134,6 +138,23 @@ const Groups = ({
     const response = await getChildrenGroups(label_group_id)
 
     setGroupLabel(response.children[0].label)
+  }
+
+  const getBuildPath = async (group_id, type) => {
+    let state_id;
+
+    const response = await buildGroupPath(group_id);
+    response.groups.map((group_map) => {
+      if (group_map.label === type) {
+        state_id = group_map.id
+        setStates(group_map)
+      } 
+    })
+
+    const city = await getChildrenGroups(state_id)
+    setCities(city.children)
+
+    return;
   }
 
   const handleDelete = async (id, token) => {
@@ -165,6 +186,13 @@ const Groups = ({
     setModalEdit(!modalEdit);
   }
 
+  const getGroupName = async (parent_id) => {
+    const response = await getGroup(parent_id, token);
+
+    const parent = await getGroup(response.group.parent.id, token)
+    setChildren(parent.group.children_label)
+  }
+
   const handleNavigate = async (group, goback=false) => {
     if (goback === false) {
       const response = await getChildrenGroups(group.id)
@@ -180,10 +208,13 @@ const Groups = ({
       await getGroupLabel(group.id)
       aux_groups = aux_groups.map((group_map) => {
         group_map.parentName = group.description
-        group_map.children_label = group_map.label
+        group_map.children_label = group_map.children_label
         return group_map
       })
       setGroups(aux_groups)
+
+      // VERIFICAR SE É MUNICIPIO ANTES DE SETAR
+      getCity(aux_groups[0].id)
       setGoBack(false)
     }
     
@@ -194,6 +225,7 @@ const Groups = ({
         getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
 
       setGroups(prevGroup[count - 1])
+      getCity(aux_label[0].id)
       setCount(count - 1)
       if(count <= 1){
         setPrevGroup([])
@@ -202,6 +234,20 @@ const Groups = ({
     } else {
       setGoBack(true)
     }
+  }
+
+  const getCity = async (id) => {
+    if(typeof groups !== 'undefined' && groups.length !== 0){
+      if (groups[0].parentName === user.group_name){
+        return
+      } else {
+        const response = await getGroup(id, token)
+        const municipio = await getGroup(response.group.parent.id)
+        setCityOnly(municipio.group.parent)
+      }
+    }
+
+    return
   }
 
   useEffect(() => {
@@ -216,7 +262,6 @@ const Groups = ({
   const fields = [
     { key: "id", value: "ID" },
     { key: "description", value: "Nome" },
-    
     { key: "parentName", value: "Pertence a(o)" }
   ];
 
@@ -231,6 +276,7 @@ const Groups = ({
             Informações da Instituição
           </Modal.Title>
         </Modal.Header>
+        {console.log(groupShow)}
         
         <Modal.Body>
           <EditInput>
@@ -469,6 +515,7 @@ const Groups = ({
               </thead>
 
               <tbody>
+                {console.log('GROUPS ----> ', groups[0])}
                 {groups.map(group => (
                   <tr key={group.id}>
                     {fields.map(field => (
@@ -510,41 +557,92 @@ const Groups = ({
             </Table>
           </ContentBoxTable>
         </ContainerContent>
-        
-        {/* {user.type === "group_manager" ?
+      
         <AddGroupContainer className="shadow-sm">
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
-              <SubmitButton
-                style={{alignSelf: 'flex-start'}}
-                onClick={() => {
-                  clearData()
-                  setCreating("group")
-                }}
-              >Add Instituição</SubmitButton>
-              <SubmitButton
-                style={{justifySelf: 'flex-end'}}
-                onClick={() => {
-                  clearData()
-                  setCreating("course")
-                }}
-              >Add Subgrupo de Instituição</SubmitButton>  
-            </div>
           <ContainerHeader>
-            <ContainerTitle>{creating === "group" ? "Adicionar Instituição" : "Adicionar Subgrupo de Instituição"}</ContainerTitle>
+            <ContainerTitle>ADICIONAR {groupLabel}</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
-              {creating === "course" ?
+              {/* {groups.length !== 0 && groups[0].hasOwnProperty('parent') ? getGroupName(groups[0].parent.id) : null} */}
+              {groups.length !== 0 && user.group_name === groups[0].description ? 
+              <>
+                <InputBlock>
+                  <label htmlFor="name">Nome</label>
+                  <Input
+                    type="text"
+                    id="name"
+                    disabled
+                    value={groups[0].description}
+                  /> 
+                </InputBlock>
+
+                {typeof cities !== 'undefined' && cities.length !== 0 ? 
+                  <InputBlock>
+                    <label htmlFor="name">Município</label>
+                    <SelectInput
+                      type="select"
+                      id="name"
+                      onChange={(e) => {
+                        const id = parseInt(e.target.value)
+                        setCreatingGroup({...creatingGroup, parent_id: id, description: groups[0].description})
+                        console.log('### -> ', creatingGroup)
+                      }}
+                    >
+                      <option>Escolha</option>
+                      {cities.map((g) => {
+                        return <option key={g.id} value={g.id}>{g.description}</option>
+                      })}
+                    </SelectInput>
+                  </InputBlock>
+                  : 
+                    null
+                  }
+              </>
+              :
+              <>
+                <InputBlock>
+                  <label htmlFor="name">Nome</label>
+                  <Input
+                    type="text"
+                    id="name"
+                    value=""
+                    onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
+                  />
+                </InputBlock>
+
+                {/* {groups.length !== 0 ? getCity(groups[0].id) : null} */}
+                {console.log(cityOnly)}
+                {groups.length !== 0 && cityOnly.hasOwnProperty('name') ? 
+                  <InputBlock>
+                    <label htmlFor="name">Município</label>
+                    <SelectInput
+                      type="select"
+                      id="name"
+                      disabled
+                    >
+                      <option>{cityOnly.name}</option>                  
+                    </SelectInput>
+                  </InputBlock>
+                  : 
+                    null
+                  }
+                
+                </>
+              }
+
               <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <Input
-                  type="text"
-                  id="name"
-                  value={creatingGroup.description}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})}
-                />
-              </InputBlock>
-              : null}
+                  <label htmlFor="name">Estado</label>
+                  <SelectInput
+                    type="select"
+                    id="name"
+                    value={states.description}
+                    disabled
+                  >
+                    <option>{states.description}</option>
+                    {/* {setCreatingState(states.description)} */}
+                  </SelectInput>
+                </InputBlock>
 
               <InputBlock>
                 <label htmlFor="name">Código</label>
@@ -556,82 +654,7 @@ const Groups = ({
                 />
               </InputBlock>
 
-              <InputBlock>
-                <label htmlFor="name">Endereço</label>
-                <Input
-                  type="text"
-                  id="address"
-                  value={creatingGroup.address}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, address: e.target.value})}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="name">CEP</label>
-                <Input
-                  type="text"
-                  id="cep"
-                  value={creatingGroup.cep}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, cep: e.target.value})}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="name">Telefone</label>
-                <Input
-                  type="text"
-                  id="phone"
-                  value={creatingGroup.phone}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, phone: e.target.value})}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="name">Email</label>
-                <Input
-                  type="text"
-                  id="email"
-                  value={creatingGroup.email}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, email: e.target.value})}
-                />
-              </InputBlock>
-              <InputBlock>
-                <label htmlFor="name">Estado</label>
-                <SelectInput
-                  type="select"
-                  id="name"
-                  onChange={(e) => setCreatingState(e.target.value)}
-                >
-                  <option>Escolha</option>
-                  {states.filter((g) => g.type === "Estado").map((g) => {
-                    return <option value={g.description}>{g.description}</option>
-                  })}
-                </SelectInput>
-              </InputBlock>
-
-              {creatingState.length !== 0 ?
-              <InputBlock>
-                <label htmlFor="name">Município</label>
-                <SelectInput
-                  type="select"
-                  id="name"
-                  onChange={(e) => {
-                    const id = parseInt(e.target.value, 10)
-                    if (creating === "group")
-                      setCreatingGroup({...creatingGroup, parent_id: id})
-                    const aux_description = counties.find(countie => countie.id === id).description
-                    setCreatingCountie(aux_description)
-                  }}
-                >
-                  <option>Escolha</option>
-                  {counties.filter((g) => g.parent.name === creatingState).map((g) => {
-                    return <option key={g.id} value={g.id}>{g.description}</option>
-                  })}
-                </SelectInput>
-              </InputBlock>
-              : null}
-
-              {creating === "course" && creatingCountie.length !== 0?
+              {}
               <InputBlock>
                 <label htmlFor="name">Instituição</label>
                 <SelectInput
@@ -649,15 +672,13 @@ const Groups = ({
                   })}
                 </SelectInput>
               </InputBlock>
-              : null}
 
               <SubmitButton type="submit">
-                {creating === "group" ? "Criar Instituição" : "Criar Subgrupo de Instituição"}
+                Criar Subgrupo de Instituição
               </SubmitButton>
             </Form>
           </ContainerForm>
         </AddGroupContainer>
-        : null} */}
       </Container>
     </>
   );
