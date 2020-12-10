@@ -439,7 +439,6 @@ const Groups = ({
           </ContentBoxHeader>
             <ContentBoxSubTitle>{groupLabel}</ContentBoxSubTitle>
           <ContentBoxTable>
-           
               <Table responsive>
               <thead>
               {goBack ? 
@@ -514,6 +513,7 @@ const Groups = ({
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
               {groups.length !== 0 && user.group_name === groups[0].description ? 
               <>
+                {/* ------- NOME ------- */} 
                 <InputBlock>
                   <label htmlFor="name">Nome</label>
                   <Input
@@ -523,7 +523,8 @@ const Groups = ({
                     value={groups[0].description}
                   /> 
                 </InputBlock>
-
+                
+                {/* ------- MUNICIPIOS ------- */} 
                 {typeof cities !== 'undefined' && cities.length !== 0 ? 
                   <InputBlock>
                     <label htmlFor="name">Município</label>
@@ -541,9 +542,10 @@ const Groups = ({
                       })}
                     </SelectInput>
                   </InputBlock>
-                  : 
-                    null
-                  }
+                : 
+                  null
+                }
+
               </>
               :
               <>
@@ -612,16 +614,6 @@ const Groups = ({
                   value={groupLabel}
                   disabled
                   /* onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})} */
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="name">Nome do SubGrupo</label>
-                <Input
-                  type="text"
-                  id="tipo"
-                  value={creatingGroup.children_label}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, children_label: e.target.value})}
                 />
               </InputBlock>
 
