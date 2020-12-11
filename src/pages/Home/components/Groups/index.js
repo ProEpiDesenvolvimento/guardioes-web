@@ -49,7 +49,6 @@ const Groups = ({
   setToken
 }) => {
   const [modalEdit, setModalEdit] = useState(false);
-  const [editingGroup, setEditingGroup] = useState({});
   const { handleSubmit } = useForm();
 
   const [groupID, setGroupId] = useState(0);
@@ -78,6 +77,8 @@ const Groups = ({
     parent_id: 0,
   })
 
+  const [editingGroup, setEditingGroup] = useState({});
+
   useEffect(() => {
     if (creating === "group") {
       let desc = user.group_manager.group_name
@@ -92,6 +93,7 @@ const Groups = ({
     if (!response.errors)
       clearData()
     fetchData(token)
+    setNoGroup(false)
   }
 
   const clearData = () => {
@@ -103,6 +105,7 @@ const Groups = ({
     })
     setEditingGroup({})
     setGroupShow({})
+    setEditChildrenLabel('')
     setCreating("course")
   }
 
@@ -203,13 +206,19 @@ const Groups = ({
     }
     
     if (goback === true) {
+      setNoGroup(false)
       let aux_label = prevGroup[count - 1]
+      setGroups(aux_label)
 
       aux_label[0].hasOwnProperty('parent') ? 
         getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
+        
+      if (groups.length === 0) {
+        getCity(aux_label[0])
+      } else {
+        getCity(group)
+      }
 
-      setGroups(prevGroup[count - 1])
-      getCity(group)
       setCount(count - 1)
       if(count <= 1){
         setPrevGroup([])
@@ -221,16 +230,20 @@ const Groups = ({
   }
 
   const getCity = async (group) => {
+    if(groups.length === 0) {
+      return
+    } else {
       if (groups[0].parentName === user.group_name){
         return
       } else {
         if(group.hasOwnProperty('parent')) {
           setCityOnly(group.parent)
+          return
         } else { 
           return
         }
       }
-    return
+    }
   }
 
   useEffect(() => {
@@ -473,6 +486,15 @@ const Groups = ({
             :
               <Table responsive>
                 <thead>
+                  {goBack ? 
+                  <tr>
+                    <td>
+                      <button style={{width: '10%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
+                        Voltar
+                      </button>
+                    </td>
+                  </tr>
+                  : null }
                   <tr>
                     <th>{groupLabel} vazio</th>
                   </tr>
@@ -545,7 +567,7 @@ const Groups = ({
                 </InputBlock>
 
                 {/* ------- MUNICIPIO ------- */}  
-                {groups.length !== 0 && cityOnly.hasOwnProperty('name') ? 
+                {cityOnly.hasOwnProperty('name') ? 
                   <InputBlock>
                     <label htmlFor="name">Município</label>
                     <SelectInput
