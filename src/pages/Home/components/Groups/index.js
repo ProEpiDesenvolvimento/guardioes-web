@@ -53,6 +53,7 @@ const Groups = ({
   const { handleSubmit } = useForm();
 
   const [groupID, setGroupId] = useState(0);
+  const [noGroup, setNoGroup] = useState(false);
 
   const [modalShow, setModalShow] = useState(false);
   const [groupShow, setGroupShow] = useState({});
@@ -68,12 +69,8 @@ const Groups = ({
   const [goBack, setGoBack] = useState(false);
 
   const [creating, setCreating] = useState("course");
-  const [modalCreateGroup, setModalCreateGroup] = useState({
-    description: "",
-    code: "",
-    children_label: null,
-    parent_id: 0,
-  })
+  const [editChildrenLabel, setEditChildrenLabel] = useState('')
+
   const [creatingGroup, setCreatingGroup] = useState({
     description: "",
     code: "",
@@ -163,18 +160,10 @@ const Groups = ({
     const data = {
       description: editingGroup.description,
       code: editingGroup.code,
-      children_label: modalCreateGroup.parent
-    }
-
-    if (data.children_label && modalCreateGroup.description === null){
-      return alert('Você precisa criar um SubGrupo')
+      children_label: editChildrenLabel
     }
 
     await editGroup(editingGroup.id, data, token);
-
-    if(modalCreateGroup.description){
-      await createGroup(modalCreateGroup, token)
-    }
 
     setModalEdit(false);
     fetchData(token);
@@ -193,25 +182,23 @@ const Groups = ({
   const handleNavigate = async (group, goback=false) => {
     setGroupId(group.id)
     if (goback === false) {
+      setGroupLabel(group.children_label)
       const response = await getChildrenGroups(group.id)
+      let aux_groups = response.children
 
-      if (response.children.length === 0){
-        return alert("O grupo não possui filhos")
+      if (response.children.length !== 0){
+        aux_groups = aux_groups.map((group_map) => {
+          group_map.parentName = group.description
+          return group_map
+        })
+      } else {
+        setNoGroup(true)
       }
 
       setCount(count + 1)
       setPrevGroup([...prevGroup, groups])
-      let aux_groups = response.children
-      
-      await getGroupLabel(group.id)
-      aux_groups = aux_groups.map((group_map) => {
-        group_map.parentName = group.description
-        //group_map.label = group.parent.children_label
-        return group_map
-      })
+      getCity(group)
       setGroups(aux_groups)
-
-      getCity(aux_groups[0].id)
       setGoBack(false)
     }
     
@@ -222,7 +209,7 @@ const Groups = ({
         getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
 
       setGroups(prevGroup[count - 1])
-      getCity(aux_label[0].id)
+      getCity(group)
       setCount(count - 1)
       if(count <= 1){
         setPrevGroup([])
@@ -233,17 +220,16 @@ const Groups = ({
     }
   }
 
-  const getCity = async (id) => {
-    if(typeof groups !== 'undefined' && groups.length !== 0){
+  const getCity = async (group) => {
       if (groups[0].parentName === user.group_name){
         return
       } else {
-        const response = await getGroup(id, token)
-        const municipio = await getGroup(response.group.parent.id)
-        setCityOnly(municipio.group.parent)
+        if(group.hasOwnProperty('parent')) {
+          setCityOnly(group.parent)
+        } else { 
+          return
+        }
       }
-    }
-
     return
   }
 
@@ -368,46 +354,28 @@ const Groups = ({
                 />
               }
             </EditInput>
-            {console.log('EDIT ', editingGroup)}
             {editingGroup.children_label ? 
               <EditInput>
-              <label htmlFor="edit_code">Nome do SubGrupo</label>
-              <input
-                type="text"
-                id="edit_subgrupo"
-                value={editingGroup.children_label}
-                disabled
-              />
-            </EditInput>
+                <label htmlFor="edit_code">Nome do SubGrupo</label>
+                <input
+                  type="text"
+                  id="edit_subgrupo"
+                  value={editingGroup.children_label}
+                  disabled
+                />
+              </EditInput>
               :
               <>
-                Adicionar SubGrupo
                 <EditInput>
-                  <label htmlFor="edit_code">Tipo do SubGrupo</label>
+                  <label htmlFor="edit_code">Adicionar SubGrupo</label>
                   <input
                     type="text"
                     id="edit_subgrupo"
                     defaultValue=""
-                    value={editingGroup.children_label}
-                    onChange={(e) => {
-                      setModalCreateGroup({...modalCreateGroup, parent: e.target.value})}
+                    value={editChildrenLabel}
+                    onChange={(e) => {setEditChildrenLabel(e.target.value)}
                     }
                   />
-                </EditInput>
-
-                <EditInput>
-                  <label htmlFor="edit_name">Nome</label>
-                    <input
-                      type="text"
-                      id="edit_name"
-                      value={modalCreateGroup.description}
-                      onChange={(e) => {
-                        setModalCreateGroup({...modalCreateGroup, 
-                          parent_id: editingGroup.id,
-                          description: e.target.value,
-                        })}
-                      }
-                    />
                 </EditInput>
               </>
             }
@@ -439,68 +407,83 @@ const Groups = ({
           </ContentBoxHeader>
             <ContentBoxSubTitle>{groupLabel}</ContentBoxSubTitle>
           <ContentBoxTable>
+            {!noGroup ? 
               <Table responsive>
-              <thead>
-              {goBack ? 
-              <tr>
-                <td>
-                  <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
-                    Voltar
-                  </button>
-                </td>
-              </tr>
-              : null }
+                <thead>
+                {goBack ? 
                 <tr>
-                  {fields.map(field => (
-                      <ContentBoxTableHeader key={field.value}>{field.value}</ContentBoxTableHeader>
-                  ))}
-                  <th></th>
-                  <th></th>
+                  <td>
+                    <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
+                      Voltar
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody>
-                {groups.map(group => (
-                  <tr key={group.id}>
+                : null }
+                  <tr>
                     {fields.map(field => (
-                      <td key={field.value}>{group[field.key]}</td>
+                        <ContentBoxTableHeader key={field.value}>{field.value}</ContentBoxTableHeader>
                     ))}
-                     <td>
-                      <button className="btn btn-info" onClick={() => handleShow(group)}>
-                        Detalhes
-                      </button>
-                    </td>
-                    {group.children_label !== null ?
-                    <td>
-                      <button className="btn btn-info" onClick={() => handleNavigate(group)}>
-                        Ver filhos
-                      </button>
-                    </td>
-                    : 
-                      null
-                    }
-                      <td>
-                        <Link to="/panel">
-                          <ContentBoxTableIcon
-                            src={editIcon}
-                            alt="Editar"
-                            onClick={() => { handleEdit(group) }}
-                          />
-                        </Link>
-                      </td>
-                      <td>
-                        <Link to="/panel">
-                          <ContentBoxTableIcon
-                            src={deleteIcon}
-                            alt="Deletar"
-                            onClick={() => { handleDelete(group.id, token) }}
-                          />
-                        </Link>
-                      </td>
+                    <th></th>
+                    <th></th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+
+                <tbody>
+                  {groups.map(group => (
+                    <tr key={group.id}>
+                      {fields.map(field => (
+                        <td key={field.value}>{group[field.key]}</td>
+                      ))}
+                      <td>
+                        <button className="btn btn-info" onClick={() => handleShow(group)}>
+                          Detalhes
+                        </button>
+                      </td>
+                      {group.children_label !== null ?
+                      <td>
+                        <button className="btn btn-info" onClick={() => handleNavigate(group)}>
+                          Ver filhos
+                        </button>
+                      </td>
+                      : 
+                        null
+                      }
+                        <td>
+                          <Link to="/panel">
+                            <ContentBoxTableIcon
+                              src={editIcon}
+                              alt="Editar"
+                              onClick={() => { handleEdit(group) }}
+                            />
+                          </Link>
+                        </td>
+                        <td>
+                          <Link to="/panel">
+                            <ContentBoxTableIcon
+                              src={deleteIcon}
+                              alt="Deletar"
+                              onClick={() => { handleDelete(group.id, token) }}
+                            />
+                          </Link>
+                        </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>  
+            :
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>{groupLabel} vazio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td>Não há nada cadastrado em {groupLabel}.</td>
+                    </tr>
+                </tbody>
+              </Table>
+            }
           </ContentBoxTable>
         </ContainerContent>
       
@@ -550,7 +533,6 @@ const Groups = ({
               :
               <>
                 {/* ------- NOME ------- */}  
-                {console.log('GRUPO -> ', groupID)}
                 <InputBlock>
                   <label htmlFor="name">Nome</label>
                   <Input
