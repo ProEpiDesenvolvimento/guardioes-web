@@ -40,6 +40,7 @@ import {
 import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
+import { render } from 'react-dom';
 
 const Groups = ({
   token,
@@ -67,8 +68,10 @@ const Groups = ({
 
   const [goBack, setGoBack] = useState(false);
 
+  const [addSubGroup, setAddSubGroup] = useState(false)
+
   const [creating, setCreating] = useState("course");
-  const [editChildrenLabel, setEditChildrenLabel] = useState('')
+  const [editChildrenLabel, setEditChildrenLabel] = useState(null)
 
   const [creatingGroup, setCreatingGroup] = useState({
     description: "",
@@ -92,8 +95,9 @@ const Groups = ({
     const response = await createGroup(creatingGroup, token)
     if (!response.errors)
       clearData()
-    fetchData(token)
     setNoGroup(false)
+    setAddSubGroup(false)
+    fetchData(token)
   }
 
   const clearData = () => {
@@ -105,7 +109,8 @@ const Groups = ({
     })
     setEditingGroup({})
     setGroupShow({})
-    setEditChildrenLabel('')
+    setAddSubGroup(false)
+    setEditChildrenLabel(null)
     setCreating("course")
   }
 
@@ -342,7 +347,8 @@ const Groups = ({
         show={modalEdit}
         onHide={() => {
           setModalEdit(false)
-          setEditChildrenLabel('')
+          setAddSubGroup(false)
+          setEditChildrenLabel(null)
         }}
       >
         <Modal.Header closeButton>
@@ -382,17 +388,20 @@ const Groups = ({
               </EditInput>
               :
               <>
-                <EditInput>
-                  <label htmlFor="edit_code">Adicionar SubGrupo</label>
-                  <input
-                    type="text"
-                    id="edit_subgrupo"
-                    defaultValue=""
-                    value={editChildrenLabel}
-                    onChange={(e) => {setEditChildrenLabel(e.target.value)}
-                    }
-                  />
-                </EditInput>
+                <SubmitButton type="reset" onClick={() => {setAddSubGroup(true)}}>Adicionar SubGrupo</SubmitButton>
+                {addSubGroup ? 
+                  <EditInput>
+                    <label htmlFor="edit_code">Adicionar SubGrupo</label>
+                    <input
+                      type="text"
+                      id="edit_subgrupo"
+                      defaultValue=""
+                      value={editChildrenLabel}
+                      onChange={(e) => {setEditChildrenLabel(e.target.value)}
+                      }
+                    />
+                  </EditInput>
+               : null}
               </>
             }
 
