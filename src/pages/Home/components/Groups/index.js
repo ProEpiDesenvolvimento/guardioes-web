@@ -340,7 +340,10 @@ const Groups = ({
       {/* ------- EDITAR MODAL ------- */}  
       <Modal
         show={modalEdit}
-        onHide={() => setModalEdit(false)}
+        onHide={() => {
+          setModalEdit(false)
+          setEditChildrenLabel('')
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>
