@@ -104,10 +104,17 @@ const Groups = ({
   }
 
   const _editGroup = async () => {
+    let children
+    if(editingGroup.children_label !== null){
+      children = editingGroup.children_label
+    } else {
+      children = editChildrenLabel
+    }
+
     const data = {
       description: editingGroup.description,
       code: editingGroup.code,
-      children_label: editChildrenLabel
+      children_label: children
     }
 
     const response = await editGroup(editingGroup.id, data, token);
@@ -371,6 +378,8 @@ const Groups = ({
         </Modal.Header>
         <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
+            {/* ------- NOME ------- */}
+            {console.log(editingGroup)}
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
               {user.group_name === editingGroup.description ? 
@@ -379,19 +388,24 @@ const Groups = ({
                   id="edit_name"
                   disabled={true}
                   value={editingGroup.description}
-                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
                 /> : 
                 <input
                   type="text"
                   id="edit_name"
                   value={editingGroup.description}
-                  onChange={(e) => setEditingGroup({...editingGroup, description: e.target.value})}
+                  onChange={(e) => setEditingGroup({
+                    ...editingGroup, 
+                    description: e.target.value, 
+                    children_label: editingGroup.children_label
+                  })}
                 />
               }
             </EditInput>
+            
+            {/* ------- SUBGRUPO ------- */}
             {editingGroup.children_label ? 
               <EditInput>
-                <label htmlFor="edit_code">Nome do SubGrupo</label>
+                <label htmlFor="edit_code">SubGrupo</label>
                 <input
                   type="text"
                   id="edit_subgrupo"
@@ -417,7 +431,7 @@ const Groups = ({
                : null}
               </>
             }
-
+            {/* ------- CODIGO ------- */}
             {editingGroup.code ?
             <EditInput>
               <label htmlFor="edit_code">Código</label>
