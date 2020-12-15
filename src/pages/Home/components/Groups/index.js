@@ -95,9 +95,35 @@ const Groups = ({
     const response = await createGroup(creatingGroup, token)
     if (!response.errors)
       clearData()
+      response.data.group.parentName = response.data.group.parent.name
+      setGroups([...groups, response.data.group])
+    
     setNoGroup(false)
     setAddSubGroup(false)
-    fetchData(token)
+    // fetchData(token)
+  }
+
+  const _editGroup = async () => {
+    const data = {
+      description: editingGroup.description,
+      code: editingGroup.code,
+      children_label: editChildrenLabel
+    }
+
+    const response = await editGroup(editingGroup.id, data, token);
+    response.data.group.parentName = response.data.group.parent.name
+
+    let oldGroups = groups.map((group) => {
+      if(group.id === editingGroup.id){
+        return response.data.group
+      } else {
+        return group
+      }
+    })
+
+    setGroups(oldGroups)
+
+    setModalEdit(false);
   }
 
   const clearData = () => {
@@ -164,19 +190,6 @@ const Groups = ({
     fetchData(token)
   }
 
-  const _editGroup = async () => {
-    const data = {
-      description: editingGroup.description,
-      code: editingGroup.code,
-      children_label: editChildrenLabel
-    }
-
-    await editGroup(editingGroup.id, data, token);
-
-    setModalEdit(false);
-    fetchData(token);
-  }
-
   const handleShow = (content) => {
     setGroupShow(content);
     setModalShow(!modalShow);
@@ -216,7 +229,7 @@ const Groups = ({
       setGroups(aux_label)
 
       aux_label[0].hasOwnProperty('parent') ? 
-        getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].children_label)
+        getGroupLabel(aux_label[0].parent.id) : setGroupLabel(aux_label[0].label)
         
       if (groups.length === 0) {
         getCity(aux_label[0])
