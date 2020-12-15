@@ -10,6 +10,24 @@ export const Container = styled.div`
   }
 `;
 
+export const SelectInput = styled.select`
+  width: 50%;
+  background-color: white;
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 2.2rem;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (min-width: 500px) {
+    width: 14rem;
+  }
+`;
+
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;

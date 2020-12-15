@@ -559,41 +559,41 @@ const Groups = ({
           <ContainerForm>
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
               {groups.length !== 0 && user.group_name === groups[0].description ? 
-              <>
-                {/* ------- NOME ------- */} 
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="nameFix"
-                    disabled
-                    value={groups[0].description}
-                  /> 
-                </InputBlock>
-                
-                {/* ------- MUNICIPIOS ------- */} 
-                {typeof cities !== 'undefined' && cities.length !== 0 ? 
+                <>
+                  {/* ------- NOME ------- */} 
                   <InputBlock>
-                    <label htmlFor="name">Município</label>
-                    <SelectInput
-                      type="select"
-                      id="name"
-                      onChange={(e) => {
-                        const id = parseInt(e.target.value)
-                        setCreatingGroup({...creatingGroup, parent_id: id, description: groups[0].description})
-                      }}
-                    >
-                      <option>Escolha</option>
-                      {cities.map((g) => {
-                        return <option key={g.id} value={g.id}>{g.description}</option>
-                      })}
-                    </SelectInput>
+                    <label htmlFor="name">Nome</label>
+                    <Input
+                      type="text"
+                      id="nameFix"
+                      disabled
+                      value={groups[0].description}
+                    /> 
                   </InputBlock>
-                : 
-                  null
-                }
+                  
+                  {/* ------- MUNICIPIOS ------- */} 
+                  {typeof cities !== 'undefined' && cities.length !== 0 ? 
+                    <InputBlock>
+                      <label htmlFor="name">Município</label>
+                      <SelectInput
+                        type="select"
+                        id="name"
+                        onChange={(e) => {
+                          const id = parseInt(e.target.value)
+                          setCreatingGroup({...creatingGroup, parent_id: id, description: groups[0].description})
+                        }}
+                      >
+                        <option>Escolha</option>
+                        {cities.map((g) => {
+                          return <option key={g.id} value={g.id}>{g.description}</option>
+                        })}
+                      </SelectInput>
+                    </InputBlock>
+                  : 
+                    null
+                  }
 
-              </>
+                </>
               :
               <>
                 {/* ------- NOME ------- */}  
@@ -628,16 +628,16 @@ const Groups = ({
               }
               {/* ------- ESTADO ------- */}  
               <InputBlock>
-                  <label htmlFor="name">Estado</label>
-                  <SelectInput
-                    type="select"
-                    id="name"
-                    value={states.description}
-                    disabled
-                  >
-                    <option>{states.description}</option>
-                  </SelectInput>
-                </InputBlock>
+                <label htmlFor="name">Estado</label>
+                <SelectInput
+                  type="select"
+                  id="name"
+                  value={states.description}
+                  disabled
+                >
+                  <option>{states.description}</option>
+                </SelectInput>
+              </InputBlock>
 
               {/* ------- CÓDIGO ------- */}
               <InputBlock>
