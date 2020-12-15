@@ -74,7 +74,7 @@ const Groups = ({
   const [editChildrenLabel, setEditChildrenLabel] = useState(null)
 
   const [creatingGroup, setCreatingGroup] = useState({
-    description: "",
+    description: "default",
     code: "",
     children_label: null,
     parent_id: 0,
@@ -92,15 +92,18 @@ const Groups = ({
   }, [creating])
 
   const _createGroup = async () => {
-    const response = await createGroup(creatingGroup, token)
-    if (!response.errors)
-      clearData()
-      response.data.group.parentName = response.data.group.parent.name
-      setGroups([...groups, response.data.group])
+    if(creatingGroup.description === '' || creatingGroup.parent_id === 0){
+      return alert('Erro, verifique os dados ou contate um administrador!')
+    } else {
+      const response = await createGroup(creatingGroup, token)
+      if (!response.errors)
+        clearData()
+        response.data.group.parentName = response.data.group.parent.name
+        setGroups([...groups, response.data.group])
     
-    setNoGroup(false)
-    setAddSubGroup(false)
-    // fetchData(token)
+      setNoGroup(false)
+      setAddSubGroup(false)
+    }
   }
 
   const _editGroup = async () => {
