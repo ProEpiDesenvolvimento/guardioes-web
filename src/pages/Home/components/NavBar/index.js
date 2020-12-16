@@ -61,6 +61,10 @@ const NavBar = ({
       key: "groups",
       value: "Instituições"
     },
+    {
+      key: "profile",
+      value: "Perfil"
+    },
   ];
 
   const loadCategories = () => {
@@ -68,13 +72,13 @@ const NavBar = ({
 
     if (user.type === "admin") {
       if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1, -1));
+        categories = categories.concat(allCategories.slice(1));
       }
       else {
-        categories = categories.concat(allCategories.slice(3, -1));
+        categories = categories.concat(allCategories.slice(3));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -1));
+      categories = categories.concat(allCategories.slice(5));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }

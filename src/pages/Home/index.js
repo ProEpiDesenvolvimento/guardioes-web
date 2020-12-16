@@ -15,6 +15,8 @@ import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import Syndromes from './components/Syndromes';
 import Admins from './components/Admins';
+import Profile from './components/Profile';
+
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -92,7 +94,11 @@ const Home = ({
       {
         key: "users",
         value: Users
-      }
+      },
+      {
+        key: "profile",
+        value: Profile
+      },
     ])
   }
 

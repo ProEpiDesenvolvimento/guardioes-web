@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const editProfile = async (id, userType, data, token) => {
-    await api.patch(`/${userType}/${id}`, data,
+const editProfile = async (id, userType, data, token) =>
+    await api.patch(`/${userType}s/${id}`, data,
     {
         headers: {
             "Authorization": token,
@@ -9,7 +9,7 @@ const editProfile = async (id, userType, data, token) => {
     }
     )
     .then(async (res) => {
-        alert('Perfil Editado!');
+        alert('Seu Perfil foi Editado!');
         const response = { data: res.data };
         return response;
     })
@@ -18,6 +18,5 @@ const editProfile = async (id, userType, data, token) => {
         console.log(e);
         return { data: {}, errors: e };
     });
-}
 
 export default editProfile;
