@@ -115,7 +115,7 @@ const Groups = ({
     setCount(0)
     const response = await getAllGroups(token)
 
-    if (!response && !response.groups)
+    if (!response.groups || response.groups.length === 0)
       return
     
     let aux_groups = response.groups

@@ -63,7 +63,7 @@ const NavBar = ({
     },
     {
       key: "profile",
-      value: "Perfil"
+      value: "Conta"
     },
   ];
 

@@ -29,11 +29,11 @@ const Profile = ({
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [vigilanceEmail, setVigilanceEmail] = useState("");
     const [password, setPassword] = useState("");
     const [appId, setAppId] = useState(0);
     const [twitter, setTwitter] = useState("");
     const [requireId, setRequireId] = useState(false);
+    const [idCodeLength, setIdCodeLength] = useState(1);
     const [isGod, setIsGod] = useState(false);
 
     const _editUser = async () => {
@@ -43,10 +43,10 @@ const Profile = ({
                 "last_name": lastName,
                 "name": firstName,
                 "email": email,
-                "vigilance_email": vigilanceEmail,
                 "password": password !== "" ? password : null,
                 "twitter": twitter,
                 "require_id": requireId,
+                "id_code_length": idCodeLength,
             }
         }
         const response = await editUser(user.id, user.type, data, token);
@@ -73,10 +73,10 @@ const Profile = ({
 
         setLastName(user.last_name);
         setEmail(user.email);
-        setVigilanceEmail(user.vigilance_email);
         setAppId(user.app_id);
         setTwitter(user.twitter);
         setRequireId(user.require_id);
+        setIdCodeLength(user.id_code_length);
         setIsGod(user.is_god);
     }
 
@@ -93,7 +93,7 @@ const Profile = ({
         <Container>
             <EditProfileContainer className="shadow-sm">
                 <ContainerHeader>
-                    <ContainerTitle>Editar Perfil</ContainerTitle>
+                    <ContainerTitle>Editar Conta</ContainerTitle>
                 </ContainerHeader>
                 <ContainerForm>
                     <form id="editUser" onSubmit={handleSubmit(_editUser)}>
@@ -128,18 +128,6 @@ const Profile = ({
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </InputBlock>
-                        
-                        {user.type === "group_manager" &&
-                            <InputBlock>
-                                <label htmlFor="vigilance_email">Email de Vigilância</label>
-                                <input
-                                    type="text"
-                                    id="vigilance_email"
-                                    value={vigilanceEmail}
-                                    onChange={(e) => setVigilanceEmail(e.target.value)}
-                                />
-                            </InputBlock>
-                        }
 
                         <InputBlock>
                             <label htmlFor="password">Senha</label>
@@ -179,10 +167,23 @@ const Profile = ({
                                 <CheckboxInput
                                     type="checkbox"
                                     id="id_code"
-                                    value={requireId}
+                                    checked={requireId}
                                     onChange={(e) => setRequireId(!requireId)}
                                 />
                             </CheckboxInputBlock>
+                        }
+
+                        {user.type === "group_manager" && requireId &&
+                            <InputBlock>
+                                <label htmlFor="id_code_length">Quantidade de caracteres</label>
+                                <input
+                                    type="number"
+                                    id="id_code_length"
+                                    value={idCodeLength}
+                                    min="1"
+                                    onChange={(e) => setIdCodeLength(e.target.value)}
+                                />
+                            </InputBlock>
                         }
 
                         {user.type === "admin" &&
@@ -191,7 +192,7 @@ const Profile = ({
                                 <CheckboxInput
                                     type="checkbox"
                                     id="is_god"
-                                    value={isGod}
+                                    checked={isGod}
                                     onChange={(e) => setIsGod(!isGod)}
                                 />
                             </CheckboxInputBlock>
