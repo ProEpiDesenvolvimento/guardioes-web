@@ -58,9 +58,14 @@ const NavBar = ({
       value: "Usuários"
     },
     {
+      key: "vigilance",
+      value: "Vigilância Ativa"
+    },
+    {
       key: "groups",
       value: "Instituições"
     },
+    
   ];
 
   const loadCategories = () => {
@@ -68,7 +73,7 @@ const NavBar = ({
 
     if (user.type === "admin") {
       if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1, -1));
+        categories = categories.concat(allCategories.slice(1, -2));
       }
       else {
         categories = categories.concat(allCategories.slice(3, -1));
