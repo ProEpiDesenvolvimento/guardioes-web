@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const editProfile = async (id, userType, data, token) =>
+const editUser = async (id, userType, data, token) =>
     await api.patch(`/${userType}s/${id}`, data,
     {
         headers: {
@@ -19,4 +19,4 @@ const editProfile = async (id, userType, data, token) =>
         return { data: {}, errors: e };
     });
 
-export default editProfile;
+export default editUser;
