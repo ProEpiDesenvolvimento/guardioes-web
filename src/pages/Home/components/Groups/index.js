@@ -554,7 +554,7 @@ const Groups = ({
         {/* ------- FORMULARIO ------- */}  
         <AddGroupContainer className="shadow-sm">
           <ContainerHeader>
-            <ContainerTitle>ADICIONAR {groupLabel}</ContainerTitle>
+            <ContainerTitle>Adicionar {groupLabel}</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
