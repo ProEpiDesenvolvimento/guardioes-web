@@ -43,7 +43,7 @@ const Profile = ({
                 "last_name": lastName,
                 "name": firstName,
                 "email": email,
-                "password": password !== "" ? password : null,
+                "password": password !== "" ? password : undefined,
                 "twitter": twitter,
                 "require_id": requireId,
                 "id_code_length": idCodeLength,
@@ -60,6 +60,7 @@ const Profile = ({
                 ...responseUser,
                 type: user.type
             });
+            window.location.reload();
         }
     }
 
@@ -130,10 +131,10 @@ const Profile = ({
                         </InputBlock>
 
                         <InputBlock>
-                            <label htmlFor="password">Senha</label>
+                            <label htmlFor="change_password">Alterar senha</label>
                             <input
                                 type="password"
-                                id="password"
+                                id="change_password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
