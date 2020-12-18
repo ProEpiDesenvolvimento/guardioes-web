@@ -51,11 +51,12 @@ const Vigilance = ({
       for (let i = 0; i < vigSyns.groups[0].vigilance_syndromes.length; i++) {
         const s = vigSyns.groups[0].vigilance_syndromes[i]
         if (s.id_surto)
-          synds.filter(syndrome => syndrome.id === s.syndrome_id)[0].id_surto = s.id_surto 
+        synds.filter(syndrome => syndrome.id === s.syndrome_id)[0].id_surto = s.id_surto 
       }
+      if (vs[0] !== '')
+        setVigilanceSyndromes(vs[0])
     }
     setSyndromes(synds)
-    setVigilanceSyndromes(vs[0])
   }
 
   useEffect(() => {

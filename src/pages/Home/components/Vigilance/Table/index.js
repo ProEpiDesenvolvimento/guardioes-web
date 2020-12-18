@@ -17,16 +17,17 @@ const TableComponent = ({
 }) => {
 
   const isVigilance = syndrome => {
-    for (let vs of vigilance_syndromes)
-      if (vs.syndrome_id === syndrome.id)
-        return true
+    if (vigilance_syndromes)
+      for (let vs of vigilance_syndromes)
+        if (vs.syndrome_id === syndrome.id)
+          return true
   }
 
   const handleChange = syndrome => {
-    let vs = vigilance_syndromes
+    let vs = vigilance_syndromes ? vigilance_syndromes : []
     let belongs = false
-    for (let vs of vigilance_syndromes) {
-      if (vs.syndrome_id === syndrome.id)
+    for (let v of vs) {
+      if (v.syndrome_id === syndrome.id)
         belongs = true
     }
     if (belongs) {
