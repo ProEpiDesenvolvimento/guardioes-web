@@ -62,10 +62,13 @@ const NavBar = ({
       value: "Vigilância Ativa"
     },
     {
+      key: "profile",
+      value: "Conta"
+    },
+    {
       key: "groups",
       value: "Instituições"
-    },
-    
+    }
   ];
 
   const loadCategories = () => {
@@ -76,10 +79,10 @@ const NavBar = ({
         categories = categories.concat(allCategories.slice(1, -2));
       }
       else {
-        categories = categories.concat(allCategories.slice(3, -1));
+        categories = categories.concat(allCategories.slice(3));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -1));
+      categories = categories.concat(allCategories.slice(5));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }

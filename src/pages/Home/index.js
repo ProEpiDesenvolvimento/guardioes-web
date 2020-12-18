@@ -95,6 +95,10 @@ const Home = ({
         value: Users
       },
       {
+        key: "profile",
+        value: Profile
+      },
+      {
         key: "vigilance",
         value: Vigilance
       }
