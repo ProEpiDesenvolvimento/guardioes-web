@@ -387,7 +387,7 @@ const GroupManagers = ({
 
         <AddAppContainer className="shadow-sm">
           <ContainerHeader>
-            <ContainerTitle>Adicionar Gerente</ContainerTitle>
+            <ContainerTitle>Adicionar Gerente de Instituição</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>

@@ -29,7 +29,7 @@ const Header = ({
   }
 
   useEffect(() => {
-    console.log("AAA", user)
+    console.log("USER", user)
   }, [user])
 
   const logout = async () => {
@@ -43,13 +43,14 @@ const Header = ({
   return (
     <Container>
       <Logo src={logo} style={{ fill: "#fff" }} />
-      {authenticated === true ? (
-      <div>
-        <UserName>
-        {usersTypes[user.type]} - {user.type === "admin" ? user.first_name + " " + user.last_name : user.name}<br/> {user.email}
-        </UserName>
-      </div>
-      ) : null}
+      {authenticated === true ?
+        <div>
+          <UserName>
+            {usersTypes[user.type]} - {user.type === "admin" ? user.first_name + " " + user.last_name : user.name}<br/> 
+            {user.email}
+          </UserName>
+        </div>
+      : null}
       <HeaderNav>
         {authenticated === false ?
           <NavTo to="/">
