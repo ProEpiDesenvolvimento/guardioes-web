@@ -10,6 +10,7 @@ import {
 	SET_MANAGERS,
 	SET_GROUPS,
 	SET_SYNDROMES,
+	SET_VIGILANCE_SYNDROMES,
 	SET_USERS,
 	SET_ADMINS
 } from 'constants/action-types';
@@ -36,6 +37,7 @@ const initialState = {
 	group_managers: [],
 	groups: [],
 	syndromes: [],
+	vigilance_syndromes: [],
 	users: [],
 	admins: []
 };
@@ -91,6 +93,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				syndromes: action.payload
+			};
+		case SET_VIGILANCE_SYNDROMES:
+			return {
+				...state,
+				vigilance_syndromes: action.payload
 			};
 		case SET_USERS:
 			return {
