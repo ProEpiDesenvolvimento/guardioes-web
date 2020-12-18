@@ -58,16 +58,16 @@ const NavBar = ({
       value: "Usuários"
     },
     {
-      key: "vigilance",
-      value: "Vigilância Ativa"
-    },
-    {
       key: "profile",
       value: "Conta"
     },
     {
       key: "groups",
       value: "Instituições"
+    },
+    {
+      key: "vigilance",
+      value: "Vigilância Ativa"
     }
   ];
 
