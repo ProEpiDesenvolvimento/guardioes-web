@@ -1,21 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
+import userIcon from 'pages/Home/components/assets/userIcon.svg';
+import signOut from 'pages/Home/components/assets/sign-out.svg';
+import { useHistory } from "react-router-dom";
+import {
+  setUser
+} from 'actions/';
+import { sessionService } from 'redux-react-session';
 import {
   Container,
   OptionButton,
   OptionsSection,
-  OptionName
+  OptionName,
+  UserDiv,
+  UserName,
+  NavIcon,
+  UserDivIcon,
+  Logo,
+  NavTo
 } from './styles';
+import logo from 'assets/img/logo.png';
 import { connect } from 'react-redux';
 import {
   setAdminCategories
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 
-const NavBar = ({ 
+const usersTypes = {
+  "admin": "Administrador",
+  "manager": "Gerente",
+  "group_manager": "Instituição"
+}
+
+const NavBar = ({
   user,
   setComponentCallback
- }) => {
+}) => {
 
   const [categories, setCategories] = useState([])
   const [selected, setSelected] = useState("")
@@ -88,8 +108,25 @@ const NavBar = ({
     loadCategories()
   }, [user.type]);
 
+  const history = useHistory();
+
+  const logout = async () => {
+    await sessionService.deleteSession()
+    await sessionService.deleteUser()
+    setUser("")
+    history.push("/login")
+  }
+
   return (
     <Container>
+      <Logo src={logo}/>
+      <UserDiv>
+        <div><NavIcon src={userIcon} /> {user.type === "admin" ? user.first_name + " " + user.last_name : user.name} <i>({user["type"]})</i></div>
+        <div>{user.email}</div>
+        <NavTo onClick={logout}>
+          <UserDivIcon src={signOut} /> Logout
+        </NavTo>
+      </UserDiv>
       <OptionsSection>
         {categories.map(category => {
           return (
@@ -107,6 +144,9 @@ const NavBar = ({
           );
         })}
       </OptionsSection>
+      <NavTo style={{marginBottom: 40}} to="/contact">
+        Contato
+      </NavTo>
     </Container>
   )
 }

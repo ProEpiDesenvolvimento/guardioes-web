@@ -7,6 +7,12 @@ export const ContentBoxTableHeader = styled.th`
     text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
 `;
 
+export const ContentBoxTableHeaderButtons = styled.td`
+    width: 50%;
+    display: flex;
+    gap: 40px;
+`;
+
 export const ContentBoxTableIcon = styled.img`
     width: 1.5rem;
     height: 1.5rem;

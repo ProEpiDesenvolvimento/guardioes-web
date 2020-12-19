@@ -13,9 +13,14 @@ export const Container = styled.div`
   background: #5dd39e;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  place-items: center;
   padding: 0% 2%;
+`;
+
+export const UserDiv = styled.div`
+  display: grid;
+  grid-template-columns: 16vw auto;
+  place-items: center start;
 `;
 
 
@@ -27,11 +32,15 @@ export const Logo = styled.img`
 export const HeaderNav = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    width: max(200px, 30vw);
+    justify-content: flex-end;
+    float: right;
+    gap: 40px;
+    width: calc(100% - 80px);
     margin-right: 20px;
     @media ${device.mobileL} {
       margin-right: 10px;
+      gap: 0;
+      justify-content: space-evenly;
     };
 `;
 
@@ -55,11 +64,10 @@ export const UserName = styled.h1`
     font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.825rem;
     color: #FFFFFF;
     @media ${device.mobileL} {
       font-size: 15px;
     };
-    margin-right: 150px;
 `;

@@ -70,7 +70,7 @@ const Form = (props) => {
     <RegisterDiv onSubmit={handleSubmit(onSubmit)} >
       <FieldDiv>
         <FieldName>
-          CNPJ
+          <>CNPJ</>
           <Input
             name='cnpj'
             type='text'
@@ -84,7 +84,7 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Razão Social
+          <>Razão Social</>
           <Input
             name='socialReason'
             type='text'
@@ -97,7 +97,7 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          E-mail Institucional
+          <>E-mail Institucional</>
           <Input
             name='email'
             type='text'
@@ -114,7 +114,7 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Contato
+          <>Contato</>
           <Input
             name='phone'
             type='tel'
@@ -128,7 +128,7 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Estado
+          <>Estado</>
           <SelectInput
             name='state'
             value={state}
@@ -146,8 +146,10 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <FieldName>
-          Tipo de Organização
-          <QuestionPopupOrgType content='Ex: Ensino, Administrativa, etc..' trigger={<QuestionVector src={questionIcon} />} />
+          <>
+            Tipo de Organização
+            <QuestionPopupOrgType content='Ex: Ensino, Administrativa, etc..' trigger={<QuestionVector src={questionIcon} />} />
+          </>
           <Input
             name='organizationType'
             type='text'

@@ -106,9 +106,9 @@ const Home = ({
 
   return (
     <Container>
-      <Header />
+      <NavBar setComponentCallback={setComponentCallback} />
       <Body>
-        <NavBar setComponentCallback={setComponentCallback} />
+        {/* <Header /> */}
         <Divider>
           {components.map((comp) => {
             if (comp.key === component.key) {

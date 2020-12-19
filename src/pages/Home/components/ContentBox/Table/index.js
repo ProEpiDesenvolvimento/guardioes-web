@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { 
   ContentBoxTableHeader,
   ContentBoxTableIcon,
- } from './styles';
+  ContentBoxTableHeaderButtons
+} from './styles';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import editIcon from 'pages/Home/components/assets/edit-solid.svg';
@@ -36,7 +37,7 @@ const TableComponent = ({
           {fields.map(field => (
             <ContentBoxTableHeader style={{maxWidth: "500px"}} key={field.key}>{field.value}</ContentBoxTableHeader>
           ))}
-          <th></th>
+          {/* <th></th> */}
           <th></th>
         </tr>
       </thead>
@@ -47,14 +48,14 @@ const TableComponent = ({
             {fields.map(field => (
               <td style={{maxWidth: "500px"}} key={field.key}>{content[field.key]}</td>
             ))}
-            <td>
+            <ContentBoxTableHeaderButtons>
+
               <Link to="/panel">
                 <button className="btn btn-info" onClick={() => { setContentShow(content) }}>
                   Visualizar
                         </button>
               </Link>
-            </td>
-            <td>
+
               <Link to="/panel">
                 <ContentBoxTableIcon
                   src={editIcon}
@@ -62,8 +63,7 @@ const TableComponent = ({
                   onClick={() => { setEditingContent(content) }}
                 />
               </Link>
-            </td>
-            <td>
+
               <Link to="/panel">
                 <ContentBoxTableIcon
                   cursor={"true"}
@@ -73,13 +73,14 @@ const TableComponent = ({
                 />
                 <ContentBoxTableIcon
                   cursor={confirmDelete === content.id ? "true" : "false"}
-                  style={{width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0}}
+                  style={{width: "20px", opacity: confirmDelete === content.id ? 1 : 0}}
                   src={cancelIcon}
                   alt="Deletar"
                   onClick={() => { setConfirmDelete(null) }}
                 />
               </Link>
-            </td>
+
+            </ContentBoxTableHeaderButtons>
           </tr>
         ))}
       </tbody>

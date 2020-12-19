@@ -13,34 +13,29 @@ export const Container = styled.div`
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 25rem;
   width: 90%;
   align-content: center;
   margin: 0 auto;
-  margin-bottom: 2%;
-  background-color: #E5E5E5;
-  border-radius: 10px;
+  background-color: #FFF;
+  border-radius: 5px;
   font-family: argumentum, sans-serif;
   font-style: normal;
 `;
 
 export const ContainerHeader = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   height: 70px;
-  border-radius: 10px;
-  border-bottom: 2px solid rgba(0,0,0,0.125);
+  padding-left: 20px;
+  place-items: center start;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 export const ContainerTitle = styled.h3`
   margin: 0;
-  font-weight: 500;
   font-size: 24;
-  color: white;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
-  text-align: center;
+  color: #fff;
 `;
 
 export const ContainerForm = styled.div`

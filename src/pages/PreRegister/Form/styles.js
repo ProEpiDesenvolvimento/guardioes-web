@@ -8,7 +8,7 @@ export const Span = styled.span`
 `;
 
 export const RegisterDiv = styled.form`
-  width: 50vw;
+  width: 100%;
   height: 60vh;
   margin: auto;
   display: flex;
@@ -36,7 +36,8 @@ export const FieldDiv = styled.div`
     }
 `;
 export const FieldName = styled.label`
-    float: left;
+    display: grid;
+    place-items: center start;
     margin: 10px 0px 5px 10px;
     font-family: argumentum, sans-serif;
     font-style: normal;

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    height: ${props => props.component_height ? props.component_height + '6rem' : '26rem'};
+
     /* 50 */
     width: 90%;
     align-content: center;
-    margin: 2.5% 5%;
-    background-color: #E5E5E5;
-    border-radius: 10px 10px 10px 10px;
+    margin: 2.5% 5% 1% 5%;
+    background-color: #FFF;
+    border-radius: 5px;
     font-family: argumentum, sans-serif;
     font-style: normal;
 
@@ -20,12 +20,12 @@ export const Container = styled.div`
 
 export const ContentBoxHeader = styled.div`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #5DD39E;
+    background-color: #5dd39e;
     height: 70px;
-    border-radius: 10px 10px 10px 10px;
-    border-bottom: 2px solid rgba(0,0,0,0.125);
+    padding-left: 20px;
+    place-items: center start;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 `;
 
 export const ContentBoxTitle = styled.h3`
@@ -33,7 +33,6 @@ export const ContentBoxTitle = styled.h3`
     font-weight: 500;
     font-size: 24;
     color: white;
-    text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
 `;
 
 export const ContentBoxTable = styled.div`

@@ -4,7 +4,8 @@ import {
   Logo,
   HeaderNav,
   NavTo,
-  UserName
+  UserName,
+  UserDiv
 } from './styles';
 import logo from 'assets/img/logo.png';
 import { sessionService } from 'redux-react-session';
@@ -20,7 +21,7 @@ const Header = ({
   setUser,
   user
 }) => {
-  const history = useHistory(); 
+  const history = useHistory();
 
   const usersTypes = {
     "admin": "Administrador",
@@ -33,7 +34,7 @@ const Header = ({
   }, [user])
 
   const logout = async () => {
-    if (authenticated === true ) {
+    if (authenticated === true) {
       await sessionService.deleteSession()
       await sessionService.deleteUser()
       setUser("")
@@ -42,20 +43,17 @@ const Header = ({
   }
   return (
     <Container>
-      <Logo src={logo} style={{ fill: "#fff" }} />
-      {authenticated === true ? (
-      <div>
-        <UserName>
-        {usersTypes[user.type]} - {user.type === "admin" ? user.first_name + " " + user.last_name : user.name}<br/> {user.email}
-        </UserName>
-      </div>
-      ) : null}
+      {/* <UserDiv> */}
+      {authenticated === false ?
+        <Logo src={logo} style={{ fill: "#fff" }} />
+        : null}
+      {/* </UserDiv> */}
       <HeaderNav>
         {authenticated === false ?
           <NavTo to="/">
             Faça Parte
           </NavTo>
-        : null}
+          : null}
         {/*authenticated === true ?
           <NavTo to="/panel">
             Painel
@@ -65,13 +63,13 @@ const Header = ({
           <NavTo to="/statistics">
             Estatísticas
           </NavTo>
-        : null}
-        <NavTo onClick={logout}>
-          {authenticated === true ? "Logout" : "Login"}
-        </NavTo>
-        <NavTo to="/contact">
+          : null}
+          <NavTo onClick={logout}>
+            {authenticated === true ? "Login" : "Logout"}
+          </NavTo>
+        {/* <NavTo to="/contact">
           Contato
-        </NavTo>
+        </NavTo> */}
       </HeaderNav>
     </Container>
   );

@@ -2,17 +2,18 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     height: 100%;
     margin: 0;
+    background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
 `;
 
 export const Body = styled.div`
     height: 100%;
-    background: linear-gradient(184deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 3%, rgba(230,230,230,1) 100%);
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-size: cover;
     overflow: hidden;
 `;
