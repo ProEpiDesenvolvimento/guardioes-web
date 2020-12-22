@@ -22,8 +22,7 @@ import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
-import getAllGroups from '../Groups/services/getAllGroups';
-import editGroup from '../Groups/services/editGroup';
+import editGroupManager from '../GroupManagers/services/editGroupManager';
 
 const Vigilance = ({
   vigilance_syndromes,
@@ -36,26 +35,13 @@ const Vigilance = ({
 }) => {
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showModal, setShowModal] = useState(false);
-  const [groupId, setGroupId] = useState(0);
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
     let synds = []
     if (syns.syndromes)
       synds = syns.syndromes
-    const vigSyns = await getAllGroups(token)
-    let vs = []
-    if (vigSyns.groups) {
-      vs.push(vigSyns.groups[0].vigilance_syndromes)
-      setGroupId(vigSyns.groups[0].id)
-      for (let i = 0; i < vigSyns.groups[0].vigilance_syndromes.length; i++) {
-        const s = vigSyns.groups[0].vigilance_syndromes[i]
-        if (s.id_surto)
-        synds.filter(syndrome => syndrome.id === s.syndrome_id)[0].id_surto = s.id_surto 
-      }
-      if (vs[0] !== '')
-        setVigilanceSyndromes(vs[0])
-    }
+    setVigilanceSyndromes(user.vigilance_syndromes)
     setSyndromes(synds)
   }
 
@@ -83,11 +69,11 @@ const Vigilance = ({
 
   const handleSubmit = async () => {
     const data = {
-      group: {
+      group_manager: {
         vigilance_syndromes: vigilance_syndromes
       }
     }
-    const response = await editGroup(groupId, data, token)
+    const response = await editGroupManager(user.id, data, token)
   }
 
   return (

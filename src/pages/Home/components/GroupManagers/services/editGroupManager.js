@@ -9,7 +9,7 @@ const editGroupManager = async (id, data, token) => {
     }
     )
     .then(async (res) => {
-        alert('Gerente de Instituição Editado!');
+        alert('Editado com sucesso!');
         const response = { data: res.data };
         return response;
     })
