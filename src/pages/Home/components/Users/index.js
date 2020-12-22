@@ -261,6 +261,26 @@ const Users = ({
           </EditInput>
 
           <EditInput>
+            <label>Data de criação</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={userShow.created_at}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Código identificador</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={userShow.identification_code}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
             <label>Gender</label>
             <input
               className="text-dark"
