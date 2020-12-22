@@ -15,8 +15,8 @@ import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
 import Syndromes from './components/Syndromes';
 import Admins from './components/Admins';
-import Profile from './components/Profile';
-
+import Vigilance from './components/Vigilance';
+import Profile from './components/Profile'
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -99,6 +99,10 @@ const Home = ({
         key: "profile",
         value: Profile
       },
+      {
+        key: "vigilance",
+        value: Vigilance
+      }
     ])
   }
 
