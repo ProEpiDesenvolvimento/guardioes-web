@@ -10,6 +10,9 @@ import createGroupManager from './services/createGroupManager'
 import deleteGroupManager from './services/deleteGroupManager'
 import editGroupManager from './services/editGroupManager';
 
+import getChildrenGroups from './../Groups/services/getChildrenGroups'
+import createGroup from './../Groups/services/createGroup'
+
 import {
   Container,
   AddAppContainer,
@@ -27,7 +30,8 @@ import {
   EditInput,
   EditButton,
   EditCheckbox,
-  EditCheckboxInput
+  EditCheckboxInput,
+  SelectInput
 } from './styles';
 import { useForm } from "react-hook-form";
 import Modal from 'react-bootstrap/Modal';
@@ -58,7 +62,11 @@ const GroupManagers = ({
   const [editIDCode, setEditIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(0);
   const [groupManagerShow, setGroupManagerShow] = useState({});
+  const [groupManagerLocale, setGroupManagerLocale] = useState(0)
   const [modalShow, setModalShow] = useState(false);
+  const [country, setCountry] = useState([])
+  const [state, setState] = useState([])
+  const [city, setCity] = useState([])
 
   const _createGroupManager = async () => {
     const data = {
@@ -73,7 +81,20 @@ const GroupManagers = ({
         "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : undefined
       }
     }
-    await createGroupManager(data, token)
+    const response = await createGroupManager(data, token)
+
+    const group_data = {
+      description: groupManagerGroup,
+      code: "",
+      children_label: null,
+      parent_id: groupManagerLocale,
+      group_manager_id: response.data.group_manager.id
+    }
+
+    console.log(group_data)
+
+    await createGroup(group_data, token)
+
     setGroupManagerName("")
     setGroupManagerPassword("")
     setGroupManagerEmail("")
@@ -143,6 +164,25 @@ const GroupManagers = ({
     setEditLengthIDCode(value);
   }
 
+  const loadLocales = async (locale_id=null, locale_name='country') => {
+    if(locale_id === null) 
+      locale_id = 3
+    
+    const response = await getChildrenGroups(locale_id)
+    switch(locale_name){
+      case 'country':
+        setCountry(response.children)
+        return
+      case 'state':
+        setState(response.children)
+        return
+      case 'city':
+        setCity(response.children)
+        return
+      default:
+         return
+    }
+  }
 
   const _getAllGroupManagers = async (token) => {
     const response = await getAllGroupManagers(token)
@@ -159,7 +199,8 @@ const GroupManagers = ({
         "id": group_manager.id,
         "name": group_manager.name,
         "email": group_manager.email,
-        "group_name": group_manager.group_name
+        "group_name": group_manager.group_name,
+        "twitter": group_manager.twitter
       })
     })
     if (aux_group_managers.length === 0) {
@@ -171,6 +212,7 @@ const GroupManagers = ({
   useEffect(() => {
     _getAllGroupManagers(token)
     setToken(token)
+    loadLocales()
   }, []);
 
   const fields =
@@ -232,6 +274,16 @@ const GroupManagers = ({
               className="text-dark"
               type="text"
               value={groupManagerShow.group_name}
+              disabled
+            />
+          </EditInput>
+          
+          <EditInput>
+            <label>Twitter</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.twitter}
               disabled
             />
           </EditInput>
@@ -335,7 +387,7 @@ const GroupManagers = ({
 
         <AddAppContainer className="shadow-sm">
           <ContainerHeader>
-            <ContainerTitle>Adicionar Gerente</ContainerTitle>
+            <ContainerTitle>Adicionar Gerente de Instituição</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>
@@ -349,6 +401,60 @@ const GroupManagers = ({
                     onChange={(e) => setGroupManagerName(e.target.value)}
                   />
                 </InputBlock>
+                
+                <InputBlock>
+                    <label htmlFor="name">País</label>
+                    <SelectInput
+                      type="select"
+                      id="name"
+                      onChange={(e) => {
+                        const id = parseInt(e.target.value)
+                        setGroupManagerLocale(id)
+                        loadLocales(id, 'state')
+                      }}
+                    >
+                      <option>Escolha</option>
+                      {country.map((g) => {
+                        return <option key={g.id} value={g.id}>{g.description}</option>
+                      })}
+                    </SelectInput>
+                  </InputBlock>
+
+                  <InputBlock>
+                    <label htmlFor="name">Estado</label>
+                    <SelectInput
+                      type="select"
+                      id="name"
+                      onChange={(e) => {
+                        const id = parseInt(e.target.value)
+                        setGroupManagerLocale(id)
+                        loadLocales(id, 'city')
+                      }}
+                    >
+                      <option>Escolha</option>
+                      {state.map((g) => {
+                        return <option key={g.id} value={g.id}>{g.description}</option>
+                      })}
+                    </SelectInput>
+                  </InputBlock>
+
+                  <InputBlock>
+                    <label htmlFor="name">Cidade</label>
+                    <SelectInput
+                      type="select"
+                      id="name"
+                      onChange={(e) => {
+                        const id = parseInt(e.target.value)
+                        setGroupManagerLocale(id)
+                      }}
+                    >
+                      <option>Escolha</option>
+                      {city.map((g) => {
+                        return <option key={g.id} value={g.id}>{g.description}</option>
+                      })}
+                    </SelectInput>
+                  </InputBlock>
+                
                 <InputBlock>
                   <label htmlFor="email">E-mail</label>
                   <Input

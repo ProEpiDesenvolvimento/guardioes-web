@@ -7,8 +7,8 @@ const submitPreRegister = async (data) =>
             return response
         })
         .catch((e) => {
-            alert('Algo deu errado, tente novamente!');
-            console.log(e);
+            if (e.toString().includes("409"))
+                return { data: {}, errors: "O email já está sendo usado." }
             return { data: {}, errors: e }
         });
 export default submitPreRegister;

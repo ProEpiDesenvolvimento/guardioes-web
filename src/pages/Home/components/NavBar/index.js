@@ -58,18 +58,31 @@ const NavBar = ({
       value: "Usuários"
     },
     {
+      key: "profile",
+      value: "Conta"
+    },
+    {
       key: "groups",
       value: "Instituições"
     },
+    {
+      key: "vigilance",
+      value: "Vigilância Ativa"
+    }
   ];
 
   const loadCategories = () => {
     let categories = allCategories.slice(0, 1);
 
     if (user.type === "admin") {
-      categories = categories.concat(allCategories.slice(1, -1));
+      if (user.is_god === true) {
+        categories = categories.concat(allCategories.slice(1, -2));
+      }
+      else {
+        categories = categories.concat(allCategories.slice(3));
+      }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -1));
+      categories = categories.concat(allCategories.slice(5));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }

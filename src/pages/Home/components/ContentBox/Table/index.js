@@ -34,7 +34,7 @@ const TableComponent = ({
       <thead>
         <tr>
           {fields.map(field => (
-            <ContentBoxTableHeader style={{maxWidth: "500px"}}>{field.value}</ContentBoxTableHeader>
+            <ContentBoxTableHeader style={{maxWidth: "500px"}} key={field.key}>{field.value}</ContentBoxTableHeader>
           ))}
           <th></th>
           <th></th>
@@ -43,9 +43,9 @@ const TableComponent = ({
 
       <tbody>
         {contents.map(content => (
-          <tr>
+          <tr key={content.id}>
             {fields.map(field => (
-              <td style={{maxWidth: "500px"}}>{content[field.key]}</td>
+              <td style={{maxWidth: "500px"}} key={field.key}>{content[field.key]}</td>
             ))}
             <td>
               <Link to="/panel">
@@ -66,13 +66,13 @@ const TableComponent = ({
             <td>
               <Link to="/panel">
                 <ContentBoxTableIcon
-                  cursor={true}
+                  cursor={"true"}
                   src={confirmDelete === content.id ? confirmIcon : deleteIcon}
                   alt="Deletar"
                   onClick={() => { handleDelete(content.id, token) }}
                 />
                 <ContentBoxTableIcon
-                  cursor={confirmDelete === content.id ? true : false}
+                  cursor={confirmDelete === content.id ? "true" : "false"}
                   style={{width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0}}
                   src={cancelIcon}
                   alt="Deletar"

@@ -24,4 +24,6 @@ export const SET_GROUPS = 'SET_GROUPS'
 
 export const SET_SYNDROMES = 'SET_SYNDROMES';
 
+export const SET_VIGILANCE_SYNDROMES = 'SET_VIGILANCE_SYNDROMES';
+
 export const SET_ADMINS = 'SET_ADMINS';

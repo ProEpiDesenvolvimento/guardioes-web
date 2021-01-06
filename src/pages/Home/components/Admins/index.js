@@ -70,8 +70,6 @@ const Admins = ({
         setLastName("");
         setEmail("");
         setPassword("");
-        setIsGod(false);
-        setAppId(0);
     }
 
     const _getAdmins = async (token) => {
@@ -287,7 +285,7 @@ const Admins = ({
                                 type="checkbox"
                                 id="is_god"
                                 checked={editIsGod}
-                                onChange={(e) => setEditIsGod(!isGod)}
+                                onChange={(e) => setEditIsGod(!editIsGod)}
                             />
                         </EditCheckbox>
                     </Modal.Body>

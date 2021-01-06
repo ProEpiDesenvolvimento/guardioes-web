@@ -50,7 +50,7 @@ const Symptoms = ({
   const _createSymptom = async () => {
     const data = {
       "description": symptomName,
-      "code": symptomName.trim().replace(' ', ''),
+      "code": symptomName.replace(/\s+/g, ''),
       "priority": 1,
       "details": symptomDescription,
       "message": null,
@@ -75,7 +75,7 @@ const Symptoms = ({
   const _editSymptom = async () => {
     const data = {
       "description": editName,
-      "code": editName.trim().replace(' ', ''),
+      "code": editName.replace(/\s+/g, ''),
       "priority": 1,
       "details": editDescription,
       "message": null,

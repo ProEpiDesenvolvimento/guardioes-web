@@ -95,6 +95,12 @@ export const SubmitButton = styled.button`
   }
 `;
 
+export const EditInputField = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 15px;
+`;
+
 export const EditInput = styled.div`
   display: flex;
   flex-direction: column;

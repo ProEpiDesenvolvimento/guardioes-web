@@ -13,7 +13,6 @@ export const Container = styled.div`
 export const AddSyndromeContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 24rem;
     width: 90%;
     align-content: center;
     margin: 0% 5%;
@@ -45,7 +44,6 @@ export const ContainerTitle = styled.h3`
 
 export const ContainerForm = styled.div`
     margin: 1rem 1.8rem;
-    max-height: 14rem;
 `;
 
 export const InputBlock = styled.div`
@@ -126,17 +124,17 @@ export const EditInput = styled.div`
 `;
 
 export const TextArea = styled.textarea`
-  resize: none;
-  border: solid 1px #CCCCCC;
-  border-radius: 5px;
-  padding: 5px 5px 10px 10px;
+    width: 100%;
+    border: solid 1px #CCCCCC;
+    border-radius: 5px;
+    padding: 5px 5px 10px 10px;
 
-  &:focus {
-    border: solid 2px #007bff;
-    padding: 4px 4px 9px 9px;
-  }
+    &:focus {
+        border: solid 2px #007bff;
+        padding: 4px 4px 9px 9px;
+    }
 
-  &:disabled {
-    background: #f8f9fa;
-  }
+    &:disabled {
+        background: #f8f9fa;
+    }
 `;
