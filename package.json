@@ -13,6 +13,7 @@
     "google-map-react": "^1.1.7",
     "history": "^4.10.1",
     "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
     "lottie-react-web": "^2.2.2",
     "material-ui": "^0.20.2",
     "material-ui-country-flags": "^3.0.1",
@@ -47,7 +48,7 @@
     "styled-components": "^4.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3008 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
