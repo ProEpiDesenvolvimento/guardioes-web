@@ -1,13 +1,13 @@
 const payloads = [
     {
       "resource": {
-        "question": 10
+        "question": 5
       },
       "params": {}
     },
     {
       "resource": {
-        "question": 11
+        "question": 4
       },
       "params": {}
     },

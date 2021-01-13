@@ -3,7 +3,6 @@ import getGraphs from './services/getGraphs'
 import queryString from 'query-string';
 import { isEmpty } from "lodash";
 import './styles.css';
-var jwt = require('jsonwebtoken')
 
 function Dashboard(props) {
   const [currentNav, setCurrentNav] = useState({})
@@ -16,19 +15,6 @@ function Dashboard(props) {
     setUrls(response.urls)
   }
 
-  const METABASE_SITE_URL = "http://localhost:3002";
-  const METABASE_SECRET_KEY = "af294119ad618231d45901bc52f68b843e64b24510fc4183dcbf0add14d30c25";
-
-  var payload = {
-    resource: { dashboard: 1 },
-    params: {},
-    exp: Math.round(Date.now() / 1000) + (10 * 60) // 10 minute expiration
-  };
-  
-  var token = jwt.sign(payload, METABASE_SECRET_KEY);
-
-  var iframeUrl = METABASE_SITE_URL + "/embed/dashboard/" + token + "#bordered=true&titled=true";
-
   useEffect(() => {
     _getUrls()
     if (isEmpty(hashes)) {
@@ -38,14 +24,15 @@ function Dashboard(props) {
       setCurrentNav(hashes)
     }
   }, [hashes.geral, hashes.adesao, hashes.dados]);
-
+  
   const isCurrentNav = (string) => {
     if (typeof currentNav[string] !== "undefined") return true
     return false
   }
-
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
+
+  console.log(urls)
 
   return (
     <div className="dash visualizations">
@@ -67,9 +54,9 @@ function Dashboard(props) {
       <div className={`dash visualizations ${isCurrentNav('geral') ? '' : 'd-none'}`}>
         <iframe
           title="Dados gerais"
-          src={iframeUrl}
+          src={"http://painel.gds.proepi.org.br:5601/app/kibana#/dashboard/4471fcd0-8a4c-11ea-8338-a5c2f3db7279?embed=true&_g=(refreshInterval:(pause:!t,value:0),time:(from:'" + date + "',to:now))&_a=(description:'',filters:!(),fullScreenMode:!f,options:(hidePanelTitles:!f,useMargins:!t),panels:!((embeddableConfig:(title:'Desenvolvido%20em%20parceria%20com'),gridData:(h:4,i:'6e12ee3e-d228-44b2-bac2-35d1cd135f67',w:48,x:0,y:0),id:b18405e0-ace1-11ea-8757-c560579e51be,panelIndex:'6e12ee3e-d228-44b2-bac2-35d1cd135f67',title:'Desenvolvido%20em%20parceria%20com',type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:9,i:'4f2bc523-6c05-41f2-b2bc-cbe39097ca9a',w:38,x:0,y:4),id:'0f8af150-e24b-11ea-b06d-f32b0ae9e5ff',panelIndex:'4f2bc523-6c05-41f2-b2bc-cbe39097ca9a',type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:18,i:d6c925da-4938-4709-aa7a-25b6eb84ac7d,w:10,x:38,y:4),id:'706f5000-e247-11ea-b06d-f32b0ae9e5ff',panelIndex:d6c925da-4938-4709-aa7a-25b6eb84ac7d,type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:9,i:d0aa5ec7-496f-4942-9606-8e38a5b3225b,w:38,x:0,y:13),id:'0577ee50-e248-11ea-b06d-f32b0ae9e5ff',panelIndex:d0aa5ec7-496f-4942-9606-8e38a5b3225b,type:visualization,version:'7.6.1'),(embeddableConfig:(hiddenLayers:!(),isLayerTOCOpen:!f,mapCenter:(lat:-14.97744,lon:-50.80119,zoom:3.42),openTOCDetails:!(),title:'Reports%20sintom%C3%A1ticos%20por%20estado%20(total)'),gridData:(h:23,i:fee718ca-77eb-4021-98ca-197f0eff0c7c,w:26,x:0,y:22),id:'9d98a6e0-915b-11ea-8757-c560579e51be',panelIndex:fee718ca-77eb-4021-98ca-197f0eff0c7c,title:'Reports%20sintom%C3%A1ticos%20por%20estado%20(total)',type:map,version:'7.6.1'),(embeddableConfig:(),gridData:(h:14,i:aac53799-e601-455c-abbd-09a4a9073196,w:22,x:26,y:22),id:'338e8690-e249-11ea-b06d-f32b0ae9e5ff',panelIndex:aac53799-e601-455c-abbd-09a4a9073196,type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:9,i:b8c94d40-d183-49d7-bff5-489b9d57064a,w:22,x:26,y:36),id:'7be5d010-e249-11ea-b06d-f32b0ae9e5ff',panelIndex:b8c94d40-d183-49d7-bff5-489b9d57064a,type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:9,i:ebf5b601-3916-4c1b-98a1-909ba4574c29,w:48,x:0,y:45),id:'1273aed0-e24a-11ea-b06d-f32b0ae9e5ff',panelIndex:ebf5b601-3916-4c1b-98a1-909ba4574c29,type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:10,i:'23742b45-9d5b-4838-a21b-0985da316169',w:36,x:0,y:54),id:'54fc7570-e24a-11ea-b06d-f32b0ae9e5ff',panelIndex:'23742b45-9d5b-4838-a21b-0985da316169',type:visualization,version:'7.6.1'),(embeddableConfig:(),gridData:(h:10,i:'3e96a110-cf56-46c7-bfb9-c31bc6322398',w:12,x:36,y:54),id:'747d08b0-e24a-11ea-b06d-f32b0ae9e5ff',panelIndex:'3e96a110-cf56-46c7-bfb9-c31bc6322398',type:visualization,version:'7.6.1')),query:(language:kuery,query:''),timeRestore:!t,title:'Dados%20gerais%20-%20Guardi%C3%B5es%20da%20Sa%C3%BAde',viewMode:view)"}
           frameBorder="0"
-          height="900"
+          height="1870"
           width="100%"
         />
       </div>
@@ -93,7 +80,7 @@ function Dashboard(props) {
           width="100%"
         />
       </div>
-{/* 
+
       <div className={`dash visualizations ${isCurrentNav('dashboard') ? '' : 'd-none'}`}>
         <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
           {urls.length && urls.map((url) => {
@@ -110,7 +97,7 @@ function Dashboard(props) {
             )
           })}
         </div>
-      </div> */}
+      </div>
 
       <i className={"note"}>NOTA: caso você encontre problemas nessa página, use o navegador Firefox</i>
     </div>
