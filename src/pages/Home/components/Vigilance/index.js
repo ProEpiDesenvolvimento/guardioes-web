@@ -15,7 +15,8 @@ import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
   setToken,
-  setSyndromes
+  setSyndromes,
+  setEmail
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
@@ -23,6 +24,9 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
+import { useForm } from "react-hook-form";
+import axios from 'axios';
+import ContentBox from '../ContentBox';
 
 const Vigilance = ({
   vigilance_syndromes,
@@ -35,6 +39,12 @@ const Vigilance = ({
 }) => {
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showModal, setShowModal] = useState(false);
+  const [goDataToken, setGoDataToken] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  const { handleSubmit } = useForm();
+  const [outbreaks, setOutbreaks] = useState([]);
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
@@ -52,6 +62,23 @@ const Vigilance = ({
       await loadData(auxSession.token)
     }
     _loadSession();
+
+    if (user.godatausername) {
+      const loginGoData = async () => {
+        const response = await axios.post(
+          "https://inclusaodigital.unb.br/api/oauth/token",
+          {
+            username: user.godatausername,
+            password: user.godatapassword
+          }
+        );
+        console.log(response.data.response.access_token);
+
+        setGoDataToken(response.data.response.access_token);
+      }
+
+      loginGoData();
+    }
   }, [token]);
 
   useEffect(() => {
@@ -67,7 +94,7 @@ const Vigilance = ({
     setVigilanceSyndromes(vs)
   }
 
-  const handleSubmit = async () => {
+  const _handleSubmit = async () => {
     const data = {
       group_manager: {
         vigilance_syndromes: vigilance_syndromes
@@ -76,150 +103,219 @@ const Vigilance = ({
     const response = await editGroupManager(user.id, data, token)
   }
 
+  const _goDataLogIn = async () => {
+    await axios.post(
+      "https://inclusaodigital.unb.br/api/oauth/token",
+      {
+        username: inputEmail,
+        password: inputPassword
+      }
+    )
+    .then((res) => {
+      setGoDataToken(res.data.response.access_token);
+      getOutbreaks(res.data.response.access_token);
+      setLoggedIn(true);
+    })
+    .catch((e) => {
+      alert("Falha na autenticação.");
+    });
+  }
+
+  const getOutbreaks = async (token) => {
+    await axios.get(
+      "https://inclusaodigital.unb.br/api/outbreaks",
+      {
+        headers: { "Authorization": `Bearer ${token}` }
+      }
+    )
+    .then((res) => {
+      setOutbreaks(res.data);
+    })
+    .catch((e) => {
+      alert("Erro!");
+    });
+  }
+
   return (
-    <Container>
-      <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Informações da Síndrome
-          </Modal.Title>
-        </Modal.Header>
+    <>
+      {user.godatausername || loggedIn ?
+        <>
+          <Container>
+            <Modal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>
+                  Informações da Síndrome
+              </Modal.Title>
+              </Modal.Header>
 
-        <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={syndromeShow.id}
-                disabled
-            />
-          </EditInput>
+              <Modal.Body>
+                <EditInput>
+                  <label>ID</label>
+                  <input
+                    className="text-dark"
+                    type="text"
+                    value={syndromeShow.id}
+                    disabled
+                  />
+                </EditInput>
 
-          <EditInput>
-            <label>Título</label>
-            <input 
-              className="text-dark"
-              type="text"
-              value={syndromeShow.description}
-              disabled
-            />
-          </EditInput>
+                <EditInput>
+                  <label>Título</label>
+                  <input
+                    className="text-dark"
+                    type="text"
+                    value={syndromeShow.description}
+                    disabled
+                  />
+                </EditInput>
 
-          <EditInput>
-            <label>Descrição</label>
-            <TextArea
-              className="text-dark"
-              type="text"
-              value={syndromeShow.details}
-              disabled
-              rows="1"
-            />
-          </EditInput>
+                <EditInput>
+                  <label>Descrição</label>
+                  <TextArea
+                    className="text-dark"
+                    type="text"
+                    value={syndromeShow.details}
+                    disabled
+                    rows="1"
+                  />
+                </EditInput>
 
-          {syndromeShow.message ?
-            <EditInput className="bg-light p-2">
-              <label>Mensagem</label>
+                {syndromeShow.message ?
+                  <EditInput className="bg-light p-2">
+                    <label>Mensagem</label>
 
-              <div className="form-group">
-                <h6>Título</h6>
-                <input
-                  type="text"
-                  className="text-dark w-100"
-                  value={syndromeShow.message.title}
-                  disabled
-                />
-              </div>
-              <div className="form-group">
-                <h6>Mensagem de aviso</h6>
-                <TextArea
-                  type="text"
-                  className="text-dark"
-                  value={syndromeShow.message.warning_message}
-                  disabled
-                  rows="1"
-                />
-              </div>
-              <div className="form-group">
-                <h6>Mensagem de hospitalização</h6>
-                <TextArea
-                  type="text"
-                  className="text-dark"
-                  value={syndromeShow.message.go_to_hospital_message}
-                  disabled
-                  rows="1"
-                />
-              </div>
-            </EditInput>
-          : null}
+                    <div className="form-group">
+                      <h6>Título</h6>
+                      <input
+                        type="text"
+                        className="text-dark w-100"
+                        value={syndromeShow.message.title}
+                        disabled
+                      />
+                    </div>
+                    <div className="form-group">
+                      <h6>Mensagem de aviso</h6>
+                      <TextArea
+                        type="text"
+                        className="text-dark"
+                        value={syndromeShow.message.warning_message}
+                        disabled
+                        rows="1"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <h6>Mensagem de hospitalização</h6>
+                      <TextArea
+                        type="text"
+                        className="text-dark"
+                        value={syndromeShow.message.go_to_hospital_message}
+                        disabled
+                        rows="1"
+                      />
+                    </div>
+                  </EditInput>
+                  : null}
 
-          {syndromeShow.symptoms ? syndromeShow.symptoms.map((symptom) => (
-            <EditInput className="bg-light p-2" key={symptom.id}>
-              <h6>{symptom.description}</h6>
-              <label htmlFor={`show_percentage_${symptom.id}`}>Porcentagem</label>
-              <input
-                type="number"
-                id={`show_percentage_${symptom.id}`}
-                value={Math.round(symptom.percentage * 100)}
-                disabled
-              />
-              <h6>{symptom.label}</h6>
-            </EditInput>
-          )) : null}
-        </Modal.Body>
+                {syndromeShow.symptoms ? syndromeShow.symptoms.map((symptom) => (
+                  <EditInput className="bg-light p-2" key={symptom.id}>
+                    <h6>{symptom.description}</h6>
+                    <label htmlFor={`show_percentage_${symptom.id}`}>Porcentagem</label>
+                    <input
+                      type="number"
+                      id={`show_percentage_${symptom.id}`}
+                      value={Math.round(symptom.percentage * 100)}
+                      disabled
+                    />
+                    <h6>{symptom.label}</h6>
+                  </EditInput>
+                )) : null}
+              </Modal.Body>
 
-        <Modal.Footer>
-          <SubmitButton onClick={() => setShowModal(false)}>Voltar</SubmitButton>                    
-        </Modal.Footer>
-      </Modal>
+              <Modal.Footer>
+                <SubmitButton onClick={() => setShowModal(false)}>Voltar</SubmitButton>
+              </Modal.Footer>
+            </Modal>
 
-      <ContainerContentBox
-      className="shadow-sm"
-      component_height={'35rem'}
-      >
-        <ContentBoxHeader>
-          <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
-        </ContentBoxHeader>
-        <ContentBoxTable
-          component_height={'35rem'}
-        >
-        {syndromes !== null ?
-          syndromes.length > 0 ?
-            <TableComponent
-              contents={syndromes ? syndromes : null}
+            <ContainerContentBox
+              className="shadow-sm"
+              component_height={'35rem'}
+            >
+              <ContentBoxHeader>
+                <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
+              </ContentBoxHeader>
+              <ContentBoxTable
+                component_height={'35rem'}
+              >
+                {syndromes !== null ?
+                  syndromes.length > 0 ?
+                    <TableComponent
+                      contents={syndromes ? syndromes : null}
+                      fields={[
+                        { key: "id", value: "ID" },
+                        { key: "description", value: "Título" }
+                      ]}
+                      _deleteApp={() => { }}
+                      setContentShow={handleShow}
+                      setEditingContent={() => { }}
+                      token={token}
+                      vigilance_syndromes={vigilance_syndromes}
+                      setVigilanceSyndromes={setVigilanceSyndromesCallback}
+                    /> :
+                    <Loading isLoading={true} />
+                  :
+                  <Table responsive>
+                    <thead>
+                      <tr>
+                        <th>Não há sindromes cadastradas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                }
+              </ContentBoxTable>
+              <SubmitButton onClick={() => _handleSubmit()}>Confirmar Mudanças</SubmitButton>
+            </ContainerContentBox>
+          </Container>
+          <Container>
+            <ContentBox
+              title="Surtos GoData"
+              contents={outbreaks ? outbreaks : null}
               fields={[
                 { key: "id", value: "ID" },
-                { key: "description", value: "Título" }
+                { key: "name", value: "Nome" }
               ]}
-              _deleteApp={() => {}}
-              setContentShow={handleShow}
-              setEditingContent={() => {}}
-              token={token}
-              vigilance_syndromes={vigilance_syndromes}
-              setVigilanceSyndromes={setVigilanceSyndromesCallback}
-            /> :
-            <Loading isLoading={true} />
-          :
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Não há sindromes cadastradas</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td></td>
-                  </tr>
-              </tbody>
-            </Table>
-        }
-        </ContentBoxTable>
-        <SubmitButton onClick={() => handleSubmit()}>Confirmar Mudanças</SubmitButton>
-      </ContainerContentBox>
-    </Container>
+              delete_function={() => { }}
+              handleEdit={() => { }}
+              handleShow={() => { }}
+            />
+          </Container>
+        </>
+        :
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <div className="jumbotron">
+            <h4>Autenticação GoData</h4>
+            <form id="goDataLogIn" onSubmit={handleSubmit(_goDataLogIn)}>
+              <div className="form-group">
+                <label for="inputEmail">E-mail</label>
+                <input type="email" class="form-control" id="inputEmail" value={inputEmail} onChange={(e) => setInputEmail(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label for="inputPassword">Senha</label>
+                <input type="password" class="form-control" id="inputPassword" value={inputPassword} onChange={(e) => setInputPassword(e.target.value)} />
+              </div>
+              <SubmitButton type="submit">Entrar</SubmitButton>
+            </form>
+          </div>
+        </div>
+      }
+    </>
   );
 }
 
