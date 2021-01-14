@@ -7,13 +7,9 @@ import {
 import queryString from 'query-string';
 
 import getGraphs from './services/getGraphs'
-
-import getPayloads from './services/getPayloads'
-/*
-  import payloadsAdmin from './payloadsAdmin';
-  import payloadsGroupManager from './payloadsGroupManager';
-  import payloadsManager from './payloadsManager'; 
-*/
+import getAdminPayloads from './services/getAdminPayloads';
+import getManagerPayloads from './services/getManagerPayloads'; 
+import getGroupManagerPayloads from './services/getGroupManagerPayloads';
 
 import { isEmpty } from "lodash";
 import './styles.css';
@@ -26,11 +22,20 @@ const Dashboard = ({
   const hashes = queryString.parse(window.location.hash)
 
   const _getUrls = async () => {
-    // VERIFICA O PAYLOAD DE ACORDO COM O TIPO DE USUÁRIO E PASSA NO PARAMETRO
-    const payloads = getPayloads(user);
-    console.log(payloads);
+    let payloads = []
+
+    switch(user.type){
+      case 'admin':
+        payloads = getAdminPayloads(user);
+        break;
+      case 'manager':
+        payloads = getManagerPayloads(user);
+        break;
+      case 'group_manager':
+        payloads = getGroupManagerPayloads(user);    
+    }
+
     const response = await getGraphs(payloads)
-    console.log(response)
     setUrls(response.urls)
   }
 
@@ -50,8 +55,6 @@ const Dashboard = ({
   }
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
-
-  console.log('URLS -->', urls)
 
   return (
     <div className="dash visualizations">

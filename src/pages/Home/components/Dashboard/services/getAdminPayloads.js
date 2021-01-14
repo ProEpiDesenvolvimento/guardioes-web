@@ -1,4 +1,6 @@
-const GetPayloads = (user) => {
+const getAdminPayloads = (user) => {
+  console.log('user.app_id ', user.app_id)
+
   const payloads = [
     {
       "resource": {
@@ -19,5 +21,5 @@ const GetPayloads = (user) => {
   return payloads;
 }
 
-export default GetPayloads
+export default getAdminPayloads
   
