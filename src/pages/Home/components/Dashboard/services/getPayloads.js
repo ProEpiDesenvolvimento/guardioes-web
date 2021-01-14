@@ -1,4 +1,8 @@
-const payloads = [
+const GetPayloads = (user) => {
+
+  console.log('USER DATA ', user);
+
+  const payloads = [
     {
       "resource": {
         "question": 5
@@ -12,5 +16,9 @@ const payloads = [
       "params": {}
     },
   ]
- 
-  export default payloads;
+
+  return payloads;
+}
+
+export default GetPayloads
+  

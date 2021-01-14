@@ -1,17 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import getGraphs from './services/getGraphs'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {
+  setUser
+} from 'actions/';
 import queryString from 'query-string';
+
+import getGraphs from './services/getGraphs'
+
+import getPayloads from './services/getPayloads'
+/*
+  import payloadsAdmin from './payloadsAdmin';
+  import payloadsGroupManager from './payloadsGroupManager';
+  import payloadsManager from './payloadsManager'; 
+*/
+
 import { isEmpty } from "lodash";
 import './styles.css';
 
-function Dashboard(props) {
+const Dashboard = ({
+  user
+}, props) => {
   const [currentNav, setCurrentNav] = useState({})
   const [urls, setUrls] = useState({})
   const hashes = queryString.parse(window.location.hash)
 
   const _getUrls = async () => {
-    const response = await getGraphs()
-    // console.log(response)
+    // VERIFICA O PAYLOAD DE ACORDO COM O TIPO DE USUÁRIO E PASSA NO PARAMETRO
+    const payloads = getPayloads(user);
+    console.log(payloads);
+    const response = await getGraphs(payloads)
+    console.log(response)
     setUrls(response.urls)
   }
 
@@ -23,7 +42,7 @@ function Dashboard(props) {
     else {
       setCurrentNav(hashes)
     }
-  }, [hashes.geral, hashes.adesao, hashes.dados]);
+  }, [hashes.geral, hashes.adesao, hashes.dados, user]);
   
   const isCurrentNav = (string) => {
     if (typeof currentNav[string] !== "undefined") return true
@@ -32,7 +51,7 @@ function Dashboard(props) {
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
 
-  console.log(urls)
+  console.log('URLS -->', urls)
 
   return (
     <div className="dash visualizations">
@@ -104,4 +123,18 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(
+  {
+    setUser,
+  },
+  dispatch,
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Dashboard);
