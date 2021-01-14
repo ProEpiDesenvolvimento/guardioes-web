@@ -1,7 +1,4 @@
 const GetPayloads = (user) => {
-
-  console.log('USER DATA ', user);
-
   const payloads = [
     {
       "resource": {
@@ -11,9 +8,11 @@ const GetPayloads = (user) => {
     },
     {
       "resource": {
-        "question": 4
+        "question": 7
       },
-      "params": {}
+      "params": {
+        "app_id": user.app_id
+      }
     },
   ]
 
