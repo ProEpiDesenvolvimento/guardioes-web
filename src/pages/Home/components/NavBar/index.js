@@ -76,7 +76,7 @@ const NavBar = ({
 
     if (user.type === "admin") {
       if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1));
+        categories = categories.concat(allCategories.slice(1, -2));
       }
       else {
         categories = categories.concat(allCategories.slice(3, -2));
@@ -84,7 +84,7 @@ const NavBar = ({
     } else if (user.type === "manager") {
       categories = categories.concat(allCategories.slice(5, -2));
     } else if (user.type === "group_manager") {
-      categories = categories.concat(allCategories.slice(8, -2));
+      categories = categories.concat(allCategories.slice(8));
     }
 
     setCategories(categories)
