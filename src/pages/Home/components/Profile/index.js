@@ -38,7 +38,6 @@ const Profile = ({
     const [twitter, setTwitter] = useState("");
     const [requireId, setRequireId] = useState(false);
     const [idCodeLength, setIdCodeLength] = useState(1);
-    const [isGod, setIsGod] = useState(false);
 
     const _editUser = async () => {
         if (user.type === "admin") {
@@ -96,7 +95,6 @@ const Profile = ({
         setTwitter(user.twitter);
         setRequireId(user.require_id);
         setIdCodeLength(user.id_code_length);
-        setIsGod(user.is_god);
     }
 
     const _setEditApp = async () => {
@@ -243,18 +241,6 @@ const Profile = ({
                                     onChange={(e) => setIdCodeLength(e.target.value)}
                                 />
                             </InputBlock>
-                        }
-
-                        {user.type === "admin" &&
-                            <CheckboxInputBlock>
-                                <Label htmlFor="is_god">Is God</Label>
-                                <CheckboxInput
-                                    type="checkbox"
-                                    id="is_god"
-                                    checked={isGod}
-                                    onChange={(e) => setIsGod(!isGod)}
-                                />
-                            </CheckboxInputBlock>
                         }
 
                         <SubmitButton type="submit">
