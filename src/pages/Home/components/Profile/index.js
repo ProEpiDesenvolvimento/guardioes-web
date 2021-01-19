@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux';
 
 import { useForm } from 'react-hook-form';
 import { sessionService } from 'redux-react-session';
+import getApp from './services/getApp';
+import editApp from './services/editApp';
 import editUser from './services/editUser';
 
 import {
@@ -31,18 +33,22 @@ const Profile = ({
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [appId, setAppId] = useState(0);
+    const [appName, setAppName] = useState("");
+    const [appTwitter, setAppTwitter] = useState("");
     const [twitter, setTwitter] = useState("");
     const [requireId, setRequireId] = useState(false);
     const [idCodeLength, setIdCodeLength] = useState(1);
-    const [isGod, setIsGod] = useState(false);
 
     const _editUser = async () => {
+        if (user.type === "admin") {
+            _editApp();
+        }
         const data = {
             [user.type]: {
                 "first_name": firstName,
                 "last_name": lastName,
                 "name": firstName,
-                "email": email,
+                //"email": email,
                 "password": password !== "" ? password : undefined,
                 "twitter": twitter,
                 "require_id": requireId,
@@ -64,6 +70,17 @@ const Profile = ({
         }
     }
 
+    const _editApp = async () => {
+        const data = {
+            "app_name": appName,
+            "twitter": appTwitter,
+        }
+        const response = await editApp(appId, data, token);
+        if (response.errors) {
+            alert("Erro ao editar APP")
+        }
+    }
+
     const _setEditUser = () => {
         if (user.first_name) {
             setFirstName(user.first_name);
@@ -78,7 +95,18 @@ const Profile = ({
         setTwitter(user.twitter);
         setRequireId(user.require_id);
         setIdCodeLength(user.id_code_length);
-        setIsGod(user.is_god);
+    }
+
+    const _setEditApp = async () => {
+        if (user.type !== "admin") return;
+
+        const response = await getApp(user.app_id, token);
+
+        if (!response.errors) {
+            const app = response.app;
+            setAppName(app.app_name);
+            setAppTwitter(app.twitter);
+        }
     }
 
     useEffect(() => {
@@ -88,6 +116,7 @@ const Profile = ({
         }
         _loadSession();
         _setEditUser();
+        _setEditApp();
     }, [token]);
 
     return (
@@ -126,7 +155,7 @@ const Profile = ({
                                 type="email"
                                 id="email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                //onChange={(e) => setEmail(e.target.value)}
                                 disabled
                             />
                         </InputBlock>
@@ -141,15 +170,41 @@ const Profile = ({
                             />
                         </InputBlock>
 
-                        <InputBlock>
-                            <label htmlFor="app_id">App Id</label>
-                            <input
-                                type="number"
-                                id="app_id"
-                                value={appId}
-                                disabled
-                            />
-                        </InputBlock>
+                        {user.type !== "admin" &&
+                            <InputBlock>
+                                <label htmlFor="app_id">App Id</label>
+                                <input
+                                    type="number"
+                                    id="app_id"
+                                    value={appId}
+                                    disabled
+                                />
+                            </InputBlock>
+                        }
+
+                        {user.type === "admin" &&
+                            <InputBlock>
+                                <label htmlFor="app_name">App:</label>
+                                <input
+                                    type="text"
+                                    id="app_name"
+                                    value={appName}
+                                    onChange={(e) => setAppName(e.target.value)}
+                                />
+                            </InputBlock>
+                        }
+
+                        {user.type === "admin" &&
+                            <InputBlock>
+                                <label htmlFor="app_twitter">App Twitter:</label>
+                                <input
+                                    type="text"
+                                    id="app_twitter"
+                                    value={appTwitter}
+                                    onChange={(e) => setAppTwitter(e.target.value)}
+                                />
+                            </InputBlock>
+                        }
 
                         {user.type === "group_manager" &&
                             <InputBlock>
@@ -186,18 +241,6 @@ const Profile = ({
                                     onChange={(e) => setIdCodeLength(e.target.value)}
                                 />
                             </InputBlock>
-                        }
-
-                        {user.type === "admin" &&
-                            <CheckboxInputBlock>
-                                <Label htmlFor="is_god">Is God</Label>
-                                <CheckboxInput
-                                    type="checkbox"
-                                    id="is_god"
-                                    checked={isGod}
-                                    onChange={(e) => setIsGod(!isGod)}
-                                />
-                            </CheckboxInputBlock>
                         }
 
                         <SubmitButton type="submit">
