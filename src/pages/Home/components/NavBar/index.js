@@ -68,6 +68,10 @@ const NavBar = ({
     {
       key: "vigilance",
       value: "Vigilância Ativa"
+    },
+    {
+      key: "godata",
+      value: "GoData"
     }
   ];
 
@@ -76,13 +80,13 @@ const NavBar = ({
 
     if (user.type === "admin") {
       if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1, -2));
+        categories = categories.concat(allCategories.slice(1, -3));
       }
       else {
-        categories = categories.concat(allCategories.slice(3));
+        categories = categories.concat(allCategories.slice(3, -1));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5));
+      categories = categories.concat(allCategories.slice(5, -1));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }
