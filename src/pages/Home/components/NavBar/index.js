@@ -83,10 +83,10 @@ const NavBar = ({
         categories = categories.concat(allCategories.slice(1, -3));
       }
       else {
-        categories = categories.concat(allCategories.slice(3, -1));
+        categories = categories.concat(allCategories.slice(3, -2));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -1));
+      categories = categories.concat(allCategories.slice(5, -2));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
     }
