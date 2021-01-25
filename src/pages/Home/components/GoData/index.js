@@ -157,8 +157,12 @@ const GoData = ({
                                         <option>Selecione...</option>
                                         {user.vigilance_syndromes.map((vs) => (
                                             syndromes.map((s) => {
-                                                if (s.id === vs.syndrome_id)
+                                                if (s.id == vs.syndrome_id && outbreakId == vs.outbreak_id) {
+                                                    return <option key={vs.syndrome_id} value={vs.syndrome_id} selected>{s.description}</option>
+                                                }
+                                                else if (s.id == vs.syndrome_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id}>{s.description}</option>
+                                                }
                                             })
                                         ))}
                                     </select>
