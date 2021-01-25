@@ -17,10 +17,13 @@ const TableComponent = ({
 }) => {
 
   const isVigilance = syndrome => {
-    if (vigilance_syndromes)
-      for (let vs of vigilance_syndromes)
-        if (vs.syndrome_id === syndrome.id)
+    if (vigilance_syndromes) {
+      for (let vs of vigilance_syndromes) {
+        if (vs.syndrome_id === syndrome.id) {
           return true
+        }
+      }
+    }
   }
 
   const handleChange = syndrome => {
