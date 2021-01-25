@@ -23,6 +23,7 @@ import {
     ContentBoxTable
 } from '../ContentBox/styles';
 import { ContentBoxTableHeader } from '../ContentBox/Table/styles';
+import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 
 const GoData = ({
     vigilance_syndromes,
@@ -37,19 +38,17 @@ const GoData = ({
     const [inputPassword, setInputPassword] = useState("");
     const { handleSubmit } = useForm();
     const [outbreaks, setOutbreaks] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [syndromes, setSyndromes] = useState([]);
+    const [selectedSyndrome, setSelectedSyndrome] = useState(0);
+    const [outbreakId, setOutbreakId] = useState(0);
 
     useEffect(() => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
-            if (auxSession.goDataToken) {
-                setGoDataToken(auxSession.goDataToken);
-                getOutbreaks(auxSession.goDataToken);
-                setLoggedIn(true);
-            }
         }
         _loadSession();
-
 
         if (user.godatausername && (goDataToken === "")) {
             const loginGoData = async () => {
@@ -62,8 +61,13 @@ const GoData = ({
                 )
                     .then(async (res) => {
                         setGoDataToken(res.data.response.access_token);
-                        await sessionService.saveSession({ goDataToken: res.data.response.access_token });
+                        //await sessionService.saveSession({ goDataToken: res.data.response.access_token });
                         getOutbreaks(res.data.response.access_token);
+                        const syns = await getAllSyndromes(token)
+                        let synds = []
+                        if (syns.syndromes)
+                            synds = syns.syndromes
+                        setSyndromes(synds);
                         setLoggedIn(true);
                     })
                     .catch((e) => {
@@ -85,8 +89,12 @@ const GoData = ({
         )
             .then(async (res) => {
                 setGoDataToken(res.data.response.access_token);
-                await sessionService.saveSession({ goDataToken: res.data.response.access_token });
                 getOutbreaks(res.data.response.access_token);
+                const syns = await getAllSyndromes(token)
+                let synds = []
+                if (syns.syndromes)
+                    synds = syns.syndromes
+                setSyndromes(synds);
                 setLoggedIn(true);
             })
             .catch((e) => {
@@ -109,10 +117,59 @@ const GoData = ({
             });
     }
 
+    const _addSyndrome = async () => {
+        let vigilanceSyndromes = user.vigilance_syndromes;
+        vigilanceSyndromes.map((vs) => {
+            if (vs.syndrome_id == selectedSyndrome) {
+                vs.outbreak_id = outbreakId;
+            }
+        });
+        const data = {
+            group_manager: {
+                vigilance_syndromes: vigilanceSyndromes
+            }
+        }
+        await editGroupManager(user.id, data, token);
+        setShowModal(false);
+    }
+
+    const handleModal = (outbreakId) => {
+        setOutbreakId(outbreakId);
+        setShowModal(true);
+    } 
+
     return (
         <>
             {loggedIn ?
                 <>
+                    <Modal
+                        show={showModal}
+                        onHide={() => setShowModal(false)}
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Adicionar Síndrome</Modal.Title>
+                        </Modal.Header>
+
+                        <form id="addSyndrome" onSubmit={handleSubmit(_addSyndrome)}>
+                            <Modal.Body>
+                                <div className="form-group">
+                                    <select className="form-control" onChange={(e) => setSelectedSyndrome(e.target.value)}>
+                                        <option>Selecione...</option>
+                                        {user.vigilance_syndromes.map((vs) => (
+                                            syndromes.map((s) => {
+                                                if (s.id === vs.syndrome_id)
+                                                    return <option key={vs.syndrome_id} value={vs.syndrome_id}>{s.description}</option>
+                                            })
+                                        ))}
+                                    </select>
+                                </div>
+                            </Modal.Body>
+                            
+                            <Modal.Footer>
+                                <SubmitButton type="submit">Adicionar</SubmitButton>
+                            </Modal.Footer>
+                        </form>
+                    </Modal>
                     <Container
                         className="shadow-sm"
                         component_height="35rem"
@@ -143,7 +200,7 @@ const GoData = ({
                                                 <tr key={outbreak.id}>
                                                     <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
                                                     <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
-                                                    <td>Adicionar Sindrome</td>
+                                                    <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
                                                 </tr>
                                             ))}
                                         </tbody>
