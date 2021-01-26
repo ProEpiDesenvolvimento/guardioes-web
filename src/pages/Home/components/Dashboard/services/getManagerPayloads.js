@@ -2,10 +2,11 @@ const getManagerPayloads = (user) => {
   const payloads = [
     {
       "resource": {
-        "question": 5
+        "dashboard": 3
       },
       "params": {
-        "group_id": user.group_id
+        "app_id": user.app_id,
+        "app": user.app_id,
       }
     }
   ]
