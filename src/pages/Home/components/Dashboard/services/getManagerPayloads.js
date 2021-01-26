@@ -4,16 +4,10 @@ const getManagerPayloads = (user) => {
       "resource": {
         "question": 5
       },
-      "params": {}
-    },
-    {
-      "resource": {
-        "question": 7
-      },
       "params": {
-        "app_id": 2
+        "group_id": user.group_id
       }
-    },
+    }
   ]
 
   return payloads;
