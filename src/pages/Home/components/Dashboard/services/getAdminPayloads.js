@@ -4,22 +4,16 @@ const getAdminPayloads = (user) => {
   const payloads = [
     {
       "resource": {
-        "question": 5
-      },
-      "params": {}
-    },
-    {
-      "resource": {
-        "question": 7
+        "dashboard": 3
       },
       "params": {
-        "app_id": user.app_id
+        "app_id": 1,
+        "app": 1,
       }
-    },
+    }
   ]
 
   return payloads;
 }
 
 export default getAdminPayloads
-  
