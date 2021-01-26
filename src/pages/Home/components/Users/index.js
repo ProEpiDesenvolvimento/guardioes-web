@@ -36,6 +36,7 @@ const Users = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [userShow, setUserShow] = useState({});
+  const [analysisShow, setAnalysisShow] = useState({});
   const [modalEdit, setModalEdit] = useState(false);
   const [editingUser, setEditingUser] = useState({});
   const [editName, setEditName] = useState("");
@@ -61,6 +62,7 @@ const Users = ({
 
   const handleShow = (user) => {
     setUserShow(user);
+    setAnalysisShow(user.analysis);
     setModalShow(!modalShow);
   }
 
@@ -316,6 +318,40 @@ const Users = ({
               className="text-dark"
               type="text"
               value={userShow.is_professional}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Informações de Concessão de Céditos - UnB</label>
+          </EditInput>
+
+          <EditInput>
+            <label>Data de Inicio da Contagem</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={analysisShow.initial_date} 
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Data Limite para Contagem</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={analysisShow.limit_date}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Quantidade de Dias Reportados no Período</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={analysisShow.count}
               disabled
             />
           </EditInput>
