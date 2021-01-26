@@ -7,8 +7,8 @@ const getAdminPayloads = (user) => {
         "dashboard": 3
       },
       "params": {
-        "app_id": 1,
-        "app": 1,
+        "app_id": user.app_id,
+        "app": user.app_id,
       }
     }
   ]
