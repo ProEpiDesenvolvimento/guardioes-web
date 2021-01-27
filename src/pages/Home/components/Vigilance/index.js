@@ -43,7 +43,8 @@ const Vigilance = ({
     if (syns.syndromes)
       synds = syns.syndromes
     const gm = await getGroupManager(user.id, token)
-    setVigilanceSyndromes(gm.group_manager.vigilance_syndromes)
+    if (gm && gm.group_manager && gm.group_manager.vigilance_syndromes)
+      setVigilanceSyndromes(gm.group_manager.vigilance_syndromes)
     setSyndromes(synds)
   }
 
