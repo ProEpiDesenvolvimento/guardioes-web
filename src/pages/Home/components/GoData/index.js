@@ -96,10 +96,19 @@ const GoData = ({
                     synds = syns.syndromes
                 setSyndromes(synds);
                 setLoggedIn(true);
+
+                const data = {
+                    group_manager: {
+                        username_godata: inputEmail,
+                        password_godata: inputPassword
+                    }
+                }
+                await editGroupManager(user.id, data, token);
             })
             .catch((e) => {
                 alert("Falha na autenticação.");
             });
+
     }
 
     const getOutbreaks = async (token) => {
@@ -121,7 +130,7 @@ const GoData = ({
         let vigilanceSyndromes = user.vigilance_syndromes;
         vigilanceSyndromes.map((vs) => {
             if (vs.syndrome_id == selectedSyndrome) {
-                vs.outbreak_id = outbreakId;
+                vs.surto_id = outbreakId;
             }
         });
         const data = {
