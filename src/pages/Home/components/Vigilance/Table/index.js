@@ -33,7 +33,7 @@ const TableComponent = ({
     if (belongs) {
       vs = vigilance_syndromes.filter(s => s.syndrome_id !== syndrome.id)
     } else {
-      const aux_synd = {syndrome_id: syndrome.id, id_surto: syndrome.id_surto}
+      const aux_synd = {syndrome_id: syndrome.id, surto_id: syndrome.surto_id}
       vs.push(aux_synd)
     }
     setVigilanceSyndromes(vs)

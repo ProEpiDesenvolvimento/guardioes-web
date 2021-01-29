@@ -5,7 +5,9 @@ import {
     setVigilanceSyndromes,
     setToken,
     setSyndromes,
-    setEmail
+    setEmail,
+    setUser,
+    setGoDataToken
 } from 'actions/';
 import Loading from 'sharedComponents/Loading';
 import { bindActionCreators } from 'redux';
@@ -30,10 +32,11 @@ const GoData = ({
     setVigilanceSyndromes,
     setToken,
     token,
-    user
+    setUser,
+    user,
+    godataToken,
+    setGoDataToken
 }) => {
-    const [goDataToken, setGoDataToken] = useState("");
-    const [loggedIn, setLoggedIn] = useState(false);
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const { handleSubmit } = useForm();
@@ -42,43 +45,55 @@ const GoData = ({
     const [syndromes, setSyndromes] = useState([]);
     const [selectedSyndrome, setSelectedSyndrome] = useState(0);
     const [outbreakId, setOutbreakId] = useState(0);
+    const [outbreaksLinkeds, setOutbreaksLinkeds] = useState([])
 
+    const loadData = async () => {
+        getOutbreaks(godataToken);
+        const syns = await getAllSyndromes(token)
+        let synds = []
+        if (syns.syndromes)
+            synds = syns.syndromes
+        setSyndromes(synds);
+        let auxOutbreaksLinkeds = []
+        for (let i = 0; i < user.vigilance_syndromes.length; i++)
+            if (user.vigilance_syndromes[i].surto_id)
+                auxOutbreaksLinkeds.push(user.vigilance_syndromes[i].surto_id)
+        setOutbreaksLinkeds(auxOutbreaksLinkeds)
+    }
+    
     useEffect(() => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
         }
         _loadSession();
-
-        if (user.godatausername && (goDataToken === "")) {
+        
+        if (user.username_godata !== "" && godataToken === "") {
             const loginGoData = async () => {
                 await axios.post(
                     "https://inclusaodigital.unb.br/api/oauth/token",
                     {
-                        username: user.godatausername,
-                        password: user.godatapassword
+                        username: user.username_godata,
+                        password: user.password_godata
                     }
                 )
                     .then(async (res) => {
-                        setGoDataToken(res.data.response.access_token);
+                        setGoDataToken("Bearer " + res.data.response.access_token);
                         //await sessionService.saveSession({ goDataToken: res.data.response.access_token });
-                        getOutbreaks(res.data.response.access_token);
-                        const syns = await getAllSyndromes(token)
-                        let synds = []
-                        if (syns.syndromes)
-                            synds = syns.syndromes
-                        setSyndromes(synds);
-                        setLoggedIn(true);
+                        await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação.");
+                        // alert("Falha na autenticação.");
                     });
             }
-
             loginGoData();
         }
-    }, [token]);
 
+        if (godataToken !== "" && godataToken !== undefined) {
+            loadData();
+        }
+    }, []);
+    
     const _goDataLogIn = async () => {
         await axios.post(
             "https://inclusaodigital.unb.br/api/oauth/token",
@@ -88,14 +103,14 @@ const GoData = ({
             }
         )
             .then(async (res) => {
-                setGoDataToken(res.data.response.access_token);
-                getOutbreaks(res.data.response.access_token);
+                setGoDataToken("Bearer " + res.data.response.access_token);
+                setUser({...user, username_godata: inputEmail, password_godata: inputPassword })
+                getOutbreaks("Bearer " + res.data.response.access_token);
                 const syns = await getAllSyndromes(token)
                 let synds = []
                 if (syns.syndromes)
                     synds = syns.syndromes
                 setSyndromes(synds);
-                setLoggedIn(true);
 
                 const data = {
                     group_manager: {
@@ -108,29 +123,31 @@ const GoData = ({
             .catch((e) => {
                 alert("Falha na autenticação.");
             });
-
+            loadData()
     }
 
     const getOutbreaks = async (token) => {
         await axios.get(
             "https://inclusaodigital.unb.br/api/outbreaks",
             {
-                headers: { "Authorization": `Bearer ${token}` }
+                headers: { "Authorization": `${token}` }
             }
         )
             .then((res) => {
                 setOutbreaks(res.data);
             })
             .catch((e) => {
-                alert("Erro!");
+                // alert(e);
             });
     }
 
     const _addSyndrome = async () => {
+        let auxOutbreaksLinkeds = []
         let vigilanceSyndromes = user.vigilance_syndromes;
         vigilanceSyndromes.map((vs) => {
             if (vs.syndrome_id == selectedSyndrome) {
                 vs.surto_id = outbreakId;
+                auxOutbreaksLinkeds.push(outbreakId)
             }
         });
         const data = {
@@ -139,6 +156,8 @@ const GoData = ({
             }
         }
         await editGroupManager(user.id, data, token);
+        setVigilanceSyndromes(vigilanceSyndromes)
+        setOutbreaksLinkeds(auxOutbreaksLinkeds)
         setShowModal(false);
     }
 
@@ -147,9 +166,40 @@ const GoData = ({
         setShowModal(true);
     } 
 
+    const signOut = async () => {
+        const data = {
+            group_manager: {
+                username_godata: "",
+                password_godata: ""
+            }
+        }
+        await editGroupManager(user.id, data, token);
+        setGoDataToken("")
+        let auxVigilanceSyndromes = user.vigilance_syndromes
+        for (let i = 0; i < auxVigilanceSyndromes.length; i++)
+            delete auxVigilanceSyndromes[i].surto_id
+        setVigilanceSyndromes(auxVigilanceSyndromes)
+        setUser({...user, username_godata: "", password_godata: ""})
+    }
+
+    const unlinkOutbreak = async (outbreakId) => {
+        let auxVigilanceSyndromes = user.vigilance_syndromes
+        for (let i = 0; i < auxVigilanceSyndromes.length; i++)
+        if (auxVigilanceSyndromes[i].surto_id === outbreakId)
+        delete auxVigilanceSyndromes[i].surto_id
+        const data = {
+            group_manager: {
+                vigilance_syndromes: auxVigilanceSyndromes
+            }
+        }
+        setVigilanceSyndromes(auxVigilanceSyndromes)
+        await editGroupManager(user.id, data, token);
+        setOutbreaksLinkeds(outbreaksLinkeds.filter((ol) => ol !== outbreakId))
+    }
+
     return (
         <>
-            {loggedIn ?
+            {godataToken !== "" && godataToken !== undefined ?
                 <>
                     <Modal
                         show={showModal}
@@ -166,7 +216,7 @@ const GoData = ({
                                         <option>Selecione...</option>
                                         {user.vigilance_syndromes.map((vs) => (
                                             syndromes.map((s) => {
-                                                if (s.id == vs.syndrome_id && outbreakId == vs.outbreak_id) {
+                                                if (s.id == vs.syndrome_id && outbreakId == vs.surto_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id} selected>{s.description}</option>
                                                 }
                                                 else if (s.id == vs.syndrome_id) {
@@ -198,10 +248,21 @@ const GoData = ({
                                     <Table responsive>
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <p><b>Vinculado ao GoData como:</b></p>
+                                                    <p style={{fontWeight: "normal"}}>{user.username_godata}</p>
+                                                </th>
+                                                <th/><th/>
+                                                <th style={{float: "right"}}>
+                                                    <button type="button" class="btn btn-danger" onClick={signOut}>Desvincular</button>
+                                                </th>
+                                            </tr>
+                                            <tr>
                                                 {outbreaks.map((outbreak) => (
                                                     <>
                                                         <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Nome</ContentBoxTableHeader>
                                                         <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Descrição</ContentBoxTableHeader>
+                                                        <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Síndrome Conectada</ContentBoxTableHeader>
                                                     </>
                                                 ))}
                                                 <th></th>
@@ -209,13 +270,32 @@ const GoData = ({
                                         </thead>
 
                                         <tbody>
-                                            {outbreaks.map((outbreak) => (
-                                                <tr key={outbreak.id}>
-                                                    <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
-                                                    <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
-                                                    <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
-                                                </tr>
-                                            ))}
+                                            {outbreaks.map((outbreak) => {
+                                                const getSyndromeName = (outbreakId) => {
+                                                    let syndromeId = -1
+                                                    for (let i = 0; i < user.vigilance_syndromes.length; i++)
+                                                        if (user.vigilance_syndromes[i].surto_id === outbreakId)
+                                                            syndromeId = user.vigilance_syndromes[i].syndrome_id
+                                                    if (syndromeId === -1) return
+                                                    for (let i = 0; i < syndromes.length; i++)
+                                                        if (syndromes[i].id === syndromeId)
+                                                            return syndromes[i].description
+                                                }
+                                                return (
+                                                    <tr key={outbreak.id}>
+                                                        <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
+                                                        <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
+                                                        {outbreaksLinkeds.includes(outbreak.id) ?
+                                                        (<>
+                                                            <td style={{ maxWidth: "500px", padding: "10px 0"}} key={outbreak.id}>{getSyndromeName(outbreak.id)}<span style={{height: "15px", width: "15px", backgroundColor: "#5DD39E", borderRadius: "50%", display: "inline-block", marginLeft: "5px"}}></span></td>
+                                                            <td><button type="button" class="btn btn-danger" onClick={() => unlinkOutbreak(outbreak.id)} style={{margin: "0", padding: "5px", fontSize: "15px", width: "100px"}}>Desvincular Síndrome</button></td>
+                                                        </>)
+                                                            :
+                                                            <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
+                                                        }
+                                                    </tr>
+                                                )
+                                            })}
                                         </tbody>
                                     </Table>
                                     :
@@ -263,14 +343,17 @@ const mapStateToProps = (state) => ({
     token: state.user.token,
     syndromes: state.user.syndromes,
     vigilance_syndromes: state.user.vigilance_syndromes,
-    user: state.user.user
+    user: state.user.user,
+    godataToken: state.user.godataToken
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
         setVigilanceSyndromes,
         setToken,
-        setSyndromes
+        setSyndromes,
+        setGoDataToken,
+        setUser
     },
     dispatch,
 );
