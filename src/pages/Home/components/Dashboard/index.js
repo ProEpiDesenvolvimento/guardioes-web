@@ -105,7 +105,7 @@ const Dashboard = ({
 
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-          {urls.length && urls.map((url) => {
+          {urls?.length && urls.map((url) => {
             return (
               <div style={{ margin: 10 }}>
                 <iframe

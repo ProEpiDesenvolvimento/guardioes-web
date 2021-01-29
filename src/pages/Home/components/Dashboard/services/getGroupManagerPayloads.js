@@ -2,7 +2,7 @@ const getGroupManagerPayloads = (user) => {
   const payloads = [
     {
       "resource": {
-        "question": 35
+        "question": 5
       },
       "params": {
         "group_id": user.group_id
