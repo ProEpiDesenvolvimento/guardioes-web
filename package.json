@@ -13,6 +13,7 @@
     "google-map-react": "^1.1.7",
     "history": "^4.10.1",
     "jquery": "^3.5.1",
+    "jsonwebtoken": "^8.5.1",
     "lottie-react-web": "^2.2.2",
     "material-ui": "^0.20.2",
     "material-ui-country-flags": "^3.0.1",
