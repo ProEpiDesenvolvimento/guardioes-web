@@ -11,7 +11,7 @@ import api from 'services/api';
      return data
    })
    .catch((e) => {
-     if (e.response.data.error === "You are not authorized to access this page.") {
+     if (e.response?.data.error === "You are not authorized to access this page.") {
        alert("Você não tem permissão para visualizar Instituições.");
      }
      console.log(e);

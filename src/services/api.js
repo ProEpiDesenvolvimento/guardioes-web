@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// const baseURL = 'http://gds.proepi.org.br';
-// const baseURL = 'https://gds.guardioes.lappis.rocks';
 const baseURL = 'http://localhost:3001';
 
 axios.defaults.baseURL = baseURL;

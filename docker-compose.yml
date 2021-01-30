@@ -49,8 +49,7 @@ services:
     environment:
       JAVA_TOOL_OPTIONS: -Xmx4g
       MB_JETTY_MAXTHREADS: 300
-    networks:
-      - web
+      MB_DB_FILE: /metabase-data/metabase.db
  # The following is a traefik configuration (homolog only)
     # labels:
     #   - traefik.backend=kibana
