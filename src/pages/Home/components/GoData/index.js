@@ -60,14 +60,19 @@ const GoData = ({
                 auxOutbreaksLinkeds.push(user.vigilance_syndromes[i].surto_id)
         setOutbreaksLinkeds(auxOutbreaksLinkeds)
     }
+
+    useEffect(() => {
+        loadData()
+    }, [godataToken])
     
     useEffect(() => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
+            setGoDataToken(auxSession.godataToken);
         }
         _loadSession();
-        
+
         if (user.username_godata !== "" && godataToken === "") {
             const loginGoData = async () => {
                 await axios.post(
@@ -79,11 +84,12 @@ const GoData = ({
                 )
                     .then(async (res) => {
                         setGoDataToken("Bearer " + res.data.response.access_token);
-                        //await sessionService.saveSession({ goDataToken: res.data.response.access_token });
+                        const auxSession = await sessionService.loadSession();
+                        await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
                         await loadData();
                     })
                     .catch((e) => {
-                        // alert("Falha na autenticação.");
+                        alert("Falha na autenticação.");
                     });
             }
             loginGoData();
@@ -103,6 +109,8 @@ const GoData = ({
             }
         )
             .then(async (res) => {
+                const auxSession = await sessionService.loadSession();
+                await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
                 setGoDataToken("Bearer " + res.data.response.access_token);
                 setUser({...user, username_godata: inputEmail, password_godata: inputPassword })
                 getOutbreaks("Bearer " + res.data.response.access_token);
