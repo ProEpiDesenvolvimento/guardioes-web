@@ -5,7 +5,8 @@ import {
     setVigilanceSyndromes,
     setToken,
     setSyndromes,
-    setEmail
+    setEmail,
+    setUser
 } from 'actions/';
 import Loading from 'sharedComponents/Loading';
 import { bindActionCreators } from 'redux';
@@ -30,7 +31,8 @@ const GoData = ({
     setVigilanceSyndromes,
     setToken,
     token,
-    user
+    user,
+    setUser
 }) => {
     const [goDataToken, setGoDataToken] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
@@ -43,14 +45,16 @@ const GoData = ({
     const [selectedSyndrome, setSelectedSyndrome] = useState(0);
     const [outbreakId, setOutbreakId] = useState(0);
 
-    useEffect(() => {
+    useEffect(async () => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
+            const auxUser = await sessionService.loadUser();
+            setUser(auxUser);
         }
         _loadSession();
 
-        if (user.godatausername && (goDataToken === "")) {
+        if (user.godatausername && !user.goDataToken) {
             const loginGoData = async () => {
                 await axios.post(
                     "https://inclusaodigital.unb.br/api/oauth/token",
@@ -61,13 +65,15 @@ const GoData = ({
                 )
                     .then(async (res) => {
                         setGoDataToken(res.data.response.access_token);
-                        //await sessionService.saveSession({ goDataToken: res.data.response.access_token });
                         getOutbreaks(res.data.response.access_token);
-                        const syns = await getAllSyndromes(token)
-                        let synds = []
+                        const syns = await getAllSyndromes(token);
+                        let synds = [];
                         if (syns.syndromes)
-                            synds = syns.syndromes
+                            synds = syns.syndromes;
                         setSyndromes(synds);
+                        let u = user;
+                        u.goDataToken = res.data.response.access_token;
+                        await sessionService.saveUser(u);
                         setLoggedIn(true);
                     })
                     .catch((e) => {
@@ -76,6 +82,19 @@ const GoData = ({
             }
 
             loginGoData();
+        } else if (user.goDataToken) {
+            const _outbreakSetup = async () => {
+                setGoDataToken(user.goDataToken);
+                getOutbreaks(user.goDataToken);
+                const syns = await getAllSyndromes(token);
+                let synds = [];
+                if (syns.syndromes)
+                    synds = syns.syndromes;
+                setSyndromes(synds);
+                setLoggedIn(true);
+            }
+
+            _outbreakSetup();
         }
     }, [token]);
 
@@ -95,6 +114,9 @@ const GoData = ({
                 if (syns.syndromes)
                     synds = syns.syndromes
                 setSyndromes(synds);
+                let u = user;
+                u.goDataToken = res.data.response.access_token;
+                await sessionService.saveUser(u);
                 setLoggedIn(true);
             })
             .catch((e) => {
@@ -120,6 +142,9 @@ const GoData = ({
     const _addSyndrome = async () => {
         let vigilanceSyndromes = user.vigilance_syndromes;
         vigilanceSyndromes.map((vs) => {
+            if (vs.outbreak_id == outbreakId) {
+                vs.outbreak_id = null;
+            }
             if (vs.syndrome_id == selectedSyndrome) {
                 vs.outbreak_id = outbreakId;
             }
@@ -130,13 +155,16 @@ const GoData = ({
             }
         }
         await editGroupManager(user.id, data, token);
+        let u = user;
+        u.vigilance_syndromes = vigilanceSyndromes;
+        await sessionService.saveUser(u);
         setShowModal(false);
     }
 
     const handleModal = (outbreakId) => {
         setOutbreakId(outbreakId);
         setShowModal(true);
-    } 
+    }
 
     return (
         <>
@@ -168,7 +196,7 @@ const GoData = ({
                                     </select>
                                 </div>
                             </Modal.Body>
-                            
+
                             <Modal.Footer>
                                 <SubmitButton type="submit">Adicionar</SubmitButton>
                             </Modal.Footer>
@@ -193,6 +221,7 @@ const GoData = ({
                                                     <>
                                                         <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Nome</ContentBoxTableHeader>
                                                         <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Descrição</ContentBoxTableHeader>
+                                                        <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={outbreak.id}>Síndrome</ContentBoxTableHeader>
                                                     </>
                                                 ))}
                                                 <th></th>
@@ -204,6 +233,11 @@ const GoData = ({
                                                 <tr key={outbreak.id}>
                                                     <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
                                                     <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
+                                                    <td style={{ maxWidth: "500px" }} key={outbreak.id} id={outbreak.id}>
+                                                        {user.vigilance_syndromes.find(vs => vs.outbreak_id == outbreak.id) ? 
+                                                        syndromes.find(s => s.id == user.vigilance_syndromes.find(vs => vs.outbreak_id == outbreak.id).syndrome_id).description
+                                                        : "SEM SÍNDROME VINCULADA!"}
+                                                    </td>
                                                     <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
                                                 </tr>
                                             ))}
@@ -261,7 +295,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
     {
         setVigilanceSyndromes,
         setToken,
-        setSyndromes
+        setSyndromes,
+        setUser
     },
     dispatch,
 );
