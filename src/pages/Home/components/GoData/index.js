@@ -69,7 +69,8 @@ const GoData = ({
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
-            setGoDataToken(auxSession.godataToken);
+            if (auxSession.godataToken !== "" && auxSession.godataToken !== null && auxSession.godataToken !== undefined)
+                setGoDataToken(auxSession.godataToken);
         }
         _loadSession();
 
@@ -84,6 +85,7 @@ const GoData = ({
                 )
                     .then(async (res) => {
                         setGoDataToken("Bearer " + res.data.response.access_token);
+                        console.log("setou2")
                         const auxSession = await sessionService.loadSession();
                         await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
                         await loadData();
@@ -112,6 +114,7 @@ const GoData = ({
                 const auxSession = await sessionService.loadSession();
                 await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
                 setGoDataToken("Bearer " + res.data.response.access_token);
+                console.log("setou3")
                 setUser({...user, username_godata: inputEmail, password_godata: inputPassword })
                 getOutbreaks("Bearer " + res.data.response.access_token);
                 const syns = await getAllSyndromes(token)
@@ -183,6 +186,7 @@ const GoData = ({
         }
         await editGroupManager(user.id, data, token);
         setGoDataToken("")
+        console.log("setou4")
         let auxVigilanceSyndromes = user.vigilance_syndromes
         for (let i = 0; i < auxVigilanceSyndromes.length; i++)
             delete auxVigilanceSyndromes[i].surto_id
