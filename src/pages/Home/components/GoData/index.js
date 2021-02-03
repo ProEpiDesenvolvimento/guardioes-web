@@ -26,6 +26,7 @@ import {
 } from '../ContentBox/styles';
 import { ContentBoxTableHeader } from '../ContentBox/Table/styles';
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
+import getGroupManager from '../GroupManagers/services/getGroupManager';
 
 const GoData = ({
     vigilance_syndromes,
@@ -54,10 +55,12 @@ const GoData = ({
         if (syns.syndromes)
             synds = syns.syndromes
         setSyndromes(synds);
+        const gm = await getGroupManager(user.id, token)
+        setVigilanceSyndromes(gm.group_manager.vigilance_syndromes)
         let auxOutbreaksLinkeds = []
-        for (let i = 0; i < user.vigilance_syndromes.length; i++)
-            if (user.vigilance_syndromes[i].surto_id)
-                auxOutbreaksLinkeds.push(user.vigilance_syndromes[i].surto_id)
+        for (let i = 0; i < gm.group_manager.vigilance_syndromes.length; i++)
+            if (gm.group_manager.vigilance_syndromes[i].surto_id)
+                auxOutbreaksLinkeds.push(gm.group_manager.vigilance_syndromes[i].surto_id)
         setOutbreaksLinkeds(auxOutbreaksLinkeds)
     }
 
