@@ -23,7 +23,6 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
-import getGroupManager from '../GroupManagers/services/getGroupManager';
 
 const Vigilance = ({
   vigilance_syndromes,
@@ -42,9 +41,7 @@ const Vigilance = ({
     let synds = []
     if (syns.syndromes)
       synds = syns.syndromes
-    const gm = await getGroupManager(user.id, token)
-    if (gm && gm.group_manager && gm.group_manager.vigilance_syndromes)
-      setVigilanceSyndromes(gm.group_manager.vigilance_syndromes)
+    setVigilanceSyndromes(user.vigilance_syndromes)
     setSyndromes(synds)
   }
 

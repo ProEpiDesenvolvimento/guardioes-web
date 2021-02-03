@@ -12,6 +12,7 @@ import {
   SET_GROUPS,
   SET_SYNDROMES,
   SET_VIGILANCE_SYNDROMES,
+  SET_GO_DATA_TOKEN,
   SET_USERS,
   SET_ADMINS
 } from 'constants/action-types';
@@ -45,3 +46,5 @@ export const setSyndromes = (payload) => ({ type: SET_SYNDROMES, payload });
 export const setVigilanceSyndromes = (payload) => ({ type: SET_VIGILANCE_SYNDROMES, payload });
 
 export const setAdmins = (payload) => ({ type: SET_ADMINS, payload });
+
+export const setGoDataToken = (payload) => ({ type: SET_GO_DATA_TOKEN, payload });

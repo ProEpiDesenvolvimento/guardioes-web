@@ -11,6 +11,7 @@ import {
 	SET_GROUPS,
 	SET_SYNDROMES,
 	SET_VIGILANCE_SYNDROMES,
+	SET_GO_DATA_TOKEN,
 	SET_USERS,
 	SET_ADMINS
 } from 'constants/action-types';
@@ -38,6 +39,7 @@ const initialState = {
 	groups: [],
 	syndromes: [],
 	vigilance_syndromes: [],
+	godataToken: "",
 	users: [],
 	admins: []
 };
@@ -98,6 +100,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				vigilance_syndromes: action.payload
+			};
+		case SET_GO_DATA_TOKEN:
+			return {
+				...state,
+				godataToken: action.payload
 			};
 		case SET_USERS:
 			return {
