@@ -56,7 +56,7 @@ const GoData = ({
             synds = syns.syndromes
         setSyndromes(synds);
         const gm = await getGroupManager(user.id, token)
-        setVigilanceSyndromes(gm.group_manager.vigilance_syndromes)
+        setUser({...user, vigilance_syndromes: gm.group_manager.vigilance_syndromes})
         let auxOutbreaksLinkeds = []
         for (let i = 0; i < gm.group_manager.vigilance_syndromes.length; i++)
             if (gm.group_manager.vigilance_syndromes[i].surto_id)
@@ -104,7 +104,7 @@ const GoData = ({
             loadData();
         }
     }, []);
-    
+
     const _goDataLogIn = async () => {
         await axios.post(
             "https://inclusaodigital.unb.br/api/oauth/token",
