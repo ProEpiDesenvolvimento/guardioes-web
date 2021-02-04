@@ -13,8 +13,17 @@ const TableComponent = ({
   setContentShow,
   vigilance_syndromes,
   setVigilanceSyndromes,
+  vigilance_email,
   token,
 }) => {
+
+  const checkBoxState = () => {
+    if (vigilance_email === null){
+      return true
+    } else {
+      return false
+    }
+  }
 
   const isVigilance = syndrome => {
     if (vigilance_syndromes) {
@@ -74,6 +83,7 @@ const TableComponent = ({
                     id="belongs_to_vigilance"
                     checked={isVigilance(content)}
                     onChange={(e) => handleChange(content)}
+                    disabled={checkBoxState()}
                 />
             </td>
           </tr>

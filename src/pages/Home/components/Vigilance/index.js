@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Container,
   ContainerContentBox,
@@ -21,6 +22,7 @@ import {
   setVigilanceSyndromes,
   setToken,
   setSyndromes,
+  setUser,
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
@@ -38,9 +40,32 @@ const Vigilance = ({
   token,
   user
 }) => {
+  const { handleSubmit } = useForm();
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showModal, setShowModal] = useState(false);
   const [newEmail, setNewEmail] = useState(user.vigilance_email)
+
+  const _handleUpdateEmail = async () => {
+    const data = {
+      group_manager: {
+        vigilance_email: newEmail
+      }
+    }
+    const response = await editGroupManager(user.id, data, token)
+    
+    const responseUser = response.data[user.type]
+    if (!response.errors) {
+        setUser({
+            ...responseUser,
+            type: user.type
+        });
+        sessionService.saveUser({
+            ...responseUser,
+            type: user.type
+        });
+        window.location.reload();
+    }
+  }
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
@@ -73,23 +98,13 @@ const Vigilance = ({
     setVigilanceSyndromes(vs)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmitChanges = async () => {
     const data = {
       group_manager: {
         vigilance_syndromes: vigilance_syndromes
       }
     }
     const response = await editGroupManager(user.id, data, token)
-  }
-
-  const handleUpdateEmail = async () => {
-    const data = {
-      group_manager: {
-        vigilance_email: newEmail
-      }
-    }
-    const response = await editGroupManager(user.id, data, token)
-    console.log(response)
   }
 
   return (
@@ -213,6 +228,7 @@ const Vigilance = ({
               token={token}
               vigilance_syndromes={vigilance_syndromes}
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
+              vigilance_email={user.vigilance_email}
             /> :
             <Loading isLoading={true} />
           :
@@ -230,7 +246,7 @@ const Vigilance = ({
             </Table>
         }
         </ContentBoxTable>
-        <SubmitButton onClick={() => handleSubmit()}>Confirmar Mudanças</SubmitButton>
+        <SubmitButton onClick={() => handleSubmitChanges()}>Confirmar Mudanças</SubmitButton>
       </ContainerContentBox>
 
       {/* -------- EDITAR EMAIL -------- */}
@@ -241,22 +257,23 @@ const Vigilance = ({
         </ContentBoxHeader>
         <ContentBoxTable component_height={'35rem'}>
           <ContainerForm>
-            
+            <form id="editUser" onSubmit={handleSubmit(_handleUpdateEmail)}>
               <Inputs>
                 <InputBlock>
-                    <label htmlFor="email">E-mail</label>
-                    <Input
-                      type="email"
-                      id="email"
-                      value={newEmail}
-                      onChange={(e) => setNewEmail(e.target.value)}
-                    />
-                </InputBlock>
-              </Inputs>
-            
+                  <label htmlFor="email">E-mail</label>
+                  <Input
+                    type="email"
+                    id="email"
+                    placeholder='Não possui e-mail cadastrado'
+                    value={newEmail || null}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                  />
+                  </InputBlock>
+              </Inputs>   
+              <SubmitButton type="submit">Editar E-mail</SubmitButton>
+            </form>
           </ContainerForm>
         </ContentBoxTable>
-        <SubmitButton onClick={() => handleUpdateEmail()}>Editar E-mail</SubmitButton>
       </ContainerContentBox>
     </Container>
   );
@@ -274,6 +291,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
     setVigilanceSyndromes,
     setToken,
     setSyndromes,
+    setUser,
   },
   dispatch,
 );
