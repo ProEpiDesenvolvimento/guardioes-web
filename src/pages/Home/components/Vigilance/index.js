@@ -8,6 +8,11 @@ import {
   EditInput,
   SubmitButton,
   TextArea,
+  Form,
+  Inputs,
+  ContainerForm,
+  InputBlock,
+  Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import TableComponent from './Table'
@@ -15,7 +20,7 @@ import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
   setToken,
-  setSyndromes
+  setSyndromes,
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
@@ -35,6 +40,7 @@ const Vigilance = ({
 }) => {
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showModal, setShowModal] = useState(false);
+  const [newEmail, setNewEmail] = useState(user.vigilance_email)
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
@@ -74,6 +80,16 @@ const Vigilance = ({
       }
     }
     const response = await editGroupManager(user.id, data, token)
+  }
+
+  const handleUpdateEmail = async () => {
+    const data = {
+      group_manager: {
+        vigilance_email: newEmail
+      }
+    }
+    const response = await editGroupManager(user.id, data, token)
+    console.log(response)
   }
 
   return (
@@ -176,10 +192,7 @@ const Vigilance = ({
         </Modal.Footer>
       </Modal>
 
-      <ContainerContentBox
-      className="shadow-sm"
-      component_height={'35rem'}
-      >
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
           <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
         </ContentBoxHeader>
@@ -219,6 +232,32 @@ const Vigilance = ({
         </ContentBoxTable>
         <SubmitButton onClick={() => handleSubmit()}>Confirmar Mudanças</SubmitButton>
       </ContainerContentBox>
+
+      {/* -------- EDITAR EMAIL -------- */}
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        {console.log(user)}
+        <ContentBoxHeader>
+          <ContentBoxTitle>Dados Pessoais</ContentBoxTitle>
+        </ContentBoxHeader>
+        <ContentBoxTable component_height={'35rem'}>
+          <ContainerForm>
+            
+              <Inputs>
+                <InputBlock>
+                    <label htmlFor="email">E-mail</label>
+                    <Input
+                      type="email"
+                      id="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                    />
+                </InputBlock>
+              </Inputs>
+            
+          </ContainerForm>
+        </ContentBoxTable>
+        <SubmitButton onClick={() => handleUpdateEmail()}>Editar E-mail</SubmitButton>
+      </ContainerContentBox>
     </Container>
   );
 }
@@ -234,7 +273,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setVigilanceSyndromes,
     setToken,
-    setSyndromes
+    setSyndromes,
   },
   dispatch,
 );
