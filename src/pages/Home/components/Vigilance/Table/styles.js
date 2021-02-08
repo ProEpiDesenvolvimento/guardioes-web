@@ -15,3 +15,10 @@ export const CheckboxInput = styled.input`
   cursor: pointer;
   margin-left: 30px;
 `;
+
+export const WarningMessage = styled.text`
+  font-size: 11px;
+  color: red;
+  margin-top: 2%;
+  margin-right: 2%;
+`;
