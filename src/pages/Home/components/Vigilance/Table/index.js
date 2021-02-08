@@ -3,6 +3,7 @@ import Select from 'react-select'
 import { 
   ContentBoxTableHeader,
   CheckboxInput,
+  WarningMessage,
  } from './styles';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -13,8 +14,17 @@ const TableComponent = ({
   setContentShow,
   vigilance_syndromes,
   setVigilanceSyndromes,
+  vigilance_email,
   token,
 }) => {
+
+  const checkBoxState = () => {
+    if (vigilance_email === null || vigilance_email === ""){
+      return true
+    } else {
+      return false
+    }
+  }
 
   const isVigilance = syndrome => {
     if (vigilance_syndromes) {
@@ -68,13 +78,18 @@ const TableComponent = ({
               </Link>
             </td>
             <td>
+              {vigilance_email === null || vigilance_email === "" ? 
+                <WarningMessage>Você deve possuir um e-mail cadastrado para poder participar</WarningMessage>
+                :
                 <label htmlFor="app_id">Faz parte da Vigilância?</label>
-                <CheckboxInput
-                    type="checkbox"
-                    id="belongs_to_vigilance"
-                    checked={isVigilance(content)}
-                    onChange={(e) => handleChange(content)}
-                />
+              }
+              <CheckboxInput
+                type="checkbox"
+                id="belongs_to_vigilance"
+                checked={isVigilance(content)}
+                onChange={(e) => handleChange(content)}
+                disabled={checkBoxState()}
+              />
             </td>
           </tr>
         ))}

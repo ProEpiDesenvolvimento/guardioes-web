@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Container,
   ContainerContentBox,
@@ -8,6 +9,11 @@ import {
   EditInput,
   SubmitButton,
   TextArea,
+  Form,
+  Inputs,
+  ContainerForm,
+  InputBlock,
+  Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import TableComponent from './Table'
@@ -15,7 +21,8 @@ import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
   setToken,
-  setSyndromes
+  setSyndromes,
+  setUser,
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
@@ -33,8 +40,32 @@ const Vigilance = ({
   token,
   user
 }) => {
+  const { handleSubmit } = useForm();
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showModal, setShowModal] = useState(false);
+  const [newEmail, setNewEmail] = useState(user.vigilance_email)
+
+  const _handleUpdateEmail = async () => {
+    const data = {
+      group_manager: {
+        vigilance_email: newEmail
+      }
+    }
+    const response = await editGroupManager(user.id, data, token)
+    
+    const responseUser = response.data[user.type]
+    if (!response.errors) {
+        setUser({
+            ...responseUser,
+            type: user.type
+        });
+        sessionService.saveUser({
+            ...responseUser,
+            type: user.type
+        });
+        window.location.reload();
+    }
+  }
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
@@ -67,7 +98,7 @@ const Vigilance = ({
     setVigilanceSyndromes(vs)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmitChanges = async () => {
     const data = {
       group_manager: {
         vigilance_syndromes: vigilance_syndromes
@@ -176,10 +207,7 @@ const Vigilance = ({
         </Modal.Footer>
       </Modal>
 
-      <ContainerContentBox
-      className="shadow-sm"
-      component_height={'35rem'}
-      >
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
           <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
         </ContentBoxHeader>
@@ -200,6 +228,7 @@ const Vigilance = ({
               token={token}
               vigilance_syndromes={vigilance_syndromes}
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
+              vigilance_email={user.vigilance_email}
             /> :
             <Loading isLoading={true} />
           :
@@ -217,7 +246,34 @@ const Vigilance = ({
             </Table>
         }
         </ContentBoxTable>
-        <SubmitButton onClick={() => handleSubmit()}>Confirmar Mudanças</SubmitButton>
+        <SubmitButton onClick={() => handleSubmitChanges()}>Confirmar Mudanças</SubmitButton>
+      </ContainerContentBox>
+
+      {/* -------- EDITAR EMAIL -------- */}
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        {console.log(user)}
+        <ContentBoxHeader>
+          <ContentBoxTitle>Dados Pessoais</ContentBoxTitle>
+        </ContentBoxHeader>
+        <ContentBoxTable component_height={'35rem'}>
+          <ContainerForm>
+            <form id="editUser" onSubmit={handleSubmit(_handleUpdateEmail)}>
+              <Inputs>
+                <InputBlock>
+                  <label htmlFor="email">E-mail</label>
+                  <Input
+                    type="email"
+                    id="email"
+                    placeholder='Não possui e-mail cadastrado'
+                    value={newEmail || null}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                  />
+                  </InputBlock>
+              </Inputs>   
+              <SubmitButton type="submit">Editar E-mail</SubmitButton>
+            </form>
+          </ContainerForm>
+        </ContentBoxTable>
       </ContainerContentBox>
     </Container>
   );
@@ -234,7 +290,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setVigilanceSyndromes,
     setToken,
-    setSyndromes
+    setSyndromes,
+    setUser,
   },
   dispatch,
 );

@@ -9,6 +9,7 @@ const createSyndrome = async (data, token) =>
     }
     )
     .then(async (res) => {
+        alert('Criado com sucesso!');
         const response = { data: res.data };
         return response;
     })
