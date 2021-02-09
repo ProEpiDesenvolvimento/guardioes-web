@@ -56,7 +56,7 @@ const GoData = ({
             synds = syns.syndromes
         setSyndromes(synds);
         const gm = await getGroupManager(user.id, token)
-        setUser({...user, vigilance_syndromes: gm.group_manager.vigilance_syndromes})
+        setUser({ ...user, vigilance_syndromes: gm.group_manager.vigilance_syndromes })
         let auxOutbreaksLinkeds = []
         for (let i = 0; i < gm.group_manager.vigilance_syndromes.length; i++)
             if (gm.group_manager.vigilance_syndromes[i].surto_id)
@@ -67,7 +67,7 @@ const GoData = ({
     useEffect(() => {
         loadData()
     }, [godataToken])
-    
+
     useEffect(() => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
@@ -87,10 +87,9 @@ const GoData = ({
                     }
                 )
                     .then(async (res) => {
-                        setGoDataToken("Bearer " + res.data.response.access_token);
-                        console.log("setou2")
+                        setGoDataToken("Bearer " + res.data.access_token);
                         const auxSession = await sessionService.loadSession();
-                        await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
+                        await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
                         await loadData();
                     })
                     .catch((e) => {
@@ -115,11 +114,10 @@ const GoData = ({
         )
             .then(async (res) => {
                 const auxSession = await sessionService.loadSession();
-                await sessionService.saveSession({...auxSession, godataToken: "Bearer " + res.data.response.access_token });
-                setGoDataToken("Bearer " + res.data.response.access_token);
-                console.log("setou3")
-                setUser({...user, username_godata: inputEmail, password_godata: inputPassword })
-                getOutbreaks("Bearer " + res.data.response.access_token);
+                await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+                setGoDataToken("Bearer " + res.data.access_token);
+                setUser({ ...user, username_godata: inputEmail, password_godata: inputPassword })
+                getOutbreaks("Bearer " + res.data.access_token);
                 const syns = await getAllSyndromes(token)
                 let synds = []
                 if (syns.syndromes)
@@ -137,7 +135,7 @@ const GoData = ({
             .catch((e) => {
                 alert("Falha na autenticação.");
             });
-            loadData()
+        loadData()
     }
 
     const getOutbreaks = async (token) => {
@@ -178,7 +176,7 @@ const GoData = ({
     const handleModal = (outbreakId) => {
         setOutbreakId(outbreakId);
         setShowModal(true);
-    } 
+    }
 
     const signOut = async () => {
         const data = {
@@ -189,19 +187,18 @@ const GoData = ({
         }
         await editGroupManager(user.id, data, token);
         setGoDataToken("")
-        console.log("setou4")
         let auxVigilanceSyndromes = user.vigilance_syndromes
         for (let i = 0; i < auxVigilanceSyndromes.length; i++)
             delete auxVigilanceSyndromes[i].surto_id
         setVigilanceSyndromes(auxVigilanceSyndromes)
-        setUser({...user, username_godata: "", password_godata: ""})
+        setUser({ ...user, username_godata: "", password_godata: "" })
     }
 
     const unlinkOutbreak = async (outbreakId) => {
         let auxVigilanceSyndromes = user.vigilance_syndromes
         for (let i = 0; i < auxVigilanceSyndromes.length; i++)
-        if (auxVigilanceSyndromes[i].surto_id === outbreakId)
-        delete auxVigilanceSyndromes[i].surto_id
+            if (auxVigilanceSyndromes[i].surto_id === outbreakId)
+                delete auxVigilanceSyndromes[i].surto_id
         const data = {
             group_manager: {
                 vigilance_syndromes: auxVigilanceSyndromes
@@ -242,7 +239,7 @@ const GoData = ({
                                     </select>
                                 </div>
                             </Modal.Body>
-                            
+
                             <Modal.Footer>
                                 <SubmitButton type="submit">Adicionar</SubmitButton>
                             </Modal.Footer>
@@ -265,10 +262,10 @@ const GoData = ({
                                             <tr>
                                                 <th>
                                                     <p><b>Vinculado ao GoData como:</b></p>
-                                                    <p style={{fontWeight: "normal"}}>{user.username_godata}</p>
+                                                    <p style={{ fontWeight: "normal" }}>{user.username_godata}</p>
                                                 </th>
-                                                <th/><th/>
-                                                <th style={{float: "right"}}>
+                                                <th /><th />
+                                                <th style={{ float: "right" }}>
                                                     <button type="button" class="btn btn-danger" onClick={signOut}>Desvincular</button>
                                                 </th>
                                             </tr>
@@ -301,10 +298,10 @@ const GoData = ({
                                                         <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
                                                         <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
                                                         {outbreaksLinkeds.includes(outbreak.id) ?
-                                                        (<>
-                                                            <td style={{ maxWidth: "500px", padding: "10px 0"}} key={outbreak.id}>{getSyndromeName(outbreak.id)}<span style={{height: "15px", width: "15px", backgroundColor: "#5DD39E", borderRadius: "50%", display: "inline-block", marginLeft: "5px"}}></span></td>
-                                                            <td><button type="button" class="btn btn-danger" onClick={() => unlinkOutbreak(outbreak.id)} style={{margin: "0", padding: "5px", fontSize: "15px", width: "100px"}}>Desvincular Síndrome</button></td>
-                                                        </>)
+                                                            (<>
+                                                                <td style={{ maxWidth: "500px", padding: "10px 0" }} key={outbreak.id}>{getSyndromeName(outbreak.id)}<span style={{ height: "15px", width: "15px", backgroundColor: "#5DD39E", borderRadius: "50%", display: "inline-block", marginLeft: "5px" }}></span></td>
+                                                                <td><button type="button" class="btn btn-danger" onClick={() => unlinkOutbreak(outbreak.id)} style={{ margin: "0", padding: "5px", fontSize: "15px", width: "100px" }}>Desvincular Síndrome</button></td>
+                                                            </>)
                                                             :
                                                             <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
                                                         }
