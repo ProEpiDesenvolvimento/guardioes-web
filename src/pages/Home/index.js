@@ -18,6 +18,7 @@ import Admins from './components/Admins';
 import Vigilance from './components/Vigilance';
 import Profile from './components/Profile'
 import GoData from './components/GoData';
+import Contato from './components/Contato'
 import { connect } from 'react-redux';
 import {
   setToken,
@@ -107,6 +108,10 @@ const Home = ({
       {
         key: "godata",
         value: GoData
+      },
+      {
+        key: "contato",
+        value: Contato
       }
     ])
   }
