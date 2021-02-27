@@ -199,7 +199,8 @@ const GoData = ({
         const data = {
             group_manager: {
                 username_godata: "",
-                password_godata: ""
+                password_godata: "",
+                userid_godata: null
             }
         }
         await editGroupManager(user.id, data, token);
