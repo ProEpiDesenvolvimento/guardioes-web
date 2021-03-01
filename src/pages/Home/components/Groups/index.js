@@ -7,6 +7,9 @@ import {
 import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import axios from 'axios';
+
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
 import createGroup from './services/createGroup'
@@ -47,7 +50,8 @@ const Groups = ({
   user,
   groups,
   setGroups,
-  setToken
+  setToken,
+  godataToken,
 }) => {
   const [modalEdit, setModalEdit] = useState(false);
   const { handleSubmit } = useForm();
@@ -69,10 +73,11 @@ const Groups = ({
   const [goBack, setGoBack] = useState(false);
 
   const [addSubGroup, setAddSubGroup] = useState(false)
-
+  
   const [creating, setCreating] = useState("course");
   const [editChildrenLabel, setEditChildrenLabel] = useState(null)
-
+  const [outbreaks, setOutbreaks] = useState([]);
+  
   const [creatingGroup, setCreatingGroup] = useState({
     description: "default",
     code: "",
@@ -90,6 +95,21 @@ const Groups = ({
     else
       setCreatingGroup({...creatingGroup, description: "", children_label: null})
   }, [creating])
+
+  const getOutbreaks = async (token) => {
+    await axios.get(
+      "https://inclusaodigital.unb.br/api/locations",
+      {
+          headers: { "Authorization": `${token}` }
+      }
+    )
+      .then((res) => {
+          setOutbreaks(res.data);
+      })
+      .catch((e) => {
+          // alert(e);
+      });
+  }
 
   const _createGroup = async () => {
     if(creatingGroup.description === '' || creatingGroup.parent_id === 0){
@@ -281,6 +301,7 @@ const Groups = ({
     }
     _loadSession();
     fetchData(token)
+    getOutbreaks(godataToken);
   }, [token]);
 
   const fields = [
@@ -382,7 +403,6 @@ const Groups = ({
         <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
             {/* ------- NOME ------- */}
-            {console.log(editingGroup)}
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
               {user.group_name === editingGroup.description ? 
@@ -447,6 +467,24 @@ const Groups = ({
             </EditInput>
             : null}
 
+            {outbreaks.length > 0 ?
+              <EditInput>
+                <label htmlFor="edit_gender">Go Data Localização</label>
+                <Select 
+                  id="edit_gender"
+                  options={outbreaks}
+                  getOptionLabel={option => option.name}
+                  getOptionValue={option => option.id}
+                  onChange={(e) => setEditingGroup({
+                    ...editingGroup,
+                    location_name_godata: e.target.name,
+                    location_id_godata: e.target.id
+                  })}
+                />
+              </EditInput>
+              :
+              null
+            }
           </Modal.Body>
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
@@ -678,7 +716,8 @@ const Groups = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  groups: state.user.groups
+  groups: state.user.groups,
+  godataToken: state.user.godataToken
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
