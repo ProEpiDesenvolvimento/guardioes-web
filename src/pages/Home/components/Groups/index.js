@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setGroups, setToken
+  setGroups, setToken, setGoDataToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
@@ -52,6 +52,7 @@ const Groups = ({
   setGroups,
   setToken,
   godataToken,
+  setGoDataToken
 }) => {
   const [modalEdit, setModalEdit] = useState(false);
   const { handleSubmit } = useForm();
@@ -82,7 +83,7 @@ const Groups = ({
     description: "default",
     code: "",
     children_label: null,
-    parent_id: 0,
+    parent_id: 0
   })
 
   const [editingGroup, setEditingGroup] = useState({});
@@ -137,7 +138,9 @@ const Groups = ({
     const data = {
       description: editingGroup.description,
       code: editingGroup.code,
-      children_label: children
+      children_label: children,
+      location_name_godata: editingGroup.location_name_godata,
+      location_id_godata: editingGroup.location_id_godata
     }
 
     const response = await editGroup(editingGroup.id, data, token);
@@ -301,7 +304,30 @@ const Groups = ({
     }
     _loadSession();
     fetchData(token)
-    getOutbreaks(godataToken);
+
+    if (user.username_godata !== "") {
+      const loginGoData = async () => {
+          await axios.post(
+              "https://inclusaodigital.unb.br/api/oauth/token",
+              {
+                  username: user.username_godata,
+                  password: user.password_godata
+              }
+          )
+              .then(async (res) => {
+                  setGoDataToken("Bearer " + res.data.access_token);
+                  const auxSession = await sessionService.loadSession();
+                  await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+                  getOutbreaks(res.data.access_token);
+              })
+              .catch((e) => {
+                  alert("Falha na autenticação.");
+              });
+      }
+      loginGoData();
+  }
+
+    
   }, [token]);
 
   const fields = [
@@ -377,7 +403,19 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-          : null }  
+          : null }
+
+          {groupShow.location_name_godata ?
+            <EditInput>
+              <label htmlFor="edit_code">Nome da Locação no GoData</label>
+              <input
+                type="text"
+                id="edit_code"
+                value={groupShow.location_name_godata}
+                disabled
+              />
+            </EditInput>
+          : null }   
 
         </Modal.Body>
 
@@ -467,18 +505,19 @@ const Groups = ({
             </EditInput>
             : null}
 
-            {outbreaks.length > 0 ?
+            {outbreaks.length > 0 && editingGroup.children_label == null?
               <EditInput>
                 <label htmlFor="edit_gender">Go Data Localização</label>
                 <Select 
                   id="edit_gender"
                   options={outbreaks}
+                  defaultInputValue={editingGroup.location_name_godata}
                   getOptionLabel={option => option.name}
                   getOptionValue={option => option.id}
                   onChange={(e) => setEditingGroup({
                     ...editingGroup,
-                    location_name_godata: e.target.name,
-                    location_id_godata: e.target.id
+                    location_name_godata: e.name,
+                    location_id_godata: e.id
                   })}
                 />
               </EditInput>
@@ -723,7 +762,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setGroups,
-    setToken
+    setToken,
+    setGoDataToken
   },
   dispatch,
 );
