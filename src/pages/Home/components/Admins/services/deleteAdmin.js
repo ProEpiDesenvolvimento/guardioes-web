@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const deleteAdmin = async (id, token) => {
     await api.delete(`/admins/${id}`, {

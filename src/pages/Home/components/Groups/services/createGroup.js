@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const createGroup = async (data, token) =>
   api.post(`/groups`, data,

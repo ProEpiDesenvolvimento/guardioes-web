@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const createManagers = async (data, token) =>
   api.post(`/manager/signup`, data,

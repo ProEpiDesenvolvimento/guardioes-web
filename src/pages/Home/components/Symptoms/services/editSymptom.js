@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const editSymptom = async (id, data, token) => {
         await api.patch(`/symptoms/${id}`, data,

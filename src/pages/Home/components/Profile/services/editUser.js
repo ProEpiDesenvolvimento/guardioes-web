@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const editUser = async (id, userType, data, token) =>
     await api.patch(`/${userType}s/${id}`, data,

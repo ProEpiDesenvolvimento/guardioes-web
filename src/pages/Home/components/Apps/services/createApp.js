@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const createApp = async (data, token) =>
   api.post(`/apps`, data,

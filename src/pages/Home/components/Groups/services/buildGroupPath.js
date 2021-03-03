@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const buildGroupPath = async (groupid) => api
   .get(`/groups/${groupid}/get_path`)

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { godataApi } from 'services/api';
+import axios from 'axios';
+import { godataURL } from 'services/urls'
 import {
     setVigilanceSyndromes,
     setToken,
@@ -79,8 +80,8 @@ const GoData = ({
 
         if (user.username_godata !== "" && godataToken === "") {
             const loginGoData = async () => {
-                await godataApi.post(
-                    "/api/oauth/token",
+                await axios.post(
+                    `${godataURL}/api/oauth/token`,
                     {
                         headers: { "Access-Control-Allow-Origin": "*" },
                         username: user.username_godata,
@@ -107,8 +108,8 @@ const GoData = ({
 
     const _goDataLogIn = async () => {
         let userIdGoData
-        await godataApi.post(
-            "/api/users/login",
+        await axios.post(
+            `${godataURL}/api/users/login`,
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 email: inputEmail,
@@ -122,8 +123,8 @@ const GoData = ({
                 alert("Falha na autenticação.");
             });
         
-        await godataApi.post(
-            "/api/oauth/token",
+        await axios.post(
+            `${godataURL}/api/oauth/token`,
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 username: inputEmail,
@@ -157,8 +158,8 @@ const GoData = ({
     }
 
     const getOutbreaks = async (token) => {
-        await godataApi.get(
-            "/api/outbreaks",
+        await axios.get(
+            `${godataURL}/api/outbreaks`,
             {
                 headers: { "Authorization": `${token}`, "Access-Control-Allow-Origin": "*" }
             }

@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const createGroupManagers = async (data, token) =>
   api.post(`/group_manager/signup`, data,

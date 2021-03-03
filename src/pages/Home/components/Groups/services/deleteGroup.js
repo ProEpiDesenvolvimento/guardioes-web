@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const deleteGroup = async (id, token) => api
   .delete(`/groups/${id}`, {

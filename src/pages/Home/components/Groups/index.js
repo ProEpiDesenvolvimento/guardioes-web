@@ -8,7 +8,8 @@ import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { godataApi } from 'services/api';
+import axios from 'axios';
+import { godataURL } from 'services/urls'
 
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
@@ -98,8 +99,8 @@ const Groups = ({
   }, [creating])
 
   const getOutbreaks = async (token) => {
-    await godataApi.get(
-      "/api/locations",
+    await axios.get(
+      `${godataURL}/api/locations`,
       {
           headers: { "Authorization": `${token}` }
       }
@@ -307,8 +308,8 @@ const Groups = ({
 
     if (user.username_godata !== "") {
       const loginGoData = async () => {
-          await godataApi.post(
-              "/api/oauth/token",
+          await axios.post(
+              `${godataURL}/api/oauth/token`,
               {
                   username: user.username_godata,
                   password: user.password_godata

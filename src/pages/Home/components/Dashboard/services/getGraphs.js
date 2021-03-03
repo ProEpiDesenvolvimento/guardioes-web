@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
  const getGraphs = async (payloads) =>
   api.post(`/data_visualization/metabase_urls`, 

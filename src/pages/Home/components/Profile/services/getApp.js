@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const getApp = async (id, token) => 
     await api.get(`/apps/${id}`,

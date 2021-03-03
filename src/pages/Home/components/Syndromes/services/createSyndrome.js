@@ -1,4 +1,4 @@
-import { api } from 'services/api';
+import api from 'services/api';
 
 const createSyndrome = async (data, token) =>
     await api.post(`/syndromes`, data, 
