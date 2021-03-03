@@ -72,10 +72,6 @@ const NavBar = ({
     {
       key: "godata",
       value: "GoData"
-    },
-    {
-      key: "contato",
-      value: "Contate-nos"
     }
   ];
 
