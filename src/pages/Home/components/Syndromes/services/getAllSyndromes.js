@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const getAllSyndromes = async (token) => 
     await api.get('/syndromes', {

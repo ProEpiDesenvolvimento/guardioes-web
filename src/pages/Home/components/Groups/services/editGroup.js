@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const editGroup = async (id, data, token) => 
     api.patch(`/groups/${id}`, data,

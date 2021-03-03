@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import axios from 'axios';
+import { godataApi } from 'services/api';
 
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
@@ -98,8 +98,8 @@ const Groups = ({
   }, [creating])
 
   const getOutbreaks = async (token) => {
-    await axios.get(
-      "https://inclusaodigital.unb.br/api/locations",
+    await godataApi.get(
+      "/api/locations",
       {
           headers: { "Authorization": `${token}` }
       }
@@ -307,8 +307,8 @@ const Groups = ({
 
     if (user.username_godata !== "") {
       const loginGoData = async () => {
-          await axios.post(
-              "https://inclusaodigital.unb.br/api/oauth/token",
+          await godataApi.post(
+              "/api/oauth/token",
               {
                   username: user.username_godata,
                   password: user.password_godata
@@ -507,7 +507,7 @@ const Groups = ({
 
             {outbreaks.length > 0 && editingGroup.children_label == null?
               <EditInput>
-                <label htmlFor="edit_gender">Go Data Localização</label>
+                <label htmlFor="edit_gender">Locação no GoData</label>
                 <Select 
                   id="edit_gender"
                   options={outbreaks}
