@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const getAllGroupManagers = async (token) => api
   .get('/group_managers', {

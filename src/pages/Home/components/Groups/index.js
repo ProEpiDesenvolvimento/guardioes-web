@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setGroups, setToken
+  setGroups, setToken, setGoDataToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import { godataApi } from 'services/api';
+
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
 import createGroup from './services/createGroup'
@@ -47,7 +50,9 @@ const Groups = ({
   user,
   groups,
   setGroups,
-  setToken
+  setToken,
+  godataToken,
+  setGoDataToken
 }) => {
   const [modalEdit, setModalEdit] = useState(false);
   const { handleSubmit } = useForm();
@@ -69,15 +74,16 @@ const Groups = ({
   const [goBack, setGoBack] = useState(false);
 
   const [addSubGroup, setAddSubGroup] = useState(false)
-
+  
   const [creating, setCreating] = useState("course");
   const [editChildrenLabel, setEditChildrenLabel] = useState(null)
-
+  const [outbreaks, setOutbreaks] = useState([]);
+  
   const [creatingGroup, setCreatingGroup] = useState({
     description: "default",
     code: "",
     children_label: null,
-    parent_id: 0,
+    parent_id: 0
   })
 
   const [editingGroup, setEditingGroup] = useState({});
@@ -90,6 +96,21 @@ const Groups = ({
     else
       setCreatingGroup({...creatingGroup, description: "", children_label: null})
   }, [creating])
+
+  const getOutbreaks = async (token) => {
+    await godataApi.get(
+      "/api/locations",
+      {
+          headers: { "Authorization": `${token}` }
+      }
+    )
+      .then((res) => {
+          setOutbreaks(res.data);
+      })
+      .catch((e) => {
+          // alert(e);
+      });
+  }
 
   const _createGroup = async () => {
     if(creatingGroup.description === '' || creatingGroup.parent_id === 0){
@@ -117,7 +138,9 @@ const Groups = ({
     const data = {
       description: editingGroup.description,
       code: editingGroup.code,
-      children_label: children
+      children_label: children,
+      location_name_godata: editingGroup.location_name_godata,
+      location_id_godata: editingGroup.location_id_godata
     }
 
     const response = await editGroup(editingGroup.id, data, token);
@@ -281,6 +304,30 @@ const Groups = ({
     }
     _loadSession();
     fetchData(token)
+
+    if (user.username_godata !== "") {
+      const loginGoData = async () => {
+          await godataApi.post(
+              "/api/oauth/token",
+              {
+                  username: user.username_godata,
+                  password: user.password_godata
+              }
+          )
+              .then(async (res) => {
+                  setGoDataToken("Bearer " + res.data.access_token);
+                  const auxSession = await sessionService.loadSession();
+                  await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+                  getOutbreaks(res.data.access_token);
+              })
+              .catch((e) => {
+                  alert("Falha na autenticação.");
+              });
+      }
+      loginGoData();
+  }
+
+    
   }, [token]);
 
   const fields = [
@@ -356,7 +403,19 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-          : null }  
+          : null }
+
+          {groupShow.location_name_godata ?
+            <EditInput>
+              <label htmlFor="edit_code">Nome da Locação no GoData</label>
+              <input
+                type="text"
+                id="edit_code"
+                value={groupShow.location_name_godata}
+                disabled
+              />
+            </EditInput>
+          : null }   
 
         </Modal.Body>
 
@@ -382,7 +441,6 @@ const Groups = ({
         <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
             {/* ------- NOME ------- */}
-            {console.log(editingGroup)}
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
               {user.group_name === editingGroup.description ? 
@@ -447,6 +505,25 @@ const Groups = ({
             </EditInput>
             : null}
 
+            {outbreaks.length > 0 && editingGroup.children_label == null?
+              <EditInput>
+                <label htmlFor="edit_gender">Locação no GoData</label>
+                <Select 
+                  id="edit_gender"
+                  options={outbreaks}
+                  defaultInputValue={editingGroup.location_name_godata}
+                  getOptionLabel={option => option.name}
+                  getOptionValue={option => option.id}
+                  onChange={(e) => setEditingGroup({
+                    ...editingGroup,
+                    location_name_godata: e.name,
+                    location_id_godata: e.id
+                  })}
+                />
+              </EditInput>
+              :
+              null
+            }
           </Modal.Body>
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
@@ -678,13 +755,15 @@ const Groups = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  groups: state.user.groups
+  groups: state.user.groups,
+  godataToken: state.user.godataToken
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setGroups,
-    setToken
+    setToken,
+    setGoDataToken
   },
   dispatch,
 );

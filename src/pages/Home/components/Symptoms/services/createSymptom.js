@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const createSymptoms = async (data, token) =>
   api.post(`/symptoms`, data,

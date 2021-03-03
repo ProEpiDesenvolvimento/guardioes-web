@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { godataApi } from 'services/api';
 import {
     setVigilanceSyndromes,
     setToken,
@@ -15,7 +16,6 @@ import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { SubmitButton } from '../GroupManagers/styles';
 import ContentBox from '../ContentBox';
 import {
@@ -79,8 +79,8 @@ const GoData = ({
 
         if (user.username_godata !== "" && godataToken === "") {
             const loginGoData = async () => {
-                await axios.post(
-                    "https://inclusaodigital.unb.br/api/oauth/token",
+                await godataApi.post(
+                    "/api/oauth/token",
                     {
                         headers: { "Access-Control-Allow-Origin": "*" },
                         username: user.username_godata,
@@ -107,8 +107,8 @@ const GoData = ({
 
     const _goDataLogIn = async () => {
         let userIdGoData
-        await axios.post(
-            "https://inclusaodigital.unb.br/api/users/login",
+        await godataApi.post(
+            "/api/users/login",
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 email: inputEmail,
@@ -121,8 +121,9 @@ const GoData = ({
             .catch((e) => {
                 alert("Falha na autenticação.");
             });
-        await axios.post(
-            "https://inclusaodigital.unb.br/api/oauth/token",
+        
+        await godataApi.post(
+            "/api/oauth/token",
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 username: inputEmail,
@@ -156,8 +157,8 @@ const GoData = ({
     }
 
     const getOutbreaks = async (token) => {
-        await axios.get(
-            "https://inclusaodigital.unb.br/api/outbreaks",
+        await godataApi.get(
+            "/api/outbreaks",
             {
                 headers: { "Authorization": `${token}`, "Access-Control-Allow-Origin": "*" }
             }

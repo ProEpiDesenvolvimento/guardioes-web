@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const submitPreRegister = async (data) =>
     api.post(`/pre_registers`, data)

@@ -1,4 +1,4 @@
-import api from 'services/api';
+import { api } from 'services/api';
 
 const deleteManagers = async (id, token) => api
   .delete(`/managers/${id}`, {
