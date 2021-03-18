@@ -742,7 +742,7 @@ const Groups = ({
               </InputBlock>
 
               <SubmitButton type="submit">
-                Adicionar {groupLabel}
+                Adicionar em {groupLabel}
               </SubmitButton>
             </Form>
 
