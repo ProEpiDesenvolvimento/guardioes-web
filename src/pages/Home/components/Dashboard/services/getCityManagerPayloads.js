@@ -5,7 +5,7 @@ const getCityManagerPayloads = (user) => {
                 "dashboard": 6
             },
             "params": {
-                "group": user.id
+                "city": user.id
             }
         }
     ]
