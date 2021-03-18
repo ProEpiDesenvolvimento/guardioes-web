@@ -10,6 +10,7 @@ import getGraphs from './services/getGraphs'
 import getAdminPayloads from './services/getAdminPayloads';
 import getManagerPayloads from './services/getManagerPayloads'; 
 import getGroupManagerPayloads from './services/getGroupManagerPayloads';
+import getCityManagerPayloads from './services/getCityManagerPayloads';
 
 import { isEmpty } from "lodash";
 import './styles.css';
@@ -32,7 +33,11 @@ const Dashboard = ({
         payloads = getManagerPayloads(user);
         break;
       case 'group_manager':
-        payloads = getGroupManagerPayloads(user);    
+        payloads = getGroupManagerPayloads(user);
+        break;
+      case 'city_manager':
+        payloads = getCityManagerPayloads(user);
+
     }
 
     const response = await getGraphs(payloads)
