@@ -286,35 +286,37 @@ const Vigilance = ({
         <ContentBoxHeader>
           <ContentBoxTitle>Vigilância Ativa</ContentBoxTitle>
         </ContentBoxHeader>
-        <ContainerForm>
-          <Form id="editUser" onSubmit={handleSubmit(_handleVigilance)}>
-            <Inputs>
-              <CheckboxInputBlock>
-                <Label htmlFor="has_vigilance">Fornecer Vigilância Ativa</Label>
-                <CheckboxInput
-                    type="checkbox"
-                    id="has_vigilance"
-                    checked={hasVigilance}
-                    onChange={() => setHasVigilance(!hasVigilance)}
-                />
-              </CheckboxInputBlock>
-
-              {hasVigilance ?
-                <InputBlock>
-                  <Label htmlFor="email">E-mail</Label>
-                  <Input
-                    type="email"
-                    id="email"
-                    placeholder='Não possui e-mail cadastrado'
-                    value={editEmail}
-                    onChange={(e) => setEditEmail(e.target.value)}
+        <ContentBoxTable component_height={'35rem'}>
+          <ContainerForm>
+            <Form id="editUser" onSubmit={handleSubmit(_handleVigilance)}>
+              <Inputs>
+                <CheckboxInputBlock>
+                  <Label htmlFor="has_vigilance">Fornecer Vigilância Ativa</Label>
+                  <CheckboxInput
+                      type="checkbox"
+                      id="has_vigilance"
+                      checked={hasVigilance}
+                      onChange={() => setHasVigilance(!hasVigilance)}
                   />
-                </InputBlock>
-              : null}
-            </Inputs>
-            <SubmitButton type="submit">Editar Vigilância</SubmitButton>
-          </Form>
-        </ContainerForm>
+                </CheckboxInputBlock>
+
+                {hasVigilance ?
+                  <InputBlock>
+                    <Label htmlFor="email">E-mail</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder='Não possui e-mail cadastrado'
+                      value={editEmail}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                    />
+                  </InputBlock>
+                : null}
+              </Inputs>
+              <SubmitButton type="submit">Editar Vigilância</SubmitButton>
+            </Form>
+          </ContainerForm>
+        </ContentBoxTable>
       </ContainerContentBox>
     </Container>
   );
