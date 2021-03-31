@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  setUser
+  setUser,
+  setToken
 } from 'actions/';
+import { sessionService } from 'redux-react-session';
+
 import queryString from 'query-string';
 
 import getGraphs from './services/getGraphs'
-import getAdminPayloads from './services/getAdminPayloads';
-import getManagerPayloads from './services/getManagerPayloads'; 
-import getGroupManagerPayloads from './services/getGroupManagerPayloads';
-import getCityManagerPayloads from './services/getCityManagerPayloads';
 
 import { isEmpty } from "lodash";
 import './styles.css';
 
 const Dashboard = ({
+  token,
   user
 }, props) => {
   const [currentNav, setCurrentNav] = useState({})
@@ -23,28 +23,17 @@ const Dashboard = ({
   const hashes = queryString.parse(window.location.hash)
 
   const _getUrls = async () => {
-    let payloads = []
-
-    switch(user.type){
-      case 'admin':
-        payloads = getAdminPayloads(user);
-        break;
-      case 'manager':
-        payloads = getManagerPayloads(user);
-        break;
-      case 'group_manager':
-        payloads = getGroupManagerPayloads(user);
-        break;
-      case 'city_manager':
-        payloads = getCityManagerPayloads(user);
-
-    }
-
-    const response = await getGraphs(payloads)
+    const response = await getGraphs(token)
     setUrls(response.urls)
   }
 
   useEffect(() => {
+    const _loadSession = async () => {
+      const auxSession = await sessionService.loadSession()
+      setToken(auxSession.token)
+    }
+    _loadSession();
+
     _getUrls()
     if (isEmpty(hashes)) {
       setCurrentNav({ geral: null })
@@ -52,7 +41,7 @@ const Dashboard = ({
     else {
       setCurrentNav(hashes)
     }
-  }, [hashes.geral, hashes.adesao, hashes.dados, user]);
+  }, [hashes.geral, hashes.adesao, hashes.dados, user, token]);
   
   const isCurrentNav = (string) => {
     if (typeof currentNav[string] !== "undefined") return true
@@ -80,11 +69,13 @@ const Dashboard = ({
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
+  token: state.user.token
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setUser,
+    setToken,
   },
   dispatch,
 );
