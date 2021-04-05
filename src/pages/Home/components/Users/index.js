@@ -7,9 +7,12 @@ import {
   EditCheckboxInput,
   SearchView,
   PaginationDiv,
+  Search,
   SearchInputDiv,
+  SearchInput,
   SearchBtn
 } from './styles';
+import './styles.css';
 import { connect } from 'react-redux';
 import {
  setUsers,
@@ -47,6 +50,8 @@ const Users = ({
   const [userSearch, setUserSearch] = useState("");
   const [userList, setUserList] = useState([]);
   const [activePage, setActivePage] = useState(1);
+  const [perPage, setPerPage] = useState(50);
+  const [totalItems, setTotalItems] = useState(0);
 
   const fields = [
     {
@@ -70,7 +75,15 @@ const Users = ({
 
   const getSearch = async (token, page) => {
     const response = await getAllUsers(token, page, userSearch)
+    if (!response.users || response.users.length === 0) {
+      response.users = null;
+    }
     setUserList(response.users)
+
+    const { meta } = response
+    if (meta) {
+      setTotalItems(meta.pagination.total_objects)
+    }
   }
   const _getUsers = async (token, page) => {
     const response = await getAllUsers(token, page, userSearch)
@@ -79,6 +92,11 @@ const Users = ({
     }
     setUsers(response.users)
     setUserList(response.users)
+
+    const { meta } = response
+    if (meta) {
+      setTotalItems(meta.pagination.total_objects)
+    }
   }
 
   const handlePageChange = (page) => {
@@ -148,6 +166,8 @@ const Users = ({
     _loadSession();
     _getUsers(token, 1)
   }, [token]);
+
+  const usersNum = new Intl.NumberFormat('pt-BR').format(totalItems)
 
   return (
     <>
@@ -330,18 +350,20 @@ const Users = ({
         <SearchView>
           <SearchInputDiv>
             <label>Pesquisa por email:</label>
-            <input 
-              type="text"
-              value={userSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
+            <Search>
+              <SearchInput
+                type="text"
+                value={userSearch}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+              <SearchBtn onClick={() => getSearch(token, 1)}>
+                Buscar
+              </SearchBtn>
+            </Search>
           </SearchInputDiv>
-          <SearchBtn onClick={() => getSearch(token, 1)}>
-            <label>Buscar</label>
-          </SearchBtn>
         </SearchView>
         <ContentBox 
-          title="Users"
+          title={`Usuários - ${usersNum}`}
           fields={fields}
           contents={userList}
           handleShow={handleShow}
@@ -352,12 +374,13 @@ const Users = ({
         />
         <PaginationDiv>
           <Pagination
-            activePage={activePage}
-            itemsCountPerPage={50}
-            totalItemsCount={22715}
-            pageRangeDisplayed={10}
             onChange={handlePageChange.bind(this)}
-            itemClass={EditInput}
+            activePage={activePage}
+            itemsCountPerPage={perPage}
+            totalItemsCount={totalItems}
+            pageRangeDisplayed={6}
+            hideDisabled={true}
+            itemClass='page'
           />
         </PaginationDiv>
       </Container>
