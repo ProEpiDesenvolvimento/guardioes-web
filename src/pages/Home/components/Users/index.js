@@ -69,11 +69,9 @@ const Users = ({
     setModalShow(!modalShow);
   }
 
-  const handleSearch = (value) => {
-    setUserSearch(value)
-  }
-
   const getSearch = async (token, page) => {
+    setUserList([])
+
     const response = await getAllUsers(token, page, userSearch)
     if (!response.users || response.users.length === 0) {
       response.users = null;
@@ -86,6 +84,8 @@ const Users = ({
     }
   }
   const _getUsers = async (token, page) => {
+    setUserList([])
+
     const response = await getAllUsers(token, page, userSearch)
     if (!response.users || response.users.length === 0) {
       response.users = null;
@@ -101,7 +101,7 @@ const Users = ({
 
   const handlePageChange = (page) => {
     setActivePage(page)
-    if (userSearch === ""){
+    if (userSearch === "") {
       _getUsers(token, page)
     }else{
       getSearch(token, page)
@@ -354,9 +354,9 @@ const Users = ({
               <SearchInput
                 type="text"
                 value={userSearch}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setUserSearch(e.target.value)}
               />
-              <SearchBtn onClick={() => getSearch(token, 1)}>
+              <SearchBtn className='btn-info' onClick={() => getSearch(token, 1)}>
                 Buscar
               </SearchBtn>
             </Search>

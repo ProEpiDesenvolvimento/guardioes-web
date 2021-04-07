@@ -83,7 +83,7 @@ export const SearchInput = styled.input`
   width: 80%;
   background-color: #5DD39E;
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
   color: #fff;
   padding: 8px;
@@ -93,7 +93,7 @@ export const SearchBtn = styled.button`
   cursor: pointer;
   background-color: #17a2b8;
   border: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #fff;
   padding: .5rem 1rem .5rem 1rem;
   margin-left: 1rem;
