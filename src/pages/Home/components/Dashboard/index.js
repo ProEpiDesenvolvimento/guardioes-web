@@ -16,7 +16,8 @@ import { isEmpty } from "lodash";
 import './styles.css';
 
 const Dashboard = ({
-  user
+  user,
+  token
 }, props) => {
   const [currentNav, setCurrentNav] = useState({})
   const [urls, setUrls] = useState({})
