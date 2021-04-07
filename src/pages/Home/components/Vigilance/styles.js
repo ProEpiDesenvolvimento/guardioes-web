@@ -116,6 +116,31 @@ export const Inputs = styled.div`
   flex-flow: row wrap;
 `;
 
+export const CheckboxInputBlock = styled.div`
+  width: 250px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-weight: 700;
+  color: #348EAC;
+  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
+  margin-bottom: 1rem;
+  margin-right: 50px;
+`;
+
+export const Label = styled.label` 
+  margin: 0;
+  padding-right: 20px;
+`;
+
+export const CheckboxInput = styled.input` 
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  transition: opacity 0.2s;
+  padding-left: 10px;
+  cursor: pointer;
+`;
+
 export const InputBlock = styled.div`
   width: 50%;
   display: flex;
