@@ -47,12 +47,11 @@ const Dashboard = ({
   useEffect(() => {
     _getUrls()
     if (isEmpty(hashes)) {
-      setCurrentNav({ geral: null })
-    }
-    else {
+      setCurrentNav({ reportes: null })
+    } else {
       setCurrentNav(hashes)
     }
-  }, [hashes.geral, hashes.adesao, hashes.dados, user]);
+  }, [hashes.reportes, hashes.usuarios, hashes.bioseguranca, user, token]);
   
   const isCurrentNav = (string) => {
     if (typeof currentNav[string] !== "undefined") return true
@@ -62,19 +61,57 @@ const Dashboard = ({
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-          {urls?.length && urls.map((url) => {
-            return (
-                <iframe
-                  src={url['iframe_url']}
-                  frameborder="0"
-                  width="100%"
-                  height="100%"
-                  allowtransparency
-                />
-            )
-          })}
-        </div>
+    <div style={{ height: '100%' }}>
+      <div className="dash visualizations">
+        <ul className="nav nav-tabs justify-content-center" style={{ marginTop: 20 }}>
+          <li className="nav-item">
+            <a className={`nav-link ${isCurrentNav('reportes') ? 'active' : ''}`} href="#reportes">Reportes</a>
+          </li>
+          <li className="nav-item">
+            <a className={`nav-link ${isCurrentNav('usuarios') ? 'active' : ''}`} href="#usuarios">Usuários</a>
+          </li>
+          <li className="nav-item">
+            <a className={`nav-link ${isCurrentNav('bioseguranca') ? 'active' : ''}`} href="#bioseguranca">Biosegurança</a>
+          </li>
+        </ul>
+      </div>
+
+      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('reportes') ? '' : 'd-none'}`}>
+        {urls?.length &&
+          <iframe
+            src={urls[0]['iframe_url']}
+            frameborder="0"
+            width="100%"
+            height="100%"
+            allowtransparency
+          />
+        }
+      </div>
+
+      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('usuarios') ? '' : 'd-none'}`}>
+        {urls?.length &&
+          <iframe
+            src={urls[1]['iframe_url']}
+            frameborder="0"
+            width="100%"
+            height="100%"
+            allowtransparency
+          />
+        }
+      </div>
+
+      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('bioseguranca') ? '' : 'd-none'}`}>
+        {urls?.length &&
+          <iframe
+            src={urls[2]['iframe_url']}
+            frameborder="0"
+            width="100%"
+            height="100%"
+            allowtransparency
+          />
+        }
+      </div>
+    </div>
   );
 }
 
