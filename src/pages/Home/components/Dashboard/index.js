@@ -40,6 +40,8 @@ const Dashboard = ({
     } else {
       setCurrentNav(hashes)
     }
+
+    console.log(urls)
   }, [hashes.reportes, hashes.usuarios, hashes.bioseguranca, user, token]);
   
   const isCurrentNav = (string) => {
