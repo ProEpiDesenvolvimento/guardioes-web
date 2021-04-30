@@ -86,9 +86,11 @@ const NavBar = ({
         categories = categories.concat(allCategories.slice(3, -2));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -2));
+      categories = categories.concat(allCategories.slice(5, -3));
     } else if (user.type === "group_manager") {
       categories = categories.concat(allCategories.slice(8));
+    } else if (user.type === "city_manager") {
+      categories = categories.concat(allCategories.slice(8, 10));
     }
 
     setCategories(categories)

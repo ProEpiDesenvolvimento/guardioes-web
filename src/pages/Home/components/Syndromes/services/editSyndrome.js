@@ -9,6 +9,7 @@ const editSyndrome = async (id, data, token) =>
     }
     )
     .then(async (res) => {
+        alert('Editado com sucesso!');
         const response = { data: res.data };
         return response;
     })
