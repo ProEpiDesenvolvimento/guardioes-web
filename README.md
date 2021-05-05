@@ -9,12 +9,14 @@ A parte web do projeto é onde é analisado e mostrado os dados obtidos na vigil
 ## Como rodar o Guardiões da Saúde - Dashboards
 
 Para rodar os serviços basta digitar o comando a seguir:
-```
+
+```shell
 docker-compose up
 ```
 
 Por padrão já está configurado para subir o ambiente com configurações de usuário. Caso deseja terminar essa configuração, siga este tutorial: [link](https://github.com/lappis-unb/rasa-ptbr-boilerplate/blob/v4.3.x/docs/setup_user_elasticsearch.md). Caso contrário, comente a seguinte linha do arquivo /elasticsearch/elasticsearch.yml:
-```
+
+```shell
 ...
 #xpack.security.enabled: true
 ...
