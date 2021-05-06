@@ -59,8 +59,8 @@ const Dashboard = ({
   }
 
   const isGroupManager = () => user.type === 'groupManager';
-
-  isGroupManager();
+  
+  const isVigilance = () => return user.vigilance_email == true;
 
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
@@ -79,7 +79,7 @@ const Dashboard = ({
             <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${ !isGroupManager() ? 'd-none': ''} ${isHashes('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
           </li>
           <li className="nav-item">
-          <a onClick={() => setHashes({ vigilance: null })} className={`nav-link ${ !isGroupManager() ? 'd-none': ''} ${isHashes('vigilance') ? 'active' : ''}`} href="#vigilance">Vigilância Ativa</a>
+          <a onClick={() => setHashes({ vigilance: null })} className={`nav-link ${ !isGroupManager() || !isVigilance() ? 'd-none': ''} ${isHashes('vigilance') ? 'active' : ''}`} href="#vigilance">Vigilância Ativa</a>
           </li>
         </ul>
       </div>
