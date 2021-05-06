@@ -22,8 +22,13 @@ const Dashboard = ({
   const [urls, setUrls] = useState({})
   const hashes = queryString.parse(window.location.hash)
 
-  const _getUrls = async () => {
-    const response = await getGraphs(token)
+  const _getUrls = async (type) => {
+    if(!type){
+      type = 'surveys'
+    } else {
+      type = Object.keys(currentNav)[0]
+    }
+    const response = await getGraphs(token, type)
     setUrls(response.urls)
   }
 
@@ -33,16 +38,16 @@ const Dashboard = ({
       setToken(auxSession.token)
     }
     _loadSession();
-
-    _getUrls()
+    
+    _getUrls('surveys')
     if (isEmpty(hashes)) {
-      setCurrentNav({ reportes: null })
+      setCurrentNav({ surveys: null })
     } else {
       setCurrentNav(hashes)
     }
 
     console.log(urls)
-  }, [hashes.reportes, hashes.usuarios, hashes.bioseguranca, user, token]);
+  }, [hashes.surveys, hashes.users, hashes.biosecurity, user, token]);
   
   const isCurrentNav = (string) => {
     if (typeof currentNav[string] !== "undefined") return true
@@ -56,52 +61,26 @@ const Dashboard = ({
       <div className="dash visualizations">
         <ul className="nav nav-tabs justify-content-center" style={{ marginTop: 20 }}>
           <li className="nav-item">
-            <a className={`nav-link ${isCurrentNav('reportes') ? 'active' : ''}`} href="#reportes">Reportes</a>
+            <a onClick={() => {setCurrentNav({ surveys: null })}} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
           </li>
           <li className="nav-item">
-            <a className={`nav-link ${isCurrentNav('usuarios') ? 'active' : ''}`} href="#usuarios">Usuários</a>
+            <a onClick={() => {setCurrentNav({ users: null })}} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
           </li>
           <li className="nav-item">
-            <a className={`nav-link ${isCurrentNav('bioseguranca') ? 'active' : ''}`} href="#bioseguranca">Biosegurança</a>
+            <a onClick={() => {setCurrentNav({ biosecurity: null })}} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
           </li>
         </ul>
       </div>
-
-      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('reportes') ? '' : 'd-none'}`}>
         {urls?.length &&
           <iframe
+            title="Dashboard"
             src={urls[0]['iframe_url']}
             frameborder="0"
             width="100%"
-            height="100%"
+            height="92%"
             allowtransparency
           />
         }
-      </div>
-
-      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('usuarios') ? '' : 'd-none'}`}>
-        {urls?.length &&
-          <iframe
-            src={urls[1]['iframe_url']}
-            frameborder="0"
-            width="100%"
-            height="100%"
-            allowtransparency
-          />
-        }
-      </div>
-
-      <div style={{width: '100%', height: '92%'}} className={`${isCurrentNav('bioseguranca') ? '' : 'd-none'}`}>
-        {urls?.length &&
-          <iframe
-            src={urls[2]['iframe_url']}
-            frameborder="0"
-            width="100%"
-            height="100%"
-            allowtransparency
-          />
-        }
-      </div>
     </div>
   );
 }
