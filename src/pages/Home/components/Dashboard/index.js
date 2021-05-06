@@ -20,7 +20,9 @@ const Dashboard = ({
 }, props) => {
   const [currentNav, setCurrentNav] = useState({})
   const [urls, setUrls] = useState({})
-  const hashes = queryString.parse(window.location.hash)
+  const [hashes, setHashes] = useState(queryString.parse(window.location.hash))
+
+  console.log(Object.keys(hashes))
 
   const _getUrls = async (type) => {
     if(!type){
@@ -28,6 +30,7 @@ const Dashboard = ({
     } else {
       type = Object.keys(currentNav)[0]
     }
+
     const response = await getGraphs(token, type)
     setUrls(response.urls)
   }
@@ -39,11 +42,11 @@ const Dashboard = ({
     }
     _loadSession();
 
-    _getUrls('surveys')
+    _getUrls(Object.keys(hashes)[0])
     if (isEmpty(hashes)) {
       setCurrentNav({ surveys: null })
     } else {
-      setCurrentNav(hashes)
+      setCurrentNav({...hashes})
     }
 
     console.log(urls)
@@ -61,13 +64,13 @@ const Dashboard = ({
       <div className="dash visualizations">
         <ul className="nav nav-tabs justify-content-center" style={{ marginTop: 20 }}>
           <li className="nav-item">
-            <a onClick={() => setCurrentNav({ surveys: null })} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
+            <a onClick={() => setHashes({ surveys: null })} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
           </li>
           <li className="nav-item">
-            <a onClick= {() => setCurrentNav({ users: null })} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
+            <a onClick= {() => setHashes({ users: null })} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
           </li>
           <li className="nav-item">
-            <a onClick={() => setCurrentNav({ biosecurity: null })} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
+            <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
           </li>
         </ul>
       </div>
