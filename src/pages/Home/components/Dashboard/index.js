@@ -18,17 +18,18 @@ const Dashboard = ({
   token,
   user
 }, props) => {
-  const [currentNav, setCurrentNav] = useState({})
   const [urls, setUrls] = useState({})
   const [hashes, setHashes] = useState(queryString.parse(window.location.hash))
 
-  console.log(Object.keys(hashes))
+  if (isEmpty(hashes)){
+    setHashes({surveys: null})
+  }
 
   const _getUrls = async (type) => {
     if(!type){
       type = 'surveys'
     } else {
-      type = Object.keys(currentNav)[0]
+      type = Object.keys(hashes)[0]
     }
 
     const response = await getGraphs(token, type)
@@ -44,16 +45,16 @@ const Dashboard = ({
 
     _getUrls(Object.keys(hashes)[0])
     if (isEmpty(hashes)) {
-      setCurrentNav({ surveys: null })
+      setHashes({ surveys: null })
     } else {
-      setCurrentNav({...hashes})
+      setHashes(hashes)
     }
 
     console.log(urls)
   }, [hashes.surveys, hashes.users, hashes.biosecurity, user, token]);
   
-  const isCurrentNav = (string) => {
-    if (typeof currentNav[string] !== "undefined") return true
+  const isHashes = (string) => {
+    if (typeof hashes[string] !== "undefined") return true
     return false
   }
   // This allows a begin date for iframes
@@ -64,13 +65,13 @@ const Dashboard = ({
       <div className="dash visualizations">
         <ul className="nav nav-tabs justify-content-center" style={{ marginTop: 20 }}>
           <li className="nav-item">
-            <a onClick={() => setHashes({ surveys: null })} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
+            <a onClick={() => setHashes({ surveys: null })} className={`nav-link ${isHashes('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
           </li>
           <li className="nav-item">
-            <a onClick= {() => setHashes({ users: null })} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
+            <a onClick= {() => setHashes({ users: null })} className={`nav-link ${isHashes('users') ? 'active' : ''}`} href="#users">Usuários</a>
           </li>
           <li className="nav-item">
-            <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
+            <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${isHashes('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
           </li>
         </ul>
       </div>
