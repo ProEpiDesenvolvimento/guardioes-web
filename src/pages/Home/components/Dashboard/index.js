@@ -38,7 +38,7 @@ const Dashboard = ({
       setToken(auxSession.token)
     }
     _loadSession();
-    
+
     _getUrls('surveys')
     if (isEmpty(hashes)) {
       setCurrentNav({ surveys: null })
@@ -61,13 +61,13 @@ const Dashboard = ({
       <div className="dash visualizations">
         <ul className="nav nav-tabs justify-content-center" style={{ marginTop: 20 }}>
           <li className="nav-item">
-            <a onClick={() => {setCurrentNav({ surveys: null })}} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
+            <a onClick={() => setCurrentNav({ surveys: null })} className={`nav-link ${isCurrentNav('surveys') ? 'active' : ''}`} href="#surveys">Reportes</a>
           </li>
           <li className="nav-item">
-            <a onClick={() => {setCurrentNav({ users: null })}} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
+            <a onClick= {() => setCurrentNav({ users: null })} className={`nav-link ${isCurrentNav('users') ? 'active' : ''}`} href="#users">Usuários</a>
           </li>
           <li className="nav-item">
-            <a onClick={() => {setCurrentNav({ biosecurity: null })}} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
+            <a onClick={() => setCurrentNav({ biosecurity: null })} className={`nav-link ${isCurrentNav('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
           </li>
         </ul>
       </div>
