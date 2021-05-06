@@ -51,12 +51,17 @@ const Dashboard = ({
     }
 
     console.log(urls)
-  }, [hashes.surveys, hashes.users, hashes.biosecurity, user, token]);
+  }, [hashes.surveys, hashes.users, hashes.biosecurity, hashes.vigilance, user, token]);
   
   const isHashes = (string) => {
     if (typeof hashes[string] !== "undefined") return true
     return false
   }
+
+  const isGroupManager = () => user.type === 'groupManager';
+
+  isGroupManager();
+
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
 
@@ -71,7 +76,10 @@ const Dashboard = ({
             <a onClick= {() => setHashes({ users: null })} className={`nav-link ${isHashes('users') ? 'active' : ''}`} href="#users">Usuários</a>
           </li>
           <li className="nav-item">
-            <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${isHashes('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
+            <a onClick={() => setHashes({ biosecurity: null })} className={`nav-link ${ !isGroupManager() ? 'd-none': ''} ${isHashes('biosecurity') ? 'active' : ''}`} href="#biosecurity">Biosegurança</a>
+          </li>
+          <li className="nav-item">
+          <a onClick={() => setHashes({ vigilance: null })} className={`nav-link ${ !isGroupManager() ? 'd-none': ''} ${isHashes('vigilance') ? 'active' : ''}`} href="#vigilance">Vigilância Ativa</a>
           </li>
         </ul>
       </div>
