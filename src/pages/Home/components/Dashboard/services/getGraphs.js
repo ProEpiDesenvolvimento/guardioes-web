@@ -1,8 +1,10 @@
 import api from 'services/api';
 
-const getGraphs = async (token) =>
+const getGraphs = async (token, type) =>
   api.post(`/data_visualization/metabase_urls`, 
-  {},
+  {
+    "type": type
+  },
   {
     headers: {
       "Authorization": token
