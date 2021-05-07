@@ -60,7 +60,11 @@ const Dashboard = ({
 
   const isGroupManager = () => user.type === 'group_manager';
   
-  const isVigilance = () => user.vigilance_email.length > 0;
+  const isVigilance = () => {
+    if (user.vigilance_email != null) {
+      if (user.vigilance_email.length > 0) return true
+    } else return false
+  }
 
   // This allows a begin date for iframes
   let date = props.date || '2020-06-10T07:01:16.923Z' // App launch date
