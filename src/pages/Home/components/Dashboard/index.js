@@ -58,7 +58,7 @@ const Dashboard = ({
     return false
   }
 
-  const isGroupManager = () => user.type === 'groupManager';
+  const isGroupManager = () => user.type === 'group_manager';
   
   const isVigilance = () => user.vigilance_email.length > 0;
 
