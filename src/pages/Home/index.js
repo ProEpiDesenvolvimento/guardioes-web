@@ -9,6 +9,7 @@ import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
 import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
+import CityManagers from './components/CityManagers';
 import GroupManagers from './components/GroupManagers';
 import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
@@ -71,6 +72,10 @@ const Home = ({
       {
         key: "managers",
         value: Managers
+      },
+      {
+        key: "managersCity",
+        value: CityManagers
       },
       {
         key: "managersGroup",

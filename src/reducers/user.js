@@ -6,6 +6,7 @@ import {
 	SET_APPS,
 	SET_CONTENTS,
 	SET_SYMPTOMS,
+	SET_CITY_MANAGERS,
 	SET_GROUP_MANAGERS,
 	SET_MANAGERS,
 	SET_GROUPS,
@@ -35,6 +36,7 @@ const initialState = {
 	contents: [],
 	symptoms: [],
 	managers: [],
+	city_managers: [],
 	group_managers: [],
 	groups: [],
 	syndromes: [],
@@ -80,6 +82,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				symptoms: action.payload
+			};
+		case SET_CITY_MANAGERS:
+			return {
+				...state,
+				city_managers: action.payload
 			};
 		case SET_GROUP_MANAGERS:
 			return {

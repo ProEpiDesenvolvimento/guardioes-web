@@ -7,6 +7,7 @@ import {
   SET_APPS,
   SET_SYMPTOMS,
   SET_CONTENTS,
+  SET_CITY_MANAGERS,
   SET_GROUP_MANAGERS,
   SET_MANAGERS,
   SET_GROUPS,
@@ -32,6 +33,8 @@ export const setApps = (payload) => ({ type: SET_APPS, payload });
 export const setSymptoms = (payload) => ({ type: SET_SYMPTOMS, payload });
 
 export const setContents = (payload) => ({ type: SET_CONTENTS, payload });
+
+export const setCityManagers = (payload) => ({ type: SET_CITY_MANAGERS, payload });
 
 export const setGroupManagers = (payload) => ({ type: SET_GROUP_MANAGERS, payload });
 
