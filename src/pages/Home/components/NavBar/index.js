@@ -38,6 +38,10 @@ const NavBar = ({
       value: "Gerentes"
     },
     {
+      key: "managersCity",
+      value: "Gerentes de Município"
+    },
+    {
       key: "managersGroup",
       value: "Gerentes de Instituições"
     },
@@ -86,11 +90,12 @@ const NavBar = ({
         categories = categories.concat(allCategories.slice(3, -2));
       }
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(5, -3));
+      categories = categories.concat(allCategories.slice(4, 5));
+      categories = categories.concat(allCategories.slice(6, -3));
     } else if (user.type === "group_manager") {
-      categories = categories.concat(allCategories.slice(8));
+      categories = categories.concat(allCategories.slice(9));
     } else if (user.type === "city_manager") {
-      categories = categories.concat(allCategories.slice(8, 10));
+      categories = categories.concat(allCategories.slice(9, 10));
     }
 
     setCategories(categories)
