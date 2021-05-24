@@ -70,16 +70,21 @@ const GroupManagers = ({
   const [city, setCity] = useState([])
 
   const _createGroupManager = async () => {
+    if (groupManagerLocale === 0) {
+      alert('Escolha uma localidade.')
+      return
+    }
+
     const data = {
       "group_manager": {
-        "password": groupManagerPassword,
-        "email": groupManagerEmail,
         "name": groupManagerName,
+        "email": groupManagerEmail,
+        "password": groupManagerPassword,
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
-        "app_id": user.app_id,
         "require_id": groupManagerIdentificationCode,
-        "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : undefined
+        "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : null,
+        "app_id": user.app_id,
       }
     }
     const response = await createGroupManager(data, token)
@@ -91,9 +96,6 @@ const GroupManagers = ({
       parent_id: groupManagerLocale,
       group_manager_id: response.data.group_manager.id
     }
-
-    console.log(group_data)
-
     await createGroup(group_data, token)
 
     setGroupManagerName("")
@@ -103,7 +105,7 @@ const GroupManagers = ({
     setGroupManagerIdentificationCode(false)
     setGroupManagerLengthIdentificationCode(0)
     setGroupManagerTwitter("")
-    _getAllGroupManagers(token);
+    _getAllGroupManagers(token)
   }
 
   const _deleteGroupManager = async (id, token) => {
@@ -114,15 +116,15 @@ const GroupManagers = ({
   const _editGroupManager = async () => {
     const data = {
       "group_manager": {
-        "email": editEmail,
         "name": editName,
+        "email": editEmail,
         "group_name": editGroup,
         "twitter": editTwitter,
-        "app_id": user.app_id,
         "require_id": editIDCode,
-        "id_code_length": editIDCode ? editLengthIDCode : null
+        "id_code_length": editIDCode ? editLengthIDCode : null,
+        "app_id": user.app_id,
       }
-    };
+    }
     await editGroupManager(editingGroupManager.id, data, token);
     setModalEdit(false);
     _getAllGroupManagers(token);
@@ -172,10 +174,14 @@ const GroupManagers = ({
     if (locale_id === null) {
       const response = await getRootGroup()
       locale_id = response.group.id
+    } else if (!locale_id) {
+      setState([])
+      setCity([])
+      return
     }
 
     const response = await getChildrenGroups(locale_id)
-    switch(locale_name){
+    switch(locale_name) {
       case 'country':
         setCountry(response.children)
         return
@@ -186,7 +192,7 @@ const GroupManagers = ({
         setCity(response.children)
         return
       default:
-         return
+        return
     }
   }
 
