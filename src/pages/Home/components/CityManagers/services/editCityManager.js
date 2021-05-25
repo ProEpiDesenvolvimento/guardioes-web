@@ -13,7 +13,7 @@ const editCityManager = async (id, data, token) =>
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para editar Gerentes de Instituições.");
+      alert("Você não tem permissão para editar Gerentes de Municípios.");
     } else {
       alert('Algo deu errado, tente novamente!');
     }

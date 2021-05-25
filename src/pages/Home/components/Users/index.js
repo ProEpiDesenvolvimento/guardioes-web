@@ -28,7 +28,7 @@ import deleteUser from './services/deleteUser';
 import editUser from './services/editUser';
 import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
-import { gender, race } from '../../../../utils/selectorUtils';
+import { genderChoices, raceChoices } from '../../../../utils/selector';
 import Select from 'react-select';
 
 const Users = ({
@@ -217,7 +217,7 @@ const Users = ({
               <label htmlFor="edit_gender">Gênero</label>
               <Select 
                 id="edit_gender"
-                options={gender}
+                options={genderChoices}
                 onChange={(e) => handleEditGender(e.value)}
               />
             </EditInput>
@@ -226,7 +226,7 @@ const Users = ({
               <label htmlFor="edit_race">Raça</label>
               <Select 
                 id="edit_race"
-                options={race}
+                options={raceChoices}
                 onChange={(e) => handleEditRace(e.value)}
               />
             </EditInput>

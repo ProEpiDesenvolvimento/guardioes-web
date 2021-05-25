@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { states } from "utils/Brasil";
+import { stateOptions } from "utils/brasil";
 import { cnpjMask, phoneMask } from "utils/mask";
 
 import {
@@ -135,7 +135,7 @@ const Form = (props) => {
             onChange={(e) => setState(e.target.value)}
             ref={register({ required: true })}
           >
-            {states.map((state) => {
+            {stateOptions.map((state) => {
               return (
                 <option value={state.key}>{state.label}</option>
               )

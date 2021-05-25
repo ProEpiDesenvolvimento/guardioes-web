@@ -113,6 +113,7 @@ const NavBar = ({
         {categories.map(category => {
           return (
             <OptionButton
+              key={category.key}
               onClick={() => {
                 setSelected(category.key)
                 setComponentCallback(category)

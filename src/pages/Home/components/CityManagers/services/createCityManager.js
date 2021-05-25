@@ -12,7 +12,7 @@ const createCityManagers = async (data, token) =>
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para criar Gerentes de Instituições.");
+      alert("Você não tem permissão para criar Gerentes de Municípios.");
     } else {
       alert('Algo deu errado, tente novamente!');
     }      

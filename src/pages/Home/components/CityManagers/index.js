@@ -5,13 +5,13 @@ import {
 } from 'actions/';
 
 import { bindActionCreators } from 'redux';
-import getAllCityManagers from './services/getAllCityManagers'
-import createCityManager from './services/createCityManager'
-import deleteCityManager from './services/deleteCityManager'
+import getAllCityManagers from './services/getAllCityManagers';
+import createCityManager from './services/createCityManager';
+import deleteCityManager from './services/deleteCityManager';
 import editCityManager from './services/editCityManager';
 
-import getRootGroup from '../Groups/services/getRootGroup'
-import getChildrenGroups from './../Groups/services/getChildrenGroups'
+import { countryChoices } from '../../../../utils/selector';
+import { stateOptions, getCity } from '../../../../utils/brasil';
 
 import {
   Container,
@@ -39,11 +39,11 @@ const CityManagers = ({
   setCityManagers,
   setToken
 }) => {
-
   const { handleSubmit } = useForm()
+
   const [cityManagerName, setCityManagerName] = useState("");
-  const [cityManagerEmail, setCityManagerEmail] = useState("");
   const [cityManagerCity, setCityManagerCity] = useState("");
+  const [cityManagerEmail, setCityManagerEmail] = useState("");
   const [cityManagerPassword, setCityManagerPassword] = useState("");
   const [modalEdit, setModalEdit] = useState(false);
   const [editingCityManager, setEditingCityManager] = useState({});
@@ -52,27 +52,31 @@ const CityManagers = ({
   const [editCity, setEditCity] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [cityManagerShow, setCityManagerShow] = useState({});
-  const [country, setCountry] = useState([]);
-  const [state, setState] = useState([]);
-  const [city, setCity] = useState([]);
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
 
   const _createCityManager = async () => {
+    if (cityManagerCity === "") {
+      alert('Selecione um Município.')
+      return
+    }
+
     const data = {
       "city_manager": {
         "name": cityManagerName,
         "city": cityManagerCity,
-        "password": cityManagerPassword,
         "email": cityManagerEmail,
+        "password": cityManagerPassword,
         "app_id": user.app_id,
       }
     }
-    const response = await createCityManager(data, token)
+    await createCityManager(data, token)
 
     setCityManagerName("")
     setCityManagerCity("")
     setCityManagerEmail("")
     setCityManagerPassword("")
-    _getAllCityManagers(token);
+    _getAllCityManagers(token)
   }
 
   const _deleteCityManager = async (id, token) => {
@@ -84,7 +88,6 @@ const CityManagers = ({
     const data = {
       "city_manager": {
         "name": editName,
-        "city": editCity,
         "email": editEmail,
         "app_id": user.app_id,
       }
@@ -115,28 +118,6 @@ const CityManagers = ({
     setEditEmail(value);
   }
 
-  const loadLocales = async (locale_id=null, locale_name='country') => {
-    if (locale_id === null) {
-      const response = await getRootGroup()
-      locale_id = response.group.id
-    }
-    const response = await getChildrenGroups(locale_id)
-
-    switch(locale_name) {
-      case 'country':
-        setCountry(response.children)
-        return
-      case 'state':
-        setState(response.children)
-        return
-      case 'city':
-        setCity(response.children)
-        return
-      default:
-        return
-    }
-  }
-
   const _getAllCityManagers = async (token) => {
     const response = await getAllCityManagers(token)
     loadCityManagers(response)
@@ -148,16 +129,7 @@ const CityManagers = ({
       response.city_managers = [];
     }
     response.city_managers.forEach(city_manager => {
-      if (!user.is_god) {
-        if (city_manager.app_id === user.app_id) {
-          aux_city_managers.push({
-            "id": city_manager.id,
-            "name": city_manager.name,
-            "email": city_manager.email,
-            "city": city_manager.city,
-          })
-        }
-      } else {
+      if (city_manager.app_id === user.app_id) {
         aux_city_managers.push({
           "id": city_manager.id,
           "name": city_manager.name,
@@ -166,7 +138,6 @@ const CityManagers = ({
         })
       }
     })
-
     if (aux_city_managers.length === 0) {
       aux_city_managers = null
     }
@@ -176,7 +147,6 @@ const CityManagers = ({
   useEffect(() => {
     _getAllCityManagers(token)
     setToken(token)
-    loadLocales()
   }, []);
 
   const fields =
@@ -231,6 +201,16 @@ const CityManagers = ({
               disabled
             />
           </EditInput>
+
+          <EditInput>
+            <label>Município</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={cityManagerShow.city}
+              disabled
+            />
+          </EditInput>
         </Modal.Body>
 
         <Modal.Footer>
@@ -266,6 +246,16 @@ const CityManagers = ({
                 id="edit_email"
                 value={editEmail}
                 onChange={(e) => handleEditEmail(e.target.value)}
+                disabled
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="edit_city">Município</label>
+              <input
+                type="text"
+                id="edit_city"
+                value={editCity}
                 disabled
               />
             </EditInput>
@@ -305,54 +295,53 @@ const CityManagers = ({
                 </InputBlock>
                 
                 <InputBlock>
-                    <label htmlFor="country">País</label>
-                    <SelectInput
-                      type="select"
-                      id="country"
-                      onChange={(e) => {
-                        const id = parseInt(e.target.value)
-                        loadLocales(id, 'state')
-                      }}
-                    >
-                      <option>Escolha</option>
-                      {country.map((g) => {
-                        return <option key={g.id} value={g.id}>{g.description}</option>
-                      })}
-                    </SelectInput>
-                  </InputBlock>
+                  <label htmlFor="country">País</label>
+                  <SelectInput
+                    type="select"
+                    id="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  >
+                    <option>Escolha</option>
+                    {countryChoices.map((c) => {
+                      return <option key={c.value} value={c.value}>{c.label}</option>
+                    })}
+                  </SelectInput>
+                </InputBlock>
 
-                  <InputBlock>
-                    <label htmlFor="state">Estado</label>
-                    <SelectInput
-                      type="select"
-                      id="state"
-                      onChange={(e) => {
-                        const id = parseInt(e.target.value)
-                        loadLocales(id, 'city')
-                      }}
-                    >
-                      <option>Escolha</option>
-                      {state.map((g) => {
-                        return <option key={g.id} value={g.id}>{g.description}</option>
-                      })}
-                    </SelectInput>
-                  </InputBlock>
+                {country === 'Brazil' ? (
+                  <>
+                    <InputBlock>
+                      <label htmlFor="state">Estado</label>
+                      <SelectInput
+                        type="select"
+                        id="state"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                      >
+                        <option>Escolha</option>
+                        {stateOptions.map((s) => {
+                          return <option key={s.value} value={s.value}>{s.label}</option>
+                        })}
+                      </SelectInput>
+                    </InputBlock>
 
-                  <InputBlock>
-                    <label htmlFor="city">Cidade</label>
-                    <SelectInput
-                      type="select"
-                      id="city"
-                      onChange={(e) => {
-                        setCityManagerCity(e.target.value)
-                      }}
-                    >
-                      <option>Escolha</option>
-                      {city.map((g) => {
-                        return <option key={g.id} value={g.description}>{g.description}</option>
-                      })}
-                    </SelectInput>
-                  </InputBlock>
+                    <InputBlock>
+                      <label htmlFor="city">Município</label>
+                      <SelectInput
+                        type="select"
+                        id="city"
+                        value={cityManagerCity}
+                        onChange={(e) => setCityManagerCity(e.target.value)}
+                      >
+                        <option>Escolha</option>
+                        {getCity(state).map((c) => {
+                          return <option key={c.value} value={c.value}>{c.label}</option>
+                        })}
+                      </SelectInput>
+                    </InputBlock>
+                  </>
+                ) : null}
                 
                 <InputBlock>
                   <label htmlFor="email">E-mail</label>
@@ -363,6 +352,7 @@ const CityManagers = ({
                     onChange={(e) => setCityManagerEmail(e.target.value)}
                   />
                 </InputBlock>
+
                 <InputBlock>
                   <label htmlFor="password">Senha</label>
                   <Input

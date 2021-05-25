@@ -12,7 +12,7 @@ const deleteCityManagers = async (id, token) =>
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para deletar Gerentes de Instituições.");
+      alert("Você não tem permissão para deletar Gerentes de Municípios.");
     }
     console.log(e);
   });

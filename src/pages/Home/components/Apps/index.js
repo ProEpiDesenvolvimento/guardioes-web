@@ -25,7 +25,7 @@ import ContentBox from '../ContentBox';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
 import Select from 'react-select';
-import { country } from '../../../../utils/selectorUtils';
+import { countryChoices } from '../../../../utils/selector';
 
 const Apps = ({
   token,
@@ -283,7 +283,7 @@ const Apps = ({
                   <Select
                     id="app_id"
                     isSearchable={true}
-                    options={country}
+                    options={countryChoices}
                     onChange={(e) => handleOwnerCountry(e.value)}
                   />
                 </InputBlock>
