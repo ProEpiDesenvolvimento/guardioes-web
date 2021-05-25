@@ -89,23 +89,27 @@ const GroupManagers = ({
     }
     const response = await createGroupManager(data, token)
 
-    const group_data = {
-      description: groupManagerGroup,
-      code: "",
-      children_label: null,
-      parent_id: groupManagerLocale,
-      group_manager_id: response.data.group_manager.id
-    }
-    await createGroup(group_data, token)
+    if (response.status === 200) {
+      const group_data = {
+        description: groupManagerGroup,
+        code: "",
+        children_label: null,
+        parent_id: groupManagerLocale,
+        group_manager_id: response.data.group_manager.id,
+      }
+      const response_group = await createGroup(group_data, token)
 
-    setGroupManagerName("")
-    setGroupManagerPassword("")
-    setGroupManagerEmail("")
-    setGroupManagerGroup("")
-    setGroupManagerIdentificationCode(false)
-    setGroupManagerLengthIdentificationCode(0)
-    setGroupManagerTwitter("")
-    _getAllGroupManagers(token)
+      if (response_group.status === 200) {
+        setGroupManagerName("")
+        setGroupManagerPassword("")
+        setGroupManagerEmail("")
+        setGroupManagerGroup("")
+        setGroupManagerIdentificationCode(false)
+        setGroupManagerLengthIdentificationCode(0)
+        setGroupManagerTwitter("")
+        _getAllGroupManagers(token)
+      }
+    }
   }
 
   const _deleteGroupManager = async (id, token) => {
