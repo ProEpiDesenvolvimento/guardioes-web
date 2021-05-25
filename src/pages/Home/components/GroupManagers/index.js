@@ -99,7 +99,7 @@ const GroupManagers = ({
       }
       const response_group = await createGroup(group_data, token)
 
-      if (response_group.status === 200) {
+      if (response_group.status === 201) {
         setGroupManagerName("")
         setGroupManagerPassword("")
         setGroupManagerEmail("")
