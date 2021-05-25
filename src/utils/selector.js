@@ -1,4 +1,4 @@
-export const gender = [
+export const genderChoices = [
     { value: 'Mulher Cis', label: 'Mulher Cis' },
     { value: 'Homem Cis', label: 'Homem Cis' },
     { value: 'Mulher Trans', label: 'Mulher trans' },
@@ -6,7 +6,7 @@ export const gender = [
     { value: 'Não-binárie', label: 'Não-binárie' },
 ];
 
-export const race = [
+export const raceChoices = [
     { value: 'Branco', label: 'Branco' },
     { value: 'Indígena', label: 'Indígena' },
     { value: 'Pardo', label: 'Pardo' },
@@ -14,7 +14,7 @@ export const race = [
     { value: 'Amarelo', label: 'Amarelo' },
 ];
 
-export const country = [
+export const countryChoices = [
     { value: 'África do Sul', label: 'África do Sul' },
     { value: 'Angola', label: 'Angola' },
     { value: 'Antígua e Barbuda', label: 'Antígua e Barbuda' },
