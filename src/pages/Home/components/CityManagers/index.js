@@ -11,7 +11,7 @@ import deleteCityManager from './services/deleteCityManager';
 import editCityManager from './services/editCityManager';
 
 import { countryChoices } from '../../../../utils/selector';
-import { stateOptions, getCity } from '../../../../utils/brasil';
+import { stateOptions, getCity } from '../../../../utils/Brasil';
 
 import {
   Container,
@@ -70,13 +70,15 @@ const CityManagers = ({
         "app_id": user.app_id,
       }
     }
-    await createCityManager(data, token)
+    const response = await createCityManager(data, token)
 
-    setCityManagerName("")
-    setCityManagerCity("")
-    setCityManagerEmail("")
-    setCityManagerPassword("")
-    _getAllCityManagers(token)
+    if (response.status === 200) {
+      setCityManagerName("")
+      setCityManagerCity("")
+      setCityManagerEmail("")
+      setCityManagerPassword("")
+      _getAllCityManagers(token)
+    }
   }
 
   const _deleteCityManager = async (id, token) => {

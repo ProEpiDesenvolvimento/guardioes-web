@@ -7,7 +7,8 @@ const createCityManagers = async (data, token) =>
     }
   })
   .then(async (res) => {
-    const response = { data: res.data };
+    alert('Criado com sucesso!');
+    const response = { data: res.data, status: res.status };
     return response
   })
   .catch((e) => {
