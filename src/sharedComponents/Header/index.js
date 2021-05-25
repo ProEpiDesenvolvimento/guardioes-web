@@ -68,7 +68,7 @@ const Header = ({
             Estatísticas
           </NavTo>
         : null}
-        <NavTo onClick={logout}>
+        <NavTo to="#" onClick={logout}>
           {authenticated === true ? "Logout" : "Login"}
         </NavTo>
         <NavTo to="/contact">
