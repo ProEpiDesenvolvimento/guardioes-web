@@ -5,6 +5,7 @@ const changePassword = async (id, userType, token, password) =>
     {
       [userType]: {
         password,
+        password_changed: true,
       }
     },
     {
