@@ -7,6 +7,7 @@ import Contato from 'pages/Contato'
 import { sessionService } from 'redux-react-session'
 import Home from 'pages/Home';
 import ResetPwd from 'pages/ResetPwd';
+import ChangePwd from 'pages/ChangePwd';
 
 
 export default function Routes({token}) {
@@ -18,6 +19,7 @@ export default function Routes({token}) {
         <Route path='/statistics' exact component={Statistics} />
         <Route path='/login' exact component={Login} />
         <Route path='/reset' exact component={ResetPwd} />
+        <Route path='/change' exact component={ChangePwd} />
         <Route path='/contact' exact component={Contato} />
       </Switch>
     </BrowserRouter>
