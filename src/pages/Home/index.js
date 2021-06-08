@@ -46,7 +46,7 @@ const Home = ({
         setToken(auxSession.token)
         setUser(auxUser)
 
-        if (!auxUser.password_changed) {
+        if (auxUser.first_access) {
           history.push("/change")
         }
       } catch (err) {
