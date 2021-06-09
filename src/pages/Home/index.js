@@ -45,6 +45,10 @@ const Home = ({
         const auxUser = await sessionService.loadUser()
         setToken(auxSession.token)
         setUser(auxUser)
+
+        if (auxUser.first_access) {
+          history.push("/change")
+        }
       } catch (err) {
         history.push("/login")
       }
