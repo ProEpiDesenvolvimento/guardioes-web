@@ -27,6 +27,7 @@ const Header = ({
     "manager": "Gerente",
     "city_manager": "Município",
     "group_manager": "Instituição",
+    "group_manager_team": "Grupo de Instituição",
   }
 
   useEffect(() => {
