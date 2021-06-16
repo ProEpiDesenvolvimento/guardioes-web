@@ -118,14 +118,6 @@ const Managers = ({
     setModalEdit(!modalEdit);
   }
 
-  const handleEditName = (value) => {
-    setEditName(value);
-  }
-
-  const handleEditEmail = (value) => {
-    setEditEmail(value);
-  }
-
   const _getAllManagers = async (token) => {
     const response = await getAllManagers(token)
     loadManagers(response)
@@ -133,7 +125,7 @@ const Managers = ({
 
   const loadManagers = async (response) => {
     let aux_managers = [];
-    if (!response.managers.length === 0) {
+    if (!response.managers) {
       response.managers = [];
     }
     response.managers.forEach(manager => {
@@ -141,7 +133,7 @@ const Managers = ({
         "id": manager.manager.id,
         "name": manager.manager.name,
         "email": manager.manager.email,
-        "permissions": manager.permissions.models_manage
+        "permissions": manager.permissions ? manager.models_manage : null,
       })
     })
     if (aux_managers.length === 0) {
@@ -272,7 +264,7 @@ const Managers = ({
                   type="checkbox"
                   className="form-check-input"
                   checked={editingManager.permissions ? editingManager.permissions.includes(model.value) : null}
-                  onChange={(e) => {
+                  onChange={() => {
                     let newPermissions = editingManager.permissions
                     if (editingManager.permissions.includes(model.value)) {
                       newPermissions = newPermissions.filter((p) => p !== model.value)

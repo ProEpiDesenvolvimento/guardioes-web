@@ -11,6 +11,7 @@ import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
 import CityManagers from './components/CityManagers';
 import GroupManagers from './components/GroupManagers';
+import GroupManagerTeams from './components/GroupManagerTeams';
 import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
@@ -84,6 +85,10 @@ const Home = ({
       {
         key: "managersGroup",
         value: GroupManagers
+      },
+      {
+        key: "managersGroupTeams",
+        value: GroupManagerTeams
       },
       {
         key: "groups",
