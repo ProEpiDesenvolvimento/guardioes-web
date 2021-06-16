@@ -9,6 +9,7 @@ import {
   SET_CONTENTS,
   SET_CITY_MANAGERS,
   SET_GROUP_MANAGERS,
+  SET_GROUP_MANAGER_TEAMS,
   SET_MANAGERS,
   SET_GROUPS,
   SET_SYNDROMES,
@@ -37,6 +38,8 @@ export const setContents = (payload) => ({ type: SET_CONTENTS, payload });
 export const setCityManagers = (payload) => ({ type: SET_CITY_MANAGERS, payload });
 
 export const setGroupManagers = (payload) => ({ type: SET_GROUP_MANAGERS, payload });
+
+export const setGroupManagerTeams = (payload) => ({ type: SET_GROUP_MANAGER_TEAMS, payload });
 
 export const setManagers = (payload) => ({ type: SET_MANAGERS, payload });
 
