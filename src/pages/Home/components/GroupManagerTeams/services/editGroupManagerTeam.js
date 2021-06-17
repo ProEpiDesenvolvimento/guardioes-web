@@ -7,7 +7,7 @@ const editManager = async (id, data, token) => {
     }
   })
   .then(async (res) => {
-    alert('Gerente Editado!');
+    alert('Equipe de Instituição editada!');
     const response = { data: res.data };
     return response;
   })
