@@ -51,7 +51,8 @@ const GroupManagers = ({
   const [groupManagerEmail, setGroupManagerEmail] = useState("")
   const [groupManagerTwitter, setGroupManagerTwitter] = useState("")
   const [groupManagerGroup, setGroupManagerGroup] = useState("")
-  const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState(false)
+  const [groupManagerHasIdentificationCode, setGroupManagerHasIdentificationCode] = useState(false)
+  const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState('')
   const [groupManagerLengthIdentificationCode, setGroupManagerLengthIdentificationCode] = useState(1)
   const [groupManagerPassword, setGroupManagerPassword] = useState("")
   const [modalEdit, setModalEdit] = useState(false);
@@ -83,8 +84,8 @@ const GroupManagers = ({
         "password": groupManagerPassword,
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
-        "require_id": groupManagerIdentificationCode,
-        "id_code_length": groupManagerIdentificationCode ? groupManagerLengthIdentificationCode : null,
+        "require_id": groupManagerHasIdentificationCode? groupManagerIdentificationCode : null,
+        "id_code_length": groupManagerHasIdentificationCode ? groupManagerLengthIdentificationCode : null,
         "app_id": user.app_id,
       }
     }
@@ -105,7 +106,8 @@ const GroupManagers = ({
         setGroupManagerPassword("")
         setGroupManagerEmail("")
         setGroupManagerGroup("")
-        setGroupManagerIdentificationCode(false)
+        setGroupManagerHasIdentificationCode(false)
+        setGroupManagerIdentificationCode('')
         setGroupManagerLengthIdentificationCode(0)
         setGroupManagerTwitter("")
         _getAllGroupManagers(token)
@@ -312,15 +314,18 @@ const GroupManagers = ({
             />
           </EditInput>
 
-          <EditInput>
-            <label>Nome do código de identificação</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupManagerShow.require_id}
-              disabled
-            />
-          </EditInput>
+          {groupManagerShow.require_id !== null? 
+            <EditInput>
+              <label>Nome do código de identificação</label>
+              <input
+                className="text-dark"
+                type="text"
+                value={groupManagerShow.require_id}
+                disabled
+              />
+            </EditInput>
+          : null
+          }
         </Modal.Body>
 
         <Modal.Footer>
@@ -536,15 +541,15 @@ const GroupManagers = ({
                   />
                 </InputBlock>
                 <CheckboxInputBlock>
-                  <Label htmlFor="id_code">Código de Identificação</Label>
+                  <Label htmlFor="has_id_code">Código de Identificação</Label>
                   <CheckboxInput
                     type="checkbox"
-                    id="id_code"
-                    checked={groupManagerIdentificationCode}
-                    onChange={(e) => setGroupManagerIdentificationCode(!groupManagerIdentificationCode)}
+                    id="has_id_code"
+                    checked={groupManagerHasIdentificationCode}
+                    onChange={(e) => setGroupManagerHasIdentificationCode(!groupManagerHasIdentificationCode)}
                   />
                 </CheckboxInputBlock>
-                {groupManagerIdentificationCode ?
+                {groupManagerHasIdentificationCode ?
                   <InputBlock>
                     <label htmlFor="len_id_code">Quantidade de caracteres</label>
                     <Input
@@ -553,6 +558,17 @@ const GroupManagers = ({
                       value={groupManagerLengthIdentificationCode}
                       min="1"
                       onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
+                    />
+                  </InputBlock>
+                  : null}
+                  {groupManagerHasIdentificationCode ?
+                  <InputBlock>
+                    <label htmlFor="id_code">Nome do código de identificação</label>
+                    <Input
+                      type="string"
+                      id="id_code"
+                      value={groupManagerIdentificationCode}
+                      onChange={(e) => setGroupManagerIdentificationCode(e.target.value)}
                     />
                   </InputBlock>
                   : null}
