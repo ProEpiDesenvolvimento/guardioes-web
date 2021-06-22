@@ -36,7 +36,7 @@ const Profile = ({
     const [appName, setAppName] = useState("");
     const [appTwitter, setAppTwitter] = useState("");
     const [twitter, setTwitter] = useState("");
-    const [requireId, setRequireId] = useState(false);
+    const [requireId, setRequireId] = useState(null);
     const [idCodeLength, setIdCodeLength] = useState(1);
 
     const _editUser = async () => {
@@ -224,13 +224,13 @@ const Profile = ({
                                 <CheckboxInput
                                     type="checkbox"
                                     id="id_code"
-                                    checked={requireId}
-                                    onChange={(e) => setRequireId(!requireId)}
+                                    checked={requireId === null? false : true}
+                                    onChange={(e) => setRequireId(requireId === null? '' : null)}
                                 />
                             </CheckboxInputBlock>
                         }
 
-                        {user.type === "group_manager" && requireId &&
+                        {user.type === "group_manager" && requireId !== null &&
                             <InputBlock>
                                 <label htmlFor="id_code_length">Quantidade de caracteres</label>
                                 <input
@@ -239,6 +239,18 @@ const Profile = ({
                                     value={idCodeLength}
                                     min="1"
                                     onChange={(e) => setIdCodeLength(e.target.value)}
+                                />
+                            </InputBlock>
+                        }
+
+                        {user.type === "group_manager" && requireId !== null &&
+                            <InputBlock>
+                                <label htmlFor="require_id">Nome do código de identificação</label>
+                                <input
+                                    type="string"
+                                    id="require_id"
+                                    value={requireId}
+                                    onChange={(e) => setRequireId(e.target.value)}
                                 />
                             </InputBlock>
                         }
