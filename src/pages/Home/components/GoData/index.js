@@ -48,14 +48,17 @@ const GoData = ({
     const [outbreaksLinkeds, setOutbreaksLinkeds] = useState([])
 
     const loadData = async () => {
-        getOutbreaks(godataToken);
+        getOutbreaks(godataToken)
+
         const syns = await getAllSyndromes(token)
         let synds = []
         if (syns.syndromes)
             synds = syns.syndromes
         setSyndromes(synds);
+
         const gm = await getGroupManager(user.id, token)
         setUser({ ...user, vigilance_syndromes: gm.group_manager.vigilance_syndromes })
+
         let auxOutbreaksLinkeds = []
         for (let i = 0; i < gm.group_manager.vigilance_syndromes.length; i++)
             if (gm.group_manager.vigilance_syndromes[i].surto_id)
@@ -79,7 +82,7 @@ const GoData = ({
         }
         _loadSession();
 
-        if (user.username_godata !== "" && !godataToken) {
+        if (user.url_godata !== "" && user.username_godata !== "" && !godataToken) {
             const loginGoData = async () => {
                 await axios.post(
                     `${user.url_godata}/api/oauth/token`,
@@ -96,7 +99,7 @@ const GoData = ({
                         await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação.");
+                        alert("Falha na autenticação");
                     });
             }
             loginGoData();
@@ -117,7 +120,7 @@ const GoData = ({
                 userIdGoData = res.data.userId;
             })
             .catch((e) => {
-                alert("Falha na autenticação.");
+                alert("Falha na autenticação");
             });
         
         await axios.post(
