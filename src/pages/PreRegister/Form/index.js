@@ -54,7 +54,7 @@ const Form = (props) => {
 
     const response = await submitPreRegister(body)
     if (response.errors) {
-      if (response.errors == "O email já está sendo usado.") {
+      if (response.errors === "O email já está sendo usado.") {
         setEmailValidation(true)
         return null
       }

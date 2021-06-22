@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { godataURL } from 'services/urls'
 import {
     setVigilanceSyndromes,
     setToken,
     setSyndromes,
-    setEmail,
     setUser,
     setGoDataToken
 } from 'actions/';
@@ -18,7 +16,6 @@ import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 import { useForm } from 'react-hook-form';
 import { SubmitButton } from '../GroupManagers/styles';
-import ContentBox from '../ContentBox';
 import {
     Container,
     ContentBoxHeader,
@@ -39,6 +36,7 @@ const GoData = ({
     godataToken,
     setGoDataToken
 }) => {
+    const [inputURL, setInputURL] = useState("");
     const [inputEmail, setInputEmail] = useState("");
     const [inputPassword, setInputPassword] = useState("");
     const { handleSubmit } = useForm();
@@ -66,22 +64,25 @@ const GoData = ({
     }
 
     useEffect(() => {
-        loadData()
+        if (godataToken) {
+            loadData()
+        }
     }, [godataToken])
 
     useEffect(() => {
         const _loadSession = async () => {
             const auxSession = await sessionService.loadSession();
             setToken(auxSession.token);
-            if (auxSession.godataToken !== "" && auxSession.godataToken !== null && auxSession.godataToken !== undefined)
+            if (auxSession.godataToken) {
                 setGoDataToken(auxSession.godataToken);
+            }
         }
         _loadSession();
 
-        if (user.username_godata !== "" && godataToken === "") {
+        if (user.username_godata !== "" && !godataToken) {
             const loginGoData = async () => {
                 await axios.post(
-                    `${godataURL}/api/oauth/token`,
+                    `${user.url_godata}/api/oauth/token`,
                     {
                         headers: { "Access-Control-Allow-Origin": "*" },
                         username: user.username_godata,
@@ -100,16 +101,12 @@ const GoData = ({
             }
             loginGoData();
         }
-
-        if (godataToken !== "" && godataToken !== undefined) {
-            loadData();
-        }
     }, []);
 
     const _goDataLogIn = async () => {
         let userIdGoData
         await axios.post(
-            `${godataURL}/api/users/login`,
+            `${inputURL}/api/users/login`,
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 email: inputEmail,
@@ -124,7 +121,7 @@ const GoData = ({
             });
         
         await axios.post(
-            `${godataURL}/api/oauth/token`,
+            `${inputURL}/api/oauth/token`,
             {
                 headers: { "Access-Control-Allow-Origin": "*" },
                 username: inputEmail,
@@ -132,34 +129,36 @@ const GoData = ({
             }
         )
             .then(async (res) => {
+                const data = {
+                    group_manager: {
+                        url_godata: inputURL,
+                        username_godata: inputEmail,
+                        password_godata: inputPassword,
+                        userid_godata: userIdGoData,
+                    }
+                }
+                await editGroupManager(user.id, data, token);
+
                 const auxSession = await sessionService.loadSession();
+                await sessionService.saveUser({ ...user, url_godata: inputURL, username_godata: inputEmail, password_godata: inputPassword });
                 await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+                setUser({ ...user, url_godata: inputURL, username_godata: inputEmail, password_godata: inputPassword });
                 setGoDataToken("Bearer " + res.data.access_token);
-                setUser({ ...user, username_godata: inputEmail, password_godata: inputPassword })
-                getOutbreaks("Bearer " + res.data.access_token);
+
                 const syns = await getAllSyndromes(token)
                 let synds = []
                 if (syns.syndromes)
                     synds = syns.syndromes
                 setSyndromes(synds);
-                const data = {
-                    group_manager: {
-                        username_godata: inputEmail,
-                        password_godata: inputPassword,
-                        userid_godata: userIdGoData
-                    }
-                }
-                await editGroupManager(user.id, data, token);
             })
             .catch((e) => {
                 alert("Falha na autenticação.");
             });
-        loadData()
     }
 
     const getOutbreaks = async (token) => {
         await axios.get(
-            `${godataURL}/api/outbreaks`,
+            `${user.url_godata}/api/outbreaks`,
             {
                 headers: { "Authorization": `${token}`, "Access-Control-Allow-Origin": "*" }
             }
@@ -176,7 +175,7 @@ const GoData = ({
         let auxOutbreaksLinkeds = []
         let vigilanceSyndromes = user.vigilance_syndromes;
         vigilanceSyndromes.map((vs) => {
-            if (vs.syndrome_id == selectedSyndrome) {
+            if (vs.syndrome_id === selectedSyndrome) {
                 vs.surto_id = outbreakId;
                 auxOutbreaksLinkeds.push(outbreakId)
             }
@@ -200,18 +199,24 @@ const GoData = ({
     const signOut = async () => {
         const data = {
             group_manager: {
+                url_godata: "",
                 username_godata: "",
                 password_godata: "",
                 userid_godata: null
             }
         }
         await editGroupManager(user.id, data, token);
-        setGoDataToken("")
+
         let auxVigilanceSyndromes = user.vigilance_syndromes
         for (let i = 0; i < auxVigilanceSyndromes.length; i++)
             delete auxVigilanceSyndromes[i].surto_id
         setVigilanceSyndromes(auxVigilanceSyndromes)
-        setUser({ ...user, username_godata: "", password_godata: "" })
+
+        const auxSession = await sessionService.loadSession();
+        await sessionService.saveUser({ ...user, url_godata: "", username_godata: "", password_godata: "" });
+        await sessionService.saveSession({ ...auxSession, godataToken: "" });
+        setUser({ ...user, url_godata: "", username_godata: "", password_godata: "" });
+        setGoDataToken("");
     }
 
     const unlinkOutbreak = async (outbreakId) => {
@@ -231,7 +236,7 @@ const GoData = ({
 
     return (
         <>
-            {godataToken !== "" && godataToken !== undefined ?
+            {godataToken ?
                 <>
                     <Modal
                         show={showModal}
@@ -248,10 +253,10 @@ const GoData = ({
                                         <option>Selecione...</option>
                                         {user.vigilance_syndromes.map((vs) => (
                                             syndromes.map((s) => {
-                                                if (s.id == vs.syndrome_id && outbreakId == vs.surto_id) {
+                                                if (s.id === vs.syndrome_id && outbreakId === vs.surto_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id} selected>{s.description}</option>
                                                 }
-                                                else if (s.id == vs.syndrome_id) {
+                                                else if (s.id === vs.syndrome_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id}>{s.description}</option>
                                                 }
                                             })
@@ -281,12 +286,13 @@ const GoData = ({
                                         <thead>
                                             <tr>
                                                 <th>
-                                                    <p><b>Vinculado ao GoData como:</b></p>
-                                                    <p style={{ fontWeight: "normal" }}>{user.username_godata}</p>
+                                                    <p>Vinculado ao GoData como:</p>
+                                                    <p>URL: <span style={{ fontWeight: "normal" }}>{user.url_godata}</span></p>
+                                                    <p>Email: <span style={{ fontWeight: "normal" }}>{user.username_godata}</span></p>
                                                 </th>
                                                 <th /><th />
                                                 <th style={{ float: "right" }}>
-                                                    <button type="button" class="btn btn-danger" onClick={signOut}>Desvincular</button>
+                                                    <button type="button" className="btn btn-danger" onClick={signOut}>Desvincular</button>
                                                 </th>
                                             </tr>
                                             <tr>
@@ -311,15 +317,15 @@ const GoData = ({
                                                 }
                                                 return (
                                                     <tr key={outbreak.id}>
-                                                        <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.name}</td>
-                                                        <td style={{ maxWidth: "500px" }} key={outbreak.id}>{outbreak.description}</td>
+                                                        <td style={{ maxWidth: "500px" }}>{outbreak.name}</td>
+                                                        <td style={{ maxWidth: "500px" }}>{outbreak.description}</td>
                                                         {outbreaksLinkeds.includes(outbreak.id) ?
-                                                            (<>
-                                                                <td style={{ maxWidth: "500px", padding: "10px 0", fontWeight: "bold", textAlign: 'center' }} key={outbreak.id}>{getSyndromeName(outbreak.id)}</td>
-                                                                <td><button type="button" class="btn btn-danger" onClick={() => unlinkOutbreak(outbreak.id)} style={{ margin: "0", padding: "5px", fontSize: "15px", width: "100px" }}>Desvincular Síndrome</button></td>
-                                                            </>)
+                                                            <>
+                                                                <td style={{ maxWidth: "500px", padding: "10px 0", fontWeight: "bold", textAlign: 'center' }}>{getSyndromeName(outbreak.id)}</td>
+                                                                <td><button type="button" className="btn btn-danger" onClick={() => unlinkOutbreak(outbreak.id)} style={{ margin: "0", padding: "5px", fontSize: "15px", width: "100px" }}>Desvincular Síndrome</button></td>
+                                                            </>
                                                             :
-                                                            <td><button type="button" class="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
+                                                            <td><button type="button" className="btn btn-primary" onClick={() => handleModal(outbreak.id)}>Adicionar Síndrome</button></td>
                                                         }
                                                     </tr>
                                                 )
@@ -351,12 +357,16 @@ const GoData = ({
                         <h4 className="pb-3">Autenticação GoData</h4>
                         <form id="goDataLogIn" onSubmit={handleSubmit(_goDataLogIn)}>
                             <div className="form-group">
-                                <label for="inputEmail">E-mail</label>
-                                <input type="email" class="form-control" id="inputEmail" value={inputEmail} onChange={(e) => setInputEmail(e.target.value)} />
+                                <label htmlFor="inputURL">URL do GoData</label>
+                                <input type="text" className="form-control" id="inputURL" value={inputURL} onChange={(e) => setInputURL(e.target.value)} />
                             </div>
                             <div className="form-group">
-                                <label for="inputPassword">Senha</label>
-                                <input type="password" class="form-control" id="inputPassword" value={inputPassword} onChange={(e) => setInputPassword(e.target.value)} />
+                                <label htmlFor="inputEmail">E-mail</label>
+                                <input type="email" className="form-control" id="inputEmail" value={inputEmail} onChange={(e) => setInputEmail(e.target.value)} />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="inputPassword">Senha</label>
+                                <input type="password" className="form-control" id="inputPassword" value={inputPassword} onChange={(e) => setInputPassword(e.target.value)} />
                             </div>
                             <SubmitButton type="submit">Entrar</SubmitButton>
                         </form>
