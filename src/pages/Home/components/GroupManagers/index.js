@@ -311,6 +311,16 @@ const GroupManagers = ({
               disabled
             />
           </EditInput>
+
+          <EditInput>
+            <label>Nome do código de identificação</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={groupManagerShow.require_id}
+              disabled
+            />
+          </EditInput>
         </Modal.Body>
 
         <Modal.Footer>
