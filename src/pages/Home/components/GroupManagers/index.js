@@ -60,7 +60,8 @@ const GroupManagers = ({
   const [editEmail, setEditEmail] = useState("");
   const [editTwitter, setEditTwitter] = useState("");
   const [editGroup, setEditGroup] = useState("");
-  const [editIDCode, setEditIDCode] = useState(false);
+  const [editIDCode, setEditIDCode] = useState(null);
+  const [editHasIDCode, setEditHasIDCode] = useState(false);
   const [editLengthIDCode, setEditLengthIDCode] = useState(1);
   const [groupManagerShow, setGroupManagerShow] = useState({});
   const [groupManagerLocale, setGroupManagerLocale] = useState(0)
@@ -124,8 +125,8 @@ const GroupManagers = ({
         "email": editEmail,
         "group_name": editGroup,
         "twitter": editTwitter,
-        "require_id": editIDCode,
-        "id_code_length": editIDCode ? editLengthIDCode : null,
+        "require_id": editHasIDCode? editIDCode : null,
+        "id_code_length": editHasIDCode ? editLengthIDCode : null,
         "app_id": user.app_id,
       }
     }
@@ -146,6 +147,7 @@ const GroupManagers = ({
     setEditGroup(content.group_name);
     setEditTwitter(content.twitter);
     setEditIDCode(content.require_id);
+    setEditHasIDCode(content.require_id !== null)
     setEditLengthIDCode(content.id_code_length);
     setModalEdit(!modalEdit);
   }
@@ -168,6 +170,10 @@ const GroupManagers = ({
 
   const handleEditIDCode = (value) => {
     setEditIDCode(value);
+  }
+
+  const handleEditHasIDCode = (value) => {
+    setEditHasIDCode(value);
   }
 
   const handleEditLengthIDCode = (value) => {
@@ -366,16 +372,16 @@ const GroupManagers = ({
             </EditInput>
 
             <EditCheckbox>
-              <label htmlFor="edit_id_code">Código de Identificação</label>
+              <label htmlFor="edit_has_id_code">Código de Identificação</label>
               <EditCheckboxInput
                 type="checkbox"
-                id="edit_id_code"
-                checked={editIDCode}
-                onChange={() => handleEditIDCode(!editIDCode)}
+                id="edit_has_id_code"
+                checked={editHasIDCode}
+                onChange={() => handleEditHasIDCode(!editHasIDCode)}
               />
             </EditCheckbox>
 
-            {editIDCode ? <EditInput>
+            {editHasIDCode? <EditInput>
                   <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
                   <input
                     type="number"
@@ -383,6 +389,16 @@ const GroupManagers = ({
                     value={editLengthIDCode}
                     min="1"
                     onChange={(e) => handleEditLengthIDCode(e.target.value)}
+                  />
+              </EditInput> : null}
+
+              {editHasIDCode ? <EditInput>
+                  <label htmlFor="edit_id_code">Nome do código de identificação</label>
+                  <input
+                    type="string"
+                    id="edit_id_code"
+                    value={editIDCode}
+                    onChange={(e) => handleEditIDCode(e.target.value)}
                   />
               </EditInput> : null}
           </Modal.Body>
