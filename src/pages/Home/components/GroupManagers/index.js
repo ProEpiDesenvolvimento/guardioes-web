@@ -51,9 +51,6 @@ const GroupManagers = ({
   const [groupManagerEmail, setGroupManagerEmail] = useState("")
   const [groupManagerTwitter, setGroupManagerTwitter] = useState("")
   const [groupManagerGroup, setGroupManagerGroup] = useState("")
-  const [groupManagerHasIdentificationCode, setGroupManagerHasIdentificationCode] = useState(false)
-  const [groupManagerIdentificationCode, setGroupManagerIdentificationCode] = useState('')
-  const [groupManagerLengthIdentificationCode, setGroupManagerLengthIdentificationCode] = useState(1)
   const [groupManagerPassword, setGroupManagerPassword] = useState("")
   const [modalEdit, setModalEdit] = useState(false);
   const [editingGroupManager, setEditingGroupManager] = useState({});
@@ -61,9 +58,6 @@ const GroupManagers = ({
   const [editEmail, setEditEmail] = useState("");
   const [editTwitter, setEditTwitter] = useState("");
   const [editGroup, setEditGroup] = useState("");
-  const [editIDCode, setEditIDCode] = useState(null);
-  const [editHasIDCode, setEditHasIDCode] = useState(false);
-  const [editLengthIDCode, setEditLengthIDCode] = useState(1);
   const [groupManagerShow, setGroupManagerShow] = useState({});
   const [groupManagerLocale, setGroupManagerLocale] = useState(0)
   const [modalShow, setModalShow] = useState(false);
@@ -84,8 +78,6 @@ const GroupManagers = ({
         "password": groupManagerPassword,
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
-        "require_id": groupManagerHasIdentificationCode? groupManagerIdentificationCode : null,
-        "id_code_length": groupManagerHasIdentificationCode ? groupManagerLengthIdentificationCode : null,
         "app_id": user.app_id,
       }
     }
@@ -106,9 +98,6 @@ const GroupManagers = ({
         setGroupManagerPassword("")
         setGroupManagerEmail("")
         setGroupManagerGroup("")
-        setGroupManagerHasIdentificationCode(false)
-        setGroupManagerIdentificationCode('')
-        setGroupManagerLengthIdentificationCode(0)
         setGroupManagerTwitter("")
         _getAllGroupManagers(token)
       }
@@ -127,8 +116,6 @@ const GroupManagers = ({
         "email": editEmail,
         "group_name": editGroup,
         "twitter": editTwitter,
-        "require_id": editHasIDCode? editIDCode : null,
-        "id_code_length": editHasIDCode ? editLengthIDCode : null,
         "app_id": user.app_id,
       }
     }
@@ -148,9 +135,6 @@ const GroupManagers = ({
     setEditEmail(content.email);
     setEditGroup(content.group_name);
     setEditTwitter(content.twitter);
-    setEditIDCode(content.require_id);
-    setEditHasIDCode(content.require_id !== null)
-    setEditLengthIDCode(content.id_code_length);
     setModalEdit(!modalEdit);
   }
 
@@ -168,18 +152,6 @@ const GroupManagers = ({
 
   const handleEditTwitter = (value) => {
     setEditTwitter(value);
-  }
-
-  const handleEditIDCode = (value) => {
-    setEditIDCode(value);
-  }
-
-  const handleEditHasIDCode = (value) => {
-    setEditHasIDCode(value);
-  }
-
-  const handleEditLengthIDCode = (value) => {
-    setEditLengthIDCode(value);
   }
 
   const loadLocales = async (locale_id=null, locale_name='country') => {
@@ -225,8 +197,6 @@ const GroupManagers = ({
         "email": group_manager.email,
         "group_name": group_manager.group_name,
         "twitter": group_manager.twitter,
-        "require_id": group_manager.require_id,
-        "id_code_length": group_manager.id_code_length,
       })
     })
     if (aux_group_managers.length === 0) {
@@ -313,19 +283,6 @@ const GroupManagers = ({
               disabled
             />
           </EditInput>
-
-          {groupManagerShow.require_id !== null? 
-            <EditInput>
-              <label>Nome do código de identificação</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={groupManagerShow.require_id}
-                disabled
-              />
-            </EditInput>
-          : null
-          }
         </Modal.Body>
 
         <Modal.Footer>
@@ -385,37 +342,6 @@ const GroupManagers = ({
                 onChange={(e) => handleEditTwitter(e.target.value)}
               />
             </EditInput>
-
-            <EditCheckbox>
-              <label htmlFor="edit_has_id_code">Código de Identificação</label>
-              <EditCheckboxInput
-                type="checkbox"
-                id="edit_has_id_code"
-                checked={editHasIDCode}
-                onChange={() => handleEditHasIDCode(!editHasIDCode)}
-              />
-            </EditCheckbox>
-
-            {editHasIDCode? <EditInput>
-                  <label htmlFor="edit_len_id_code">Quantidade de caracteres</label>
-                  <input
-                    type="number"
-                    id="edit_len_id_code"
-                    value={editLengthIDCode}
-                    min="1"
-                    onChange={(e) => handleEditLengthIDCode(e.target.value)}
-                  />
-              </EditInput> : null}
-
-              {editHasIDCode ? <EditInput>
-                  <label htmlFor="edit_id_code">Nome do código de identificação</label>
-                  <input
-                    type="string"
-                    id="edit_id_code"
-                    value={editIDCode}
-                    onChange={(e) => handleEditIDCode(e.target.value)}
-                  />
-              </EditInput> : null}
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
@@ -540,38 +466,6 @@ const GroupManagers = ({
                     onChange={(e) => setGroupManagerPassword(e.target.value)}
                   />
                 </InputBlock>
-                <CheckboxInputBlock>
-                  <Label htmlFor="has_id_code">Código de Identificação</Label>
-                  <CheckboxInput
-                    type="checkbox"
-                    id="has_id_code"
-                    checked={groupManagerHasIdentificationCode}
-                    onChange={(e) => setGroupManagerHasIdentificationCode(!groupManagerHasIdentificationCode)}
-                  />
-                </CheckboxInputBlock>
-                {groupManagerHasIdentificationCode ?
-                  <InputBlock>
-                    <label htmlFor="len_id_code">Quantidade de caracteres</label>
-                    <Input
-                      type="number"
-                      id="len_id_code"
-                      value={groupManagerLengthIdentificationCode}
-                      min="1"
-                      onChange={(e) => setGroupManagerLengthIdentificationCode(e.target.value)}
-                    />
-                  </InputBlock>
-                  : null}
-                  {groupManagerHasIdentificationCode ?
-                  <InputBlock>
-                    <label htmlFor="id_code">Nome do código de identificação</label>
-                    <Input
-                      type="string"
-                      id="id_code"
-                      value={groupManagerIdentificationCode}
-                      onChange={(e) => setGroupManagerIdentificationCode(e.target.value)}
-                    />
-                  </InputBlock>
-                  : null}
               </Inputs>
               <SubmitButton type="submit">
                 Adicionar
