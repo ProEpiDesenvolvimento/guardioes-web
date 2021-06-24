@@ -143,17 +143,20 @@ const Groups = ({
     }
 
     const response = await editGroup(editingGroup.id, data, token);
-    response.data.group.parentName = response.data.group.parent.name
 
-    let oldGroups = groups.map((group) => {
-      if(group.id === editingGroup.id){
-        return response.data.group
+    const newGroups = groups.map((group) => {
+      if (group.id === editingGroup.id) {
+        return {
+          ...response.data.group,
+          parentName: response.data.group.parent.name,
+          ...data,
+        }
       } else {
         return group
       }
     })
 
-    setGroups(oldGroups)
+    setGroups(newGroups)
     setModalEdit(false);
   }
 
@@ -231,9 +234,9 @@ const Groups = ({
     setModalEdit(!modalEdit);
   }
 
-  const handleLocationValue = (locations) => {
-    const locationGoData = editingGroup.location_id_godata
-    const value = locations.filter((location) => location.id === locationGoData)
+  const handleLocationValue = (group) => {
+    const groupLocation = group.location_id_godata
+    const value = locations.filter((location) => location.id === groupLocation)
 
     if (value.length > 0) {
       return value[0]
@@ -509,13 +512,13 @@ const Groups = ({
               </EditInput>
             : null}
 
-            {locations.length > 0 && editingGroup.children_label == null?
+            {locations.length > 0 && editingGroup.children_label == null ?
               <EditInput>
                 <label htmlFor="edit_gender">Locação no GoData</label>
                 <Select 
                   id="edit_gender"
                   options={locations}
-                  defaultValue={handleLocationValue(locations)}
+                  defaultValue={handleLocationValue(editingGroup)}
                   getOptionLabel={(option) => option.name}
                   getOptionValue={(option) => option.id}
                   onChange={(option) => setEditingGroup({
