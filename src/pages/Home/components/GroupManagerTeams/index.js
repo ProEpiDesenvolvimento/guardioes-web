@@ -154,7 +154,7 @@ const GroupManagerTeams = ({
         "id": group_manager_team.id,
         "name": group_manager_team.name,
         "email": group_manager_team.email,
-        "permission": group_manager_team.permission ? group_manager_team.permission.models_manage : null,
+        "permission": group_manager_team.permission ? group_manager_team.permission.models_manage : [],
       })
     })
     if (aux_group_manager_teams.length === 0) {
@@ -232,7 +232,7 @@ const GroupManagerTeams = ({
                   type="checkbox"
                   className="form-check-input"
                   id={`manage-${model.value}`}
-                  checked={groupManagerTeamShow.permission ? groupManagerTeamShow.permission.includes(model.value) : null}
+                  checked={groupManagerTeamShow.permission ? groupManagerTeamShow.permission.includes(model.value) : false}
                   disabled
                 />
                 <label className="form-check-label" htmlFor={`manage-${model.value}`}>
@@ -289,10 +289,10 @@ const GroupManagerTeams = ({
                     type="checkbox"
                     className="form-check-input"
                     id={`manage-${model.value}-2`}
-                    checked={editingGroupManagerTeam.permission ? editingGroupManagerTeam.permission.includes(model.value) : null}
+                    checked={editingGroupManagerTeam.permission ? editingGroupManagerTeam.permission.includes(model.value) : false}
                     onChange={() => {
-                      let newPermissions = editingGroupManagerTeam.permission
-                      if (editingGroupManagerTeam.permission.includes(model.value)) {
+                      let newPermissions = editingGroupManagerTeam.permission.slice()
+                      if (newPermissions.includes(model.value)) {
                         newPermissions = newPermissions.filter((p) => p !== model.value)
                       } else {
                         newPermissions.push(model.value)

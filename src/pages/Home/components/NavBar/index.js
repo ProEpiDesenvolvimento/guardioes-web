@@ -88,10 +88,11 @@ const NavBar = ({
 
     if (user.type === "admin") {
       if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1, -3));
-      }
-      else {
-        categories = categories.concat(allCategories.slice(3, -2));
+        categories = categories.concat(allCategories.slice(1, 6));
+        categories = categories.concat(allCategories.slice(7, -3));
+      } else {
+        categories = categories.concat(allCategories.slice(3, 6));
+        categories = categories.concat(allCategories.slice(7, -2));
       }
     } else if (user.type === "manager") {
       categories = categories.concat(allCategories.slice(4, 5));

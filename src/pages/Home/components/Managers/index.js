@@ -133,7 +133,7 @@ const Managers = ({
         "id": manager.manager.id,
         "name": manager.manager.name,
         "email": manager.manager.email,
-        "permissions": manager.permissions ? manager.models_manage : null,
+        "permissions": manager.permissions ? manager.models_manage : [],
       })
     })
     if (aux_managers.length === 0) {
@@ -207,7 +207,7 @@ const Managers = ({
                 <input
                   type="checkbox"
                   className="form-check-input"
-                  checked={managerShow.permissions ? managerShow.permissions.includes(model.value) : null}
+                  checked={managerShow.permissions ? managerShow.permissions.includes(model.value) : false}
                   disabled
                 />
                 <label className="form-check-label" htmlFor={`manage-${model.value}`}>
@@ -263,9 +263,9 @@ const Managers = ({
                 <input
                   type="checkbox"
                   className="form-check-input"
-                  checked={editingManager.permissions ? editingManager.permissions.includes(model.value) : null}
+                  checked={editingManager.permissions ? editingManager.permissions.includes(model.value) : false}
                   onChange={() => {
-                    let newPermissions = editingManager.permissions
+                    let newPermissions = editingManager.permissions.slice()
                     if (editingManager.permissions.includes(model.value)) {
                       newPermissions = newPermissions.filter((p) => p !== model.value)
                     } else {
