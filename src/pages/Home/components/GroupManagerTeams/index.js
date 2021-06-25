@@ -119,7 +119,9 @@ const GroupManagerTeams = ({
     }
     await editGroupManagerTeam(editingGroupManagerTeam.id, data, token);
     setModalEdit(false);
-    _getAllGroupManagerTeams(token);
+    setTimeout(() => {
+      _getAllGroupManagerTeams(token);
+    }, 500);
   }
 
   const handleShow = (content) => {
