@@ -27,7 +27,7 @@ export default function DropdownComponent(props){
             borderBottom: '0px'
           }}
         >
-          <MenuItem value={'group_manager_team'} style={{ fontFamily: 'Argentum Sans' }}>Grupo de Instituição</MenuItem>
+          <MenuItem value={'group_manager_team'} style={{ fontFamily: 'Argentum Sans' }}>Equipe de Instituição</MenuItem>
           <MenuItem value={'group_manager'} style={{ fontFamily: 'Argentum Sans' }}>Instituição</MenuItem>
           <MenuItem value={'city_manager'} style={{ fontFamily: 'Argentum Sans' }}>Gerente de Município</MenuItem>
           <MenuItem value={'manager'} style={{ fontFamily: 'Argentum Sans' }}>Gerente</MenuItem>

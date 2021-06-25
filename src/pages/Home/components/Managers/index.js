@@ -100,7 +100,7 @@ const Managers = ({
         "email": editingManager.email,
         "name": editingManager.name,
         "app_id": user.app_id,
-        "permissions": editingManager.permissions
+        "permission": editingManager.permission
       }
     }
     await editManager(editingManager.id, data, token);
@@ -200,13 +200,14 @@ const Managers = ({
             />
           </EditInput>
           <InputBlock>
-            <label htmlFor="permissions">Permissões do Gerente:</label>
+            <label htmlFor="permission">Permissões do Gerente:</label>
 
             {modelsCheckboxes.map((model, key) => (
               <div className="form-check" key={key}>
                 <input
                   type="checkbox"
                   className="form-check-input"
+                  id={`manage-${model.value}`}
                   checked={managerShow.permissions ? managerShow.permissions.includes(model.value) : false}
                   disabled
                 />
@@ -256,13 +257,14 @@ const Managers = ({
             </EditInput>
 
             <InputBlock>
-            <label htmlFor="permissions">Permissões do Gerente:</label>
+            <label htmlFor="permission">Permissões do Gerente:</label>
 
             {modelsCheckboxes.map((model, key) => (
               <div className="form-check" key={key}>
                 <input
                   type="checkbox"
                   className="form-check-input"
+                  id={`manage-${model.value}-2`}
                   checked={editingManager.permissions ? editingManager.permissions.includes(model.value) : false}
                   onChange={() => {
                     let newPermissions = editingManager.permissions.slice()
@@ -271,10 +273,10 @@ const Managers = ({
                     } else {
                       newPermissions.push(model.value)
                     }
-                    setEditingManager({...editingManager, permissions: newPermissions})
+                    setEditingManager({...editingManager, permission: newPermissions})
                   }}
                 />
-                <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                <label className="form-check-label" htmlFor={`manage-${model.value}-2`}>
                   {model.label}
                 </label>
               </div>
@@ -333,18 +335,18 @@ const Managers = ({
                   />
                 </InputBlock>
                 <InputBlock>
-                  <label htmlFor="permissions">Permissões do Gerente:</label>
+                  <label htmlFor="permission">Permissões do Gerente:</label>
 
                   {modelsCheckboxes.map((model, key) => (
                     <div className="form-check" key={key}>
                       <input
                         type="checkbox"
                         className="form-check-input"
-                        id={`manage-${model.value}`}
+                        id={`manage-${model.value}-3`}
                         checked={modelsManage.includes(model.value)}
                         onChange={() => handleModelsPermissions(model.value)}
                       />
-                      <label className="form-check-label" htmlFor={`manage-${model.value}`}>
+                      <label className="form-check-label" htmlFor={`manage-${model.value}-3`}>
                         {model.label}
                       </label>
                     </div>
