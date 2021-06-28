@@ -22,6 +22,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import ContentBox from '../ContentBox';
 import getAllUsers from './services/getAllUsers';
+import getFilteredUsers from './services/getFilteredUsers';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment'
 import deleteUser from './services/deleteUser';
@@ -72,7 +73,7 @@ const Users = ({
   const getSearch = async (token, page) => {
     setUserList([])
 
-    const response = await getAllUsers(token, page, userSearch)
+    const response = await getFilteredUsers(token, page, userSearch)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
@@ -86,7 +87,7 @@ const Users = ({
   const _getUsers = async (token, page) => {
     setUserList([])
 
-    const response = await getAllUsers(token, page, userSearch)
+    const response = await getFilteredUsers(token, page, userSearch)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
