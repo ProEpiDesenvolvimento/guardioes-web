@@ -22,7 +22,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import ContentBox from '../ContentBox';
 import getAllUsers from './services/getAllUsers';
-import getFilteredUsers from './services/getFilteredUsers';
+import getFilteredUsers, {filtersSuffixList} from './services/getFilteredUsers';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment'
 import deleteUser from './services/deleteUser';
@@ -48,11 +48,32 @@ const Users = ({
   const [editRace, setEditRace] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
   const { handleSubmit } = useForm();
-  const [userSearch, setUserSearch] = useState("");
   const [userList, setUserList] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [perPage, setPerPage] = useState(50);
   const [totalItems, setTotalItems] = useState(0);
+
+  const [modalFilter, setModalFilter] = useState(false);
+  const [filteringSuffix, setFilteringSuffix] = useState({
+    email: "",
+    user_name: "",
+    gender: "_eq",
+    race: "_eq",
+    is_professional: "_true",
+    birthdate: "",
+    identification_code: "",
+    country: "",
+  });
+  const [filteringUser, setFilteringUser] = useState({
+    email: "",
+    user_name: "",
+    gender: "",
+    race: "",
+    is_professional: false,
+    birthdate: "",
+    identification_code: "",
+    country: "",
+  });
 
   const fields = [
     {
@@ -70,10 +91,21 @@ const Users = ({
     setModalShow(!modalShow);
   }
 
-  const getSearch = async (token, page) => {
+  const getSearch = async (page) => { 
     setUserList([])
+    let filters = {};
+    filters["email" + filteringSuffix.email] = filteringUser.email;
+    filters["user_name" + filteringSuffix.user_name] = filteringUser.user_name;
+    filters["gender" + filteringSuffix.gender] = filteringUser.gender;
+    filters["race" + filteringSuffix.race] = filteringUser.race;
+    filters["is_professional" + filteringSuffix.is_professional] = filteringUser.is_professional;
+    filters["birthdate" + filteringSuffix.birthdate] = filteringUser.birthdate;
+    filters["identification_code" + filteringSuffix.identification_code] = filteringUser.identification_code;
+    filters["country" + filteringSuffix.country] = filteringUser.country;
 
-    const response = await getFilteredUsers(token, page, userSearch)
+    console.log(filters)
+
+    const response = await getFilteredUsers(token, page, filters)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
@@ -87,7 +119,7 @@ const Users = ({
   const _getUsers = async (token, page) => {
     setUserList([])
 
-    const response = await getFilteredUsers(token, page, userSearch)
+    const response = await getAllUsers(token, page)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
@@ -100,13 +132,14 @@ const Users = ({
     }
   }
 
+  const handleFilterUsers = () => {
+    setModalFilter(false);
+    getSearch(1);
+  }
+
   const handlePageChange = (page) => {
     setActivePage(page)
-    if (userSearch === "") {
-      _getUsers(token, page)
-    }else{
-      getSearch(token, page)
-    }
+    getSearch(page)
   }
 
   const _deleteUser = async (id, token) => {
@@ -250,6 +283,88 @@ const Users = ({
       </Modal>
 
       <Modal
+        show={modalFilter}
+        onHide={() => setModalFilter(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Filtrar
+          </Modal.Title>
+        </Modal.Header>
+        <form id="filterUser" onSubmit={handleSubmit(handleFilterUsers)}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="email">E-mail</label>
+              <Select 
+                id="email_suffix"
+                options={filtersSuffixList}
+                onChange={(e) => setFilteringSuffix({...filteringSuffix, email: e.key})} 
+              />
+              <input
+                className="text-dark"
+                type="text"
+                id="email"
+                value={filteringUser.email}
+                onChange={(e) => setFilteringUser({...filteringUser, email: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="user_name">Nome</label>
+              <Select 
+                id="user_name_suffix"
+                options={filtersSuffixList}
+                onChange={(e) => setFilteringSuffix({...filteringSuffix, user_name: e.key})} 
+              />
+              <input
+                className="text-dark"
+                type="text"
+                id="user_name"
+                value={filteringUser.user_name}
+                onChange={(e) => setFilteringUser({...filteringUser, user_name: e.target.value})}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="gender">Gênero</label>
+              <Select 
+                id="gender"
+                options={genderChoices}
+                onChange={(e) => setFilteringUser({...filteringUser, gender: e.value})} 
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="race">Gênero</label>
+              <Select 
+                id="race"
+                options={raceChoices}
+                onChange={(e) => setFilteringUser({...filteringUser, race: e.value})} 
+              />
+            </EditInput>
+
+            <EditCheckbox>
+              <label htmlFor="is_professional">Profissional da Saúde</label>
+              <EditCheckboxInput 
+                id="is_professional"
+                type="checkbox"
+                checked={filteringUser.is_professional? true : false}
+                onChange={() => {
+                  const new_value = !filteringUser.is_professional
+                  console.log(new_value)
+                  setFilteringUser({...filteringUser, is_professional: new_value})
+                }}
+              />
+            </EditCheckbox>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <SubmitButton type="submit">Filtrar</SubmitButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
       >
@@ -350,17 +465,9 @@ const Users = ({
       <Container>
         <SearchView>
           <SearchInputDiv>
-            <label>Pesquisa por email:</label>
-            <Search>
-              <SearchInput
-                type="text"
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-              />
-              <SearchBtn className='btn-info' onClick={() => getSearch(token, 1)}>
-                Buscar
+              <SearchBtn className='btn-info' onClick={() => setModalFilter(true)}>
+                Filtrar pesquisa
               </SearchBtn>
-            </Search>
           </SearchInputDiv>
         </SearchView>
         <ContentBox 

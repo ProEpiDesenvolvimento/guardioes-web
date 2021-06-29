@@ -1,10 +1,8 @@
 import api from 'services/api';
 
-const getFilteredUsers = async (token, page, email) => await api
+const getFilteredUsers = async (token, page, filters) => await api
   .post(`/user/filtered_list?page=${page}`, {
-    filters: {
-      "email_cont": email,
-    },
+    filters,
   },
     {
       headers: {
