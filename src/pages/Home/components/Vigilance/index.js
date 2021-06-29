@@ -19,6 +19,7 @@ import {
   Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
+import ContentBox from '../ContentBox';
 import TableComponent from './Table'
 import { connect } from 'react-redux';
 import {
@@ -28,10 +29,13 @@ import {
   setUser,
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
-import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
+
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
+
+import getGroupCases from './services/getGroupCases'
+import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 
 const Vigilance = ({
@@ -44,8 +48,10 @@ const Vigilance = ({
   user
 }) => {
   const { handleSubmit } = useForm()
-  const [syndromeShow, setShowSyndrome] = useState({})
+
+  const [cases, setCases] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [syndromeShow, setShowSyndrome] = useState({})
   const [hasVigilance, setHasVigilance] = useState(false)
   const [editEmail, setEditEmail] = useState('')
 
@@ -73,23 +79,29 @@ const Vigilance = ({
     const responseUser = response.data[user.type]
     if (!response.errors) {
         setUser({
-            ...responseUser,
-            type: user.type
+          ...responseUser,
+          type: user.type
         })
         sessionService.saveUser({
-            ...responseUser,
-            type: user.type
+          ...responseUser,
+          type: user.type
         })
         window.location.reload()
     }
   }
 
   const loadData = async (token) => {
+    const cases = await getGroupCases(token)
+    if (!cases.errors) {
+      setCases(cases.surveys)
+    }
+
     const syns = await getAllSyndromes(token)
     let synds = []
     if (syns.syndromes)
       synds = syns.syndromes
     setSyndromes(synds)
+
     setVigilanceSyndromes(user.vigilance_syndromes)
     setEditEmail(user.vigilance_email)
     setHasVigilance(user.vigilance_email ? true : false)
@@ -103,10 +115,6 @@ const Vigilance = ({
     }
     _loadSession();
   }, [token]);
-
-  useEffect(() => {
-    loadData(token)
-  }, [])
 
   const handleShow = (content) => {
     setShowModal(true)
@@ -128,19 +136,43 @@ const Vigilance = ({
     const responseUser = response.data[user.type]
     if (!response.errors) {
         setUser({
-            ...responseUser,
-            type: user.type
+          ...responseUser,
+          type: user.type
         })
         sessionService.saveUser({
-            ...responseUser,
-            type: user.type
+          ...responseUser,
+          type: user.type
         })
         window.location.reload()
     }
   }
 
+  const casesFields = [
+    {
+      key: "id",
+      value: "ID"
+    },
+    {
+      key: "city",
+      value: "Cidade"
+    }
+  ]
+
   return (
     <Container>
+      {/* -------- CASOS -------- */}
+      <ContentBox 
+        title={`Casos - ${cases.length}`}
+        fields={casesFields}
+        contents={cases}
+        handleShow={handleShow}
+        component_height={'35rem'}
+        //delete_function={_deleteUser}
+        token={token}
+        //handleEdit={handleEdit}
+      />
+
+      {/* -------- SINDROMES VIGILANCIA -------- */}
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
