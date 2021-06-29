@@ -71,7 +71,7 @@ const Home = ({
         value: Admins
       },
       {
-        key: "configApps",
+        key: "apps",
         value: Apps
       },
       {
@@ -79,15 +79,15 @@ const Home = ({
         value: Managers
       },
       {
-        key: "managersCity",
+        key: "city_managers",
         value: CityManagers
       },
       {
-        key: "managersGroup",
+        key: "group_managers",
         value: GroupManagers
       },
       {
-        key: "managersGroupTeams",
+        key: "group_manager_teams",
         value: GroupManagerTeams
       },
       {
