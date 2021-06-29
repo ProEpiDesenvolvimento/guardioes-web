@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import axios from 'axios';
-import { godataURL } from 'services/urls'
 
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
@@ -44,7 +43,6 @@ import {
 import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
-import { render } from 'react-dom';
 
 const Groups = ({
   token,
@@ -100,7 +98,7 @@ const Groups = ({
 
   const getOutbreaks = async (token) => {
     await axios.get(
-      `${godataURL}/api/locations`,
+      `${user.url_godata}/api/locations`,
       {
           headers: { "Authorization": `${token}` }
       }
@@ -309,7 +307,7 @@ const Groups = ({
     if (user.username_godata !== "") {
       const loginGoData = async () => {
           await axios.post(
-              `${godataURL}/api/oauth/token`,
+              `${user.url_godata}/api/oauth/token`,
               {
                   username: user.username_godata,
                   password: user.password_godata
@@ -484,7 +482,6 @@ const Groups = ({
                     <input
                       type="text"
                       id="edit_subgrupo"
-                      defaultValue=""
                       value={editChildrenLabel}
                       onChange={(e) => {setEditChildrenLabel(e.target.value)}
                       }
@@ -681,7 +678,6 @@ const Groups = ({
                     type="text"
                     id="nameEdit"
                     value={creatingGroup.description}
-                    defaultValue=""
                     onChange={(e) => setCreatingGroup({...creatingGroup, parent_id: groupID, description: e.target.value})}
                   />
                 </InputBlock>
@@ -723,7 +719,6 @@ const Groups = ({
                 <Input
                   type="text"
                   id="code"
-                  defaultValue=""
                   value={creatingGroup.code}
                   onChange={(e) => setCreatingGroup({...creatingGroup, code: e.target.value})}
                 />
