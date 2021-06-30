@@ -293,7 +293,7 @@ const Users = ({
         <form id="filterUser" onSubmit={handleSubmit(() => getSearch(1))}>
           <Modal.Body>
             <EditInput>
-              <label htmlFor="email">E-mail</label>
+              <label htmlFor="email">Email:</label>
               <input
                 className="text-dark"
                 type="text"
@@ -305,7 +305,7 @@ const Users = ({
             </EditInput>
 
             <EditInput>
-              <label htmlFor="user_name">Nome</label>
+              <label htmlFor="user_name">Nome:</label>
               <input
                 className="text-dark"
                 type="text"
@@ -317,17 +317,17 @@ const Users = ({
             </EditInput>
 
             <EditInput>
-              <label htmlFor="gender">Gênero</label>
+              <label htmlFor="gender">Gênero:</label>
               <Select
                 id="gender"
                 placeholder="Todos os gêneros"
                 options={genderChoices}
-                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
+                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value})}
               />
             </EditInput>
 
             <EditInput>
-              <label htmlFor="race">Raça</label>
+              <label htmlFor="race">Raça:</label>
               <Select
                 id="race"
                 options={raceChoices}
@@ -337,7 +337,7 @@ const Users = ({
             </EditInput>
 
             <EditInput>
-              <label htmlFor="country">País</label>
+              <label htmlFor="country">País:</label>
               <Select
                 id="country"
                 options={countryChoices}
@@ -347,20 +347,20 @@ const Users = ({
             </EditInput>
 
             <EditInput>
-              <label htmlFor="is_professional">É profissional de saúde</label>
+              <label htmlFor="is_professional">É profissional de saúde:</label>
               <Select 
                 id="is_professional"
                 options={[
-                  {key: "", label: "Todos"}, 
                   {key: true, label: "Sim"}, 
                   {key: false, label: 'Não'}]}
+                  placeholder="Todos os tipos"
                 onChange={(e) => setFilteringUser({...filteringUser, is_professional: e.key})}
               />
             </EditInput>
 
             {user.type === "group_manager" ?
               <EditInput>
-                <label htmlFor="identification_code">Código de identificação</label>
+                <label htmlFor="identification_code">Código de identificação:</label>
                 <Select
                   id="identification_code_suffix"
                   placeholder="Selecionar comparador"
@@ -368,10 +368,11 @@ const Users = ({
                   onChange={(e) => setFilteringSuffix({ ...filteringSuffix, identification_code: e.key })}
                 />
                 <input
-                  className="text-dark"
+                  className="text-dark mt-2"
                   type="text"
                   id="identification_code"
                   value={filteringUser.identification_code}
+                  placeholder="Todos os códigos de identificação"
                   onChange={(e) => setFilteringUser({ ...filteringUser, identification_code: e.target.value })}
                 />
               </EditInput> : null
