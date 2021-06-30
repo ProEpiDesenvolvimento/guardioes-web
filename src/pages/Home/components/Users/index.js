@@ -185,6 +185,7 @@ const Users = ({
       const auxSession = await sessionService.loadSession()
       setToken(auxSession.token)
     }
+    console.log(user)
     _loadSession();
     getSearch(1, {});
   }, [token]);
@@ -524,7 +525,7 @@ const Users = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   users: state.user.users,
-  user: state.user,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
