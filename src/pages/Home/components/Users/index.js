@@ -15,27 +15,29 @@ import {
 import './styles.css';
 import { connect } from 'react-redux';
 import {
- setUsers,
- setToken
+  setUsers,
+  setToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import ContentBox from '../ContentBox';
 import getAllUsers from './services/getAllUsers';
+import getFilteredUsers, { filtersSuffixList } from './services/getFilteredUsers';
 import Modal from 'react-bootstrap/Modal';
 import moment from 'moment'
 import deleteUser from './services/deleteUser';
 import editUser from './services/editUser';
 import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
-import { genderChoices, raceChoices } from '../../../../utils/selector';
+import { countryChoices, genderChoices, raceChoices } from '../../../../utils/selector';
 import Select from 'react-select';
 
 const Users = ({
   setUsers,
   users,
   setToken,
-  token
+  token,
+  user,
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const [userShow, setUserShow] = useState({});
@@ -47,11 +49,22 @@ const Users = ({
   const [editRace, setEditRace] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
   const { handleSubmit } = useForm();
-  const [userSearch, setUserSearch] = useState("");
   const [userList, setUserList] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [perPage, setPerPage] = useState(50);
   const [totalItems, setTotalItems] = useState(0);
+  const [modalFilter, setModalFilter] = useState(false);
+  const [filteringSuffix, setFilteringSuffix] = useState({
+    email: "_cont",
+    user_name: "_cont",
+    gender: "_eq",
+    race: "_eq",
+    is_professional: "_true",
+    identification_code: "",
+    country: "_eq",
+  });
+  const [filteringUser, setFilteringUser] = useState({});
+  const [isFiltering, setIsFiltering] = useState(false);
 
   const fields = [
     {
@@ -69,24 +82,10 @@ const Users = ({
     setModalShow(!modalShow);
   }
 
-  const getSearch = async (token, page) => {
-    setUserList([])
-
-    const response = await getAllUsers(token, page, userSearch)
-    if (!response.users || response.users.length === 0) {
-      response.users = null;
-    }
-    setUserList(response.users)
-
-    const { meta } = response
-    if (meta) {
-      setTotalItems(meta.pagination.total_objects)
-    }
-  }
   const _getUsers = async (token, page) => {
     setUserList([])
 
-    const response = await getAllUsers(token, page, userSearch)
+    const response = await getAllUsers(token, page)
     if (!response.users || response.users.length === 0) {
       response.users = null;
     }
@@ -99,18 +98,45 @@ const Users = ({
     }
   }
 
+  const getSearch = async (page) => {
+    setUserList([])
+
+    let filters = {};
+    filters["email" + filteringSuffix.email] = filteringUser.email;
+    filters["user_name" + filteringSuffix.user_name] = filteringUser.user_name;
+    filters["gender" + filteringSuffix.gender] = filteringUser.gender;
+    filters["race" + filteringSuffix.race] = filteringUser.race;
+    filters["is_professional" + filteringSuffix.is_professional] = filteringUser.is_professional;
+    filters["identification_code" + filteringSuffix.identification_code] = filteringUser.identification_code;
+    filters["country" + filteringSuffix.country] = filteringUser.country;
+    setIsFiltering(true);
+    setModalFilter(false);
+
+    const response = await getFilteredUsers(token, page, filters)
+    if (!response.users || response.users.length === 0) {
+      response.users = null;
+    }
+    setUserList(response.users)
+
+    const { meta } = response
+    if (meta) {
+      setTotalItems(meta.pagination.total_objects)
+    }
+  }
+
   const handlePageChange = (page) => {
     setActivePage(page)
-    if (userSearch === "") {
+    if (isFiltering) {
+      getSearch(page)
+    }
+    else {
       _getUsers(token, page)
-    }else{
-      getSearch(token, page)
     }
   }
 
   const _deleteUser = async (id, token) => {
     const response = await deleteUser(id, token)
-    _getUsers(token, 1);
+    handlePageChange(1)
   }
 
   const _editUser = async () => {
@@ -125,7 +151,7 @@ const Users = ({
     };
     await editUser(editingUser.id, data, token);
     setModalEdit(false);
-    _getUsers(token, 1);
+    handlePageChange(1);
   }
 
   const handleEdit = (content) => {
@@ -158,11 +184,22 @@ const Users = ({
     setEditProfessional(value);
   }
 
+  const cancelFilter = () => {
+    setIsFiltering(false);
+    setFilteringUser({});
+    _getUsers(token, 1)
+  }
+
+  const createDefaultValue = (value) => {
+    return value ? { key: value, lable: value } : null
+  }
+
   useEffect(() => {
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
       setToken(auxSession.token)
     }
+    console.log(user)
     _loadSession();
     _getUsers(token, 1)
   }, [token]);
@@ -195,7 +232,7 @@ const Users = ({
 
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
-              <input 
+              <input
                 type="text"
                 id="edit_name"
                 value={editName}
@@ -215,7 +252,7 @@ const Users = ({
 
             <EditInput>
               <label htmlFor="edit_gender">Gênero</label>
-              <Select 
+              <Select
                 id="edit_gender"
                 options={genderChoices}
                 onChange={(e) => handleEditGender(e.value)}
@@ -224,7 +261,7 @@ const Users = ({
 
             <EditInput>
               <label htmlFor="edit_race">Raça</label>
-              <Select 
+              <Select
                 id="edit_race"
                 options={raceChoices}
                 onChange={(e) => handleEditRace(e.value)}
@@ -233,7 +270,7 @@ const Users = ({
 
             <EditCheckbox>
               <label htmlFor="edit_professional">Profissional da Saúde</label>
-              <EditCheckboxInput 
+              <EditCheckboxInput
                 id="edit_professional"
                 type="checkbox"
                 value={editProfessional}
@@ -244,6 +281,115 @@ const Users = ({
 
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
+          </Modal.Footer>
+        </form>
+      </Modal>
+
+      <Modal
+        show={modalFilter}
+        onHide={() => setModalFilter(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Filtrar
+          </Modal.Title>
+        </Modal.Header>
+        <form id="filterUser" onSubmit={handleSubmit(() => getSearch(1))}>
+          <Modal.Body>
+            <EditInput>
+              <label htmlFor="email">Email:</label>
+              <input
+                className="text-dark"
+                type="text"
+                id="email"
+                placeholder="Todos os emails"
+                value={filteringUser.email}
+                onChange={(e) => setFilteringUser({ ...filteringUser, email: e.target.value })}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="user_name">Nome:</label>
+              <input
+                className="text-dark"
+                type="text"
+                id="user_name"
+                value={filteringUser.user_name}
+                placeholder="Todos os nomes"
+                onChange={(e) => setFilteringUser({ ...filteringUser, user_name: e.target.value })}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="gender">Gênero:</label>
+              <Select
+                id="gender"
+                placeholder="Todos os gêneros"
+                defaultValue={createDefaultValue(filteringUser.gender)}
+                options={genderChoices}
+                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="race">Raça:</label>
+              <Select
+                id="race"
+                options={raceChoices}
+                defaultValue={createDefaultValue(filteringUser.race)}
+                placeholder="Todas as raças"
+                onChange={(e) => setFilteringUser({ ...filteringUser, race: e.value })}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="country">País:</label>
+              <Select
+                id="country"
+                options={countryChoices}
+                defaultValue={createDefaultValue(filteringUser.country)}
+                placeholder="Todos os países"
+                onChange={e => setFilteringUser({ ...filteringUser, country: e.value })}
+              />
+            </EditInput>
+
+            <EditInput>
+              <label htmlFor="is_professional">É profissional de saúde:</label>
+              <Select
+                id="is_professional"
+                options={[
+                  { key: true, label: "Sim" },
+                  { key: false, label: 'Não' }]}
+                placeholder="Todos os tipos"
+                defaultValue={createDefaultValue(filteringUser.is_professional)}
+                onChange={(e) => setFilteringUser({ ...filteringUser, is_professional: e.key })}
+              />
+            </EditInput>
+
+            {user.type === "group_manager" ?
+              <EditInput>
+                <label htmlFor="identification_code">Código de identificação:</label>
+                <Select
+                  id="identification_code_suffix"
+                  placeholder="Selecionar comparador"
+                  options={filtersSuffixList}
+                  defaultValue={createDefaultValue(filteringSuffix.identification_code)}
+                  onChange={(e) => setFilteringSuffix({ ...filteringSuffix, identification_code: e.key })}
+                />
+                <input
+                  className="text-dark mt-2"
+                  type="text"
+                  id="identification_code"
+                  value={filteringUser.identification_code}
+                  placeholder="Todos os códigos de identificação"
+                  onChange={(e) => setFilteringUser({ ...filteringUser, identification_code: e.target.value })}
+                />
+              </EditInput> : null
+            }
+          </Modal.Body>
+
+          <Modal.Footer>
+            <SubmitButton type="submit">Filtrar</SubmitButton>
           </Modal.Footer>
         </form>
       </Modal>
@@ -310,14 +456,14 @@ const Users = ({
             />
           </EditInput>
 
-          <EditInput>	
-            <label>Country</label>	
-            <input	
-              className="text-dark"	
-              type="text"	
-              value={userShow.country}	
-              disabled	
-            />	
+          <EditInput>
+            <label>Country</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={userShow.country}
+              disabled
+            />
           </EditInput>
 
           <EditInput>
@@ -349,20 +495,17 @@ const Users = ({
       <Container>
         <SearchView>
           <SearchInputDiv>
-            <label>Pesquisa por email:</label>
-            <Search>
-              <SearchInput
-                type="text"
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-              />
-              <SearchBtn className='btn-info' onClick={() => getSearch(token, 1)}>
-                Buscar
-              </SearchBtn>
-            </Search>
+            <SearchBtn className='btn btn-secondary' onClick={() => setModalFilter(true)}>
+              Filtrar pesquisa
+            </SearchBtn>
+            {isFiltering ?
+              <SearchBtn className='btn-danger' onClick={() => cancelFilter()}>
+                Cancelar filtros
+              </SearchBtn> : null
+            }
           </SearchInputDiv>
         </SearchView>
-        <ContentBox 
+        <ContentBox
           title={`Usuários - ${usersNum}`}
           fields={fields}
           contents={userList}
@@ -390,7 +533,8 @@ const Users = ({
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
-  users: state.user.users
+  users: state.user.users,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
@@ -404,4 +548,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Users); 
+)(Users);

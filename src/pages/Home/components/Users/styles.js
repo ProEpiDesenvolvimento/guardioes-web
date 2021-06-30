@@ -77,6 +77,8 @@ export const Search = styled.div`
 
 export const SearchInputDiv  = styled(EditInput)`
   width: 60%;
+  justify-content: center;
+  flex-direction: row;
 `;
 
 export const SearchInput = styled.input`
@@ -97,4 +99,5 @@ export const SearchBtn = styled.button`
   color: #fff;
   padding: .5rem 1rem .5rem 1rem;
   margin-left: 1rem;
+  max-width: 300px;
 `

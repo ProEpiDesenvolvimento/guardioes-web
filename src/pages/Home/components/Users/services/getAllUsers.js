@@ -1,14 +1,11 @@
 import api from 'services/api';
 
-const getAllUsers = async (token, page, email) => api
-  .get(`/user/panel?page=${page}&email=${email}`,
+const getAllUsers = async (token, page) => api
+  .get(`/user/panel?page=${page}`,
     {
       headers: {
         "Authorization": token,
       }
-    },
-    {
-      email
     },
   )
   .then(async (res) => {
