@@ -25,7 +25,9 @@ const Header = ({
   const usersTypes = {
     "admin": "Administrador",
     "manager": "Gerente",
-    "group_manager": "Instituição"
+    "city_manager": "Município",
+    "group_manager": "Instituição",
+    "group_manager_team": "Equipe de Instituição",
   }
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const Header = ({
             Estatísticas
           </NavTo>
         : null}
-        <NavTo onClick={logout}>
+        <NavTo to="#" onClick={logout}>
           {authenticated === true ? "Logout" : "Login"}
         </NavTo>
         <NavTo to="/contact">

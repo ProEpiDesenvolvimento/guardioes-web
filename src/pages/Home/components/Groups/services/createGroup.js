@@ -10,7 +10,7 @@ const createGroup = async (data, token) =>
   )
     .then(async (res) => {
       alert('Grupo criado!');
-      const response = { data: res.data };
+      const response = { data: res.data, status: res.status };
       return response
     })
     .catch((e) => {

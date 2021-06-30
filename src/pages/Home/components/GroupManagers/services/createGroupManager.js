@@ -9,7 +9,7 @@ const createGroupManagers = async (data, token) =>
     }
   )
     .then(async (res) => {
-      const response = { data: res.data };
+      const response = { data: res.data, status: res.status };
       return response
     })
     .catch((e) => {

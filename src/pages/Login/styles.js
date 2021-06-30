@@ -45,7 +45,7 @@ export const Title = styled.p`
     font-family: Lovelo;
     font-style: normal;
     font-weight: 900;
-    font-size: 5rem;
+    font-size: 4rem;
     line-height: 5rem;
     color: #282828;
     text-align: flex-start;
@@ -123,7 +123,6 @@ export const SendButtonName = styled.p`
     text-align: center;
     text-decoration: none;
     margin: 10px;
-    font-family: argumentum, sans-serif;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;

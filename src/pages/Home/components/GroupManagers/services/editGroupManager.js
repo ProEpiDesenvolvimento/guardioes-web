@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const editGroupManager = async (id, data, token) => {
+const editGroupManager = async (id, data, token) => 
     await api.patch(`/group_managers/${id}`, data,
     {
         headers: {
@@ -22,6 +22,5 @@ const editGroupManager = async (id, data, token) => {
         console.log(e);
         return { data: {}, errors: e };
     });
-}
 
 export default editGroupManager;

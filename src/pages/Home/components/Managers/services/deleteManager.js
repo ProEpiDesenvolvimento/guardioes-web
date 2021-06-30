@@ -8,6 +8,7 @@ const deleteManagers = async (id, token) => api
   }
   )
   .then(async (res) => {
+    alert('Excluido com sucesso!');
     const { data } = res;
     return data
   })

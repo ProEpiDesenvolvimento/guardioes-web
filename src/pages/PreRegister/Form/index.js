@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { states } from "utils/Brasil";
+import { stateOptions } from "utils/Brasil";
 import { cnpjMask, phoneMask } from "utils/mask";
 
 import {
@@ -54,7 +54,7 @@ const Form = (props) => {
 
     const response = await submitPreRegister(body)
     if (response.errors) {
-      if (response.errors == "O email já está sendo usado.") {
+      if (response.errors === "O email já está sendo usado.") {
         setEmailValidation(true)
         return null
       }
@@ -135,7 +135,7 @@ const Form = (props) => {
             onChange={(e) => setState(e.target.value)}
             ref={register({ required: true })}
           >
-            {states.map((state) => {
+            {stateOptions.map((state) => {
               return (
                 <option value={state.key}>{state.label}</option>
               )

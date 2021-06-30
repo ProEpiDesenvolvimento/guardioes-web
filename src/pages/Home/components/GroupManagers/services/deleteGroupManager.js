@@ -8,6 +8,7 @@ const deleteGroupManagers = async (id, token) => api
   }
   )
   .then(async (res) => {
+    alert('Deletado com sucesso!');
     const { data } = res;
     return data
   })

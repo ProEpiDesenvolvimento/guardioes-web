@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Container,
   ContainerContentBox,
@@ -8,6 +9,14 @@ import {
   EditInput,
   SubmitButton,
   TextArea,
+  Form,
+  Inputs,
+  CheckboxInputBlock,
+  Label,
+  CheckboxInput,
+  ContainerForm,
+  InputBlock,
+  Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import TableComponent from './Table'
@@ -15,7 +24,8 @@ import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
   setToken,
-  setSyndromes
+  setSyndromes,
+  setUser,
 } from 'actions/';
 import Loading from 'sharedComponents/Loading'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
@@ -23,6 +33,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
+import { setTimeout } from 'timers';
 
 const Vigilance = ({
   vigilance_syndromes,
@@ -33,16 +44,57 @@ const Vigilance = ({
   token,
   user
 }) => {
+  const { handleSubmit } = useForm()
   const [syndromeShow, setShowSyndrome] = useState({})
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [hasVigilance, setHasVigilance] = useState(false)
+  const [editEmail, setEditEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  const _handleVigilance = async () => {
+    let email = null
+    let syndromes = []
+    
+    if (!hasVigilance || !editEmail) {
+      setVigilanceSyndromes([])
+      setEditEmail('')
+      setHasVigilance(false)
+    } else {
+      email = editEmail
+      syndromes = vigilance_syndromes
+    }
+
+    const data = {
+      group_manager: {
+        vigilance_email: email,
+        vigilance_syndromes: syndromes,
+      }
+    }
+    const response = await editGroupManager(user.id, data, token)
+
+    const responseUser = response.data[user.type]
+    if (!response.errors) {
+        setUser({
+            ...responseUser,
+            type: user.type
+        })
+        sessionService.saveUser({
+            ...responseUser,
+            type: user.type
+        })
+        window.location.reload()
+    }
+  }
 
   const loadData = async (token) => {
     const syns = await getAllSyndromes(token)
     let synds = []
     if (syns.syndromes)
       synds = syns.syndromes
-    setVigilanceSyndromes(user.vigilance_syndromes)
     setSyndromes(synds)
+    setVigilanceSyndromes(user.vigilance_syndromes)
+    setEditEmail(user.vigilance_email)
+    setHasVigilance(user.vigilance_email ? true : false)
   }
 
   useEffect(() => {
@@ -52,6 +104,7 @@ const Vigilance = ({
       await loadData(auxSession.token)
     }
     _loadSession();
+    setTimeout(()=>setIsLoading(false), 1000*0.5) // 0.5 segundos
   }, [token]);
 
   useEffect(() => {
@@ -67,13 +120,26 @@ const Vigilance = ({
     setVigilanceSyndromes(vs)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmitChanges = async () => {
     const data = {
       group_manager: {
         vigilance_syndromes: vigilance_syndromes
       }
     }
     const response = await editGroupManager(user.id, data, token)
+
+    const responseUser = response.data[user.type]
+    if (!response.errors) {
+        setUser({
+            ...responseUser,
+            type: user.type
+        })
+        sessionService.saveUser({
+            ...responseUser,
+            type: user.type
+        })
+        window.location.reload()
+    }
   }
 
   return (
@@ -176,17 +242,15 @@ const Vigilance = ({
         </Modal.Footer>
       </Modal>
 
-      <ContainerContentBox
-      className="shadow-sm"
-      component_height={'35rem'}
-      >
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
           <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
         </ContentBoxHeader>
         <ContentBoxTable
           component_height={'35rem'}
         >
-        {syndromes !== null ?
+        {isLoading ?
+          <Loading isLoading={true} /> :
           syndromes.length > 0 ?
             <TableComponent
               contents={syndromes ? syndromes : null}
@@ -200,9 +264,8 @@ const Vigilance = ({
               token={token}
               vigilance_syndromes={vigilance_syndromes}
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
+              vigilance_email={user.vigilance_email}
             /> :
-            <Loading isLoading={true} />
-          :
             <Table responsive>
               <thead>
                 <tr>
@@ -217,7 +280,45 @@ const Vigilance = ({
             </Table>
         }
         </ContentBoxTable>
-        <SubmitButton onClick={() => handleSubmit()}>Confirmar Mudanças</SubmitButton>
+        <SubmitButton onClick={() => handleSubmitChanges()}>Confirmar Mudanças</SubmitButton>
+      </ContainerContentBox>
+
+      {/* -------- EDITAR VIGILANCIA -------- */}
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        <ContentBoxHeader>
+          <ContentBoxTitle>Vigilância Ativa</ContentBoxTitle>
+        </ContentBoxHeader>
+        <ContentBoxTable component_height={'35rem'}>
+          <ContainerForm>
+            <Form id="editUser" onSubmit={handleSubmit(_handleVigilance)}>
+              <Inputs>
+                <CheckboxInputBlock>
+                  <Label htmlFor="has_vigilance">Fornecer Vigilância Ativa</Label>
+                  <CheckboxInput
+                      type="checkbox"
+                      id="has_vigilance"
+                      checked={hasVigilance}
+                      onChange={() => setHasVigilance(!hasVigilance)}
+                  />
+                </CheckboxInputBlock>
+
+                {hasVigilance ?
+                  <InputBlock>
+                    <Label htmlFor="email">E-mail</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder='Não possui e-mail cadastrado'
+                      value={editEmail}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                    />
+                  </InputBlock>
+                : null}
+              </Inputs>
+              <SubmitButton type="submit">Editar Vigilância</SubmitButton>
+            </Form>
+          </ContainerForm>
+        </ContentBoxTable>
       </ContainerContentBox>
     </Container>
   );
@@ -234,7 +335,8 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setVigilanceSyndromes,
     setToken,
-    setSyndromes
+    setSyndromes,
+    setUser,
   },
   dispatch,
 );

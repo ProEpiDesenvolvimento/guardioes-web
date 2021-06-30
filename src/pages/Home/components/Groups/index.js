@@ -2,11 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
-  setGroups, setToken
+  setGroups, setToken, setGoDataToken
 } from 'actions/';
 import { bindActionCreators } from 'redux';
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import axios from 'axios';
+
 import getAllGroups from './services/getAllGroups'
 import getGroup from './services/getGroup'
 import createGroup from './services/createGroup'
@@ -40,14 +43,15 @@ import {
 import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
-import { render } from 'react-dom';
 
 const Groups = ({
   token,
   user,
   groups,
   setGroups,
-  setToken
+  setToken,
+  godataToken,
+  setGoDataToken
 }) => {
   const [modalEdit, setModalEdit] = useState(false);
   const { handleSubmit } = useForm();
@@ -69,15 +73,16 @@ const Groups = ({
   const [goBack, setGoBack] = useState(false);
 
   const [addSubGroup, setAddSubGroup] = useState(false)
-
+  
   const [creating, setCreating] = useState("course");
   const [editChildrenLabel, setEditChildrenLabel] = useState(null)
-
+  const [locations, setLocations] = useState([]);
+  
   const [creatingGroup, setCreatingGroup] = useState({
     description: "default",
     code: "",
     children_label: null,
-    parent_id: 0,
+    parent_id: null
   })
 
   const [editingGroup, setEditingGroup] = useState({});
@@ -91,8 +96,23 @@ const Groups = ({
       setCreatingGroup({...creatingGroup, description: "", children_label: null})
   }, [creating])
 
+  const getLocations = async (token) => {
+    await axios.get(
+      `${user.url_godata}/api/locations`,
+      {
+        headers: { "Authorization": `${token}` }
+      }
+    )
+      .then((res) => {
+        setLocations(res.data);
+      })
+      .catch((e) => {
+        // alert(e);
+      });
+  }
+
   const _createGroup = async () => {
-    if(creatingGroup.description === '' || creatingGroup.parent_id === 0){
+    if(creatingGroup.description === '' || creatingGroup.parent_id === null){
       return alert('Erro, verifique os dados ou contate um administrador!')
     } else {
       const response = await createGroup(creatingGroup, token)
@@ -117,28 +137,32 @@ const Groups = ({
     const data = {
       description: editingGroup.description,
       code: editingGroup.code,
-      children_label: children
+      children_label: children,
+      location_name_godata: editingGroup.location_name_godata,
+      location_id_godata: editingGroup.location_id_godata
     }
 
     const response = await editGroup(editingGroup.id, data, token);
-    response.data.group.parentName = response.data.group.parent.name
 
-    let oldGroups = groups.map((group) => {
-      if(group.id === editingGroup.id){
-        return response.data.group
+    const newGroups = groups.map((group) => {
+      if (group.id === editingGroup.id) {
+        return {
+          ...response.data.group,
+          parentName: response.data.group.parent.name,
+          ...data,
+        }
       } else {
         return group
       }
     })
 
-    setGroups(oldGroups)
-
+    setGroups(newGroups)
     setModalEdit(false);
   }
 
   const clearData = () => {
     setCreatingGroup({
-      parent_id: 0,
+      parent_id: null,
       code: "",
       description: "",
       children_label: null
@@ -210,6 +234,16 @@ const Groups = ({
     setModalEdit(!modalEdit);
   }
 
+  const handleLocationValue = (group) => {
+    const groupLocation = group.location_id_godata
+    const value = locations.filter((location) => location.id === groupLocation)
+
+    if (value.length > 0) {
+      return value[0]
+    }
+    return null
+  }
+
   const handleNavigate = async (group, goback=false) => {
     setGroupId(group.id)
     if (goback === false) {
@@ -278,10 +312,32 @@ const Groups = ({
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
       setToken(auxSession.token)
+      fetchData(auxSession.token)
     }
     _loadSession();
-    fetchData(token)
-  }, [token]);
+
+    if (user.url_godata !== "" && user.username_godata !== "") {
+      const loginGoData = async () => {
+        await axios.post(
+          `${user.url_godata}/api/oauth/token`,
+          {
+            username: user.username_godata,
+            password: user.password_godata
+          }
+        )
+          .then(async (res) => {
+            setGoDataToken("Bearer " + res.data.access_token);
+            const auxSession = await sessionService.loadSession();
+            await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+            getLocations(res.data.access_token);
+          })
+          .catch((e) => {
+            alert("Falha na autenticação.");
+          });
+      }
+      loginGoData();
+    }
+  }, []);
 
   const fields = [
     { key: "id", value: "ID" },
@@ -332,7 +388,7 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-          : null }
+          : null}
 
           {groupShow.parentName ?
             <EditInput>
@@ -344,7 +400,7 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-          : null }
+          : null}
 
           {groupShow.code ?
             <EditInput>
@@ -356,8 +412,19 @@ const Groups = ({
                 disabled
               />
             </EditInput>
-          : null }  
+          : null}
 
+          {groupShow.location_name_godata ?
+            <EditInput>
+              <label htmlFor="edit_code">Nome da Locação no GoData</label>
+              <input
+                type="text"
+                id="edit_code"
+                value={groupShow.location_name_godata}
+                disabled
+              />
+            </EditInput>
+          : null}
         </Modal.Body>
 
         <Modal.Footer>
@@ -382,7 +449,6 @@ const Groups = ({
         <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
             {/* ------- NOME ------- */}
-            {console.log(editingGroup)}
             <EditInput>
               <label htmlFor="edit_name">Nome</label>
               {user.group_name === editingGroup.description ? 
@@ -408,7 +474,7 @@ const Groups = ({
             {/* ------- SUBGRUPO ------- */}
             {editingGroup.children_label ? 
               <EditInput>
-                <label htmlFor="edit_code">SubGrupo</label>
+                <label htmlFor="edit_code">Subgrupo</label>
                 <input
                   type="text"
                   id="edit_subgrupo"
@@ -418,35 +484,51 @@ const Groups = ({
               </EditInput>
               :
               <>
-                <SubmitButton type="reset" onClick={() => {setAddSubGroup(true)}}>Adicionar SubGrupo</SubmitButton>
+                <SubmitButton type="reset" onClick={() => {setAddSubGroup(true)}}>Adicionar Subgrupo</SubmitButton>
                 {addSubGroup ? 
                   <EditInput>
-                    <label htmlFor="edit_code">Adicionar SubGrupo</label>
+                    <label htmlFor="edit_code">Adicionar Subgrupo</label>
                     <input
                       type="text"
                       id="edit_subgrupo"
-                      defaultValue=""
                       value={editChildrenLabel}
                       onChange={(e) => {setEditChildrenLabel(e.target.value)}
                       }
                     />
                   </EditInput>
-               : null}
+                : null}
               </>
             }
             {/* ------- CODIGO ------- */}
             {editingGroup.code ?
-            <EditInput>
-              <label htmlFor="edit_code">Código</label>
-              <input
-                type="text"
-                id="edit_code"
-                value={editingGroup.code}
-                onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
-              />
-            </EditInput>
+              <EditInput>
+                <label htmlFor="edit_code">Código</label>
+                <input
+                  type="text"
+                  id="edit_code"
+                  value={editingGroup.code}
+                  onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
+                />
+              </EditInput>
             : null}
 
+            {locations.length > 0 && editingGroup.children_label == null ?
+              <EditInput>
+                <label htmlFor="edit_gender">Locação no GoData</label>
+                <Select 
+                  id="edit_gender"
+                  options={locations}
+                  defaultValue={handleLocationValue(editingGroup)}
+                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.id}
+                  onChange={(option) => setEditingGroup({
+                    ...editingGroup,
+                    location_name_godata: option.name,
+                    location_id_godata: option.id
+                  })}
+                />
+              </EditInput>
+            : null}
           </Modal.Body>
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
@@ -466,17 +548,17 @@ const Groups = ({
               <Table responsive>
                 <thead>
                 {goBack ? 
-                <tr>
-                  <td>
-                    <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
-                      Voltar
-                    </button>
-                  </td>
-                </tr>
-                : null }
+                  <tr>
+                    <td>
+                      <button style={{width: '150%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
+                        Voltar
+                      </button>
+                    </td>
+                  </tr>
+                : null}
                   <tr>
                     {fields.map(field => (
-                        <ContentBoxTableHeader key={field.value}>{field.value}</ContentBoxTableHeader>
+                      <ContentBoxTableHeader key={field.value}>{field.value}</ContentBoxTableHeader>
                     ))}
                     <th></th>
                     <th></th>
@@ -495,14 +577,12 @@ const Groups = ({
                         </button>
                       </td>
                       {group.children_label !== null ?
-                      <td>
-                        <button className="btn btn-info" onClick={() => handleNavigate(group)}>
-                          Ver filhos
-                        </button>
-                      </td>
-                      : 
-                        null
-                      }
+                        <td>
+                          <button className="btn btn-info" onClick={() => handleNavigate(group)}>
+                            Ver filhos
+                          </button>
+                        </td>
+                      : null}
                         <td>
                           <Link to="/panel">
                             <ContentBoxTableIcon
@@ -529,22 +609,22 @@ const Groups = ({
               <Table responsive>
                 <thead>
                   {goBack ? 
-                  <tr>
-                    <td>
-                      <button style={{width: '10%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
-                        Voltar
-                      </button>
-                    </td>
-                  </tr>
-                  : null }
+                    <tr>
+                      <td>
+                        <button style={{width: '10%', height: '25px', padding: 0}} className="btn btn-info" onClick={() => handleNavigate(groups, true)}>
+                          Voltar
+                        </button>
+                      </td>
+                    </tr>
+                  : null}
                   <tr>
                     <th>{groupLabel} vazio</th>
                   </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                      <td>Não há nada cadastrado em {groupLabel}.</td>
-                    </tr>
+                  <tr>
+                    <td>Não há nada cadastrado em {groupLabel}.</td>
+                  </tr>
                 </tbody>
               </Table>
             }
@@ -589,10 +669,7 @@ const Groups = ({
                         })}
                       </SelectInput>
                     </InputBlock>
-                  : 
-                    null
-                  }
-
+                  : null}
                 </>
               :
               <>
@@ -603,7 +680,6 @@ const Groups = ({
                     type="text"
                     id="nameEdit"
                     value={creatingGroup.description}
-                    defaultValue=""
                     onChange={(e) => setCreatingGroup({...creatingGroup, parent_id: groupID, description: e.target.value})}
                   />
                 </InputBlock>
@@ -620,10 +696,7 @@ const Groups = ({
                       <option>{cityOnly.name}</option>                  
                     </SelectInput>
                   </InputBlock>
-                  : 
-                    null
-                  }
-                
+                : null}
                 </>
               }
               {/* ------- ESTADO ------- */}  
@@ -645,7 +718,6 @@ const Groups = ({
                 <Input
                   type="text"
                   id="code"
-                  defaultValue=""
                   value={creatingGroup.code}
                   onChange={(e) => setCreatingGroup({...creatingGroup, code: e.target.value})}
                 />
@@ -664,7 +736,7 @@ const Groups = ({
               </InputBlock>
 
               <SubmitButton type="submit">
-                Adicionar {groupLabel}
+                Adicionar em {groupLabel}
               </SubmitButton>
             </Form>
 
@@ -678,13 +750,15 @@ const Groups = ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  groups: state.user.groups
+  groups: state.user.groups,
+  godataToken: state.user.godataToken
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setGroups,
-    setToken
+    setToken,
+    setGoDataToken
   },
   dispatch,
 );

@@ -9,7 +9,9 @@ import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
 import Groups from './components/Groups';
 import Symptoms from './components/Symptoms';
+import CityManagers from './components/CityManagers';
 import GroupManagers from './components/GroupManagers';
+import GroupManagerTeams from './components/GroupManagerTeams';
 import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
@@ -44,6 +46,10 @@ const Home = ({
         const auxUser = await sessionService.loadUser()
         setToken(auxSession.token)
         setUser(auxUser)
+
+        if (auxUser.first_access) {
+          history.push("/change")
+        }
       } catch (err) {
         history.push("/login")
       }
@@ -65,7 +71,7 @@ const Home = ({
         value: Admins
       },
       {
-        key: "configApps",
+        key: "apps",
         value: Apps
       },
       {
@@ -73,8 +79,16 @@ const Home = ({
         value: Managers
       },
       {
-        key: "managersGroup",
+        key: "city_managers",
+        value: CityManagers
+      },
+      {
+        key: "group_managers",
         value: GroupManagers
+      },
+      {
+        key: "group_manager_teams",
+        value: GroupManagerTeams
       },
       {
         key: "groups",

@@ -6,7 +6,9 @@ import {
 	SET_APPS,
 	SET_CONTENTS,
 	SET_SYMPTOMS,
+	SET_CITY_MANAGERS,
 	SET_GROUP_MANAGERS,
+	SET_GROUP_MANAGER_TEAMS,
 	SET_MANAGERS,
 	SET_GROUPS,
 	SET_SYNDROMES,
@@ -29,13 +31,16 @@ const initialState = {
 		contents: false,
 		dashboard: false,
 		group_managers: false,
+		group_manager_teams: [],
 		groups: false
 	},
 	apps: [],
 	contents: [],
 	symptoms: [],
 	managers: [],
+	city_managers: [],
 	group_managers: [],
+	group_manager_teams: [],
 	groups: [],
 	syndromes: [],
 	vigilance_syndromes: [],
@@ -81,10 +86,20 @@ const User = (state = initialState, action) => {
 				...state,
 				symptoms: action.payload
 			};
+		case SET_CITY_MANAGERS:
+			return {
+				...state,
+				city_managers: action.payload
+			};
 		case SET_GROUP_MANAGERS:
 			return {
 				...state,
 				group_managers: action.payload
+			};
+		case SET_GROUP_MANAGER_TEAMS:
+			return {
+				...state,
+				group_manager_teams: action.payload
 			};
 		case SET_MANAGERS:
 			return {
