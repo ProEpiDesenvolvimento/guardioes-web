@@ -33,6 +33,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
+import { setTimeout } from 'timers';
 
 const Vigilance = ({
   vigilance_syndromes,
@@ -48,6 +49,7 @@ const Vigilance = ({
   const [showModal, setShowModal] = useState(false)
   const [hasVigilance, setHasVigilance] = useState(false)
   const [editEmail, setEditEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const _handleVigilance = async () => {
     let email = null
@@ -102,6 +104,7 @@ const Vigilance = ({
       await loadData(auxSession.token)
     }
     _loadSession();
+    setTimeout(()=>setIsLoading(false), 1000*0.5) // 0.5 segundos
   }, [token]);
 
   useEffect(() => {
@@ -246,7 +249,8 @@ const Vigilance = ({
         <ContentBoxTable
           component_height={'35rem'}
         >
-        {syndromes !== null ?
+        {isLoading ?
+          <Loading isLoading={true} /> :
           syndromes.length > 0 ?
             <TableComponent
               contents={syndromes ? syndromes : null}
@@ -262,8 +266,6 @@ const Vigilance = ({
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
               vigilance_email={user.vigilance_email}
             /> :
-            <Loading isLoading={true} />
-          :
             <Table responsive>
               <thead>
                 <tr>

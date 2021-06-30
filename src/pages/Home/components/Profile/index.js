@@ -36,7 +36,8 @@ const Profile = ({
     const [appName, setAppName] = useState("");
     const [appTwitter, setAppTwitter] = useState("");
     const [twitter, setTwitter] = useState("");
-    const [requireId, setRequireId] = useState(false);
+    const [hasRequireID, setHasRequireID] = useState(false);
+    const [requireId, setRequireId] = useState(null);
     const [idCodeLength, setIdCodeLength] = useState(1);
 
     const _editUser = async () => {
@@ -51,7 +52,7 @@ const Profile = ({
                 //"email": email,
                 "password": password !== "" ? password : undefined,
                 "twitter": twitter,
-                "require_id": requireId,
+                "require_id": hasRequireID? requireId : null,
                 "id_code_length": idCodeLength,
             }
         }
@@ -94,6 +95,7 @@ const Profile = ({
         setAppId(user.app_id);
         setTwitter(user.twitter);
         setRequireId(user.require_id);
+        setHasRequireID(user.require_id === null? false : true);
         setIdCodeLength(user.id_code_length);
     }
 
@@ -220,17 +222,17 @@ const Profile = ({
 
                         {user.type === "group_manager" &&
                             <CheckboxInputBlock>
-                                <Label htmlFor="id_code">Código de Identificação</Label>
+                                <Label htmlFor="has_id_code">Código de Identificação</Label>
                                 <CheckboxInput
                                     type="checkbox"
-                                    id="id_code"
-                                    checked={requireId}
-                                    onChange={(e) => setRequireId(!requireId)}
+                                    id="has_id_code"
+                                    checked={hasRequireID}
+                                    onChange={(e) => setHasRequireID(!hasRequireID)}
                                 />
                             </CheckboxInputBlock>
                         }
 
-                        {user.type === "group_manager" && requireId &&
+                        {user.type === "group_manager" && hasRequireID &&
                             <InputBlock>
                                 <label htmlFor="id_code_length">Quantidade de caracteres</label>
                                 <input
@@ -239,6 +241,18 @@ const Profile = ({
                                     value={idCodeLength}
                                     min="1"
                                     onChange={(e) => setIdCodeLength(e.target.value)}
+                                />
+                            </InputBlock>
+                        }
+
+                        {user.type === "group_manager" && hasRequireID &&
+                            <InputBlock>
+                                <label htmlFor="require_id">Nome do código de identificação</label>
+                                <input
+                                    type="string"
+                                    id="require_id"
+                                    value={requireId}
+                                    onChange={(e) => setRequireId(e.target.value)}
                                 />
                             </InputBlock>
                         }
