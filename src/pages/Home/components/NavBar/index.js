@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Container,
   OptionButton,
   OptionsSection,
   OptionName
-} from './styles';
-import { connect } from 'react-redux';
+} from "./styles";
+import { connect } from "react-redux";
 import {
   setAdminCategories
-} from 'actions/';
-import { bindActionCreators } from 'redux';
+} from "actions/";
+import { bindActionCreators } from "redux";
 
 const NavBar = ({ 
   user,
@@ -22,7 +22,7 @@ const NavBar = ({
 
   const allCategories = [
     {
-      key: "dashboard",
+      key: "dashboards",
       value: "Visualizações"
     },
     {
@@ -30,7 +30,7 @@ const NavBar = ({
       value: "Admins"
     },
     {
-      key: "configApps",
+      key: "apps",
       value: "Configurar Apps"
     },
     {
@@ -38,12 +38,16 @@ const NavBar = ({
       value: "Gerentes"
     },
     {
-      key: "managersCity",
+      key: "city_managers",
       value: "Gerentes de Município"
     },
     {
-      key: "managersGroup",
+      key: "group_managers",
       value: "Gerentes de Instituições"
+    },
+    {
+      key: "group_manager_teams",
+      value: "Equipes de Instituição"
     },
     {
       key: "symptoms",
@@ -79,26 +83,41 @@ const NavBar = ({
     }
   ];
 
+  const getCategories = (categoryNames = []) => {
+    const categories = []
+    categoryNames.forEach((categoryName) => {
+      allCategories.forEach((category) => {
+        if (categoryName === category.key) {
+          categories.push(category)
+        }
+      })
+    })
+    return categories
+  }
+
   const loadCategories = () => {
     let categories = allCategories.slice(0, 1);
 
     if (user.type === "admin") {
-      if (user.is_god === true) {
-        categories = categories.concat(allCategories.slice(1, -3));
-      }
-      else {
-        categories = categories.concat(allCategories.slice(3, -2));
-      }
+      categories = getCategories(
+        ["dashboards", "admins", "apps", "managers", "city_managers", "group_managers", "symptoms", "syndromes", "contents", "users", "profile"]
+      );
     } else if (user.type === "manager") {
-      categories = categories.concat(allCategories.slice(4, 5));
-      categories = categories.concat(allCategories.slice(6, -3));
+      categories = getCategories(
+        ["dashboards", "city_managers", "symptoms", "syndromes", "contents", "users", "profile"]
+      );
     } else if (user.type === "city_manager") {
-      categories = categories.concat(allCategories.slice(9, 10));
+      categories = getCategories(
+        ["dashboards", "users", "profile"]
+      );
     } else if (user.type === "group_manager") {
-      categories = categories.concat(allCategories.slice(9));
+      categories = getCategories(
+        ["dashboards", "group_manager_teams", "groups", "users", "vigilance", "godata", "profile"]
+      );
     } else if (user.type === "group_manager_team") {
-      categories = categories.concat(allCategories.slice(5, 6));
-      categories = categories.concat(allCategories.slice(9, 11));
+      categories = getCategories(
+        ["dashboards", "groups", "users", "profile"]
+      );
     }
 
     setCategories(categories)
