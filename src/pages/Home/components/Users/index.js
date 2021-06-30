@@ -55,23 +55,15 @@ const Users = ({
   const [totalItems, setTotalItems] = useState(0);
   const [modalFilter, setModalFilter] = useState(false);
   const [filteringSuffix, setFilteringSuffix] = useState({
-    email: "",
-    user_name: "",
+    email: "_cont",
+    user_name: "_cont",
     gender: "_eq",
     race: "_eq",
     is_professional: "_true",
     identification_code: "",
     country: "_eq",
   });
-  const [filteringUser, setFilteringUser] = useState({
-    email: "",
-    user_name: "",
-    gender: "",
-    race: "",
-    is_professional: false,
-    identification_code: "",
-    country: "",
-  });
+  const [filteringUser, setFilteringUser] = useState({});
   const [isFiltering, setIsFiltering] = useState(false);
 
   const fields = [
@@ -90,8 +82,35 @@ const Users = ({
     setModalShow(!modalShow);
   }
 
-  const getSearch = async (page, filters) => {
+  const _getUsers = async (token, page) => {
     setUserList([])
+
+    const response = await getAllUsers(token, page)
+    if (!response.users || response.users.length === 0) {
+      response.users = null;
+    }
+    setUsers(response.users)
+    setUserList(response.users)
+
+    const { meta } = response
+    if (meta) {
+      setTotalItems(meta.pagination.total_objects)
+    }
+  }
+
+  const getSearch = async (page) => {
+    setUserList([])
+
+    let filters = {};
+    filters["email" + filteringSuffix.email] = filteringUser.email;
+    filters["user_name" + filteringSuffix.user_name] = filteringUser.user_name;
+    filters["gender" + filteringSuffix.gender] = filteringUser.gender;
+    filters["race" + filteringSuffix.race] = filteringUser.race;
+    filters["is_professional" + filteringSuffix.is_professional] = filteringUser.is_professional;
+    filters["identification_code" + filteringSuffix.identification_code] = filteringUser.identification_code;
+    filters["country" + filteringSuffix.country] = filteringUser.country;
+    setIsFiltering(true);
+    setModalFilter(false);
 
     const response = await getFilteredUsers(token, page, filters)
     if (!response.users || response.users.length === 0) {
@@ -105,28 +124,19 @@ const Users = ({
     }
   }
 
-  const handleFilterUsers = (page) => {
-    let filters = {};
-    filters["email" + filteringSuffix.email] = filteringUser.email;
-    filters["user_name" + filteringSuffix.user_name] = filteringUser.user_name;
-    filters["gender" + filteringSuffix.gender] = filteringUser.gender;
-    filters["race" + filteringSuffix.race] = filteringUser.race;
-    filters["is_professional" + filteringSuffix.is_professional] = filteringUser.is_professional;
-    filters["identification_code" + filteringSuffix.identification_code] = filteringUser.identification_code;
-    filters["country" + filteringSuffix.country] = filteringUser.country;
-    setIsFiltering(true);
-    setModalFilter(false);
-    getSearch(page, filters);
-  }
-
   const handlePageChange = (page) => {
     setActivePage(page)
-    getSearch(page)
+    if (isFiltering){
+      getSearch(page)
+    }
+    else {
+      _getUsers(token, page)
+    }
   }
 
   const _deleteUser = async (id, token) => {
     const response = await deleteUser(id, token)
-    getSearch(1);
+    handlePageChange(1)
   }
 
   const _editUser = async () => {
@@ -141,7 +151,7 @@ const Users = ({
     };
     await editUser(editingUser.id, data, token);
     setModalEdit(false);
-    handleFilterUsers(1);
+    handlePageChange(1);
   }
 
   const handleEdit = (content) => {
@@ -177,7 +187,7 @@ const Users = ({
   const cancelFilter = () => {
     setIsFiltering(false);
     setFilteringUser({});
-    getSearch(1, {});
+    _getUsers(token, 1)
   }
 
   useEffect(() => {
@@ -187,7 +197,7 @@ const Users = ({
     }
     console.log(user)
     _loadSession();
-    getSearch(1, {});
+    _getUsers(token, 1)
   }, [token]);
 
   const usersNum = new Intl.NumberFormat('pt-BR').format(totalItems)
@@ -280,20 +290,15 @@ const Users = ({
             Filtrar
           </Modal.Title>
         </Modal.Header>
-        <form id="filterUser" onSubmit={handleSubmit(() => handleFilterUsers(1))}>
+        <form id="filterUser" onSubmit={handleSubmit(() => getSearch(1))}>
           <Modal.Body>
             <EditInput>
               <label htmlFor="email">E-mail</label>
-              <Select
-                id="email_suffix"
-                options={filtersSuffixList}
-                placeholder="Selecionar comparador"
-                onChange={(e) => setFilteringSuffix({ ...filteringSuffix, email: e.key })}
-              />
               <input
                 className="text-dark"
                 type="text"
                 id="email"
+                placeholder="Todos os emails"
                 value={filteringUser.email}
                 onChange={(e) => setFilteringUser({ ...filteringUser, email: e.target.value })}
               />
@@ -301,17 +306,12 @@ const Users = ({
 
             <EditInput>
               <label htmlFor="user_name">Nome</label>
-              <Select
-                id="user_name_suffix"
-                placeholder="Selecionar comparador"
-                options={filtersSuffixList}
-                onChange={(e) => setFilteringSuffix({ ...filteringSuffix, user_name: e.key })}
-              />
               <input
                 className="text-dark"
                 type="text"
                 id="user_name"
                 value={filteringUser.user_name}
+                placeholder="Todos os nomes"
                 onChange={(e) => setFilteringUser({ ...filteringUser, user_name: e.target.value })}
               />
             </EditInput>
@@ -320,7 +320,7 @@ const Users = ({
               <label htmlFor="gender">Gênero</label>
               <Select
                 id="gender"
-                placeholder="Selecione o gênero"
+                placeholder="Todos os gêneros"
                 options={genderChoices}
                 onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
               />
@@ -331,7 +331,7 @@ const Users = ({
               <Select
                 id="race"
                 options={raceChoices}
-                placeholder="Selecione a raça"
+                placeholder="Todas as raças"
                 onChange={(e) => setFilteringUser({ ...filteringUser, race: e.value })}
               />
             </EditInput>
@@ -341,23 +341,22 @@ const Users = ({
               <Select
                 id="country"
                 options={countryChoices}
-                placeholder="Selecione o país"
+                placeholder="Todos os países"
                 onChange={(e) => setFilteringUser({ ...filteringUser, country: e.value })}
               />
             </EditInput>
 
-            <EditCheckbox>
-              <label htmlFor="is_professional">Profissional da Saúde</label>
-              <EditCheckboxInput
+            <EditInput>
+              <label htmlFor="is_professional">É profissional de saúde</label>
+              <Select 
                 id="is_professional"
-                type="checkbox"
-                checked={filteringUser.is_professional ? true : false}
-                onChange={() => {
-                  const new_value = !filteringUser.is_professional
-                  setFilteringUser({ ...filteringUser, is_professional: new_value })
-                }}
+                options={[
+                  {key: "", label: "Todos"}, 
+                  {key: true, label: "Sim"}, 
+                  {key: false, label: 'Não'}]}
+                onChange={(e) => setFilteringUser({...filteringUser, is_professional: e.key})}
               />
-            </EditCheckbox>
+            </EditInput>
 
             {user.type === "group_manager" ?
               <EditInput>
@@ -486,7 +485,7 @@ const Users = ({
       <Container>
         <SearchView>
           <SearchInputDiv>
-            <SearchBtn className='btn-info' onClick={() => setModalFilter(true)}>
+            <SearchBtn className='btn btn-secondary' onClick={() => setModalFilter(true)}>
               Filtrar pesquisa
             </SearchBtn>
             {isFiltering? 

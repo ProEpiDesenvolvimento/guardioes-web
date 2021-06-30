@@ -77,7 +77,8 @@ export const Search = styled.div`
 
 export const SearchInputDiv  = styled(EditInput)`
   width: 60%;
-  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 `;
 
 export const SearchInput = styled.input`
