@@ -74,7 +74,7 @@ const TableComponent = ({
               <Link to="/panel">
                 <button className="btn btn-info" onClick={() => { setContentShow(content) }}>
                   Visualizar
-                        </button>
+                </button>
               </Link>
             </td>
             <td>

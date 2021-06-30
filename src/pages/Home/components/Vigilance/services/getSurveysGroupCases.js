@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const getGroupCases = async (token) => 
+const getSurveysGroupCases = async (token) => 
   api.get('/surveys/group_cases', {
     headers: {
       "Authorization": token,
@@ -15,4 +15,4 @@ const getGroupCases = async (token) =>
     return { data: {}, errors: e }
   });
 
-export default getGroupCases;
+export default getSurveysGroupCases;

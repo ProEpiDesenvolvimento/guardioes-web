@@ -34,7 +34,7 @@ import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 
-import getGroupCases from './services/getGroupCases'
+import getSurveysGroupCases from './services/getSurveysGroupCases'
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 
@@ -90,10 +90,37 @@ const Vigilance = ({
     }
   }
 
+  const loadGroupCases = (response) => {
+    let aux_cases = [];
+    if (!response.surveys) {
+      response.surveys = [];
+    }
+    response.surveys.forEach(survey => {
+      aux_cases.push({
+        ...survey,
+        "user": null,
+        "user_id": survey.user.id,
+        "user_name": survey.user.user_name,
+        "user_email": survey.user.email,
+        "user_birthdate": survey.user.birthdate,
+        "user_gender": survey.user.gender,
+        "user_race": survey.user.race,
+        "user_is_professional": survey.user.is_professional,
+        "user_risk_group": survey.user.risk_group,
+        "user_phone": survey.user.phone,
+      })
+    })
+    if (aux_cases.length === 0) {
+      aux_cases = null
+    }
+    console.log(aux_cases)
+    setCases(aux_cases)
+  }
+
   const loadData = async (token) => {
-    const cases = await getGroupCases(token)
-    if (!cases.errors) {
-      setCases(cases.surveys)
+    const surveys = await getSurveysGroupCases(token)
+    if (!surveys.errors) {
+      loadGroupCases(surveys)
     }
 
     const syns = await getAllSyndromes(token)
@@ -149,12 +176,16 @@ const Vigilance = ({
 
   const casesFields = [
     {
-      key: "id",
-      value: "ID"
+      key: "user_name",
+      value: "Nome"
     },
     {
-      key: "city",
-      value: "Cidade"
+      key: "syndrome_id",
+      value: "Status",
+    },
+    {
+      key: "bad_since",
+      value: "Data de início"
     }
   ]
 
