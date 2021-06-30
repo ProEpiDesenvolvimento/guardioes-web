@@ -126,7 +126,7 @@ const Users = ({
 
   const handlePageChange = (page) => {
     setActivePage(page)
-    if (isFiltering){
+    if (isFiltering) {
       getSearch(page)
     }
     else {
@@ -188,6 +188,10 @@ const Users = ({
     setIsFiltering(false);
     setFilteringUser({});
     _getUsers(token, 1)
+  }
+
+  const createDefaultValue = (value) => {
+    return value ? { key: value, lable: value } : null
   }
 
   useEffect(() => {
@@ -321,8 +325,9 @@ const Users = ({
               <Select
                 id="gender"
                 placeholder="Todos os gêneros"
+                defaultValue={createDefaultValue(filteringUser.gender)}
                 options={genderChoices}
-                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value})}
+                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
               />
             </EditInput>
 
@@ -331,6 +336,7 @@ const Users = ({
               <Select
                 id="race"
                 options={raceChoices}
+                defaultValue={createDefaultValue(filteringUser.race)}
                 placeholder="Todas as raças"
                 onChange={(e) => setFilteringUser({ ...filteringUser, race: e.value })}
               />
@@ -341,20 +347,22 @@ const Users = ({
               <Select
                 id="country"
                 options={countryChoices}
+                defaultValue={createDefaultValue(filteringUser.country)}
                 placeholder="Todos os países"
-                onChange={(e) => setFilteringUser({ ...filteringUser, country: e.value })}
+                onChange={e => setFilteringUser({ ...filteringUser, country: e.value })}
               />
             </EditInput>
 
             <EditInput>
               <label htmlFor="is_professional">É profissional de saúde:</label>
-              <Select 
+              <Select
                 id="is_professional"
                 options={[
-                  {key: true, label: "Sim"}, 
-                  {key: false, label: 'Não'}]}
-                  placeholder="Todos os tipos"
-                onChange={(e) => setFilteringUser({...filteringUser, is_professional: e.key})}
+                  { key: true, label: "Sim" },
+                  { key: false, label: 'Não' }]}
+                placeholder="Todos os tipos"
+                defaultValue={createDefaultValue(filteringUser.is_professional)}
+                onChange={(e) => setFilteringUser({ ...filteringUser, is_professional: e.key })}
               />
             </EditInput>
 
@@ -365,6 +373,7 @@ const Users = ({
                   id="identification_code_suffix"
                   placeholder="Selecionar comparador"
                   options={filtersSuffixList}
+                  defaultValue={createDefaultValue(filteringSuffix.identification_code)}
                   onChange={(e) => setFilteringSuffix({ ...filteringSuffix, identification_code: e.key })}
                 />
                 <input
@@ -489,7 +498,7 @@ const Users = ({
             <SearchBtn className='btn btn-secondary' onClick={() => setModalFilter(true)}>
               Filtrar pesquisa
             </SearchBtn>
-            {isFiltering? 
+            {isFiltering ?
               <SearchBtn className='btn-danger' onClick={() => cancelFilter()}>
                 Cancelar filtros
               </SearchBtn> : null
