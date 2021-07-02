@@ -63,7 +63,7 @@ const Home = ({
   const loadComponents = () => {
     setComponents([
       {
-        key: "dashboard",
+        key: "dashboards",
         value: Dashboard
       },
       {
