@@ -19,8 +19,9 @@ import {
   Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
-import ContentBox from '../ContentBox';
-import TableComponent from './Table'
+import TableCases from './TableCases';
+import TableComponent from './Table';
+
 import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
@@ -28,13 +29,14 @@ import {
   setSyndromes,
   setUser,
 } from 'actions/';
-import Loading from 'sharedComponents/Loading'
+import Loading from 'sharedComponents/Loading';
 
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
 
-import getSurveysGroupCases from './services/getSurveysGroupCases'
+import getSurveysGroupCases from './services/getSurveysGroupCases';
+import editSurvey from './services/editSurvey';
 import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 
@@ -50,6 +52,8 @@ const Vigilance = ({
   const { handleSubmit } = useForm()
 
   const [cases, setCases] = useState([])
+  const [caseType, setCaseType] = useState("reviewed")
+  const [filteredCases, setFilteredCases] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [syndromeShow, setShowSyndrome] = useState({})
   const [hasVigilance, setHasVigilance] = useState(false)
@@ -78,15 +82,15 @@ const Vigilance = ({
 
     const responseUser = response.data[user.type]
     if (!response.errors) {
-        setUser({
-          ...responseUser,
-          type: user.type
-        })
-        sessionService.saveUser({
-          ...responseUser,
-          type: user.type
-        })
-        window.location.reload()
+      setUser({
+        ...responseUser,
+        type: user.type
+      })
+      sessionService.saveUser({
+        ...responseUser,
+        type: user.type
+      })
+      window.location.reload()
     }
   }
 
@@ -113,7 +117,6 @@ const Vigilance = ({
     if (aux_cases.length === 0) {
       aux_cases = null
     }
-    console.log(aux_cases)
     setCases(aux_cases)
   }
 
@@ -152,6 +155,42 @@ const Vigilance = ({
     setVigilanceSyndromes(vs)
   }
 
+  const handleCaseEdit = async (content) => {
+    const newCases = []
+    filteredCases.forEach((filteredCase) => {
+      if (filteredCase.id === content.id) {
+        newCases.push({
+          content,
+          reviewed: !content.reviewed,
+        })
+      } else {
+        newCases.push(filteredCase)
+      }
+    })
+    setFilteredCases(newCases)
+
+    const data = {
+      survey: {
+        content,
+        reviewed: !content.reviewed,
+      }
+    }
+    const response = await editSurvey(content.id, data, token)
+    loadGroupCases()
+  }
+
+  const handleSeeCases = () => {
+    let type = ""
+    if (caseType === "reviewed") {
+      type = "null"
+      loadGroupCases(type)
+    } else {
+      type = "reviewed"
+      loadGroupCases(type)
+    }
+    setCaseType(type)
+  }
+
   const handleSubmitChanges = async () => {
     const data = {
       group_manager: {
@@ -162,46 +201,63 @@ const Vigilance = ({
 
     const responseUser = response.data[user.type]
     if (!response.errors) {
-        setUser({
-          ...responseUser,
-          type: user.type
-        })
-        sessionService.saveUser({
-          ...responseUser,
-          type: user.type
-        })
-        window.location.reload()
+      setUser({
+        ...responseUser,
+        type: user.type
+      })
+      sessionService.saveUser({
+        ...responseUser,
+        type: user.type
+      })
+      window.location.reload()
     }
   }
-
-  const casesFields = [
-    {
-      key: "user_name",
-      value: "Nome"
-    },
-    {
-      key: "syndrome_id",
-      value: "Status",
-    },
-    {
-      key: "bad_since",
-      value: "Data de início"
-    }
-  ]
 
   return (
     <Container>
       {/* -------- CASOS -------- */}
-      <ContentBox 
-        title={`Casos - ${cases.length}`}
-        fields={casesFields}
-        contents={cases}
-        handleShow={handleShow}
-        component_height={'35rem'}
-        //delete_function={_deleteUser}
-        token={token}
-        //handleEdit={handleEdit}
-      />
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        <ContentBoxHeader>
+          <ContentBoxTitle>Casos - {cases.length}</ContentBoxTitle>
+        </ContentBoxHeader>
+        <ContentBoxTable
+          component_height={'35rem'}
+        >
+        {filteredCases !== null ?
+          filteredCases.length > 0 ?
+            <TableCases
+              cases={filteredCases ? filteredCases : null}
+              fields={[
+                {
+                  key: "user_name",
+                  value: "Nome"
+                },
+                {
+                  key: "bad_since",
+                  value: "Data de início"
+                }
+              ]}
+              setCaseShow={handleShow}
+              setCaseEdit={handleCaseEdit}
+            /> :
+            <Loading isLoading={true} />
+          :
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Não há casos encontrados para esse grupo</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td></td>
+                  </tr>
+              </tbody>
+            </Table>
+        }
+        </ContentBoxTable>
+        <SubmitButton onClick={() => handleSeeCases()}>Casos Visualizados</SubmitButton>
+      </ContainerContentBox>
 
       {/* -------- SINDROMES VIGILANCIA -------- */}
       <Modal
@@ -405,4 +461,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Vigilance); 
+)(Vigilance);
