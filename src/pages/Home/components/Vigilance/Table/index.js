@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select'
+import React from 'react';
 import { 
   ContentBoxTableHeader,
   CheckboxInput,
@@ -15,7 +14,6 @@ const TableComponent = ({
   vigilance_syndromes,
   setVigilanceSyndromes,
   vigilance_email,
-  token,
 }) => {
 
   const checkBoxState = () => {
