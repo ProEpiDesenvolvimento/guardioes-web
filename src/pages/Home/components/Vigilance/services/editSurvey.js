@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const editSurvey = async (id, data, token) => {
-    api.patch(`/surveys/${id}`, data, {
+const editSurvey = async (userID, id, data, token) => {
+    api.patch(`/users/${userID}/surveys/${id}`, data, {
         headers: {
             "Authorization": token,
         },

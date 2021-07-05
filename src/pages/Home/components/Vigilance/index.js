@@ -52,7 +52,7 @@ const Vigilance = ({
   const { handleSubmit } = useForm()
 
   const [cases, setCases] = useState([])
-  const [caseType, setCaseType] = useState("reviewed")
+  const [caseType, setCaseType] = useState("not_reviewed")
   const [filteredCases, setFilteredCases] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [syndromeShow, setShowSyndrome] = useState({})
@@ -100,37 +100,37 @@ const Vigilance = ({
       response.surveys = [];
     }
     response.surveys.forEach(survey => {
-      aux_cases.push({
-        ...survey,
-        "user": null,
-        "user_id": survey.user.id,
-        "user_name": survey.user.user_name,
-        "user_email": survey.user.email,
-        "user_birthdate": survey.user.birthdate,
-        "user_gender": survey.user.gender,
-        "user_race": survey.user.race,
-        "user_is_professional": survey.user.is_professional,
-        "user_risk_group": survey.user.risk_group,
-        "user_phone": survey.user.phone,
-      })
+      if (caseType === "reviewed" && survey.reviewed) {
+        aux_cases.push({
+          ...survey,
+          "user_id": survey.user.id,
+          "user_name": survey.user.user_name,
+        }) 
+      } else {
+        aux_cases.push({
+          ...survey,
+          "user_id": survey.user.id,
+          "user_name": survey.user.user_name,
+        }) 
+      }
     })
     if (aux_cases.length === 0) {
       aux_cases = null
     }
-    setCases(aux_cases)
+    setFilteredCases(aux_cases)
   }
 
   const loadData = async (token) => {
-    const surveys = await getSurveysGroupCases(token)
-    if (!surveys.errors) {
-      loadGroupCases(surveys)
-    }
-
     const syns = await getAllSyndromes(token)
     let synds = []
     if (syns.syndromes)
       synds = syns.syndromes
     setSyndromes(synds)
+
+    const surveys = await getSurveysGroupCases(token)
+    if (!surveys.errors) {
+      loadGroupCases(surveys)
+    }
 
     setVigilanceSyndromes(user.vigilance_syndromes)
     setEditEmail(user.vigilance_email)
@@ -160,7 +160,7 @@ const Vigilance = ({
     filteredCases.forEach((filteredCase) => {
       if (filteredCase.id === content.id) {
         newCases.push({
-          content,
+          ...content,
           reviewed: !content.reviewed,
         })
       } else {
@@ -171,22 +171,22 @@ const Vigilance = ({
 
     const data = {
       survey: {
-        content,
         reviewed: !content.reviewed,
       }
     }
-    const response = await editSurvey(content.id, data, token)
-    loadGroupCases()
+    await editSurvey(content.user.id, content.id, data, token)
+    const surveys = await getSurveysGroupCases(token)
+    if (!surveys.errors) {
+      loadGroupCases(surveys)
+    }
   }
 
   const handleSeeCases = () => {
     let type = ""
     if (caseType === "reviewed") {
-      type = "null"
-      loadGroupCases(type)
+      type = "not_reviewed"
     } else {
       type = "reviewed"
-      loadGroupCases(type)
     }
     setCaseType(type)
   }
@@ -218,7 +218,7 @@ const Vigilance = ({
       {/* -------- CASOS -------- */}
       <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
-          <ContentBoxTitle>Casos - {cases.length}</ContentBoxTitle>
+          <ContentBoxTitle>Casos - {filteredCases.length}</ContentBoxTitle>
         </ContentBoxHeader>
         <ContentBoxTable
           component_height={'35rem'}

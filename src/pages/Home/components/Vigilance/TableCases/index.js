@@ -12,13 +12,6 @@ const TableCases = ({
   setCaseShow,
   setCaseEdit,
 }) => {
-  const isChecked = (content) => {
-    if (content.reviwed) {
-      return true
-    }
-    return false
-  }
-
   return (
     <Table responsive>
       <thead>
@@ -49,7 +42,7 @@ const TableCases = ({
               <CheckboxInput
                 type="checkbox"
                 id="status_case"
-                checked={isChecked(content)}
+                checked={content.reviewed}
                 onChange={() => setCaseEdit(content)}
               />
             </td>
