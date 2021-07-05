@@ -52,12 +52,15 @@ const Vigilance = ({
   const { handleSubmit } = useForm()
 
   const [cases, setCases] = useState([])
-  const [caseType, setCaseType] = useState("not_reviewed")
+  const [caseType, setCaseType] = useState("")
   const [filteredCases, setFilteredCases] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [syndromeShow, setShowSyndrome] = useState({})
+  const [showCaseModal, setShowCaseModal] = useState(false)
+  const [caseShow, setCaseShow] = useState({})
   const [hasVigilance, setHasVigilance] = useState(false)
   const [editEmail, setEditEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const _handleVigilance = async () => {
     let email = null
@@ -94,30 +97,41 @@ const Vigilance = ({
     }
   }
 
+  const filterGroupCases = (contents) => {
+    let aux_filtered = []
+    contents.forEach(content => {
+      if (caseType === "reviewed") {
+        if (content.reviewed) {
+          aux_filtered.push(content)
+        }
+      } else {
+        if (!content.reviewed) {
+          aux_filtered.push(content)
+        }
+      }
+    })
+    if (aux_filtered.length === 0) {
+      aux_filtered = null
+    }
+    setFilteredCases(aux_filtered)
+  }
+
   const loadGroupCases = (response) => {
     let aux_cases = [];
     if (!response.surveys) {
       response.surveys = [];
     }
     response.surveys.forEach(survey => {
-      if (caseType === "reviewed" && survey.reviewed) {
-        aux_cases.push({
-          ...survey,
-          "user_id": survey.user.id,
-          "user_name": survey.user.user_name,
-        }) 
-      } else {
-        aux_cases.push({
-          ...survey,
-          "user_id": survey.user.id,
-          "user_name": survey.user.user_name,
-        }) 
-      }
+      aux_cases.push({
+        ...survey,
+        "user_name": survey.user.user_name,
+      })
     })
     if (aux_cases.length === 0) {
       aux_cases = null
     }
-    setFilteredCases(aux_cases)
+    setCases(aux_cases)
+    filterGroupCases(aux_cases)
   }
 
   const loadData = async (token) => {
@@ -144,44 +158,56 @@ const Vigilance = ({
       await loadData(auxSession.token)
     }
     _loadSession();
+    setTimeout(()=>setIsLoading(false), 1000*0.5) // 0.5 segundos
   }, [token]);
 
-  const handleShow = (content) => {
-    setShowModal(true)
-    setShowSyndrome(content);
-  };
+  useEffect(() => {
+    if (cases.length > 0) {
+      filterGroupCases(cases)
+    }
+  }, [caseType]);
 
-  const setVigilanceSyndromesCallback = vs => {
-    setVigilanceSyndromes(vs)
+  const handleCaseShow = (content) => {
+    setShowCaseModal(true);
+    setCaseShow(content);
   }
 
   const handleCaseEdit = async (content) => {
     const newCases = []
-    filteredCases.forEach((filteredCase) => {
-      if (filteredCase.id === content.id) {
+    cases.forEach((case_) => {
+      if (case_.id === content.id) {
         newCases.push({
           ...content,
-          reviewed: !content.reviewed,
+          reviewed: content.reviewed ? false : true,
         })
       } else {
-        newCases.push(filteredCase)
+        newCases.push(case_)
       }
     })
-    setFilteredCases(newCases)
+    setCases(newCases)
+
+    const newFilteredCases = []
+    filteredCases.forEach((filteredCase) => {
+      if (filteredCase.id === content.id) {
+        newFilteredCases.push({
+          ...content,
+          reviewed: content.reviewed ? false : true,
+        })
+      } else {
+        newFilteredCases.push(filteredCase)
+      }
+    })
+    filterGroupCases(newFilteredCases)
 
     const data = {
       survey: {
-        reviewed: !content.reviewed,
+        reviewed: content.reviewed ? false : true,
       }
     }
     await editSurvey(content.user.id, content.id, data, token)
-    const surveys = await getSurveysGroupCases(token)
-    if (!surveys.errors) {
-      loadGroupCases(surveys)
-    }
   }
 
-  const handleSeeCases = () => {
+  const handleCasesFilter = () => {
     let type = ""
     if (caseType === "reviewed") {
       type = "not_reviewed"
@@ -189,6 +215,15 @@ const Vigilance = ({
       type = "reviewed"
     }
     setCaseType(type)
+  }
+
+  const handleShow = (content) => {
+    setShowModal(true)
+    setShowSyndrome(content)
+  }
+
+  const setVigilanceSyndromesCallback = vs => {
+    setVigilanceSyndromes(vs)
   }
 
   const handleSubmitChanges = async () => {
@@ -216,9 +251,105 @@ const Vigilance = ({
   return (
     <Container>
       {/* -------- CASOS -------- */}
+      <Modal
+        show={showCaseModal}
+        onHide={() => setShowCaseModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Caso
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input 
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.user_name : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Data de Nascimento</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.birthdate.split("T", 1) : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Gênero</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.gender : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Número de Telefone</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.phone : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>ID da Síndrome</label>
+            <input
+              className="text-dark"
+              type="number"
+              value={caseShow.syndrome_id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Data de início</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.bad_since ? caseShow.bad_since : "Não"}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Visualizado</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.reviewed ? "Sim" : "Não"}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <SubmitButton onClick={() => setShowCaseModal(false)}>Voltar</SubmitButton>                    
+        </Modal.Footer>
+      </Modal>
       <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
-          <ContentBoxTitle>Casos - {filteredCases.length}</ContentBoxTitle>
+          <ContentBoxTitle>Casos - {filteredCases ? filteredCases.length : 0}</ContentBoxTitle>
         </ContentBoxHeader>
         <ContentBoxTable
           component_height={'35rem'}
@@ -228,16 +359,11 @@ const Vigilance = ({
             <TableCases
               cases={filteredCases ? filteredCases : null}
               fields={[
-                {
-                  key: "user_name",
-                  value: "Nome"
-                },
-                {
-                  key: "bad_since",
-                  value: "Data de início"
-                }
+                { key: "id", value: "ID" },
+                { key: "user_name", value: "Nome" },
+                { key: "bad_since", value: "Data de início" }
               ]}
-              setCaseShow={handleShow}
+              setCaseShow={handleCaseShow}
               setCaseEdit={handleCaseEdit}
             /> :
             <Loading isLoading={true} />
@@ -245,7 +371,7 @@ const Vigilance = ({
             <Table responsive>
               <thead>
                 <tr>
-                  <th>Não há casos encontrados para esse grupo</th>
+                  <th>Não há casos filtrados para esse grupo</th>
                 </tr>
               </thead>
               <tbody>
@@ -256,7 +382,9 @@ const Vigilance = ({
             </Table>
         }
         </ContentBoxTable>
-        <SubmitButton onClick={() => handleSeeCases()}>Casos Visualizados</SubmitButton>
+        <SubmitButton onClick={() => handleCasesFilter()}>
+          {caseType === "reviewed" ? "Casos Não Visualizados" : "Casos Visualizados"}
+        </SubmitButton>
       </ContainerContentBox>
 
       {/* -------- SINDROMES VIGILANCIA -------- */}
@@ -357,7 +485,6 @@ const Vigilance = ({
           <SubmitButton onClick={() => setShowModal(false)}>Voltar</SubmitButton>                    
         </Modal.Footer>
       </Modal>
-
       <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
           <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
@@ -365,7 +492,8 @@ const Vigilance = ({
         <ContentBoxTable
           component_height={'35rem'}
         >
-        {syndromes !== null ?
+        {isLoading ?
+          <Loading isLoading={true} /> :
           syndromes.length > 0 ?
             <TableComponent
               contents={syndromes ? syndromes : null}
@@ -381,8 +509,6 @@ const Vigilance = ({
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
               vigilance_email={user.vigilance_email}
             /> :
-            <Loading isLoading={true} />
-          :
             <Table responsive>
               <thead>
                 <tr>
