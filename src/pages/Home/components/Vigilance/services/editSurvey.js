@@ -11,7 +11,7 @@ const editSurvey = async (userID, id, data, token) => {
         return data
     })
     .catch((e) => {
-        alert("Erro ao mudar status da Survey.");
+        alert("Erro ao mudar status do Caso.");
         window.location.reload();
         return { data: {}, errors: e };
     });

@@ -116,7 +116,12 @@ const Vigilance = ({
     setFilteredCases(aux_filtered)
   }
 
-  const loadGroupCases = (response) => {
+  const loadGroupCases = (synds, response) => {
+    const syndromesObj = {}
+    synds.forEach(synd => {
+      syndromesObj[synd.id] = synd
+    })
+
     let aux_cases = [];
     if (!response.surveys) {
       response.surveys = [];
@@ -124,6 +129,7 @@ const Vigilance = ({
     response.surveys.forEach(survey => {
       aux_cases.push({
         ...survey,
+        "syndrome_name": syndromesObj[survey.syndrome_id].description,
         "user_name": survey.user.user_name,
       })
     })
@@ -143,7 +149,7 @@ const Vigilance = ({
 
     const surveys = await getSurveysGroupCases(token)
     if (!surveys.errors) {
-      loadGroupCases(surveys)
+      loadGroupCases(synds, surveys)
     }
 
     setVigilanceSyndromes(user.vigilance_syndromes)
@@ -173,35 +179,25 @@ const Vigilance = ({
   }
 
   const handleCaseEdit = async (content) => {
+    const reviewed = content.reviewed ? false : true
+
     const newCases = []
     cases.forEach((case_) => {
       if (case_.id === content.id) {
         newCases.push({
           ...content,
-          reviewed: content.reviewed ? false : true,
+          reviewed: reviewed,
         })
       } else {
         newCases.push(case_)
       }
     })
     setCases(newCases)
-
-    const newFilteredCases = []
-    filteredCases.forEach((filteredCase) => {
-      if (filteredCase.id === content.id) {
-        newFilteredCases.push({
-          ...content,
-          reviewed: content.reviewed ? false : true,
-        })
-      } else {
-        newFilteredCases.push(filteredCase)
-      }
-    })
-    filterGroupCases(newFilteredCases)
+    filterGroupCases(newCases)
 
     const data = {
       survey: {
-        reviewed: content.reviewed ? false : true,
+        reviewed: reviewed,
       }
     }
     await editSurvey(content.user.id, content.id, data, token)
@@ -250,143 +246,6 @@ const Vigilance = ({
 
   return (
     <Container>
-      {/* -------- CASOS -------- */}
-      <Modal
-        show={showCaseModal}
-        onHide={() => setShowCaseModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            Informações do Caso
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Nome</label>
-            <input 
-              className="text-dark"
-              type="text"
-              value={caseShow.user ? caseShow.user.user_name : ""}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Data de Nascimento</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.user ? caseShow.user.birthdate.split("T", 1) : ""}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Gênero</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.user ? caseShow.user.gender : ""}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Número de Telefone</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.user ? caseShow.user.phone : ""}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>ID da Síndrome</label>
-            <input
-              className="text-dark"
-              type="number"
-              value={caseShow.syndrome_id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Data de início</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.bad_since ? caseShow.bad_since : "Não"}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Visualizado</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={caseShow.reviewed ? "Sim" : "Não"}
-              disabled
-            />
-          </EditInput>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <SubmitButton onClick={() => setShowCaseModal(false)}>Voltar</SubmitButton>                    
-        </Modal.Footer>
-      </Modal>
-      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
-        <ContentBoxHeader>
-          <ContentBoxTitle>Casos - {filteredCases ? filteredCases.length : 0}</ContentBoxTitle>
-        </ContentBoxHeader>
-        <ContentBoxTable
-          component_height={'35rem'}
-        >
-        {filteredCases !== null ?
-          filteredCases.length > 0 ?
-            <TableCases
-              cases={filteredCases ? filteredCases : null}
-              fields={[
-                { key: "id", value: "ID" },
-                { key: "user_name", value: "Nome" },
-                { key: "bad_since", value: "Data de início" }
-              ]}
-              setCaseShow={handleCaseShow}
-              setCaseEdit={handleCaseEdit}
-            /> :
-            <Loading isLoading={true} />
-          :
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>Não há casos filtrados para esse grupo</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td></td>
-                  </tr>
-              </tbody>
-            </Table>
-        }
-        </ContentBoxTable>
-        <SubmitButton onClick={() => handleCasesFilter()}>
-          {caseType === "reviewed" ? "Casos Não Visualizados" : "Casos Visualizados"}
-        </SubmitButton>
-      </ContainerContentBox>
-
       {/* -------- SINDROMES VIGILANCIA -------- */}
       <Modal
         show={showModal}
@@ -561,6 +420,154 @@ const Vigilance = ({
               <SubmitButton type="submit">Editar Vigilância</SubmitButton>
             </Form>
           </ContainerForm>
+        </ContentBoxTable>
+      </ContainerContentBox>
+
+      {/* -------- CASOS -------- */}
+      <Modal
+        show={showCaseModal}
+        onHide={() => setShowCaseModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Caso
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input 
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.user_name : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Data de Nascimento</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.birthdate.split("T", 1) : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Gênero</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.gender : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Número de Telefone</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.phone : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Síndrome</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.syndrome_name}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Sintomas</label>
+            <TextArea
+              className="text-dark"
+              type="text"
+              value={caseShow.symptom ? caseShow.symptom.join(", ") : ""}
+              rows="1"
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Data de início</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.bad_since ? caseShow.bad_since : "Não"}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Visualizado</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.reviewed ? "Sim" : "Não"}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <SubmitButton onClick={() => setShowCaseModal(false)}>Voltar</SubmitButton>                    
+        </Modal.Footer>
+      </Modal>
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        <ContentBoxHeader>
+          <ContentBoxTitle>Casos - {filteredCases ? filteredCases.length : 0}</ContentBoxTitle>
+        </ContentBoxHeader>
+        <SubmitButton onClick={() => handleCasesFilter()} style={{ marginBottom: 0 }}>
+          {caseType === "reviewed" ? "Casos Não Visualizados" : "Casos Visualizados"}
+        </SubmitButton>
+        <ContentBoxTable
+          component_height={'35rem'}
+        >
+        {filteredCases !== null ?
+          filteredCases.length > 0 ?
+            <TableCases
+              cases={filteredCases ? filteredCases : null}
+              fields={[
+                { key: "id", value: "ID" },
+                { key: "user_name", value: "Nome" },
+                { key: "bad_since", value: "Data de início" }
+              ]}
+              setCaseShow={handleCaseShow}
+              setCaseEdit={handleCaseEdit}
+            /> :
+            <Loading isLoading={true} />
+          :
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Não há casos filtrados para esse grupo</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td></td>
+                  </tr>
+              </tbody>
+            </Table>
+        }
         </ContentBoxTable>
       </ContainerContentBox>
     </Container>
