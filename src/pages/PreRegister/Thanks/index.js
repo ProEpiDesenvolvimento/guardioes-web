@@ -16,7 +16,7 @@ import checkAnimation from './assets/checkAnimation.json'
 const Thanks = () => {
 
   const handleClick = () => {
-    window.location.refresh(true)
+    window.location.reload()
   }
 
   return (
