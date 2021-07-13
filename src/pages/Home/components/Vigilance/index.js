@@ -19,7 +19,9 @@ import {
   Input,
 } from './styles';
 import { Table } from 'react-bootstrap';
-import TableComponent from './Table'
+import TableCases from './TableCases';
+import TableComponent from './Table';
+
 import { connect } from 'react-redux';
 import {
   setVigilanceSyndromes,
@@ -27,11 +29,15 @@ import {
   setSyndromes,
   setUser,
 } from 'actions/';
-import Loading from 'sharedComponents/Loading'
-import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
+import Loading from 'sharedComponents/Loading';
+
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Modal from 'react-bootstrap/Modal';
+
+import getSurveysGroupCases from './services/getSurveysGroupCases';
+import editSurvey from './services/editSurvey';
+import getAllSyndromes from '../Syndromes/services/getAllSyndromes';
 import editGroupManager from '../GroupManagers/services/editGroupManager';
 import { setTimeout } from 'timers';
 
@@ -45,8 +51,14 @@ const Vigilance = ({
   user
 }) => {
   const { handleSubmit } = useForm()
-  const [syndromeShow, setShowSyndrome] = useState({})
+
+  const [cases, setCases] = useState([])
+  const [caseType, setCaseType] = useState("")
+  const [filteredCases, setFilteredCases] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [syndromeShow, setShowSyndrome] = useState({})
+  const [showCaseModal, setShowCaseModal] = useState(false)
+  const [caseShow, setCaseShow] = useState({})
   const [hasVigilance, setHasVigilance] = useState(false)
   const [editEmail, setEditEmail] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -74,16 +86,59 @@ const Vigilance = ({
 
     const responseUser = response.data[user.type]
     if (!response.errors) {
-        setUser({
-            ...responseUser,
-            type: user.type
-        })
-        sessionService.saveUser({
-            ...responseUser,
-            type: user.type
-        })
-        window.location.reload()
+      setUser({
+        ...responseUser,
+        type: user.type
+      })
+      sessionService.saveUser({
+        ...responseUser,
+        type: user.type
+      })
+      window.location.reload()
     }
+  }
+
+  const filterGroupCases = (contents) => {
+    let aux_filtered = []
+    contents.forEach(content => {
+      if (caseType === "reviewed") {
+        if (content.reviewed) {
+          aux_filtered.push(content)
+        }
+      } else {
+        if (!content.reviewed) {
+          aux_filtered.push(content)
+        }
+      }
+    })
+    if (aux_filtered.length === 0) {
+      aux_filtered = null
+    }
+    setFilteredCases(aux_filtered)
+  }
+
+  const loadGroupCases = (synds, response) => {
+    const syndromesObj = {}
+    synds.forEach(synd => {
+      syndromesObj[synd.id] = synd
+    })
+
+    let aux_cases = [];
+    if (!response.surveys) {
+      response.surveys = [];
+    }
+    response.surveys.forEach(survey => {
+      aux_cases.push({
+        ...survey,
+        "syndrome_name": syndromesObj[survey.syndrome_id].description,
+        "user_name": survey.user.user_name,
+      })
+    })
+    if (aux_cases.length === 0) {
+      aux_cases = null
+    }
+    setCases(aux_cases)
+    filterGroupCases(aux_cases)
   }
 
   const loadData = async (token) => {
@@ -92,6 +147,12 @@ const Vigilance = ({
     if (syns.syndromes)
       synds = syns.syndromes
     setSyndromes(synds)
+
+    const surveys = await getSurveysGroupCases(token)
+    if (!surveys.errors) {
+      loadGroupCases(synds, surveys)
+    }
+
     setVigilanceSyndromes(user.vigilance_syndromes)
     setEditEmail(user.vigilance_email)
     setHasVigilance(user.vigilance_email ? true : false)
@@ -108,13 +169,55 @@ const Vigilance = ({
   }, [token]);
 
   useEffect(() => {
-    loadData(token)
-  }, [])
+    if (cases.length > 0) {
+      filterGroupCases(cases)
+    }
+  }, [caseType]);
+
+  const handleCaseShow = (content) => {
+    setShowCaseModal(true);
+    setCaseShow(content);
+  }
+
+  const handleCaseEdit = async (content) => {
+    const reviewed = content.reviewed ? false : true
+
+    const newCases = []
+    cases.forEach((case_) => {
+      if (case_.id === content.id) {
+        newCases.push({
+          ...content,
+          reviewed: reviewed,
+        })
+      } else {
+        newCases.push(case_)
+      }
+    })
+    setCases(newCases)
+    filterGroupCases(newCases)
+
+    const data = {
+      survey: {
+        reviewed: reviewed,
+      }
+    }
+    await editSurvey(content.user.id, content.id, data, token)
+  }
+
+  const handleCasesFilter = () => {
+    let type = ""
+    if (caseType === "reviewed") {
+      type = "not_reviewed"
+    } else {
+      type = "reviewed"
+    }
+    setCaseType(type)
+  }
 
   const handleShow = (content) => {
     setShowModal(true)
-    setShowSyndrome(content);
-  };
+    setShowSyndrome(content)
+  }
 
   const setVigilanceSyndromesCallback = vs => {
     setVigilanceSyndromes(vs)
@@ -130,20 +233,21 @@ const Vigilance = ({
 
     const responseUser = response.data[user.type]
     if (!response.errors) {
-        setUser({
-            ...responseUser,
-            type: user.type
-        })
-        sessionService.saveUser({
-            ...responseUser,
-            type: user.type
-        })
-        window.location.reload()
+      setUser({
+        ...responseUser,
+        type: user.type
+      })
+      sessionService.saveUser({
+        ...responseUser,
+        type: user.type
+      })
+      window.location.reload()
     }
   }
 
   return (
     <Container>
+      {/* -------- SINDROMES VIGILANCIA -------- */}
       <Modal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -241,7 +345,6 @@ const Vigilance = ({
           <SubmitButton onClick={() => setShowModal(false)}>Voltar</SubmitButton>                    
         </Modal.Footer>
       </Modal>
-
       <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
           <ContentBoxTitle>Síndromes da Vigilância Ativa</ContentBoxTitle>
@@ -320,6 +423,154 @@ const Vigilance = ({
           </ContainerForm>
         </ContentBoxTable>
       </ContainerContentBox>
+
+      {/* -------- CASOS -------- */}
+      <Modal
+        show={showCaseModal}
+        onHide={() => setShowCaseModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Informações do Caso
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditInput>
+            <label>ID</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.id}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Nome</label>
+            <input 
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.user_name : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Data de Nascimento</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.birthdate.split("T", 1) : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Gênero</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.gender : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput>
+            <label>Número de Telefone</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.user ? caseShow.user.phone : ""}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Síndrome</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.syndrome_name}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Sintomas</label>
+            <TextArea
+              className="text-dark"
+              type="text"
+              value={caseShow.symptom ? caseShow.symptom.join(", ") : ""}
+              rows="1"
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Data de início</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.bad_since ? caseShow.bad_since : "Não"}
+              disabled
+            />
+          </EditInput>
+
+          <EditInput className="bg-light p-2">
+            <label>Visualizado</label>
+            <input
+              className="text-dark"
+              type="text"
+              value={caseShow.reviewed ? "Sim" : "Não"}
+              disabled
+            />
+          </EditInput>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <SubmitButton onClick={() => setShowCaseModal(false)}>Voltar</SubmitButton>                    
+        </Modal.Footer>
+      </Modal>
+      <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        <ContentBoxHeader>
+          <ContentBoxTitle>Casos - {filteredCases ? filteredCases.length : 0}</ContentBoxTitle>
+        </ContentBoxHeader>
+        <SubmitButton onClick={() => handleCasesFilter()} style={{ marginBottom: 0 }}>
+          {caseType === "reviewed" ? "Casos Não Visualizados" : "Casos Visualizados"}
+        </SubmitButton>
+        <ContentBoxTable
+          component_height={'35rem'}
+        >
+        {filteredCases !== null ?
+          filteredCases.length > 0 ?
+            <TableCases
+              cases={filteredCases ? filteredCases : null}
+              fields={[
+                { key: "id", value: "ID" },
+                { key: "user_name", value: "Nome" },
+                { key: "bad_since", value: "Data de início" }
+              ]}
+              setCaseShow={handleCaseShow}
+              setCaseEdit={handleCaseEdit}
+            /> :
+            <Loading isLoading={true} />
+          :
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>Não há casos filtrados para esse grupo</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td></td>
+                  </tr>
+              </tbody>
+            </Table>
+        }
+        </ContentBoxTable>
+      </ContainerContentBox>
     </Container>
   );
 }
@@ -344,4 +595,4 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Vigilance); 
+)(Vigilance);
