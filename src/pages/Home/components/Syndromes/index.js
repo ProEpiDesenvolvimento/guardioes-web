@@ -55,7 +55,7 @@ const Syndromes = ({
 
     const _createSyndrome = async () => {
         let symptoms = [];
-        selected.map(s => {
+        selected.forEach(s => {
             symptoms.push({
                 description: s.label,
                 percentage: s.percentage,
@@ -101,7 +101,7 @@ const Syndromes = ({
         if (!response.symptoms) {
             response.symptoms = [];
         }
-        response.symptoms.map(symptom => {
+        response.symptoms.forEach(symptom => {
             options.push({
                 label: symptom.description, 
                 value: symptom.id,
@@ -119,7 +119,7 @@ const Syndromes = ({
 
     const _editSyndrome = async () => {
         let symptoms = [];
-        editSymptoms.map(s => {
+        editSymptoms.forEach(s => {
             symptoms.push({
                 description: s.label,
                 percentage: s.percentage,
@@ -147,7 +147,7 @@ const Syndromes = ({
         const newValue = parseFloat(value) / 100
         setSelected(
             selected.map(s => 
-                s.value === symptom.value ? {... s, percentage: newValue} : s
+                s.value === symptom.value ? {...s, percentage: newValue} : s
             )
         );
     }
@@ -163,7 +163,7 @@ const Syndromes = ({
 
     const handleEdit = (content) => {
         let editSymptoms = []
-        content.symptoms.map(symptom => {
+        content.symptoms.forEach(symptom => {
             editSymptoms.push({
                 label: symptom.description, 
                 value: symptom.id,

@@ -83,7 +83,7 @@ const Admins = ({
         if (!response.apps) {
             response.apps = [];
         }
-        response.apps.map(app => {
+        response.apps.forEach(app => {
             const option = {
                 label: app.app_name, 
                 value: app.id,
@@ -114,20 +114,14 @@ const Admins = ({
     }
     
     const handleShow = (content) => {
-        const a = apps.filter(app => {
-            if (app.value === content.app_id)
-                return app.label;
-        })
+        const a = apps.filter(app => app.value === content.app_id)
         content.app_name = a[0].label;
         setAdminShow(content);
         setModalShow(!modalShow);
     }
 
     const handleEdit = (content) => {
-        const a = apps.filter(app => {
-            if (app.value === content.app_id)
-                return app.label;
-        })
+        const a = apps.filter(app => app.value === content.app_id)
         content.app = a[0];
         setEditingAdmin(content);
         setEditFirstName(content.first_name);

@@ -206,7 +206,7 @@ const Groups = ({
     let state_id;
 
     const response = await buildGroupPath(group_id);
-    response.groups.map((group_map) => {
+    response.groups.forEach((group_map) => {
       if (group_map.label === type) {
         state_id = group_map.id
         setStates(group_map)
