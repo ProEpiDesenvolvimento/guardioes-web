@@ -54,8 +54,12 @@ const Dashboard = ({
   }
 
   const isVigilance = () => {
-    if (user.vigilance_email) {
-      if (user.vigilance_email.length > 0) {
+    if (user.type === 'group_manager') {
+      if (user.vigilance_email) {
+        return true
+      }
+    } else if (user.type === 'group_manager_team') {
+      if (user.group_manager && user.group_manager.vigilance_email) {
         return true
       }
     }
