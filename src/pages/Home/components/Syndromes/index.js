@@ -36,6 +36,7 @@ const Syndromes = ({
     const { handleSubmit } = useForm();
     const [syndromeDescription, setSyndromeDescription] = useState("");
     const [syndromeDetails, setSyndromeDetails] = useState("");
+    const [syndromeDays, setSyndromeDays] = useState("");
     const [syndromeMessageTitle, setSyndromeMessageTitle] = useState("");
     const [syndromeMessageWarning, setSyndromeMessageWarning] = useState("");
     const [syndromeMessageHospital, setSyndromeMessageHospital] = useState("");
@@ -46,6 +47,7 @@ const Syndromes = ({
     const [syndromeShow, setSyndromeShow] = useState({});
     const [editDescription, setEditDescription] = useState("");
     const [editDetails, setEditDetails] = useState("");
+    const [editDays, setEditDays] = useState("");
     const [editMessageTitle, setEditMessageTitle] = useState("");
     const [editMessageWarning, setEditMessageWarning] = useState("");
     const [editMessageHospital, setEditMessageHospital] = useState("");
@@ -67,6 +69,7 @@ const Syndromes = ({
                 "description": syndromeDescription,
                 "details": syndromeDetails,
                 "symptom": symptoms,
+                "days_period": parseInt(syndromeDays),
                 "message_attributes": {
                     "title": syndromeMessageTitle,
                     "warning_message": syndromeMessageWarning,
@@ -131,6 +134,7 @@ const Syndromes = ({
                 "description": editDescription,
                 "details": editDetails,
                 "symptom": symptoms,
+                "days_period": parseInt(editDays),
                 "message_attributes": {
                     "title": editMessageTitle,
                     "warning_message": editMessageWarning,
@@ -182,6 +186,7 @@ const Syndromes = ({
         setEditingSyndrome(content);
         setEditDescription(content.description);
         setEditDetails(content.details);
+        setEditDays(content.days_period);
         setEditSymptoms(editSymptoms);
         setEditModal(!editModal);
     }
@@ -233,6 +238,17 @@ const Syndromes = ({
                                 value={editDetails}
                                 onChange={(e) => setEditDetails(e.target.value)}
                                 rows="1"
+                            />
+                        </EditInput>
+
+                        <EditInput>
+                            <label htmlFor="edit_days">Período de dias</label>
+                            <input
+                                type="number"
+                                id="edit_days"
+                                value={editDays}
+                                onChange={(e) => setEditDays(e.target.value)}
+                                min="1"
                             />
                         </EditInput>
 
@@ -386,6 +402,16 @@ const Syndromes = ({
                         />
                     </EditInput>
 
+                    <EditInput>
+                        <label>Período de dias</label>
+                        <input 
+                            className="text-dark"
+                            type="number"
+                            value={syndromeShow.days_period}
+                            disabled
+                        />
+                    </EditInput>
+
                     {syndromeShow.message ?
                         <EditInput className="bg-light p-2">
                             <label>Mensagem</label>
@@ -479,6 +505,17 @@ const Syndromes = ({
                                     value={syndromeDetails}
                                     onChange={(e) => setSyndromeDetails(e.target.value)}
                                     rows="1"
+                                />
+                            </InputBlock>
+
+                            <InputBlock>
+                                <label htmlFor="days_period">Período de dias</label>
+                                <input
+                                    type="number"
+                                    id="days_period"
+                                    value={syndromeDays}
+                                    onChange={(e) => setSyndromeDays(e.target.value)}
+                                    min="1"
                                 />
                             </InputBlock>
 
