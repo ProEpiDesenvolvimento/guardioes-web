@@ -70,8 +70,8 @@ const GroupManagerTeams = ({
         "name": groupManagerTeamName,
         "email": groupManagerTeamEmail,
         "password": groupManagerTeamPassword,
-        "group_manager_id": userID,
         "app_id": user.app_id,
+        "group_manager_id": userID,
         "permission_attributes": {
           "models_create": [],
           "models_read": [],

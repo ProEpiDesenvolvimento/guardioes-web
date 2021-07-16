@@ -143,6 +143,7 @@ const Home = ({
             if (comp.key === component.key) {
               return <comp.value key={comp.key} />
             }
+            return null
           })}
         </Divider>
       </Body>
