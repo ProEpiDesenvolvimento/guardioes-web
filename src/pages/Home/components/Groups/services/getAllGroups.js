@@ -12,7 +12,7 @@ const getAllGroups = async (token) =>
     return data
   })
   .catch((e) => {
-    if (e.response.data.error === "You are not authorized to access this page.") {
+    if (e.response?.data.error === "Not enough permissions") {
       alert("Você não tem permissão para visualizar Instituições.");
     }
     console.log(e);

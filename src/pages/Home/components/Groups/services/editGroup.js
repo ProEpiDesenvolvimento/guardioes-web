@@ -14,7 +14,7 @@ const editGroup = async (id, data, token) =>
       return response
     })
     .catch((e) => {
-      if (e.response.data.error === "You are not authorized to access this page.") {
+      if (e.response?.data.error === "Not enough permissions") {
         alert("Você não tem permissão para editar Instituições.");
       } else {
         alert('Algo deu errado, tente novamente!');

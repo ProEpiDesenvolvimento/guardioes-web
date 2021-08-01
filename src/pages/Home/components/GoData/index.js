@@ -82,7 +82,7 @@ const GoData = ({
         }
         _loadSession();
 
-        if (user.url_godata !== "" && user.username_godata !== "" && !godataToken) {
+        if (!user.url_godata && !user.username_godata && !godataToken) {
             const loginGoData = async () => {
                 await axios.post(
                     `${user.url_godata}/api/oauth/token`,
@@ -99,7 +99,7 @@ const GoData = ({
                         await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação");
+                        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
                     });
             }
             loginGoData();
