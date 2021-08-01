@@ -112,15 +112,16 @@ const Groups = ({
   }
 
   const _createGroup = async () => {
-    if(creatingGroup.description === '' || creatingGroup.parent_id === null){
+    if (creatingGroup.description === '' || creatingGroup.parent_id === null) {
       return alert('Erro, verifique os dados ou contate um administrador!')
     } else {
       const response = await createGroup(creatingGroup, token)
-      if (!response.errors)
+
+      if (!response.errors) {
         clearData()
         response.data.group.parentName = response.data.group.parent.name
         setGroups([...groups, response.data.group])
-    
+      }
       setNoGroup(false)
       setAddSubGroup(false)
     }
@@ -128,7 +129,7 @@ const Groups = ({
 
   const _editGroup = async () => {
     let children
-    if(editingGroup.children_label !== null){
+    if (editingGroup.children_label !== null) {
       children = editingGroup.children_label
     } else {
       children = editChildrenLabel
@@ -144,19 +145,20 @@ const Groups = ({
 
     const response = await editGroup(editingGroup.id, data, token);
 
-    const newGroups = groups.map((group) => {
-      if (group.id === editingGroup.id) {
-        return {
-          ...response.data.group,
-          parentName: response.data.group.parent.name,
-          ...data,
+    if (!response.errors) {
+      const newGroups = groups.map((group) => {
+        if (group.id === editingGroup.id) {
+          return {
+            ...response.data.group,
+            parentName: response.data.group.parent.name,
+            ...data,
+          }
+        } else {
+          return group
         }
-      } else {
-        return group
-      }
-    })
-
-    setGroups(newGroups)
+      })
+      setGroups(newGroups)
+    }
     setModalEdit(false);
   }
 
@@ -220,8 +222,11 @@ const Groups = ({
   }
 
   const handleDelete = async (id, token) => {
-    await deleteGroup(id, token)
-    fetchData(token)
+    const response = await deleteGroup(id, token)
+
+    if (!response.errors) {
+      fetchData(token)
+    }
   }
 
   const handleShow = (content) => {
