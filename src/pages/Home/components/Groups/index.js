@@ -313,6 +313,27 @@ const Groups = ({
     }
   }
 
+  const loginGoData = async (user) => {
+    if (!user.url_godata && !user.username_godata) return
+
+    await axios.post(
+      `${user.url_godata}/api/oauth/token`,
+      {
+        username: user.username_godata,
+        password: user.password_godata
+      }
+    )
+      .then(async (res) => {
+        setGoDataToken("Bearer " + res.data.access_token);
+        const auxSession = await sessionService.loadSession();
+        await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+        getLocations(res.data.access_token);
+      })
+      .catch((e) => {
+        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
+      });
+  }
+
   useEffect(() => {
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
@@ -321,26 +342,10 @@ const Groups = ({
     }
     _loadSession();
 
-    if (user.url_godata !== "" && user.username_godata !== "") {
-      const loginGoData = async () => {
-        await axios.post(
-          `${user.url_godata}/api/oauth/token`,
-          {
-            username: user.username_godata,
-            password: user.password_godata
-          }
-        )
-          .then(async (res) => {
-            setGoDataToken("Bearer " + res.data.access_token);
-            const auxSession = await sessionService.loadSession();
-            await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
-            getLocations(res.data.access_token);
-          })
-          .catch((e) => {
-            alert("Falha na autenticação.");
-          });
-      }
-      loginGoData();
+    if (user.group_manager) {
+      loginGoData(user.group_manager);
+    } else {
+      loginGoData(user);
     }
   }, []);
 
