@@ -14,7 +14,7 @@ const createGroup = async (data, token) =>
       return response
     })
     .catch((e) => {
-      if (e.response.data.error === "You are not authorized to access this page.") {
+      if (e.response?.data.error === "Not enough permissions") {
         alert("Você não tem permissão para criar Instituições.");
       } else {
         alert('Algo deu errado, tente novamente!');

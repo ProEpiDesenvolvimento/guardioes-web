@@ -33,15 +33,20 @@ const Dashboard = ({
       setToken(auxSession.token)
     }
     _loadSession();
+  }, []);
 
-    _getUrls(Object.keys(hashes)[0])
+  useEffect(() => {
     if (isEmpty(hashes)) {
       setHashes({ surveys: null })
-    } else {
-      setHashes(hashes)
     }
-  }, [user, token, hashes.surveys, hashes.users, hashes.biosecurity, hashes.vigilance]);
-  
+  }, [hashes]);
+
+  useEffect(() => {
+    if (token && !isEmpty(hashes)) {
+      _getUrls(Object.keys(hashes)[0])
+    }
+  }, [token, hashes]);
+
   const isHash = (string) => {
     if (typeof hashes[string] !== "undefined") {
       return true
