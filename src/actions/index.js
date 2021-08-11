@@ -12,6 +12,7 @@ import {
   SET_GROUP_MANAGER_TEAMS,
   SET_MANAGERS,
   SET_GROUPS,
+  SET_FORM,
   SET_SYNDROMES,
   SET_VIGILANCE_SYNDROMES,
   SET_GO_DATA_TOKEN,
@@ -46,6 +47,8 @@ export const setManagers = (payload) => ({ type: SET_MANAGERS, payload });
 export const setUsers = (payload) => ({ type: SET_USERS, payload });
 
 export const setGroups = (payload) => ({ type: SET_GROUPS, payload });
+
+export const setForm = (payload) => ({ type: SET_FORM, payload });
 
 export const setSyndromes = (payload) => ({ type: SET_SYNDROMES, payload });
 
