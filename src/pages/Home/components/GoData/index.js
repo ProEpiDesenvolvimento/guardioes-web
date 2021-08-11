@@ -82,7 +82,7 @@ const GoData = ({
         }
         _loadSession();
 
-        if (user.url_godata !== "" && user.username_godata !== "" && !godataToken) {
+        if (!user.url_godata && !user.username_godata && !godataToken) {
             const loginGoData = async () => {
                 await axios.post(
                     `${user.url_godata}/api/oauth/token`,
@@ -99,7 +99,7 @@ const GoData = ({
                         await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação");
+                        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
                     });
             }
             loginGoData();
@@ -177,7 +177,7 @@ const GoData = ({
     const _addSyndrome = async () => {
         let auxOutbreaksLinkeds = []
         let vigilanceSyndromes = user.vigilance_syndromes;
-        vigilanceSyndromes.map((vs) => {
+        vigilanceSyndromes.forEach((vs) => {
             if (vs.syndrome_id === selectedSyndrome) {
                 vs.surto_id = outbreakId;
                 auxOutbreaksLinkeds.push(outbreakId)
@@ -258,10 +258,10 @@ const GoData = ({
                                             syndromes.map((s) => {
                                                 if (s.id === vs.syndrome_id && outbreakId === vs.surto_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id} selected>{s.description}</option>
-                                                }
-                                                else if (s.id === vs.syndrome_id) {
+                                                } else if (s.id === vs.syndrome_id) {
                                                     return <option key={vs.syndrome_id} value={vs.syndrome_id}>{s.description}</option>
                                                 }
+                                                return null
                                             })
                                         ))}
                                     </select>

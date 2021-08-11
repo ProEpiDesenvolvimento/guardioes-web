@@ -47,6 +47,7 @@ const Form = (props) => {
         phone: formattedPhone,
         organization_kind: organizationType,
         state,
+        email,
         company_name: socialReason,
         app_id: 1
       }

@@ -112,15 +112,16 @@ const Groups = ({
   }
 
   const _createGroup = async () => {
-    if(creatingGroup.description === '' || creatingGroup.parent_id === null){
+    if (creatingGroup.description === '' || creatingGroup.parent_id === null) {
       return alert('Erro, verifique os dados ou contate um administrador!')
     } else {
       const response = await createGroup(creatingGroup, token)
-      if (!response.errors)
+
+      if (!response.errors) {
         clearData()
         response.data.group.parentName = response.data.group.parent.name
         setGroups([...groups, response.data.group])
-    
+      }
       setNoGroup(false)
       setAddSubGroup(false)
     }
@@ -128,7 +129,7 @@ const Groups = ({
 
   const _editGroup = async () => {
     let children
-    if(editingGroup.children_label !== null){
+    if (editingGroup.children_label !== null) {
       children = editingGroup.children_label
     } else {
       children = editChildrenLabel
@@ -144,19 +145,20 @@ const Groups = ({
 
     const response = await editGroup(editingGroup.id, data, token);
 
-    const newGroups = groups.map((group) => {
-      if (group.id === editingGroup.id) {
-        return {
-          ...response.data.group,
-          parentName: response.data.group.parent.name,
-          ...data,
+    if (!response.errors) {
+      const newGroups = groups.map((group) => {
+        if (group.id === editingGroup.id) {
+          return {
+            ...response.data.group,
+            parentName: response.data.group.parent.name,
+            ...data,
+          }
+        } else {
+          return group
         }
-      } else {
-        return group
-      }
-    })
-
-    setGroups(newGroups)
+      })
+      setGroups(newGroups)
+    }
     setModalEdit(false);
   }
 
@@ -206,7 +208,7 @@ const Groups = ({
     let state_id;
 
     const response = await buildGroupPath(group_id);
-    response.groups.map((group_map) => {
+    response.groups.forEach((group_map) => {
       if (group_map.label === type) {
         state_id = group_map.id
         setStates(group_map)
@@ -220,8 +222,11 @@ const Groups = ({
   }
 
   const handleDelete = async (id, token) => {
-    await deleteGroup(id, token)
-    fetchData(token)
+    const response = await deleteGroup(id, token)
+
+    if (!response.errors) {
+      fetchData(token)
+    }
   }
 
   const handleShow = (content) => {
@@ -308,6 +313,27 @@ const Groups = ({
     }
   }
 
+  const loginGoData = async (user) => {
+    if (!user.url_godata && !user.username_godata) return
+
+    await axios.post(
+      `${user.url_godata}/api/oauth/token`,
+      {
+        username: user.username_godata,
+        password: user.password_godata
+      }
+    )
+      .then(async (res) => {
+        setGoDataToken("Bearer " + res.data.access_token);
+        const auxSession = await sessionService.loadSession();
+        await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
+        getLocations(res.data.access_token);
+      })
+      .catch((e) => {
+        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
+      });
+  }
+
   useEffect(() => {
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
@@ -316,26 +342,10 @@ const Groups = ({
     }
     _loadSession();
 
-    if (user.url_godata !== "" && user.username_godata !== "") {
-      const loginGoData = async () => {
-        await axios.post(
-          `${user.url_godata}/api/oauth/token`,
-          {
-            username: user.username_godata,
-            password: user.password_godata
-          }
-        )
-          .then(async (res) => {
-            setGoDataToken("Bearer " + res.data.access_token);
-            const auxSession = await sessionService.loadSession();
-            await sessionService.saveSession({ ...auxSession, godataToken: "Bearer " + res.data.access_token });
-            getLocations(res.data.access_token);
-          })
-          .catch((e) => {
-            alert("Falha na autenticação.");
-          });
-      }
-      loginGoData();
+    if (user.group_manager) {
+      loginGoData(user.group_manager);
+    } else {
+      loginGoData(user);
     }
   }, []);
 

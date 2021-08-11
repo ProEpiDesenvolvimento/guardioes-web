@@ -17,7 +17,7 @@ const getGraphs = async (token, type) =>
   })
   .catch((e) => {
     if (e.response?.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para visualizar Instituições.");
+      alert("Você não tem permissão para visualizar essa Dashboard.");
     }
     console.log(e);
     return { data: {}, errors: e }
