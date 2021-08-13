@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const deleteForm = async (id, token) => 
-  api.delete(`/forms/${id}`, {
+const deleteFormOption = async (id, token) => 
+  api.delete(`/form_options/${id}`, {
     headers: {
       "Authorization": token,
     },
@@ -13,9 +13,9 @@ const deleteForm = async (id, token) =>
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para deletar Formulários.");
+      alert("Você não tem permissão para deletar Opções de uma Pergunta.");
     }
     console.log(e);
   });
 
-export default deleteForm;
+export default deleteFormOption;
