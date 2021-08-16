@@ -550,9 +550,10 @@ const Syndromes = ({
                                 <input
                                     type="number"
                                     id="days_period"
-                                    value={syndromeDays}
-                                    onChange={(e) => setSyndromeDays(e.target.value)}
-                                    min="1"
+                                    value={syndromeThresholdScore}
+                                    onChange={(e) => setSyndromeThresholdScore(e.target.value)}
+                                    min="0"
+                                    max="100"
                                 />
                             </InputBlock>
 
