@@ -40,6 +40,7 @@ const Syndromes = ({
     const [syndromeMessageTitle, setSyndromeMessageTitle] = useState("");
     const [syndromeMessageWarning, setSyndromeMessageWarning] = useState("");
     const [syndromeMessageHospital, setSyndromeMessageHospital] = useState("");
+    const [syndromeThresholdScore, setSyndromeThresholdScore] = useState("");
     const [createModal, setCreateModal] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [options, setOptions] = useState([]);
@@ -52,6 +53,7 @@ const Syndromes = ({
     const [editMessageWarning, setEditMessageWarning] = useState("");
     const [editMessageHospital, setEditMessageHospital] = useState("");
     const [editSymptoms, setEditSymptoms] = useState([]);
+    const [editThresholdScore, setEditThresholdScore] = useState("");
     const [editModal, setEditModal] = useState(false);
     const [editingSyndrome, setEditingSyndrome] = useState({});
 
@@ -75,6 +77,7 @@ const Syndromes = ({
                     "warning_message": syndromeMessageWarning,
                     "go_to_hospital_message": syndromeMessageHospital
                 },
+                "threshold_score" : syndromeThresholdScore,
                 "app_id": user.app_id
             }
         }
@@ -86,6 +89,7 @@ const Syndromes = ({
             setSyndromeMessageTitle("");
             setSyndromeMessageWarning("");
             setSyndromeMessageHospital("");
+            setSyndromeThresholdScore("")
             setSelected([]);
         }
     }
@@ -139,7 +143,8 @@ const Syndromes = ({
                     "title": editMessageTitle,
                     "warning_message": editMessageWarning,
                     "go_to_hospital_message": editMessageHospital
-                }
+                },
+                "threshold_score" : editThresholdScore,
             }
         };
         await editSyndrome(editingSyndrome.id, data, token);
@@ -252,6 +257,7 @@ const Syndromes = ({
                             />
                         </EditInput>
 
+
                         <EditInput className="bg-light p-2">
                             <label>Mensagem</label>
 
@@ -309,6 +315,17 @@ const Syndromes = ({
                                 />
                             </EditInput>
                         ))}                        
+                        <EditInput>
+                            <label htmlFor="threshold_score">Pontuação limite para match com a sindrom em %</label>
+                            <input
+                                type="number"
+                                id="edit_days"
+                                value={editThresholdScore}
+                                onChange={(e) => setEditThresholdScore(e.target.value)}
+                                min="0"
+                                max="100"
+                            />
+                        </EditInput>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -461,6 +478,15 @@ const Syndromes = ({
                             <h6>{symptom.label}</h6>
                         </EditInput>
                     )) : null}
+                    <EditInput>
+                        <label>Pontuação limite para match com a sindrome em %</label>
+                        <input 
+                            className="text-dark"
+                            type="number"
+                            value={syndromeShow.threshold_score}
+                            disabled
+                        />
+                    </EditInput>
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -510,6 +536,17 @@ const Syndromes = ({
 
                             <InputBlock>
                                 <label htmlFor="days_period">Período de dias</label>
+                                <input
+                                    type="number"
+                                    id="days_period"
+                                    value={syndromeDays}
+                                    onChange={(e) => setSyndromeDays(e.target.value)}
+                                    min="1"
+                                />
+                            </InputBlock>
+
+                            <InputBlock>
+                                <label htmlFor="threshold_score">Pontuação limite para match com a sindrome em %</label>
                                 <input
                                     type="number"
                                     id="days_period"
