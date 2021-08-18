@@ -134,11 +134,8 @@ const Vigilance = ({
         "user_name": survey.user.user_name,
       })
     })
-    if (aux_cases.length === 0) {
-      aux_cases = null
-    }
-    setCases(aux_cases)
     filterGroupCases(aux_cases)
+    setCases(aux_cases)
   }
 
   const loadData = async (token) => {
