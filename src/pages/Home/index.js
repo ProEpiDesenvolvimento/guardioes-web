@@ -15,6 +15,7 @@ import GroupManagerTeams from './components/GroupManagerTeams';
 import Managers from './components/Managers';
 import Dashboard from './components/Dashboard';
 import Contents from './components/Contents';
+import Forms from './components/Forms';
 import Syndromes from './components/Syndromes';
 import Admins from './components/Admins';
 import Vigilance from './components/Vigilance';
@@ -105,6 +106,10 @@ const Home = ({
       {
         key: "contents",
         value: Contents
+      },
+      {
+        key: "forms",
+        value: Forms
       },
       {
         key: "users",

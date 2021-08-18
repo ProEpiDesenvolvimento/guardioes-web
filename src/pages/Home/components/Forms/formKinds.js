@@ -1,4 +1,4 @@
 export const kindOptions = [
-  { label: "Múltipla escolha", key: "multiple" },
-  { label: "Dicotômica", key: "boolean" },
+  { label: "Múltipla escolha", value: "multiple" },
+  { label: "Dicotômica", value: "boolean" },
 ]
