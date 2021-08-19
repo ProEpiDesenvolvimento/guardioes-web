@@ -4,6 +4,7 @@ import {
   setForm, setToken
 } from "actions/";
 import { bindActionCreators } from "redux";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import getForm from "./services/getForm";
 import createForm from "./services/createForm";
@@ -218,8 +219,8 @@ const Forms = ({
           </EditInput>
 
           {questionShow.form_options ? questionShow.form_options.map((form_option) => (
-            <EditInput key={form_option.id}>
-              <label>Opção {form_option.order}</label>
+            <EditInput className="bg-light p-2 draggable-edit" key={form_option.id}>
+              <label>Opção #{form_option.id}</label>
               <input
                 className="text-dark"
                 type="text"
@@ -267,9 +268,37 @@ const Forms = ({
               />
             </EditInput>
 
-            <EditInput>
-
-            </EditInput>
+            <DragDropContext>
+              <Droppable droppableId="edit-options">
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {editingQuestion.form_options ? 
+                      editingQuestion.form_options.map((form_option, index) => (
+                        <Draggable key={form_option.id} draggableId={form_option.id.toString()} index={index}>
+                          {(provided) => (
+                            <EditInput
+                              className="bg-light p-2"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              title="Arraste para organizar"
+                            >
+                              <label>Opção ID #{form_option.id}</label>
+                              <input
+                                className="text-dark"
+                                type="text"
+                                value={form_option.text}
+                              />
+                            </EditInput>
+                          )}
+                        </Draggable>
+                      )
+                    ) : null}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>

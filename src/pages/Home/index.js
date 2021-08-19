@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
 import {
   Container,
   Body,
   Divider
 } from './styles';
+import '../../styles/Dashboard.css';
+
 import NavBar from './components/NavBar';
 import Header from 'sharedComponents/Header'
 import Apps from './components/Apps';
