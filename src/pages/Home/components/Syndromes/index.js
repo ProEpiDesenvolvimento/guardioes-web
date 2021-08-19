@@ -316,7 +316,7 @@ const Syndromes = ({
                             </EditInput>
                         ))}                        
                         <EditInput>
-                            <label htmlFor="threshold_score">Pontuação limite para match com a sindrom em %</label>
+                            <label htmlFor="threshold_score">Porcentagem limite para match com essa síndrome</label>
                             <input
                                 type="number"
                                 id="edit_days"
@@ -546,7 +546,7 @@ const Syndromes = ({
                             </InputBlock>
 
                             <InputBlock>
-                                <label htmlFor="threshold_score">Pontuação limite para match com a sindrome em %</label>
+                                <label htmlFor="threshold_score">Porcentagem limite para match com essa síndrome</label>
                                 <input
                                     type="number"
                                     id="days_period"
