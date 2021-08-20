@@ -29,6 +29,7 @@ import {
   TextArea,
   EditButton,
 } from "./styles";
+import "./styles.css";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
@@ -110,14 +111,26 @@ const Forms = ({
     _getForm(token);
   }
 
-  const getKindSelection = (kind) => {
-    let selected = {}
-    kindOptions.forEach(option => {
-      if (option.value === kind) {
-        selected = option
-      }
+  const handleOptionOnDragEnd = (e) => {
+    if (!e.destination) return;
+
+    let newOptions = editingQuestion.form_options.slice();
+    const [reorderedOption] = newOptions.splice(e.source.index, 1);
+    newOptions.splice(e.destination.index, 0, reorderedOption);
+
+    newOptions = newOptions.map((option, index) => {
+      return { ...option, order: index+1 }
     })
-    return selected
+
+    setEditingQuestion({...editingQuestion, form_options: newOptions})
+  }
+
+  const handleOptionOnChange = (form_option, text) => {
+    const newOptions = editingQuestion.form_options.map((option) => 
+      option.id === form_option.id ? { ...option, text } : option
+    )
+
+    setEditingQuestion({...editingQuestion, form_options: newOptions})
   }
 
   const handleEdit = (content) => {
@@ -128,6 +141,16 @@ const Forms = ({
   const handleShow = (content) => {
     setQuestionShow(content);
     setModalShow(!modalShow);
+  }
+
+  const getKindSelection = (kind) => {
+    let selected = {}
+    kindOptions.forEach(option => {
+      if (option.value === kind) {
+        selected = option
+      }
+    })
+    return selected
   }
 
   const loadForm = async (response) => {
@@ -219,8 +242,8 @@ const Forms = ({
           </EditInput>
 
           {questionShow.form_options ? questionShow.form_options.map((form_option) => (
-            <EditInput className="bg-light p-2 draggable-edit" key={form_option.id}>
-              <label>Opção #{form_option.id}</label>
+            <EditInput className="bg-light p-2" key={form_option.id}>
+              <label>Opção ID #{form_option.id}</label>
               <input
                 className="text-dark"
                 type="text"
@@ -268,16 +291,16 @@ const Forms = ({
               />
             </EditInput>
 
-            <DragDropContext>
+            <DragDropContext onDragEnd={handleOptionOnDragEnd}>
               <Droppable droppableId="edit-options">
                 {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                  <div className="droppable" {...provided.droppableProps} ref={provided.innerRef}>
                     {editingQuestion.form_options ? 
                       editingQuestion.form_options.map((form_option, index) => (
                         <Draggable key={form_option.id} draggableId={form_option.id.toString()} index={index}>
                           {(provided) => (
                             <EditInput
-                              className="bg-light p-2"
+                              className="bg-light p-2 draggable"
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
@@ -288,6 +311,7 @@ const Forms = ({
                                 className="text-dark"
                                 type="text"
                                 value={form_option.text}
+                                onChange={(e) => handleOptionOnChange(form_option, e.target.value)}
                               />
                             </EditInput>
                           )}

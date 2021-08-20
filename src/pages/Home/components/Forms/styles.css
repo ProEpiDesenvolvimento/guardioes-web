@@ -1,0 +1,7 @@
+.draggable {
+  border: 2px #348eac dashed;
+  border-radius: 3px;
+}
+.draggable label {
+  cursor: grab;
+}
