@@ -79,28 +79,24 @@ const GroupManagers = ({
         "group_name": groupManagerGroup,
         "twitter": groupManagerTwitter,
         "app_id": user.app_id,
+      },
+      "group" : {
+        "description" : groupManagerGroup,
+        "code": "",
+        "children_label" : null,
+        "parent_id" : groupManagerLocale,
+        "group_manager_id" : ""
       }
     }
     const response = await createGroupManager(data, token)
 
     if (response.status === 200) {
-      const group_data = {
-        description: groupManagerGroup,
-        code: "",
-        children_label: null,
-        parent_id: groupManagerLocale,
-        group_manager_id: response.data.group_manager.id,
-      }
-      const response_group = await createGroup(group_data, token)
-
-      if (response_group.status === 201) {
-        setGroupManagerName("")
-        setGroupManagerPassword("")
-        setGroupManagerEmail("")
-        setGroupManagerGroup("")
-        setGroupManagerTwitter("")
-        _getAllGroupManagers(token)
-      }
+      setGroupManagerName("")
+      setGroupManagerPassword("")
+      setGroupManagerEmail("")
+      setGroupManagerGroup("")
+      setGroupManagerTwitter("")
+      _getAllGroupManagers(token)
     }
   }
 
