@@ -27,9 +27,11 @@ import {
   SubmitButton,
   EditInput,
   TextArea,
+  AddButton,
   EditButton,
 } from "./styles";
 import "./styles.css";
+import deleteIcon from "../../../Home/components/assets/trash-solid.svg";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
@@ -54,6 +56,21 @@ const Forms = ({
   const [editOrder, setEditOrder] = useState(0);
   const [modalShow, setModalShow] = useState(false);
   const [questionShow, setQuestionShow] = useState({});
+
+  const _createOption = async () => {
+    const newOptions = editingQuestion.form_options.slice();
+    const newOption = {
+      id: Math.floor(Math.random() * 10000),
+      value: false,
+      text: "",
+      order: newOptions.length + 1,
+      form_question_id: editingQuestion.id,
+      is_new: true,
+    }
+    newOptions.push(newOption);
+
+    setEditingQuestion({...editingQuestion, form_options: newOptions});
+  }
 
   const _createQuestion = async () => {
     let response = {}
@@ -90,6 +107,21 @@ const Forms = ({
       setQuestionTitle("");
       setQuestionKind("");
       _getForm(token);
+    }
+  }
+
+  const _deleteFormOption = async (form_option, token) => {
+    let newOptions = editingQuestion.form_options.filter((option) =>
+      option.id !== form_option.id
+    );
+
+    newOptions = newOptions.map((option, index) => {
+      return { ...option, order: index+1 }
+    })
+    setEditingQuestion({...editingQuestion, form_options: newOptions});
+
+    if (!form_option.is_new) {
+      await deleteFormOption(form_option.id, token);
     }
   }
 
@@ -306,7 +338,17 @@ const Forms = ({
                               ref={provided.innerRef}
                               title="Arraste para organizar"
                             >
-                              <label>Opção ID #{form_option.id}</label>
+                              <div className="option-labels">
+                                <label>Opção ID #{form_option.id}</label>
+
+                                <button
+                                  className="delete-option"
+                                  onClick={() => _deleteFormOption(form_option, token)}
+                                >
+                                  <img src={deleteIcon} alt="Deletar" />
+                                </button>
+                              </div>
+                              
                               <input
                                 className="text-dark"
                                 type="text"
@@ -325,6 +367,7 @@ const Forms = ({
             </DragDropContext>
           </Modal.Body>
           <Modal.Footer>
+            <AddButton type="button" onClick={() => _createOption()}>Adicionar Opção</AddButton>
             <EditButton type="submit">Editar</EditButton>
           </Modal.Footer>
         </form>
