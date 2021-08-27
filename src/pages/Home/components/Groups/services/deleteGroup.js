@@ -8,9 +8,9 @@ const deleteGroup = async (id, token) => api
   }
   )
   .then(async (res) => {
-    const { data } = res;
-    alert("Grupo deletado")
-    return data
+    alert("Grupo deletado");
+    const response = { data: res.data };
+    return response
   })
   .catch((e) => {
     if (e.response?.data.error === "Not enough permissions") {

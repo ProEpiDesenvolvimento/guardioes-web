@@ -99,7 +99,7 @@ const GoData = ({
                         await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
+                        alert("Falha na autenticação do GoData. Verifique as credenciais.");
                     });
             }
             loginGoData();
