@@ -162,6 +162,25 @@ export const EditCheckboxInput = styled.input`
   margin-left: .5rem;
 `;
 
+export const AddButton = styled.button`
+  width: 100%;
+  background-color: #348eac;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  height: 2.2rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (min-width: 500px) {
+    width: 14rem;
+  }
+`;
+
 export const EditButton = styled.button`
   width: 100%;
   background-color: #5DD39E;

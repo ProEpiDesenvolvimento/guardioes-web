@@ -14,7 +14,10 @@ const deleteFormOption = async (id, token) =>
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
       alert("Você não tem permissão para deletar Opções de uma Pergunta.");
+    } else {
+      alert("Erro ao apagar Opção da Pergunta.");
     }
+    window.location.reload();
     console.log(e);
   });
 
