@@ -99,7 +99,7 @@ const GoData = ({
                         await loadData();
                     })
                     .catch((e) => {
-                        alert("Falha na autenticação do Go.Data. Verifique as credenciais.");
+                        alert("Falha na autenticação do GoData. Verifique as credenciais.");
                     });
             }
             loginGoData();
@@ -177,9 +177,9 @@ const GoData = ({
     const _addSyndrome = async () => {
         let auxOutbreaksLinkeds = []
         let vigilanceSyndromes = user.vigilance_syndromes;
-        vigilanceSyndromes.forEach((vs) => {
-            if (vs.syndrome_id === selectedSyndrome) {
-                vs.surto_id = outbreakId;
+        vigilanceSyndromes.forEach((vs, index) => {
+            if (vs.syndrome_id === parseInt(selectedSyndrome)) {
+                vigilanceSyndromes[index]['surto_id'] = outbreakId;
                 auxOutbreaksLinkeds.push(outbreakId)
             }
         });
