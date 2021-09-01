@@ -16,6 +16,10 @@ import { kindOptions } from "./formKinds";
 
 import {
   Container,
+  ContainerContentBox,
+  ContentBoxHeader,
+  ContentBoxTitle,
+  ContentBoxTable,
   AddAppContainer,
   ContainerHeader,
   ContainerTitle,
@@ -31,11 +35,14 @@ import {
   EditButton,
 } from "./styles";
 import "./styles.css";
+import TableDragAndDrop from "../ContentBox/TableDragAndDrop";
+import { Table } from 'react-bootstrap';
 import deleteIcon from "../../../Home/components/assets/trash-solid.svg";
+
+import Loading from 'sharedComponents/Loading';
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
-import ContentBox from "../ContentBox";
 
 const Forms = ({
   token,
@@ -44,8 +51,8 @@ const Forms = ({
   setForm,
   setToken
 }) => {
-
   const { handleSubmit } = useForm();
+
   const [questions, setQuestions] = useState([]);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionKind, setQuestionKind] = useState("");
@@ -202,8 +209,8 @@ const Forms = ({
     if (aux_form_questions.length === 0) {
       aux_form_questions = null
     }
-    setQuestions(aux_form_questions)
-    await setForm(response.form)
+    setQuestions(aux_form_questions);
+    await setForm(response.form);
   }
 
   const _getForm = async (token) => {
@@ -374,15 +381,40 @@ const Forms = ({
       </Modal>
 
       <Container>
-        <ContentBox
-          title="Perguntas"
-          token={token}
-          contents={questions}
-          fields={fields}
-          delete_function={_deleteFormQuestion}
-          handleEdit={handleEdit}
-          handleShow={handleShow}
-        />
+        <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+          <ContentBoxHeader>
+            <ContentBoxTitle>Perguntas</ContentBoxTitle>
+          </ContentBoxHeader>
+          <ContentBoxTable
+            component_height={'35rem'}
+          >
+          {questions !== null ?
+            questions.length > 0 ?
+              <TableDragAndDrop
+                contents={questions ? questions : null}
+                fields={fields}
+                _deleteApp={_deleteFormQuestion}
+                setContentShow={handleShow}
+                setEditingContent={handleEdit}
+                token={token}
+              /> :
+              <Loading isLoading={true} />
+            :
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>Não há perguntas cadastradas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </Table>
+          }
+          </ContentBoxTable>
+        </ContainerContentBox>
 
         <AddAppContainer className="shadow-sm">
           <ContainerHeader>
