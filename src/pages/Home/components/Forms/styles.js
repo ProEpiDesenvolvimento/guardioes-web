@@ -53,6 +53,30 @@ export const ContentBoxTable = styled.div`
   /* 40 */
 `;
 
+export const EditButtonsContainer = styled.div`
+  align-self: flex-end;
+`;
+
+export const EditOrder = styled.button`
+  width: 100%;
+  background-color: ${props => props.alert ? '#dc3545' : '#5DD39E'};
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  height: 2.2rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin: 30px 30px 30px 0;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media (min-width: 750px) {
+    width: 14rem;
+  }
+`;
+
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;

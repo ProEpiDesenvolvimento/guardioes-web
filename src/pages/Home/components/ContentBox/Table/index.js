@@ -57,6 +57,7 @@ const TableComponent = ({
             <td>
               <Link to="/panel">
                 <ContentBoxTableIcon
+                  cursor={"true"}
                   src={editIcon}
                   alt="Editar"
                   onClick={() => { setEditingContent(content) }}
@@ -72,7 +73,7 @@ const TableComponent = ({
                   onClick={() => { handleDelete(content.id, token) }}
                 />
                 <ContentBoxTableIcon
-                  cursor={confirmDelete === content.id ? "true" : "false"}
+                  cursor={confirmDelete === content.id ? "true" : ""}
                   style={{width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0}}
                   src={cancelIcon}
                   alt="Deletar"

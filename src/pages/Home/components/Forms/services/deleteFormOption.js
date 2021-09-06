@@ -7,7 +7,6 @@ const deleteFormOption = async (id, token) =>
     },
   })
   .then(async (res) => {
-    alert('Deletado com sucesso!');
     const { data } = res;
     return data
   })

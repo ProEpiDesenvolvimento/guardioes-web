@@ -1,1 +1,6 @@
 /* Dashboard styles */
+
+.table td,
+.table th {
+  vertical-align: middle !important;
+}

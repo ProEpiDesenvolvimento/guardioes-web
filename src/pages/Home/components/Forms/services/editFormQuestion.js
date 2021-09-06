@@ -1,24 +1,24 @@
 import api from 'services/api';
 
-const deleteFormQuestion = async (id, token) => 
-  api.delete(`/form_questions/${id}`, {
+const editFormQuestion = async (id, data, token) => 
+  api.patch(`/form_questions/${id}`, data, {
     headers: {
       "Authorization": token,
-    },
+    }
   })
   .then(async (res) => {
-    alert('Deletado com sucesso!');
+    alert('Editado com sucesso!');
     const response = { data: res.data };
-    return response
+    return response;
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para deletar Perguntas.");
+      alert("Você não tem permissão para editar Perguntas.");
     } else {
       alert('Algo deu errado, tente novamente!');
     }
     console.log(e);
-    return { data: {}, errors: e }
+    return { data: {}, errors: e };
   });
 
-export default deleteFormQuestion;
+export default editFormQuestion;

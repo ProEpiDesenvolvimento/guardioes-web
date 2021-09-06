@@ -10,6 +10,7 @@ import getForm from "./services/getForm";
 import createForm from "./services/createForm";
 import editForm from "./services/editForm";
 import createFormQuestion from "./services/createFormQuestion";
+import editFormQuestion from "./services/createFormQuestion";
 import deleteFormQuestion from "./services/deleteFormQuestion";
 import deleteFormOption from "./services/deleteFormOption";
 import { kindOptions } from "./formKinds";
@@ -20,6 +21,8 @@ import {
   ContentBoxHeader,
   ContentBoxTitle,
   ContentBoxTable,
+  EditButtonsContainer,
+  EditOrder,
   AddAppContainer,
   ContainerHeader,
   ContainerTitle,
@@ -36,10 +39,10 @@ import {
 } from "./styles";
 import "./styles.css";
 import TableDragAndDrop from "../ContentBox/TableDragAndDrop";
-import { Table } from 'react-bootstrap';
+import { Table } from "react-bootstrap";
 import deleteIcon from "../../../Home/components/assets/trash-solid.svg";
 
-import Loading from 'sharedComponents/Loading';
+import Loading from "sharedComponents/Loading";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
@@ -54,17 +57,17 @@ const Forms = ({
   const { handleSubmit } = useForm();
 
   const [questions, setQuestions] = useState([]);
+  const [questionsSorted, setQuestionsSorted] = useState([]);
   const [questionTitle, setQuestionTitle] = useState("");
-  const [questionKind, setQuestionKind] = useState("");
+  const [questionKind, setQuestionKind] = useState({});
+  const [isChangedOrder, setIsChangedOrder] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [editingQuestion, setEditingQuestion] = useState({});
-  const [editTitle, setEditName] = useState("");
-  const [editKind, setEditKind] = useState("");
-  const [editOrder, setEditOrder] = useState(0);
   const [modalShow, setModalShow] = useState(false);
   const [questionShow, setQuestionShow] = useState({});
 
-  const _createOption = async () => {
+  //
+  const _createFormOption = async () => {
     const newOptions = editingQuestion.form_options.slice();
     const newOption = {
       id: Math.floor(Math.random() * 10000),
@@ -79,16 +82,17 @@ const Forms = ({
     setEditingQuestion({...editingQuestion, form_options: newOptions});
   }
 
-  const _createQuestion = async () => {
+  //
+  const _createFormQuestion = async () => {
     let response = {}
     let data = {}
   
     if (user.form) {
       data = {
         "form_question": {
-          "kind": questionKind.key,
+          "kind": questionKind.value,
           "text": questionTitle,
-          "order": 1,
+          "order": questions.length + 1,
           "form_id": user.form.id,
         }
       }
@@ -99,7 +103,7 @@ const Forms = ({
           "group_manager_id": user.id,
           "questions": [
             {
-              "kind": questionKind.key,
+              "kind": questionKind.value,
               "text": questionTitle,
               "order": 1,
               "options": []
@@ -112,12 +116,15 @@ const Forms = ({
     
     if (!response.errors) {
       setQuestionTitle("");
-      setQuestionKind("");
+      setQuestionKind({});
       _getForm(token);
     }
   }
 
   const _deleteFormOption = async (form_option, token) => {
+    const confirm = window.confirm("Tem certeza que deseja excluir essa opção?");
+    if (!confirm) return;
+
     let newOptions = editingQuestion.form_options.filter((option) =>
       option.id !== form_option.id
     );
@@ -132,22 +139,38 @@ const Forms = ({
     }
   }
 
+  //
   const _deleteFormQuestion = async (id, token) => {
     await deleteFormQuestion(id, token)
+    _getForm(token)
+  }
+
+  const _editFormQuestion = async () => {
+    const data = {
+      "form_question": {
+        "kind": editingQuestion.kind,
+        "text": editingQuestion.text,
+        "order": editingQuestion.order,
+        "form_options": editingQuestion.form_options,
+      }
+    }
+    const response = await editFormQuestion(editingQuestion.id, data, token);
+    if (!response.errors) {
+      setModalEdit(false);
+      _getForm(token);
+    }
   }
 
   const _editForm = async () => {
     const data = {
-      "manager": {
-        "email": editingQuestion.email,
-        "name": editingQuestion.name,
-        "app_id": user.app_id,
-        "permission": editingQuestion.permission
+      "form": {
+        "questions": questions,
       }
     }
-    await editForm(editingQuestion.id, data, token);
-    setModalEdit(false);
-    _getForm(token);
+    const response = await editForm(form.id, data, token);
+    if (!response.errors) {
+      _getForm(token);
+    }
   }
 
   const handleOptionOnDragEnd = (e) => {
@@ -159,9 +182,9 @@ const Forms = ({
 
     newOptions = newOptions.map((option, index) => {
       return { ...option, order: index+1 }
-    })
+    });
 
-    setEditingQuestion({...editingQuestion, form_options: newOptions})
+    setEditingQuestion({...editingQuestion, form_options: newOptions});
   }
 
   const handleOptionOnChange = (form_option, text) => {
@@ -170,6 +193,16 @@ const Forms = ({
     )
 
     setEditingQuestion({...editingQuestion, form_options: newOptions})
+  }
+
+  const handleQuestionOrderChange = (newQuestions, isChanged = true) => {
+    setQuestionsSorted(newQuestions);
+
+    if (isChanged) {
+      setIsChangedOrder(true);
+    } else {
+      setIsChangedOrder(false);
+    }
   }
 
   const handleEdit = (content) => {
@@ -210,6 +243,8 @@ const Forms = ({
       aux_form_questions = null
     }
     setQuestions(aux_form_questions);
+    setQuestionsSorted(aux_form_questions);
+
     await setForm(response.form);
   }
 
@@ -307,7 +342,7 @@ const Forms = ({
             Editar Pergunta
           </Modal.Title>
         </Modal.Header>
-        <form id="editForm" onSubmit={handleSubmit(_editForm)}>
+        <form id="editForm" onSubmit={handleSubmit(_editFormQuestion)}>
           <Modal.Body>
             <EditInput>
               <label htmlFor="edit_text">Texto</label>
@@ -315,7 +350,7 @@ const Forms = ({
                 type="text"
                 id="edit_name"
                 value={editingQuestion.text}
-                onChange={(e) => setEditingQuestion({ ...editingQuestion, name: e.target.value })}
+                onChange={(e) => setEditingQuestion({ ...editingQuestion, text: e.target.value })}
               />
             </EditInput>
 
@@ -374,26 +409,27 @@ const Forms = ({
             </DragDropContext>
           </Modal.Body>
           <Modal.Footer>
-            <AddButton type="button" onClick={() => _createOption()}>Adicionar Opção</AddButton>
+            <AddButton type="button" onClick={() => _createFormOption()}>Adicionar Opção</AddButton>
             <EditButton type="submit">Editar</EditButton>
           </Modal.Footer>
         </form>
       </Modal>
 
       <Container>
-        <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
+        <ContainerContentBox className="shadow-sm" component_height={"35rem"}>
           <ContentBoxHeader>
             <ContentBoxTitle>Perguntas</ContentBoxTitle>
           </ContentBoxHeader>
           <ContentBoxTable
-            component_height={'35rem'}
+            component_height={"35rem"}
           >
-          {questions !== null ?
-            questions.length > 0 ?
+          {questionsSorted !== null ?
+            questionsSorted.length > 0 ?
               <TableDragAndDrop
-                contents={questions ? questions : null}
+                contents={questionsSorted ? questionsSorted : null}
                 fields={fields}
                 _deleteApp={_deleteFormQuestion}
+                setContentsOrder={handleQuestionOrderChange}
                 setContentShow={handleShow}
                 setEditingContent={handleEdit}
                 token={token}
@@ -414,6 +450,16 @@ const Forms = ({
               </Table>
           }
           </ContentBoxTable>
+          {isChangedOrder ? 
+            <EditButtonsContainer>
+              <EditOrder onClick={() => _editForm()}>
+                Salvar Ordenação
+              </EditOrder>
+              <EditOrder alert onClick={() => handleQuestionOrderChange(questions, false)}>
+                Descartar Ordenação
+              </EditOrder>
+            </EditButtonsContainer>
+          : null}
         </ContainerContentBox>
 
         <AddAppContainer className="shadow-sm">
@@ -421,7 +467,7 @@ const Forms = ({
             <ContainerTitle>Adicionar Pergunta</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
-            <Form id="addFormQuestion" onSubmit={handleSubmit(_createQuestion)}>
+            <Form id="addFormQuestion" onSubmit={handleSubmit(_createFormQuestion)}>
               <Inputs>
                 <InputBlock>
                   <label htmlFor="question_text">Texto</label>
@@ -438,7 +484,6 @@ const Forms = ({
                     id="question_kind"
                     placeholder="Selecionar"
                     options={kindOptions}
-                    defaultValue={questionKind}
                     onChange={(e) => setQuestionKind(e)}
                   />
                 </InputBlock>
