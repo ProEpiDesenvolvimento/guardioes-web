@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import {
   setEmail, setToken, setUser
@@ -18,11 +18,11 @@ import {
   SendButtonName,
   Span,
   ResetLink
-} from "./styles";
-import Header from "sharedComponents/Header";
+} from './styles';
+import Header from 'sharedComponents/Header';
 import Backicon from 'sharedComponents/BackIcon'
 import DropdownComponent from '../../sharedComponents/DropdownComponent'
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const Login = ({
   email,
@@ -32,17 +32,16 @@ const Login = ({
   setUser,
   setToken
 }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const history = useHistory();
 
-  const [password, setPassword] = useState("")
   const [option, setOption] = useState('admin');
-
-  const history = useHistory(); 
+  const [password, setPassword] = useState('');
 
   const makeUserLogin = async (data) => {
     const response = await requestLogin(email, password, option)
     const responseUser = response.user[option]
-    if (response.authorization !== "") {
+    if (response.authorization !== '') {
       setToken(response.authorization);
       setUser({
         ...responseUser,
@@ -63,7 +62,7 @@ const Login = ({
   }
 
   const handleResetPwd = (e) => {
-    history.push("/reset")
+    history.push('/reset')
   }
 
   const setItemsCallback = (option) => {
@@ -73,9 +72,9 @@ const Login = ({
   useEffect(() => {
     const _loadSession = async () => {
       try {
-        const auxSession = await sessionService.loadSession()
-        const auxUser = await sessionService.loadUser()
-        history.push("/panel")
+        await sessionService.loadSession()
+        await sessionService.loadUser()
+        history.push('/panel')
       } catch (err) {
         console.log(err)
       }
@@ -93,37 +92,38 @@ const Login = ({
         <LoginBox onSubmit={handleSubmit(makeUserLogin)}>
           <Title>
             Login
-        </Title>
+          </Title>
           <DropdownComponent setItemsCallback={setItemsCallback} />
           <Field
-            placeholder="E-mail"
-            name='email'
             type='text'
+            placeholder='Email'
+            name='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            ref={register({ required: true })}
+            {...register('email', { required: true })}
           />
           {errors.email && <Span>O e-mail é obrigatório</Span>}
           <Field
-            placeholder="Senha"
-            type="password"
+            type='password'
+            placeholder='Senha'
             name='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            ref={register({ required: true })}
+            {...register('password', { required: true })}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
           <ResetLink onClick={handleResetPwd}>Esqueci a senha</ResetLink>
           <SendButton type='submit'>
             <SendButtonName>
               ENVIAR
-          </SendButtonName>
+            </SendButtonName>
           </SendButton>
         </LoginBox>
       </Body>
     </Container>
   );
-} 
+}
+
 const mapStateToProps = (state) => ({
   email: state.user.email,
   token: state.user.token,
