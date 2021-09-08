@@ -10,10 +10,11 @@ import getForm from "./services/getForm";
 import createForm from "./services/createForm";
 import editForm from "./services/editForm";
 import createFormQuestion from "./services/createFormQuestion";
-import editFormQuestion from "./services/createFormQuestion";
+import editFormQuestion from "./services/editFormQuestion";
 import deleteFormQuestion from "./services/deleteFormQuestion";
 import deleteFormOption from "./services/deleteFormOption";
 import { kindOptions } from "./formKinds";
+import { valueOptions } from "./optionValues";
 
 import {
   Container,
@@ -66,23 +67,6 @@ const Forms = ({
   const [modalShow, setModalShow] = useState(false);
   const [questionShow, setQuestionShow] = useState({});
 
-  //
-  const _createFormOption = async () => {
-    const newOptions = editingQuestion.form_options.slice();
-    const newOption = {
-      id: Math.floor(Math.random() * 10000),
-      value: false,
-      text: "",
-      order: newOptions.length + 1,
-      form_question_id: editingQuestion.id,
-      is_new: true,
-    }
-    newOptions.push(newOption);
-
-    setEditingQuestion({...editingQuestion, form_options: newOptions});
-  }
-
-  //
   const _createFormQuestion = async () => {
     let response = {}
     let data = {}
@@ -121,6 +105,27 @@ const Forms = ({
     }
   }
 
+  const _editFormQuestion = async () => {
+    const data = {
+      "form_question": {
+        "kind": editingQuestion.kind,
+        "text": editingQuestion.text,
+        "order": editingQuestion.order,
+        "options": editingQuestion.form_options,
+      }
+    }
+    const response = await editFormQuestion(editingQuestion.id, data, token);
+    if (!response.errors) {
+      setModalEdit(false);
+      _getForm(token);
+    }
+  }
+
+  const _deleteFormQuestion = async (id, token) => {
+    await deleteFormQuestion(id, token);
+    _getForm(token);
+  }
+
   const _deleteFormOption = async (form_option, token) => {
     const confirm = window.confirm("Tem certeza que deseja excluir essa opção?");
     if (!confirm) return;
@@ -136,27 +141,6 @@ const Forms = ({
 
     if (!form_option.is_new) {
       await deleteFormOption(form_option.id, token);
-    }
-  }
-
-  //
-  const _deleteFormQuestion = async (id, token) => {
-    await deleteFormQuestion(id, token)
-    _getForm(token)
-  }
-
-  const _editFormQuestion = async () => {
-    const data = {
-      "form_question": {
-        "kind": editingQuestion.kind,
-        "text": editingQuestion.text,
-        "order": editingQuestion.order,
-        "form_options": editingQuestion.form_options,
-      }
-    }
-    const response = await editFormQuestion(editingQuestion.id, data, token);
-    if (!response.errors) {
-      setModalEdit(false);
       _getForm(token);
     }
   }
@@ -164,13 +148,40 @@ const Forms = ({
   const _editForm = async () => {
     const data = {
       "form": {
-        "questions": questions,
+        "questions": questionsSorted,
       }
     }
     const response = await editForm(form.id, data, token);
     if (!response.errors) {
       _getForm(token);
     }
+  }
+
+  const handleOptionOnCreate = async () => {
+    if (editingQuestion.kind !== "boolean" || editingQuestion.form_options.length < 2) {
+      const newOptions = editingQuestion.form_options.slice();
+      const newOption = {
+        id: Math.floor(Math.random() * 10000),
+        value: true,
+        text: "",
+        order: newOptions.length + 1,
+        form_question_id: editingQuestion.id,
+        is_new: true,
+      }
+      newOptions.push(newOption);
+
+      setEditingQuestion({...editingQuestion, form_options: newOptions});
+    } else {
+      alert("Você não pode adicionar mais Opções pra esse tipo de Pergunta");
+    }
+  }
+
+  const handleOptionOnChange = (form_option, field, value) => {
+    const newOptions = editingQuestion.form_options.map((option) => 
+      option.id === form_option.id ? { ...option, [field]: value } : option
+    );
+  
+    setEditingQuestion({...editingQuestion, form_options: newOptions});
   }
 
   const handleOptionOnDragEnd = (e) => {
@@ -185,14 +196,6 @@ const Forms = ({
     });
 
     setEditingQuestion({...editingQuestion, form_options: newOptions});
-  }
-
-  const handleOptionOnChange = (form_option, text) => {
-    const newOptions = editingQuestion.form_options.map((option) => 
-      option.id === form_option.id ? { ...option, text } : option
-    )
-
-    setEditingQuestion({...editingQuestion, form_options: newOptions})
   }
 
   const handleQuestionOrderChange = (newQuestions, isChanged = true) => {
@@ -256,6 +259,7 @@ const Forms = ({
     } else {
       setQuestions(null)
     }
+    setIsChangedOrder(false)
   }
 
   useEffect(() => {
@@ -263,15 +267,16 @@ const Forms = ({
     setToken(token)
   }, []);
 
-  const fields =
-    [{
+  const fields = [
+    {
       key: "id",
       value: "ID"
     },
     {
       key: "text",
       value: "Texto",
-    }];
+    }
+  ];
 
   return (
     <>
@@ -317,7 +322,19 @@ const Forms = ({
 
           {questionShow.form_options ? questionShow.form_options.map((form_option) => (
             <EditInput className="bg-light p-2" key={form_option.id}>
-              <label>Opção ID #{form_option.id}</label>
+              <div>
+                <label>Opção ID #{form_option.id}</label>
+                <select
+                  className="value-option"
+                  value={form_option.value}
+                  disabled
+                >
+                  {valueOptions.map(option => 
+                    <option value={option.value} key={option.label}>{option.label}</option>
+                  )}
+                </select>
+              </div>                
+              
               <input
                 className="text-dark"
                 type="text"
@@ -329,7 +346,9 @@ const Forms = ({
         </Modal.Body>
 
         <Modal.Footer>
-          <EditButton onClick={() => setModalShow(false)}>Voltar</EditButton>
+          <EditButton onClick={() => setModalShow(false)}>
+            Voltar
+          </EditButton>
         </Modal.Footer>
       </Modal>
 
@@ -381,8 +400,24 @@ const Forms = ({
                               title="Arraste para organizar"
                             >
                               <div className="option-labels">
-                                <label>Opção ID #{form_option.id}</label>
+                                <div>
+                                  {form_option.is_new ?
+                                    <label>Opção NOVA</label> 
+                                  :
+                                    <label>Opção ID #{form_option.id}</label>
+                                  }
 
+                                  <select
+                                    className="value-option"
+                                    value={form_option.value}
+                                    onChange={e => handleOptionOnChange(form_option, "value", e.target.value)}
+                                    disabled={editingQuestion.kind !== "boolean"}
+                                  >
+                                    {valueOptions.map(option => 
+                                      <option value={option.value} key={option.label}>{option.label}</option>
+                                    )}
+                                  </select>
+                                </div>
                                 <button
                                   className="delete-option"
                                   onClick={() => _deleteFormOption(form_option, token)}
@@ -395,7 +430,7 @@ const Forms = ({
                                 className="text-dark"
                                 type="text"
                                 value={form_option.text}
-                                onChange={(e) => handleOptionOnChange(form_option, e.target.value)}
+                                onChange={(e) => handleOptionOnChange(form_option, "text", e.target.value)}
                               />
                             </EditInput>
                           )}
@@ -409,7 +444,9 @@ const Forms = ({
             </DragDropContext>
           </Modal.Body>
           <Modal.Footer>
-            <AddButton type="button" onClick={() => _createFormOption()}>Adicionar Opção</AddButton>
+            <AddButton type="button" onClick={() => handleOptionOnCreate()}>
+              Adicionar Opção
+            </AddButton>
             <EditButton type="submit">Editar</EditButton>
           </Modal.Footer>
         </form>
