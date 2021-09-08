@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
-  setForm, setToken
+  setForm, setToken, setUser
 } from "actions/";
 import { bindActionCreators } from "redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { sessionService } from 'redux-react-session';
 
 import getForm from "./services/getForm";
 import createForm from "./services/createForm";
@@ -81,6 +82,11 @@ const Forms = ({
         }
       }
       response = await createFormQuestion(data, token)
+      if (!response.errors) {
+        setQuestionTitle("");
+        setQuestionKind({});
+        _getForm(token);
+      }
     } else {
       data = {
         "form": {
@@ -96,12 +102,17 @@ const Forms = ({
         }
       }
       response = await createForm(data, token)
-    }
-    
-    if (!response.errors) {
-      setQuestionTitle("");
-      setQuestionKind({});
-      _getForm(token);
+      if (!response.errors) {
+        setUser({
+          ...user,
+          form: { id: response.data.form?.id }
+        });
+        sessionService.saveUser({
+          ...user,
+          form: { id: response.data.form?.id }
+        });
+        window.location.reload();
+      }
     }
   }
 
@@ -258,6 +269,7 @@ const Forms = ({
       loadForm(response)
     } else {
       setQuestions(null)
+      setQuestionsSorted(null)
     }
     setIsChangedOrder(false)
   }
@@ -513,6 +525,7 @@ const Forms = ({
                     id="question_text"
                     value={questionTitle}
                     onChange={(e) => setQuestionTitle(e.target.value)}
+                    required
                   />
                 </InputBlock>
                 <InputBlock>
@@ -545,7 +558,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     setForm,
-    setToken
+    setToken,
+    setUser
   },
   dispatch,
 );
