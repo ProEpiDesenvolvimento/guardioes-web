@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { 
   ContentBoxTableHeader,
   ContentBoxTableIcon,
 } from '../Table/styles';
-import { Tr } from './styles';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { TableRow } from './styles';
+import TableCell from './TableCell';
 import editIcon from 'pages/Home/components/assets/edit-solid.svg';
 import deleteIcon from 'pages/Home/components/assets/trash-solid.svg';
 import confirmIcon from 'pages/Home/components/assets/confirm.svg';
@@ -53,7 +54,9 @@ const TableDragAndDrop = ({
         <thead>
           <tr>
             {fields.map(field => (
-              <ContentBoxTableHeader style={{maxWidth: "500px"}} key={field.key}>{field.value}</ContentBoxTableHeader>
+              <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={field.key}>
+                {field.value}
+              </ContentBoxTableHeader>
             ))}
             <th></th>
             <th></th>
@@ -66,51 +69,54 @@ const TableDragAndDrop = ({
             <tbody className="droppable" {...provided.droppableProps} ref={provided.innerRef}>
               {contents.map((content, index) => (
                 <Draggable key={content.id} draggableId={content.id.toString()} index={index}>
-                  {(provided) => (
-                    <Tr
+                  {(provided, snapshot) => (
+                    <TableRow
+                      isDragging={snapshot.isDragging}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
                       title="Arraste para organizar"
                     >
                       {fields.map(field => (
-                        <td style={{maxWidth: "500px"}} key={field.key}>{content[field.key]}</td>
+                        <TableCell isDragging={snapshot.isDragging} key={field.key}>
+                          {content[field.key]}
+                        </TableCell>
                       ))}
-                      <td>
+                      <TableCell isDragging={snapshot.isDragging}>
                         <Link to="/panel">
-                          <button className="btn btn-info" onClick={() => { setContentShow(content) }}>
+                          <button className="btn btn-info" onClick={() => setContentShow(content)}>
                             Visualizar
                           </button>
                         </Link>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell isDragging={snapshot.isDragging}>
                         <Link to="/panel">
                           <ContentBoxTableIcon
                             cursor={"true"}
                             src={editIcon}
                             alt="Editar"
-                            onClick={() => { setEditingContent(content) }}
+                            onClick={() => setEditingContent(content)}
                           />
                         </Link>
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell isDragging={snapshot.isDragging}>
                         <Link to="/panel">
                           <ContentBoxTableIcon
                             cursor={"true"}
                             src={confirmDelete === content.id ? confirmIcon : deleteIcon}
                             alt="Deletar"
-                            onClick={() => { handleDelete(content.id, token) }}
+                            onClick={() => handleDelete(content.id, token)}
                           />
                           <ContentBoxTableIcon
                             cursor={confirmDelete === content.id ? "true" : ""}
-                            style={{width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0}}
+                            style={{ width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0 }}
                             src={cancelIcon}
                             alt="Deletar"
-                            onClick={() => { setConfirmDelete(null) }}
+                            onClick={() => setConfirmDelete(null)}
                           />
                         </Link>
-                      </td>
-                    </Tr>
+                      </TableCell>
+                    </TableRow>
                   )}
                 </Draggable>
               ))}
