@@ -11,6 +11,7 @@ import {
 	SET_GROUP_MANAGER_TEAMS,
 	SET_MANAGERS,
 	SET_GROUPS,
+	SET_FORM,
 	SET_SYNDROMES,
 	SET_VIGILANCE_SYNDROMES,
 	SET_GO_DATA_TOKEN,
@@ -42,6 +43,7 @@ const initialState = {
 	group_managers: [],
 	group_manager_teams: [],
 	groups: [],
+	form: {},
 	syndromes: [],
 	vigilance_syndromes: [],
 	godataToken: "",
@@ -130,6 +132,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				groups: action.payload
+			};
+		case SET_FORM:
+			return {
+				...state,
+				form: action.payload
 			};
 		case SET_ADMINS:
 			return {

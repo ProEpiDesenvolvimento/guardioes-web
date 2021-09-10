@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 import { 
   ContentBoxTableHeader,
   ContentBoxTableIcon,
  } from './styles';
-import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import editIcon from 'pages/Home/components/assets/edit-solid.svg';
 import deleteIcon from 'pages/Home/components/assets/trash-solid.svg';
 import confirmIcon from 'pages/Home/components/assets/confirm.svg';
@@ -34,7 +35,9 @@ const TableComponent = ({
       <thead>
         <tr>
           {fields.map(field => (
-            <ContentBoxTableHeader style={{maxWidth: "500px"}} key={field.key}>{field.value}</ContentBoxTableHeader>
+            <ContentBoxTableHeader style={{ maxWidth: "500px" }} key={field.key}>
+              {field.value}
+            </ContentBoxTableHeader>
           ))}
           <th></th>
           <th></th>
@@ -45,11 +48,13 @@ const TableComponent = ({
         {contents.map(content => (
           <tr key={content.id}>
             {fields.map(field => (
-              <td style={{maxWidth: "500px"}} key={field.key}>{content[field.key]}</td>
+              <td style={{ maxWidth: "500px" }} key={field.key}>
+                {content[field.key]}
+              </td>
             ))}
             <td>
               <Link to="/panel">
-                <button className="btn btn-info" onClick={() => { setContentShow(content) }}>
+                <button className="btn btn-info" onClick={() => setContentShow(content)}>
                   Visualizar
                 </button>
               </Link>
@@ -57,9 +62,10 @@ const TableComponent = ({
             <td>
               <Link to="/panel">
                 <ContentBoxTableIcon
+                  cursor={"true"}
                   src={editIcon}
                   alt="Editar"
-                  onClick={() => { setEditingContent(content) }}
+                  onClick={() => setEditingContent(content)}
                 />
               </Link>
             </td>
@@ -69,14 +75,14 @@ const TableComponent = ({
                   cursor={"true"}
                   src={confirmDelete === content.id ? confirmIcon : deleteIcon}
                   alt="Deletar"
-                  onClick={() => { handleDelete(content.id, token) }}
+                  onClick={() => handleDelete(content.id, token)}
                 />
                 <ContentBoxTableIcon
-                  cursor={confirmDelete === content.id ? "true" : "false"}
-                  style={{width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0}}
+                  cursor={confirmDelete === content.id ? "true" : ""}
+                  style={{ width: "20px", marginLeft: "10px", opacity: confirmDelete === content.id ? 1 : 0 }}
                   src={cancelIcon}
                   alt="Deletar"
-                  onClick={() => { setConfirmDelete(null) }}
+                  onClick={() => setConfirmDelete(null)}
                 />
               </Link>
             </td>
