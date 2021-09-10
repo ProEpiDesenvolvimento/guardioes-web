@@ -6,7 +6,7 @@ export const DropdownDiv = styled.div`
   margin: 20px auto;
 `;
 
-export const DropdownTitle = styled.text`
+export const DropdownTitle = styled.span`
   text-align: left;
   heigth: 100%;
   margin: auto 10px;
