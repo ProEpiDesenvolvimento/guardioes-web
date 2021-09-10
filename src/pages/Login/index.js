@@ -61,10 +61,6 @@ const Login = ({
     }
   }
 
-  const handleResetPwd = (e) => {
-    history.push('/reset')
-  }
-
   const setItemsCallback = (option) => {
     setOption(option)
   }
@@ -98,21 +94,19 @@ const Login = ({
             type='text'
             placeholder='Email'
             name='email'
-            value={email}
             onChange={(e) => setEmail(e.target.value)}
-            {...register('email', { required: true })}
+            ref={register({ required: true })}
           />
           {errors.email && <Span>O e-mail é obrigatório</Span>}
           <Field
             type='password'
             placeholder='Senha'
             name='password'
-            value={password}
             onChange={(e) => setPassword(e.target.value)}
-            {...register('password', { required: true })}
+            ref={register({ required: true })}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
-          <ResetLink onClick={handleResetPwd}>Esqueci a senha</ResetLink>
+          <ResetLink to="/reset">Esqueci a senha</ResetLink>
           <SendButton type='submit'>
             <SendButtonName>
               ENVIAR
