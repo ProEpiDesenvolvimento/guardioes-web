@@ -77,7 +77,7 @@ const Forms = ({
         "form_question": {
           "kind": questionKind.value,
           "text": questionTitle,
-          "order": questions.length + 1,
+          "order": questions ? questions.length + 1 : 1,
           "form_id": user.form.id,
         }
       }
@@ -255,8 +255,10 @@ const Forms = ({
     })
     if (aux_form_questions.length === 0) {
       aux_form_questions = null
+      setQuestions([]);
+    } else {
+      setQuestions(aux_form_questions);
     }
-    setQuestions(aux_form_questions);
     setQuestionsSorted(aux_form_questions);
 
     await setForm(response.form);
@@ -268,7 +270,7 @@ const Forms = ({
       const response = await getForm(formID, token)
       loadForm(response)
     } else {
-      setQuestions(null)
+      setQuestions([])
       setQuestionsSorted(null)
     }
     setIsChangedOrder(false)
