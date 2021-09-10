@@ -114,6 +114,15 @@ const Dashboard = ({
               Vigilância Ativa
             </a>
           </li>
+          <li className="nav-item">
+            <a
+              onClick={() => setHashes({ vaccination: null })}
+              className={`nav-link ${!isGroupManagerORTeam() ? 'd-none': ''} ${isHash('vaccination') ? 'active' : ''}`}
+              href="#vaccination"
+            >
+              Vacinação
+            </a>
+          </li>
         </ul>
       </div>
         {urls?.length &&
