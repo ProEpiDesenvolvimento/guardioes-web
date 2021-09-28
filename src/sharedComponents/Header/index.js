@@ -31,7 +31,7 @@ const Header = ({
   }
 
   useEffect(() => {
-    console.log("USER", user)
+    // console.log("USER", user)
   }, [user])
 
   const logout = async () => {

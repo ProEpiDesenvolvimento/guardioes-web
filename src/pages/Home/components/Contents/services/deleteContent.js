@@ -16,7 +16,6 @@ const deleteContent = async (id, token) => api
     if (e.response.data.error === "You are not authorized to access this page.") {
       alert("Você não tem permissão para deletar Conteúdos.");
     }
-    console.log("status", e.status);
   });
 
 export default deleteContent;
