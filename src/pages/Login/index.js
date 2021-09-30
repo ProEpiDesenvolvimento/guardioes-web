@@ -71,8 +71,8 @@ const Login = ({
         await sessionService.loadSession()
         await sessionService.loadUser()
         history.push('/panel')
-      } catch (err) {
-        console.log(err)
+      } catch (e) {
+        console.log(e)
       }
     }
     _loadSession();

@@ -129,10 +129,10 @@ const Dashboard = ({
           <iframe
             title="Dashboard"
             src={urls[0]['iframe_url']}
-            frameborder="0"
+            frameBorder="0"
             width="100%"
             height="92%"
-            allowtransparency
+            allowtransparency="true"
           />
         }
     </div>

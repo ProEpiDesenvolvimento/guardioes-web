@@ -60,9 +60,8 @@ const Form = (props) => {
         return null
       }
       alert('Algo deu errado, tente novamente!');
-      console.log("Algo deu errado.\n" + response.errors)
+      console.log(response.errors);
     } else {
-      console.log("Registro feito com sucesso.")
       props.setRedirectCallback(true)
     }
   }
