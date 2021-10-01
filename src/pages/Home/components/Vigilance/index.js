@@ -145,14 +145,14 @@ const Vigilance = ({
       synds = syns.syndromes
     setSyndromes(synds)
 
+    setVigilanceSyndromes(user.vigilance_syndromes)
+    setEditEmail(user.vigilance_email)
+    setHasVigilance(user.vigilance_email ? true : false)
+
     const surveys = await getSurveysGroupCases(token)
     if (!surveys.errors) {
       loadGroupCases(synds, surveys)
     }
-
-    setVigilanceSyndromes(user.vigilance_syndromes)
-    setEditEmail(user.vigilance_email)
-    setHasVigilance(user.vigilance_email ? true : false)
   }
 
   useEffect(() => {
@@ -162,7 +162,7 @@ const Vigilance = ({
       await loadData(auxSession.token)
     }
     _loadSession();
-    setTimeout(()=>setIsLoading(false), 1000*0.5) // 0.5 segundos
+    setTimeout(()=> setIsLoading(false), 1000*0.5) // 0.5 segundos
   }, [token]);
 
   useEffect(() => {

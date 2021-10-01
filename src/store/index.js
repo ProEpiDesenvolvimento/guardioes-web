@@ -1,12 +1,15 @@
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from '../reducers/index';
-import logger from 'redux-logger';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { sessionService } from 'redux-react-session';
+import rootReducer from '../reducers/index';
 
-export const Store = createStore(
-  rootReducer,
-  applyMiddleware(logger),
-);
+const middlewares = [];
+
+if (process.env.NODE_ENV === `development`) {
+  const { logger } = require(`redux-logger`);
+  middlewares.push(logger);
+}
+
+export const Store = compose(applyMiddleware(...middlewares))(createStore)(rootReducer);
 
 const validateSession = (session) => {
   // check if your session is still valid

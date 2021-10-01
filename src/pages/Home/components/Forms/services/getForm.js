@@ -1,22 +1,21 @@
 import api from 'services/api';
 
-const getAllApps = async (token) => api
-  .get('/apps', {
+const getForm = async (id, token) => 
+  api.get(`/forms/${id}`, {
     headers: {
       "Authorization": token,
     },
-  }
-  )
+  })
   .then(async (res) => {
-    const data = res.data;
+    const { data } = res;
     return data
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para visualizar Apps.");
+      alert("Você não tem permissão para visualizar Formulários.");
     }
     console.log(e);
     return { data: {}, errors: e }
   });
 
-export default getAllApps;
+export default getForm;

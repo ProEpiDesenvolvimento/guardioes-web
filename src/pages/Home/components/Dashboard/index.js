@@ -114,16 +114,25 @@ const Dashboard = ({
               Vigilância Ativa
             </a>
           </li>
+          <li className="nav-item">
+            <a
+              onClick={() => setHashes({ vaccination: null })}
+              className={`nav-link ${!isGroupManagerORTeam() ? 'd-none': ''} ${isHash('vaccination') ? 'active' : ''}`}
+              href="#vaccination"
+            >
+              Vacinação
+            </a>
+          </li>
         </ul>
       </div>
         {urls?.length &&
           <iframe
             title="Dashboard"
             src={urls[0]['iframe_url']}
-            frameborder="0"
+            frameBorder="0"
             width="100%"
             height="92%"
-            allowtransparency
+            allowtransparency="true"
           />
         }
     </div>

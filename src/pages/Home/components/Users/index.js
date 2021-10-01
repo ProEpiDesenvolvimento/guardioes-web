@@ -199,7 +199,6 @@ const Users = ({
       const auxSession = await sessionService.loadSession()
       setToken(auxSession.token)
     }
-    console.log(user)
     _loadSession();
     _getUsers(token, 1)
   }, [token]);

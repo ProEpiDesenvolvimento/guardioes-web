@@ -64,9 +64,9 @@ const Apps = ({
       "owner_country": ownerCountry,
       "twitter": twitter
     }
-    console.log(data)
     const reponse = await createApp(data, token)
     console.log(reponse)
+
     _getApps(token)
     setAppName("")
     setOwnerCountry("")
