@@ -153,6 +153,9 @@ const Vigilance = ({
     if (!surveys.errors) {
       loadGroupCases(synds, surveys)
     }
+    else {
+      loadGroupCases(synds, [])
+    }
   }
 
   const getVigilanceEmail = () => {
