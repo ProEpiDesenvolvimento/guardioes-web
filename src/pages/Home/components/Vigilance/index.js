@@ -369,6 +369,7 @@ const Vigilance = ({
               vigilance_syndromes={vigilance_syndromes}
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
               vigilance_email={user.vigilance_email}
+              disableCheckbox={user.type === "group_manager_team"}
             /> :
             <Table responsive>
               <thead>
