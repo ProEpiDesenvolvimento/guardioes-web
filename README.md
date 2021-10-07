@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A parte web do projeto é onde é analisado e mostrado os dados obtidos na vigilância ativa/participativa. É possível ver vários gráficos e informações melhor organizadas a fim de facilitar o processo da vigilância ativa/participativa.
+A parte web do projeto é onde ocorre o gerenciamento do aplicativo e análise dos dados obtidos. É possível ver vários gráficos e informações melhor organizadas a fim de facilitar o processo da vigilância ativa/participativa.
 
 ## Tecnologias
 
@@ -14,17 +14,21 @@ Usamos no Painel:
 
 ## Como rodar o Painel
 
-1. Rode o seguinte comando para instalar as dependêmcias. Caso de erro rode novamente com permissão de admininstrador.
+### Levantar o ambiente apenas com o Painel
+
+1. Rode o seguinte comando para instalar as dependências.
 
 ```shell
 npm install
 ```
 
-2. O próximo comando é para subir o programa localmente:
+2. O próximo comando é para subir o site localmente:
 
 ```shell
 npm start
 ```
+
+Para conseguir fazer login, acessar os dados e gerir sua própria versão do aplicativo, levante a [API](https://github.com/proepidesenvolvimento/guardioes-api).
 
 ## Erros
 
@@ -41,7 +45,7 @@ sudo rm -rf node_modules
 npm cache clean --force
 ```
 
-Após isso repita o processo do início.
+Verifique também se seu usuário possui permissão de admininstrador. Após isso repita o processo do início.
 
 ## Como contribuir
 
