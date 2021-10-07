@@ -1,83 +1,47 @@
-# Guardiões da Saúde - Dashboards
+# Guardiões da Saúde Painel
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Os guardiões da saúde é um projeto de vigilância ativa e participativa na área da saúde de mentoria da PROEPI e agora está sendo desenvolvido em participação com a UnB. 
-
 A parte web do projeto é onde é analisado e mostrado os dados obtidos na vigilância ativa/participativa. É possível ver vários gráficos e informações melhor organizadas a fim de facilitar o processo da vigilância ativa/participativa.
 
-## Como rodar o Guardiões da Saúde - Dashboards
+## Tecnologias
 
-Para rodar os serviços basta digitar o comando a seguir:
+Usamos no Painel:
+
+- [Node.js](https://nodejs.org/en/)
+- [NPM](https://www.npmjs.com/)
+- [React](https://pt-br.reactjs.org/)
+
+## Como rodar o Painel
+
+1. Rode o seguinte comando para instalar as dependêmcias. Caso de erro rode novamente com permissão de admininstrador.
 
 ```shell
-docker-compose up
-```
-
-Por padrão já está configurado para subir o ambiente com configurações de usuário. Caso deseja terminar essa configuração, siga este tutorial: [link](https://github.com/lappis-unb/rasa-ptbr-boilerplate/blob/v4.3.x/docs/setup_user_elasticsearch.md). Caso contrário, comente a seguinte linha do arquivo /elasticsearch/elasticsearch.yml:
-
-```shell
-...
-#xpack.security.enabled: true
-...
-```
-
-Portas:
-
-| Serviço | Porta |
-| ------------- | ------------- |
-| Elastic | 9200 |
-| Kibana | 5601 |
-| Site React | 8080 |
-
-## Como rodar apenas o site com React:
-
-Rode o seguinte comando para instalar as dependêmcias. Caso de erro rode novamente com permissão de admininstrador. 
-
-~~~Shell
 npm install
-~~~
+```
 
-O próximo comando é para subir o programa localmente:
+2. O próximo comando é para subir o programa localmente:
 
-~~~shell
+```shell
 npm start
-~~~
+```
 
-## Possíveis erros
+## Erros
 
-### Versão do NPM e do NODE:
+### Versão do NPM e do Node:
 
 Antes de fazer a instalação tenha certeza que o seu node e o npm estejam atualizado, e que sejam compatíveis entre sí. Neste [link](https://nodejs.org/pt-br/download/releases/) Você poderá checar as versões de cada npm para cada node. Essas versões caso não estejam certas podem gerar conflitos.
 
-### Npm install:
+### NPM install:
 
 Pode dar erro logo quando se roda o comando npm install e nesse caso uma possível solução é rodar os seguintes comandos:
 
-~~~Shell
+```Shell
 sudo rm -rf node_modules
 npm cache clean --force
-~~~
+```
 
-Após isso repita o processo do início. 
-
-## Stack de monitoramento
-
-A stack de monitoramento utiliza o ElasticSearch e o Kibana.
-
-### Como criar usuário no Kibana com permissão de visualização
-
-Para conseguir executar os passos a seguir, é necessário que o xpack.security esteja habilitado (olhar subseção anterior).
-
-Criando usuário: 
-* Acesse o Kibana com um superuser
-* Vá nas configurações (canto inferior esquerdo)
-* Clique em Users (Security)
-* Preencha os campos requeridos
-* No campo de roles adicione as seguintes:
-  * apm_system
-  * kibana_dashboard_only_user
-  * watcher_user
+Após isso repita o processo do início.
 
 ## Como contribuir
 
@@ -92,9 +56,9 @@ Em geral o processo é bem simples:
 
 ## Como conseguir ajuda
 
-Caso seja dúvida técnica sobre a _stack_ do projeto, siga os passos descritos acima de como executar em modo desenvolvimento. Caso a duvida persista ou seja sobre outro assunto, abra uma _issue_ com uma **TAG** no nome ```[duvida]``` que tentaremos responder o mais rápido possível.
+Caso seja dúvida técnica sobre a _stack_ do projeto, siga os passos descritos acima de como executar em modo desenvolvimento. Caso a duvida persista ou seja sobre outro assunto, abra uma _issue_ com uma **TAG** no nome `[duvida]` que tentaremos responder o mais rápido possível.
 
-Em caso de dúvidas em relação às tecnologias que utilizamos, sugerimos as suas próprias documentações e fóruns. Porém, sempre estamos abertos para ajudar, então comente a dificuldade que está passando na _issue_ que está resolvendo que iremos auxiliar.  
+Em caso de dúvidas em relação às tecnologias que utilizamos, sugerimos as suas próprias documentações e fóruns. Porém, sempre estamos abertos para ajudar, então comente a dificuldade que está passando na _issue_ que está resolvendo que iremos auxiliar.
 
 ## License & copyright
 
