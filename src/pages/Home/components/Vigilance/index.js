@@ -144,7 +144,7 @@ const Vigilance = ({
     if (syns.syndromes)
       synds = syns.syndromes
     setSyndromes(synds)
-    console.log(user)
+
     setVigilanceSyndromes(user.vigilance_syndromes)
     setEditEmail(getVigilanceEmail())
     setHasVigilance(getVigilanceEmail() ? true : false)
@@ -159,7 +159,7 @@ const Vigilance = ({
   }
 
   const getVigilanceEmail = () => {
-    return user.vigilance_email || (user. group_manager && user.group_manager.vigilance_email)
+    return user.vigilance_email || (user.group_manager && user.group_manager.vigilance_email)
   }
 
   useEffect(() => {

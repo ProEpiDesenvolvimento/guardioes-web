@@ -124,7 +124,7 @@ const NavBar = ({
       );
     } else if (user.type === "group_manager_team") {
       categories = getCategories(
-        ["dashboards", "groups", "users", "profile", "vigilance"]
+        ["dashboards", "groups", "users", "vigilance", "profile"]
       );
     }
 
