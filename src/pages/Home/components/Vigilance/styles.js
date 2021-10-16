@@ -163,3 +163,11 @@ export const Input = styled.input`
   transition: opacity 0.2s;
   padding-left: 10px;
 `;
+
+export const PaginationDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 15px;
+`;
