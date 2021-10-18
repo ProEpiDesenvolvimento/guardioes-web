@@ -14,10 +14,11 @@ const TableComponent = ({
   vigilance_syndromes,
   setVigilanceSyndromes,
   vigilance_email,
+  disableCheckbox=false,
 }) => {
 
   const checkBoxState = () => {
-    if (vigilance_email === null || vigilance_email === ""){
+    if (vigilance_email === null || vigilance_email === "" || disableCheckbox){
       return true
     } else {
       return false
@@ -81,14 +82,14 @@ const TableComponent = ({
                 :
                 <label htmlFor="belongs_to_vigilance">Faz parte da Vigilância?</label>
               }
-              <CheckboxInput
-                type="checkbox"
-                id="belongs_to_vigilance"
-                checked={isVigilance(content)}
-                onChange={(e) => handleChange(content)}
-                disabled={checkBoxState()}
-              />
-            </td>
+                <CheckboxInput
+                  type="checkbox"
+                  id="belongs_to_vigilance"
+                  checked={isVigilance(content)}
+                  onChange={(e) => handleChange(content)}
+                  disabled={checkBoxState()}
+                />
+            </td> 
           </tr>
         ))}
       </tbody>

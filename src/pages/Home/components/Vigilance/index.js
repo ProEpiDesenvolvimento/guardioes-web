@@ -146,13 +146,20 @@ const Vigilance = ({
     setSyndromes(synds)
 
     setVigilanceSyndromes(user.vigilance_syndromes)
-    setEditEmail(user.vigilance_email)
-    setHasVigilance(user.vigilance_email ? true : false)
+    setEditEmail(getVigilanceEmail())
+    setHasVigilance(getVigilanceEmail() ? true : false)
 
     const surveys = await getSurveysGroupCases(token)
     if (!surveys.errors) {
       loadGroupCases(synds, surveys)
     }
+    else {
+      loadGroupCases(synds, [])
+    }
+  }
+
+  const getVigilanceEmail = () => {
+    return user.vigilance_email || (user.group_manager && user.group_manager.vigilance_email)
   }
 
   useEffect(() => {
@@ -365,6 +372,7 @@ const Vigilance = ({
               vigilance_syndromes={vigilance_syndromes}
               setVigilanceSyndromes={setVigilanceSyndromesCallback}
               vigilance_email={user.vigilance_email}
+              disableCheckbox={user.type === "group_manager_team"}
             /> :
             <Table responsive>
               <thead>
@@ -399,6 +407,7 @@ const Vigilance = ({
                       id="has_vigilance"
                       checked={hasVigilance}
                       onChange={() => setHasVigilance(!hasVigilance)}
+                      disabled={user.type !== "group_manager"}
                   />
                 </CheckboxInputBlock>
 
@@ -411,6 +420,7 @@ const Vigilance = ({
                       placeholder='Não possui e-mail cadastrado'
                       value={editEmail}
                       onChange={(e) => setEditEmail(e.target.value)}
+                      disabled={user.type !== "group_manager"}
                     />
                   </InputBlock>
                 : null}
