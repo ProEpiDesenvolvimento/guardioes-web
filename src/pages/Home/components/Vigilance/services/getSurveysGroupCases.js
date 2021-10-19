@@ -1,7 +1,7 @@
 import api from 'services/api';
 
-const getSurveysGroupCases = async (token) => 
-  api.get('/surveys/group_cases', {
+const getSurveysGroupCases = async (token, page) => 
+  api.get(`/surveys/group_cases?page=${page}`, {
     headers: {
       "Authorization": token,
     },

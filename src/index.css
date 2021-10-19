@@ -2,8 +2,7 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: "ArgentumSans", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
-    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "ArgentumSans", "Helvetica Neue", sans-serif;
   font-size: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

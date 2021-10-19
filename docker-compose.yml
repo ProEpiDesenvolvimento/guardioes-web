@@ -1,44 +1,5 @@
-version: '3.6'
+version: "3.6"
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
-    restart: unless-stopped
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-    volumes:
-      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - esdata:/usr/share/elasticsearch/data
-      - /root/backup:/usr/share/elasticsearch/backup
-    networks:
-      - kibana
-      - internal
-      - web
-    # The following is a traefik configuration (homolog only)
-    # labels:
-    #   - traefik.backend=elastic
-    #   - traefik.frontend.rule=Host:elastic.guardioes.lappis.rocks
-    #   - traefik.docker.network=web
-    #   - traefik.port=9200
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.6.1
-    restart: unless-stopped
-    networks:
-      - internal
-      - web
-      - kibana
-    ports:
-      - "5601:5601"
-    environment:
-      - SERVER_PORT=5601
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-    depends_on:
-      - elasticsearch
-    volumes:
-      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
-      - ./kibana/kibana.yml:/usr/share/kibana/iconfig/kibana.yml
-
   metabase-docker:
     image: metabase/metabase
     restart: always
@@ -50,31 +11,15 @@ services:
       JAVA_TOOL_OPTIONS: -Xmx4g
       MB_JETTY_MAXTHREADS: 300
       MB_DB_FILE: /metabase-data/metabase.db
- # The following is a traefik configuration (homolog only)
-    # labels:
-    #   - traefik.backend=kibana
-    #   - traefik.frontend.rule=Host:kibana.guardioes.lappis.rocks
-    #   - traefik.docker.network=web
-    #   - traefik.port=5601
-
   painel:
     build: .
     restart: unless-stopped
     networks:
       - internal
-      - web
-    # The following is a traefik configuration (homolog only)
-    # labels:
-    #   - traefik.backend=myapp
-    #   - traefik.frontend.rule=Host:painel.guardioes.lappis.rocks
-    #   - traefik.docker.network=web
-    #   - traefik.port=8081
     command: npx serve -s build
     ports:
       - "80:80"
-    depends_on:
-      - kibana
-    environment: 
+    environment:
       - PORT=80
     stdin_open: true
   nginx:
@@ -86,23 +31,7 @@ services:
       - "./nginx.conf:/etc/nginx/nginx.conf"
     ports:
       - 8090:80
-    networks: 
-      - kibana
-    depends_on:
-      - kibana
-    # The following is a traefik configuration (homolog only)
-    # labels:
-    #   - traefik.backend=nginx
-    #   - traefik.frontend.rule=Host:kibanaproxy.guardioes.lappis.rocks
-    #   - traefik.docker.network=web
-    #   - traefik.port=8090
 
-volumes:
-  esdata:
-  
 networks:
-  kibana: ~
-  web:
-    external: true
   internal:
     external: false
