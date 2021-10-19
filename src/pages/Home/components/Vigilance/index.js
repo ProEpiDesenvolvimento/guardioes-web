@@ -17,10 +17,12 @@ import {
   ContainerForm,
   InputBlock,
   Input,
+  PaginationDiv,
 } from './styles';
 import { Table } from 'react-bootstrap';
 import TableCases from './TableCases';
 import TableComponent from './Table';
+import Pagination from "react-js-pagination";
 
 import { connect } from 'react-redux';
 import {
@@ -52,16 +54,20 @@ const Vigilance = ({
 }) => {
   const { handleSubmit } = useForm()
 
-  const [cases, setCases] = useState([])
-  const [caseType, setCaseType] = useState("")
-  const [filteredCases, setFilteredCases] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [syndromeShow, setShowSyndrome] = useState({})
   const [showCaseModal, setShowCaseModal] = useState(false)
-  const [caseShow, setCaseShow] = useState({})
   const [hasVigilance, setHasVigilance] = useState(false)
   const [editEmail, setEditEmail] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+
+  const [cases, setCases] = useState([])
+  const [filteredCases, setFilteredCases] = useState([])
+  const [caseType, setCaseType] = useState("")
+  const [caseShow, setCaseShow] = useState({})
+  const [activePage, setActivePage] = useState(1)
+  const [perPage, setPerPage] = useState(150)
+  const [totalItems, setTotalItems] = useState(0)
 
   const _handleVigilance = async () => {
     let email = null
@@ -95,6 +101,14 @@ const Vigilance = ({
         type: user.type
       })
       window.location.reload()
+    }
+  }
+
+  const handleCasesPageChange = async (page) => {
+    setActivePage(page)
+    const surveys = await getSurveysGroupCases(token, page)
+    if (!surveys.errors) {
+      loadGroupCases(syndromes, surveys)
     }
   }
 
@@ -136,6 +150,11 @@ const Vigilance = ({
     })
     filterGroupCases(aux_cases)
     setCases(aux_cases)
+
+    const { meta } = response
+    if (meta) {
+      setTotalItems(meta.pagination.total_objects)
+    }
   }
 
   const loadData = async (token) => {
@@ -149,7 +168,7 @@ const Vigilance = ({
     setEditEmail(getVigilanceEmail())
     setHasVigilance(getVigilanceEmail() ? true : false)
 
-    const surveys = await getSurveysGroupCases(token)
+    const surveys = await getSurveysGroupCases(token, 1)
     if (!surveys.errors) {
       loadGroupCases(synds, surveys)
     }
@@ -163,6 +182,12 @@ const Vigilance = ({
   }
 
   useEffect(() => {
+    if (cases.length > 0) {
+      filterGroupCases(cases)
+    }
+  }, [caseType]);
+
+  useEffect(() => {
     const _loadSession = async () => {
       const auxSession = await sessionService.loadSession()
       setToken(auxSession.token)
@@ -171,12 +196,6 @@ const Vigilance = ({
     _loadSession();
     setTimeout(()=> setIsLoading(false), 1000*0.5) // 0.5 segundos
   }, [token]);
-
-  useEffect(() => {
-    if (cases.length > 0) {
-      filterGroupCases(cases)
-    }
-  }, [caseType]);
 
   const handleCaseShow = (content) => {
     setShowCaseModal(true);
@@ -223,7 +242,7 @@ const Vigilance = ({
     setShowSyndrome(content)
   }
 
-  const setVigilanceSyndromesCallback = vs => {
+  const setVigilanceSyndromesCallback = (vs) => {
     setVigilanceSyndromes(vs)
   }
 
@@ -578,6 +597,18 @@ const Vigilance = ({
         }
         </ContentBoxTable>
       </ContainerContentBox>
+
+      <PaginationDiv>
+        <Pagination
+          onChange={handleCasesPageChange.bind(this)}
+          activePage={activePage}
+          itemsCountPerPage={perPage}
+          totalItemsCount={totalItems}
+          pageRangeDisplayed={6}
+          hideDisabled={true}
+          itemClass='page'
+        />
+      </PaginationDiv>
     </Container>
   );
 }
