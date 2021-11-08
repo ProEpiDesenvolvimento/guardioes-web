@@ -24,7 +24,6 @@ import {
   Inputs,
   SelectInput,
   InputBlock,
-  Input,
   SubmitButton,
   EditInput,
   EditButton,
@@ -32,6 +31,7 @@ import {
 import { useForm } from "react-hook-form";
 import Modal from 'react-bootstrap/Modal';
 import ContentBox from '../ContentBox';
+import FormInput from 'sharedComponents/FormInput';
 
 const GroupManagerTeams = ({
   token,
@@ -333,33 +333,27 @@ const GroupManagerTeams = ({
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createGroupManagerTeam)}>
               <Inputs>
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="name"
-                    value={groupManagerTeamName}
-                    onChange={(e) => setGroupManagerTeamName(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="email">E-mail</label>
-                  <Input
-                    type="email"
-                    id="email"
-                    value={groupManagerTeamEmail}
-                    onChange={(e) => setGroupManagerTeamEmail(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="password">Senha</label>
-                  <Input
-                    type="password"
-                    id="password"
-                    value={groupManagerTeamPassword}
-                    onChange={(e) => setGroupManagerTeamPassword(e.target.value)}
-                  />
-                </InputBlock>
+              <FormInput
+                  label="Nome"
+                  type="text"
+                  id="name"
+                  value={groupManagerTeamName}
+                  setValue={setGroupManagerTeamName}
+                />  
+               <FormInput
+                  label="E-mail"
+                  type="email"
+                  id="email"
+                  value={groupManagerTeamEmail}
+                  setValue={setGroupManagerTeamEmail}
+                />  
+                <FormInput
+                  label="Senha"
+                  type="password"
+                  id="password"
+                  value={groupManagerTeamPassword}
+                  setValue={setGroupManagerTeamPassword}
+                />                  
                 {user.type !== "group_manager" ? 
                   <InputBlock>
                     <label htmlFor="group_manager">Gerente de Instituição</label>

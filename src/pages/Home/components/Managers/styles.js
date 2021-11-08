@@ -71,42 +71,6 @@ export const InputBlock = styled.div`
   margin-right: 50px;
 `;
 
-export const Input = styled.input`
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  height: 2.2rem;
-  transition: opacity 0.2s;
-  padding-left: 10px;
-`;
-
-export const CheckboxInputBlock = styled.div`
-  width: 250px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
-  color: #348EAC;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
-  margin-right: 50px;
-  padding-top: 25px;
-`;
-
-export const CheckboxInput = styled.input` 
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  transition: opacity 0.2s;
-  padding-left: 10px;
-  cursor: pointer;
-`;
-
-export const Label = styled.label` 
-  margin: 0;
-`;
-
 export const SubmitButton = styled.button`
   width: 100px;
   background-color: #5DD39E;
@@ -130,21 +94,6 @@ export const EditInput = styled.div`
   font-size: 20;
   color: #348EAC;
   margin-bottom: 1rem;
-`;
-
-export const EditCheckbox = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  margin-bottom: 1rem;
-  align-items: center;
-`;
-
-export const EditCheckboxInput = styled.input`
-  margin-bottom: .5rem;
-  margin-left: .5rem;
 `;
 
 export const EditButton = styled.button`

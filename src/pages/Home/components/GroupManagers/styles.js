@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -10,24 +10,6 @@ export const Container = styled.div`
   }
 `;
 
-export const SelectInput = styled.select`
-  width: 50%;
-  background-color: white;
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  cursor: pointer;
-  height: 2.2rem;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.7;
-  }
-
-  @media (min-width: 500px) {
-    width: 14rem;
-  }
-`;
-
 export const AddAppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -36,7 +18,7 @@ export const AddAppContainer = styled.div`
   align-content: center;
   margin: 0 auto;
   margin-bottom: 2%;
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
   border-radius: 10px;
   font-style: normal;
 `;
@@ -45,10 +27,10 @@ export const ContainerHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   height: 70px;
   border-radius: 10px;
-  border-bottom: 2px solid rgba(0,0,0,0.125);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
   z-index: 5;
 `;
 
@@ -58,7 +40,7 @@ export const ContainerTitle = styled.h3`
   font-family: "ArgentumSans", sans-serif;
   font-size: 22px;
   color: white;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
+  text-shadow: 2px 5px 10px rgba(0, 0, 0, 0.25);
   text-align: center;
 `;
 
@@ -79,57 +61,9 @@ export const Inputs = styled.div`
   flex-flow: row wrap;
 `;
 
-export const InputBlock = styled.div`
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
-  margin-right: 50px;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  height: 2.2rem;
-  transition: opacity 0.2s;
-  padding-left: 10px;
-`;
-
-export const CheckboxInputBlock = styled.div`
-  width: 250px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: 700;
-  color: #348EAC;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
-  margin-right: 50px;
-  padding-top: 25px;
-`;
-
-export const CheckboxInput = styled.input` 
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  transition: opacity 0.2s;
-  padding-left: 10px;
-  cursor: pointer;
-`;
-
-export const Label = styled.label` 
-  margin: 0;
-`;
-
 export const SubmitButton = styled.button`
   width: 100px;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   color: white;
   border: 0;
   border-radius: 5px;
@@ -148,28 +82,13 @@ export const EditInput = styled.div`
   flex-direction: column;
   font-weight: 700;
   font-size: 20;
-  color: #348EAC;
+  color: #348eac;
   margin-bottom: 1rem;
-`;
-
-export const EditCheckbox = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  margin-bottom: 1rem;
-  align-items: center;
-`;
-
-export const EditCheckboxInput = styled.input`
-  margin-bottom: .5rem;
-  margin-left: .5rem;
 `;
 
 export const EditButton = styled.button`
   width: 100%;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   color: white;
   border: 0;
   border-radius: 5px;

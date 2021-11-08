@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import {
-  setGroupManagers, setToken
-} from 'actions/';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { setGroupManagers, setToken } from "actions/";
 
-import { bindActionCreators } from 'redux';
-import getAllGroupManagers from './services/getAllGroupManagers'
-import createGroupManager from './services/createGroupManager'
-import deleteGroupManager from './services/deleteGroupManager'
-import editGroupManager from './services/editGroupManager';
+import { bindActionCreators } from "redux";
+import getAllGroupManagers from "./services/getAllGroupManagers";
+import createGroupManager from "./services/createGroupManager";
+import deleteGroupManager from "./services/deleteGroupManager";
+import editGroupManager from "./services/editGroupManager";
 
-import getRootGroup from '../Groups/services/getRootGroup'
-import getChildrenGroups from './../Groups/services/getChildrenGroups'
-import createGroup from './../Groups/services/createGroup'
+import getRootGroup from "../Groups/services/getRootGroup";
+import getChildrenGroups from "./../Groups/services/getChildrenGroups";
+import createGroup from "./../Groups/services/createGroup";
 
 import {
   Container,
@@ -22,36 +20,28 @@ import {
   ContainerForm,
   Form,
   Inputs,
-  CheckboxInputBlock,
-  CheckboxInput,
-  InputBlock,
-  Input,
   SubmitButton,
-  Label,
   EditInput,
   EditButton,
-  EditCheckbox,
-  EditCheckboxInput,
-  SelectInput
-} from './styles';
+} from "./styles";
 import { useForm } from "react-hook-form";
-import Modal from 'react-bootstrap/Modal';
-import ContentBox from '../ContentBox';
+import Modal from "react-bootstrap/Modal";
+import ContentBox from "../ContentBox";
+import FormInput from "sharedComponents/FormInput";
 
 const GroupManagers = ({
   token,
   user,
   groupManagers,
   setGroupManagers,
-  setToken
+  setToken,
 }) => {
-
-  const { handleSubmit } = useForm()
-  const [groupManagerName, setGroupManagerName] = useState("")
-  const [groupManagerEmail, setGroupManagerEmail] = useState("")
-  const [groupManagerTwitter, setGroupManagerTwitter] = useState("")
-  const [groupManagerGroup, setGroupManagerGroup] = useState("")
-  const [groupManagerPassword, setGroupManagerPassword] = useState("")
+  const { handleSubmit } = useForm();
+  const [groupManagerName, setGroupManagerName] = useState("");
+  const [groupManagerEmail, setGroupManagerEmail] = useState("");
+  const [groupManagerTwitter, setGroupManagerTwitter] = useState("");
+  const [groupManagerGroup, setGroupManagerGroup] = useState("");
+  const [groupManagerPassword, setGroupManagerPassword] = useState("");
   const [modalEdit, setModalEdit] = useState(false);
   const [editingGroupManager, setEditingGroupManager] = useState({});
   const [editName, setEditName] = useState("");
@@ -59,29 +49,29 @@ const GroupManagers = ({
   const [editTwitter, setEditTwitter] = useState("");
   const [editGroup, setEditGroup] = useState("");
   const [groupManagerShow, setGroupManagerShow] = useState({});
-  const [groupManagerLocale, setGroupManagerLocale] = useState(0)
+  const [groupManagerLocale, setGroupManagerLocale] = useState(0);
   const [modalShow, setModalShow] = useState(false);
-  const [country, setCountry] = useState([])
-  const [state, setState] = useState([])
-  const [city, setCity] = useState([])
+  const [country, setCountry] = useState([]);
+  const [state, setState] = useState([]);
+  const [city, setCity] = useState([]);
 
   const _createGroupManager = async () => {
     if (groupManagerLocale === 0) {
-      alert('Escolha uma localidade.')
-      return
+      alert("Escolha uma localidade.");
+      return;
     }
 
     const data = {
-      "group_manager": {
-        "name": groupManagerName,
-        "email": groupManagerEmail,
-        "password": groupManagerPassword,
-        "group_name": groupManagerGroup,
-        "twitter": groupManagerTwitter,
-        "app_id": user.app_id,
-      }
-    }
-    const response = await createGroupManager(data, token)
+      group_manager: {
+        name: groupManagerName,
+        email: groupManagerEmail,
+        password: groupManagerPassword,
+        group_name: groupManagerGroup,
+        twitter: groupManagerTwitter,
+        app_id: user.app_id,
+      },
+    };
+    const response = await createGroupManager(data, token);
 
     if (response.status === 200) {
       const group_data = {
@@ -90,44 +80,44 @@ const GroupManagers = ({
         children_label: null,
         parent_id: groupManagerLocale,
         group_manager_id: response.data.group_manager.id,
-      }
-      const response_group = await createGroup(group_data, token)
+      };
+      const response_group = await createGroup(group_data, token);
 
       if (response_group.status === 201) {
-        setGroupManagerName("")
-        setGroupManagerPassword("")
-        setGroupManagerEmail("")
-        setGroupManagerGroup("")
-        setGroupManagerTwitter("")
-        _getAllGroupManagers(token)
+        setGroupManagerName("");
+        setGroupManagerPassword("");
+        setGroupManagerEmail("");
+        setGroupManagerGroup("");
+        setGroupManagerTwitter("");
+        _getAllGroupManagers(token);
       }
     }
-  }
+  };
 
   const _deleteGroupManager = async (id, token) => {
-    await deleteGroupManager(id, token)
-    _getAllGroupManagers(token)
-  }
+    await deleteGroupManager(id, token);
+    _getAllGroupManagers(token);
+  };
 
   const _editGroupManager = async () => {
     const data = {
-      "group_manager": {
-        "name": editName,
-        "email": editEmail,
-        "group_name": editGroup,
-        "twitter": editTwitter,
-        "app_id": user.app_id,
-      }
-    }
+      group_manager: {
+        name: editName,
+        email: editEmail,
+        group_name: editGroup,
+        twitter: editTwitter,
+        app_id: user.app_id,
+      },
+    };
     await editGroupManager(editingGroupManager.id, data, token);
     setModalEdit(false);
     _getAllGroupManagers(token);
-  }
+  };
 
   const handleShow = (content) => {
     setGroupManagerShow(content);
     setModalShow(!modalShow);
-  }
+  };
 
   const handleEdit = (content) => {
     setEditingGroupManager(content);
@@ -136,101 +126,97 @@ const GroupManagers = ({
     setEditGroup(content.group_name);
     setEditTwitter(content.twitter);
     setModalEdit(!modalEdit);
-  }
+  };
 
   const handleEditName = (value) => {
     setEditName(value);
-  }
+  };
 
   const handleEditEmail = (value) => {
     setEditEmail(value);
-  }
+  };
 
   const handleEditGroup = (value) => {
     setEditGroup(value);
-  }
+  };
 
   const handleEditTwitter = (value) => {
     setEditTwitter(value);
-  }
+  };
 
-  const loadLocales = async (locale_id=null, locale_name='country') => {
+  const loadLocales = async (locale_id = null, locale_name = "country") => {
     if (locale_id === null) {
-      const response = await getRootGroup()
-      locale_id = response.group.id
+      const response = await getRootGroup();
+      locale_id = response.group.id;
     } else if (!locale_id) {
-      setState([])
-      setCity([])
-      return
+      setState([]);
+      setCity([]);
+      return;
     }
 
-    const response = await getChildrenGroups(locale_id)
-    switch(locale_name) {
-      case 'country':
-        setCountry(response.children)
-        return
-      case 'state':
-        setState(response.children)
-        return
-      case 'city':
-        setCity(response.children)
-        return
+    const response = await getChildrenGroups(locale_id);
+    switch (locale_name) {
+      case "country":
+        setCountry(response.children);
+        return;
+      case "state":
+        setState(response.children);
+        return;
+      case "city":
+        setCity(response.children);
+        return;
       default:
-        return
+        return;
     }
-  }
+  };
 
   const _getAllGroupManagers = async (token) => {
-    const response = await getAllGroupManagers(token)
-    loadGroupManagers(response)
-  }
+    const response = await getAllGroupManagers(token);
+    loadGroupManagers(response);
+  };
 
   const loadGroupManagers = async (response) => {
     let aux_group_managers = [];
     if (!response.group_managers) {
       response.group_managers = [];
     }
-    response.group_managers.forEach(group_manager => {
+    response.group_managers.forEach((group_manager) => {
       aux_group_managers.push({
-        "id": group_manager.id,
-        "name": group_manager.name,
-        "email": group_manager.email,
-        "group_name": group_manager.group_name,
-        "twitter": group_manager.twitter,
-      })
-    })
+        id: group_manager.id,
+        name: group_manager.name,
+        email: group_manager.email,
+        group_name: group_manager.group_name,
+        twitter: group_manager.twitter,
+      });
+    });
     if (aux_group_managers.length === 0) {
-      aux_group_managers = null
+      aux_group_managers = null;
     }
-    await setGroupManagers(aux_group_managers)
-  }
+    await setGroupManagers(aux_group_managers);
+  };
 
   useEffect(() => {
-    _getAllGroupManagers(token)
-    setToken(token)
-    loadLocales()
+    _getAllGroupManagers(token);
+    setToken(token);
+    loadLocales();
   }, []);
 
-  const fields =
-    [{
+  const fields = [
+    {
       key: "id",
-      value: "ID"
+      value: "ID",
     },
     {
       key: "name",
       value: "Nome",
-    }];
+    },
+  ];
 
   return (
     <>
-      <Modal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      >
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Informações do Gerente de Instituição
-          </Modal.Title>
+          <Modal.Title>Informações do Gerente de Instituição</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -273,7 +259,7 @@ const GroupManagers = ({
               disabled
             />
           </EditInput>
-          
+
           <EditInput>
             <label>Twitter</label>
             <input
@@ -290,14 +276,9 @@ const GroupManagers = ({
         </Modal.Footer>
       </Modal>
 
-      <Modal
-        show={modalEdit}
-        onHide={() => setModalEdit(false)}
-      >
+      <Modal show={modalEdit} onHide={() => setModalEdit(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Editar Gerente de Instituição
-          </Modal.Title>
+          <Modal.Title>Editar Gerente de Instituição</Modal.Title>
         </Modal.Header>
         <form id="editGroupManager" onSubmit={handleSubmit(_editGroupManager)}>
           <Modal.Body>
@@ -367,17 +348,14 @@ const GroupManagers = ({
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createGroupManager)}>
               <Inputs>
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="name"
-                    value={groupManagerName}
-                    onChange={(e) => setGroupManagerName(e.target.value)}
-                  />
-                </InputBlock>
-                
-                <InputBlock>
+                <FormInput
+                  label="Nome"
+                  type="text"
+                  id="name"
+                  value={groupManagerName}
+                  setValue={setGroupManagerName}
+                />
+                {/* <InputBlock>
                     <label htmlFor="country">País</label>
                     <SelectInput
                       type="select"
@@ -428,71 +406,58 @@ const GroupManagers = ({
                         return <option key={g.id} value={g.id}>{g.description}</option>
                       })}
                     </SelectInput>
-                  </InputBlock>
-                
-                <InputBlock>
-                  <label htmlFor="email">E-mail</label>
-                  <Input
-                    type="email"
-                    id="email"
-                    value={groupManagerEmail}
-                    onChange={(e) => setGroupManagerEmail(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="group">Grupo</label>
-                  <Input
-                    type="text"
-                    id="group"
-                    value={groupManagerGroup}
-                    onChange={(e) => setGroupManagerGroup(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="twitter">Twitter</label>
-                  <Input
-                    type="text"
-                    id="twitter"
-                    value={groupManagerTwitter}
-                    onChange={(e) => setGroupManagerTwitter(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="password">Senha</label>
-                  <Input
-                    type="password"
-                    id="password"
-                    value={groupManagerPassword}
-                    onChange={(e) => setGroupManagerPassword(e.target.value)}
-                  />
-                </InputBlock>
+                  </InputBlock> */}
+                <FormInput
+                  label="E-mail"
+                  type="email"
+                  id="email"
+                  value={groupManagerEmail}
+                  setValue={setGroupManagerEmail}
+                />
+                <FormInput
+                  label="Grupo"
+                  type="text"
+                  id="group"
+                  value={groupManagerGroup}
+                  setValue={setGroupManagerGroup}
+                />
+                <FormInput
+                  label="Twitter"
+                  type="text"
+                  id="twitter"
+                  value={groupManagerTwitter}
+                  setValue={setGroupManagerTwitter}
+                />
+                <FormInput
+                  label="Senha"
+                  type="password"
+                  id="password"
+                  value={groupManagerPassword}
+                  setValue={setGroupManagerPassword}
+                />
               </Inputs>
-              <SubmitButton type="submit">
-                Adicionar
-              </SubmitButton>
+              <SubmitButton type="submit">Adicionar</SubmitButton>
             </Form>
           </ContainerForm>
         </AddAppContainer>
-      </Container >
+      </Container>
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  groupManagers: state.user.group_managers
+  groupManagers: state.user.group_managers,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-  {
-    setGroupManagers,
-    setToken
-  },
-  dispatch,
-);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setGroupManagers,
+      setToken,
+    },
+    dispatch
+  );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupManagers);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupManagers);

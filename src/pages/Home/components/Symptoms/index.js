@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import {
-  setSymptoms, setToken
-} from 'actions/';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { setSymptoms, setToken } from "actions/";
 
-import { bindActionCreators } from 'redux';
-import getAllSymptoms from './services/getAllSymptoms'
-import createSymptom from './services/createSymptom'
-import deleteSymptom from './services/deleteSymptom'
-import editSymptom from './services/editSymptom';
+import { bindActionCreators } from "redux";
+import getAllSymptoms from "./services/getAllSymptoms";
+import createSymptom from "./services/createSymptom";
+import deleteSymptom from "./services/deleteSymptom";
+import editSymptom from "./services/editSymptom";
 
 import {
   Container,
@@ -18,28 +16,20 @@ import {
   ContainerForm,
   Form,
   Inputs,
-  InputBlock,
-  Input,
   SubmitButton,
   EditInput,
   TextArea,
-  EditButton
-} from './styles';
+  EditButton,
+} from "./styles";
 import { useForm } from "react-hook-form";
-import ContentBox from '../ContentBox';
-import Modal from 'react-bootstrap/Modal';
+import ContentBox from "../ContentBox";
+import Modal from "react-bootstrap/Modal";
+import FormInput from "sharedComponents/FormInput";
 
-const Symptoms = ({
-  token,
-  user,
-  symptoms,
-  setSymptoms,
-  setToken
-}) => {
-
-  const { handleSubmit } = useForm()
-  const [symptomName, setSymptomName] = useState("")
-  const [symptomDescription, setSymptomDescription] = useState("")
+const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
+  const { handleSubmit } = useForm();
+  const [symptomName, setSymptomName] = useState("");
+  const [symptomDescription, setSymptomDescription] = useState("");
   const [modalEdit, setModalEdit] = useState(false);
   const [editingSymptom, setEditingSymptom] = useState({});
   const [editName, setEditName] = useState("");
@@ -49,105 +39,102 @@ const Symptoms = ({
 
   const _createSymptom = async () => {
     const data = {
-      "description": symptomName,
-      "code": symptomName.replace(/\s+/g, ''),
-      "priority": 1,
-      "details": symptomDescription,
-      "message": null,
-      "app_id": user.app_id
-    }
-    await createSymptom(data, token)
-    setSymptomName("")
-    setSymptomDescription("")
-    _getAllSymptoms(token)
-  }
+      description: symptomName,
+      code: symptomName.replace(/\s+/g, ""),
+      priority: 1,
+      details: symptomDescription,
+      message: null,
+      app_id: user.app_id,
+    };
+    await createSymptom(data, token);
+    setSymptomName("");
+    setSymptomDescription("");
+    _getAllSymptoms(token);
+  };
 
   const _deleteSymptom = async (id, token) => {
-    await deleteSymptom(id, token)
-    _getAllSymptoms(token)
-  }
+    await deleteSymptom(id, token);
+    _getAllSymptoms(token);
+  };
 
   const _getAllSymptoms = async (token) => {
-    const response = await getAllSymptoms(token)
-    loadSymptoms(response)
-  }
+    const response = await getAllSymptoms(token);
+    loadSymptoms(response);
+  };
 
   const _editSymptom = async () => {
     const data = {
-      "description": editName,
-      "code": editName.replace(/\s+/g, ''),
-      "priority": 1,
-      "details": editDescription,
-      "message": null,
-      "app_id": user.app_id
+      description: editName,
+      code: editName.replace(/\s+/g, ""),
+      priority: 1,
+      details: editDescription,
+      message: null,
+      app_id: user.app_id,
     };
     await editSymptom(editingSymptom.id, data, token);
     setModalEdit(false);
     _getAllSymptoms(token);
-  }
+  };
 
   const handleShow = (content) => {
     setSymptomShow(content);
     setModalShow(!modalShow);
-  }
+  };
 
   const handleEdit = (content) => {
     setEditingSymptom(content);
     setEditName(content.name);
     setEditDescription(content.description);
     setModalEdit(!modalEdit);
-  }
+  };
 
   const handleEditName = (value) => {
     setEditName(value);
-  }
+  };
 
   const handleEditDescription = (value) => {
     setEditDescription(value);
-  }
+  };
 
   const loadSymptoms = async (response) => {
     let aux_symptoms = [];
     if (!response.symptoms) {
       response.symptoms = [];
     }
-    response.symptoms.forEach(symptom => {
+    response.symptoms.forEach((symptom) => {
       aux_symptoms.push({
-        "id": symptom.id,
-        "name": symptom.description,
-        "description": symptom.details
-      })
-    })
+        id: symptom.id,
+        name: symptom.description,
+        description: symptom.details,
+      });
+    });
     if (aux_symptoms.length === 0) {
-      aux_symptoms = null
+      aux_symptoms = null;
     }
-    setSymptoms(aux_symptoms)
-  }
+    setSymptoms(aux_symptoms);
+  };
 
   useEffect(() => {
-    _getAllSymptoms(token)
-    setToken(token)
+    _getAllSymptoms(token);
+    setToken(token);
   }, []);
 
-  const fields = [{
-    key: "id",
-    value: "ID"
-  },
-  {
-    key: "name",
-    value: "Nome",
-  }];
+  const fields = [
+    {
+      key: "id",
+      value: "ID",
+    },
+    {
+      key: "name",
+      value: "Nome",
+    },
+  ];
 
   return (
     <>
-      <Modal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      >
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Informações do Sintoma
-          </Modal.Title>
+          <Modal.Title>Informações do Sintoma</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -189,14 +176,9 @@ const Symptoms = ({
         </Modal.Footer>
       </Modal>
 
-      <Modal
-        show={modalEdit}
-        onHide={() => setModalEdit(false)}
-      >
+      <Modal show={modalEdit} onHide={() => setModalEdit(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Editar Sintoma
-          </Modal.Title>
+          <Modal.Title>Editar Sintoma</Modal.Title>
         </Modal.Header>
         <form id="editSymptom" onSubmit={handleSubmit(_editSymptom)}>
           <Modal.Body>
@@ -246,51 +228,43 @@ const Symptoms = ({
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createSymptom)}>
               <Inputs>
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="name"
-                    value={symptomName}
-                    onChange={(e) => setSymptomName(e.target.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="name">Descrição</label>
-                  <Input
-                    type="text"
-                    id="description"
-                    value={symptomDescription}
-                    onChange={(e) => setSymptomDescription(e.target.value)}
-                  />
-                </InputBlock>
+                <FormInput
+                  label="Nome"
+                  type="text"
+                  id="name"
+                  value={symptomName}
+                  setValue={setSymptomName}
+                />
+                <FormInput
+                  label="Descrição"
+                  type="text"
+                  id="description"
+                  value={symptomDescription}
+                  setValue={setSymptomDescription}
+                />
               </Inputs>
-              <SubmitButton type="submit">
-                Adicionar
-              </SubmitButton>
+              <SubmitButton type="submit">Adicionar</SubmitButton>
             </Form>
           </ContainerForm>
         </AddAppContainer>
-      </Container >
+      </Container>
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  symptoms: state.user.symptoms
+  symptoms: state.user.symptoms,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-  {
-    setSymptoms,
-    setToken
-  },
-  dispatch,
-);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setSymptoms,
+      setToken,
+    },
+    dispatch
+  );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Symptoms);
+export default connect(mapStateToProps, mapDispatchToProps)(Symptoms);
