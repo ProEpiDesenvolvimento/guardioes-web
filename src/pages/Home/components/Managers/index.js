@@ -124,7 +124,7 @@ const Managers = ({ token, user, managers, setManagers, setToken }) => {
         id: manager.manager.id,
         name: manager.manager.name,
         email: manager.manager.email,
-        permissions: manager.permissions ? manager.models_manage : [],
+        permissions: manager.permission ? manager.permission.models_manage : [],
       });
     });
     if (aux_managers.length === 0) {
