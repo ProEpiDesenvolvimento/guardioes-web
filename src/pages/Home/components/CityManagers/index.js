@@ -20,13 +20,13 @@ import {
   Form,
   Inputs,
   SubmitButton,
-  EditInput,
   EditButton,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import ContentBox from "../ContentBox";
 import FormInput from "sharedComponents/FormInput";
+import ModalInput from "sharedComponents/ModalInput";
 
 const CityManagers = ({
   token,
@@ -166,45 +166,30 @@ const CityManagers = ({
         </Modal.Header>
 
         <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Nome</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.name}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>E-mail</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.email}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Município</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.city}
-              disabled
-            />
-          </EditInput>
+          <ModalInput
+            type="text"
+            label="ID"
+            value={cityManagerShow.id}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="Nome"
+            value={cityManagerShow.name}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="E-mail"
+            value={cityManagerShow.email}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="Município"
+            value={cityManagerShow.city}
+            disabled={true}
+          />
         </Modal.Body>
 
         <Modal.Footer>
@@ -218,31 +203,25 @@ const CityManagers = ({
         </Modal.Header>
         <form id="editCityManager" onSubmit={handleSubmit(_editCityManager)}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editName}
-                onChange={(e) => handleEditName(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_email">E-mail</label>
-              <input
-                type="email"
-                id="edit_email"
-                value={editEmail}
-                onChange={(e) => handleEditEmail(e.target.value)}
-                disabled
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_city">Município</label>
-              <input type="text" id="edit_city" value={editCity} disabled />
-            </EditInput>
+            <ModalInput
+              type="text"
+              label="Nome"
+              id="edit_name"
+              value={editName}
+              setValue={handleEditName}
+            />
+            <ModalInput
+              type="text"
+              label="E-mail"
+              value={editEmail}
+              disabled={true}
+            />
+            <ModalInput
+              type="text"
+              label="Município"
+              value={editCity}
+              disabled={true}
+            />
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
