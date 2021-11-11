@@ -13,13 +13,12 @@ import {
   LoginBox,
   Title,
   Subtitle,
-  Field,
-  SendButton,
-  SendButtonName,
   Span,
 } from "./styles";
 import Header from "sharedComponents/Header";
-import Backicon from "sharedComponents/BackIcon"
+import Backicon from "sharedComponents/BackIcon";
+import InputSign from "sharedComponents/InputSign";
+import SendButton from 'sharedComponents/SendButton';
 import authUser from "./services/authUser";
 import changePassword from "./services/changePassword";
 
@@ -109,7 +108,7 @@ const ChangePwd = ({
           <Subtitle>
             Mudar senha no primeiro acesso
           </Subtitle>
-          <Field
+          <InputSign
             placeholder="Senha Antiga"
             type="password"
             name="old-password"
@@ -119,7 +118,7 @@ const ChangePwd = ({
             style={{ margin: "0px" }}
           />
           {errors.oldPassword && <Span>Senha antiga incorreta</Span>}
-          <Field
+          <InputSign
             placeholder="Nova Senha"
             type="password"
             name="password"
@@ -128,7 +127,7 @@ const ChangePwd = ({
             ref={refPassword}
           />
           {errors.password && <Span>A nova senha é obrigatória</Span>}
-          <Field
+          <InputSign
             placeholder="Confirme a Nova Senha"
             type="password"
             name="confirm-password"
@@ -140,11 +139,7 @@ const ChangePwd = ({
           {errors.confirmPassword && <Span>A confirmação da senha é obrigatória</Span>}
           {password !== "" && password !== confirmPassword && <Span>As senhas precisam ser iguais</Span>}
           {errors.shortPassword && <Span>A senha é muito pequena (no mínimo 6 caracteres)</Span>}
-          <SendButton type="submit">
-            <SendButtonName>
-              SALVAR
-          </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </LoginBox>
       </Body>
     </Container>

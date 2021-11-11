@@ -13,14 +13,13 @@ import {
   Body,
   LoginBox,
   Title,
-  Field,
-  SendButton,
-  SendButtonName,
   Span,
   ResetLink
 } from './styles';
 import Header from 'sharedComponents/Header';
-import Backicon from 'sharedComponents/BackIcon'
+import InputSign from 'sharedComponents/InputSign';
+import Backicon from 'sharedComponents/BackIcon';
+import SendButton from 'sharedComponents/SendButton';
 import DropdownComponent from '../../sharedComponents/DropdownComponent'
 import { useHistory } from 'react-router-dom';
 
@@ -90,7 +89,8 @@ const Login = ({
             Login
           </Title>
           <DropdownComponent setItemsCallback={setItemsCallback} />
-          <Field
+
+          <InputSign 
             type='text'
             placeholder='Email'
             name='email'
@@ -98,7 +98,8 @@ const Login = ({
             ref={register({ required: true })}
           />
           {errors.email && <Span>O e-mail é obrigatório</Span>}
-          <Field
+          
+          <InputSign
             type='password'
             placeholder='Senha'
             name='password'
@@ -106,12 +107,9 @@ const Login = ({
             ref={register({ required: true })}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
+      
           <ResetLink to="/reset">Esqueci a senha</ResetLink>
-          <SendButton type='submit'>
-            <SendButtonName>
-              ENVIAR
-            </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </LoginBox>
       </Body>
     </Container>

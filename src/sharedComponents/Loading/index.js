@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoading, Audio, ThreeDots } from '@agney/react-loading';
+import { useLoading, ThreeDots } from '@agney/react-loading';
 import { Container } from './styles';
 
 const Loading = ({isLoading}) => {

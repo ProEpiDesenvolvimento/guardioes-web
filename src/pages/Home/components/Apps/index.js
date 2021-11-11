@@ -18,7 +18,6 @@ import {
   EditInput,
   EditInputField,
   SubmitButton,
-  Input
 } from './styles';
 import { useForm } from "react-hook-form";
 import ContentBox from '../ContentBox';
