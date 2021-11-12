@@ -10,11 +10,8 @@ import {
   Input,
   QuestionVector,
   ButtonsDiv,
-  DownloadBtn,
-  ButtonName,
   SendButton,
   SendButtonName,
-  QuestionPopupCat,
   QuestionPopupOrgType,
   Span,
   SelectInput
