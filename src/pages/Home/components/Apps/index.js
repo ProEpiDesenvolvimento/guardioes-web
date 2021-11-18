@@ -12,16 +12,15 @@ import {
   ContainerHeader,
   ContainerTitle,
   ContainerForm,
-  InputBlock,
-  EditInputField,
+  ContainerFormInput,
   SubmitButton,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import ContentBox from "../ContentBox";
 import Modal from "react-bootstrap/Modal";
 import { sessionService } from "redux-react-session";
-import Select from "react-select";
 import { countryChoices } from "../../../../utils/selector";
+import FormInput from "sharedComponents/FormInput";
 import ModalInput from "sharedComponents/ModalInput";
 
 const Apps = ({ token, user, apps, setApps, setToken }) => {
@@ -36,18 +35,6 @@ const Apps = ({ token, user, apps, setApps, setToken }) => {
   const [editTwitter, setEditTwitter] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [appShow, setAppShow] = useState({});
-
-  const handleAppName = (value) => {
-    setAppName(value);
-  };
-
-  const handleOwnerCountry = (value) => {
-    setOwnerCountry(value);
-  };
-
-  const handleTwitter = (value) => {
-    setTwitter(value);
-  };
 
   const _createApp = async () => {
     const data = {
@@ -98,14 +85,6 @@ const Apps = ({ token, user, apps, setApps, setToken }) => {
     setEditCountry(content.owner_country);
     setEditTwitter(content.twitter);
     setModalEdit(!modalEdit);
-  };
-
-  const handleEditName = (value) => {
-    setEditName(value);
-  };
-
-  const handleEditTwitter = (value) => {
-    setEditTwitter(value);
   };
 
   useEffect(() => {
@@ -180,7 +159,7 @@ const Apps = ({ token, user, apps, setApps, setToken }) => {
               label="Nome"
               id="edit_name"
               value={editName}
-              setValue={handleEditName}
+              setValue={(e) => setEditName(e.target.value)}
             />
             <ModalInput
               type="text"
@@ -193,7 +172,7 @@ const Apps = ({ token, user, apps, setApps, setToken }) => {
               label="Twitter"
               id="edit_twitter"
               value={editTwitter}
-              setValue={handleEditTwitter}
+              setValue={(e) => setEditTwitter(e.target.value)}
             />
           </Modal.Body>
           <Modal.Footer>
@@ -219,36 +198,32 @@ const Apps = ({ token, user, apps, setApps, setToken }) => {
           </ContainerHeader>
           <ContainerForm>
             <form id="addApp" onSubmit={handleSubmit(_createApp)}>
-              <InputBlock>
-                <label htmlFor="name">Nome</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={appName}
-                  onChange={(e) => handleAppName(e.target.value)}
+              <FormInput
+                label="Nome"
+                type="text"
+                id="name"
+                value={appName}
+                setValue={(e) => setAppName(e.target.value)}
+                isLongInput={true}
+              />
+              <ContainerFormInput>
+                <FormInput
+                  label="País"
+                  type="select"
+                  id="app_id"
+                  options={countryChoices}
+                  setValue={(e) => setOwnerCountry(e.value)}
+                  isLongInput={true}
                 />
-              </InputBlock>
-
-              <EditInputField>
-                <InputBlock>
-                  <label htmlFor="country">País</label>
-                  <Select
-                    id="app_id"
-                    isSearchable={true}
-                    options={countryChoices}
-                    onChange={(e) => handleOwnerCountry(e.value)}
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="twitter">Twitter</label>
-                  <input
-                    type="text"
-                    id="twitter"
-                    value={twitter}
-                    onChange={(e) => handleTwitter(e.target.value)}
-                  />
-                </InputBlock>
-              </EditInputField>
+                <FormInput
+                  label="Twitter"
+                  type="text"
+                  id="twitter"
+                  value={twitter}
+                  setValue={(e) => setTwitter(e.target.value)}
+                  isLongInput={true}
+                />
+              </ContainerFormInput>
 
               {/* <Input type="submit" className="shadow-sm" /> */}
               <SubmitButton type="submit">Criar App</SubmitButton>

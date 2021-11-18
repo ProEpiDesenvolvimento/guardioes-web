@@ -22,8 +22,6 @@ import {
   Inputs,
   SubmitButton,
   EditButton,
-  InputBlock,
-  SelectInput,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
@@ -128,22 +126,6 @@ const GroupManagers = ({
     setEditGroup(content.group_name);
     setEditTwitter(content.twitter);
     setModalEdit(!modalEdit);
-  };
-
-  const handleEditName = (value) => {
-    setEditName(value);
-  };
-
-  const handleEditEmail = (value) => {
-    setEditEmail(value);
-  };
-
-  const handleEditGroup = (value) => {
-    setEditGroup(value);
-  };
-
-  const handleEditTwitter = (value) => {
-    setEditTwitter(value);
   };
 
   const loadLocales = async (locale_id = null, locale_name = "country") => {
@@ -270,7 +252,7 @@ const GroupManagers = ({
               label="Nome"
               id="edit_name"
               value={editName}
-              setValue={handleEditName}
+              setValue={(e) => setEditName(e.target.value)}
             />
             <ModalInput
               type="text"
@@ -281,7 +263,7 @@ const GroupManagers = ({
             <ModalInput
               type="text"
               label="Grupo"
-              value={editName}
+              value={editGroup}
               disabled={true}
             />
             <ModalInput
@@ -289,7 +271,7 @@ const GroupManagers = ({
               label="Twitter"
               id="edit_twitter"
               value={editTwitter}
-              setValue={handleEditTwitter}
+              setValue={(e) => setEditTwitter(e.target.value)}
             />
           </Modal.Body>
           <Modal.Footer>
@@ -321,99 +303,82 @@ const GroupManagers = ({
                   type="text"
                   id="name"
                   value={groupManagerName}
-                  setValue={setGroupManagerName}
+                  setValue={(e) => setGroupManagerName(e.target.value)}
                 />
-                <InputBlock>
-                  <label htmlFor="country">País</label>
-                  <SelectInput
-                    type="select"
-                    id="country"
-                    onChange={(e) => {
-                      const id = parseInt(e.target.value);
-                      setGroupManagerLocale(id);
-                      loadLocales(id, "state");
-                    }}
-                  >
-                    <option>Escolha</option>
-                    {country.map((g) => {
-                      return (
-                        <option key={g.id} value={g.id}>
-                          {g.description}
-                        </option>
-                      );
-                    })}
-                  </SelectInput>
-                </InputBlock>
-
-                <InputBlock>
-                  <label htmlFor="state">Estado</label>
-                  <SelectInput
-                    type="select"
-                    id="state"
-                    onChange={(e) => {
-                      const id = parseInt(e.target.value);
-                      setGroupManagerLocale(id);
-                      loadLocales(id, "city");
-                    }}
-                  >
-                    <option>Escolha</option>
-                    {state.map((g) => {
-                      return (
-                        <option key={g.id} value={g.id}>
-                          {g.description}
-                        </option>
-                      );
-                    })}
-                  </SelectInput>
-                </InputBlock>
-
-                <InputBlock>
-                  <label htmlFor="city">Cidade</label>
-                  <SelectInput
-                    type="select"
-                    id="city"
-                    onChange={(e) => {
-                      const id = parseInt(e.target.value);
-                      setGroupManagerLocale(id);
-                    }}
-                  >
-                    <option>Escolha</option>
-                    {city.map((g) => {
-                      return (
-                        <option key={g.id} value={g.id}>
-                          {g.description}
-                        </option>
-                      );
-                    })}
-                  </SelectInput>
-                </InputBlock>
+                <FormInput
+                  label="País"
+                  type="select"
+                  id="country"
+                  setValue={(e) => {
+                    const id = parseInt(e.value);
+                    setGroupManagerLocale(id);
+                    loadLocales(id, "state");
+                  }}
+                  options={country.map((item) => {
+                    return {
+                      value: item.id,
+                      label: item.description,
+                    };
+                  })}
+                />
+                <FormInput
+                  label="Estado"
+                  type="select"
+                  id="state"
+                  setValue={(e) => {
+                    const id = parseInt(e.value);
+                    setGroupManagerLocale(id);
+                    loadLocales(id, "city");
+                  }}
+                  options={state.map((item) => {
+                    return {
+                      value: item.id,
+                      label: item.description,
+                    };
+                  })}
+                />
+                <FormInput
+                  label="Cidade"
+                  type="select"
+                  id="city"
+                  setValue={(e) => {
+                    const id = parseInt(e.value);
+                    setGroupManagerLocale(id);
+                  }}
+                  options={city.map((item) => {
+                    return {
+                      value: item.id,
+                      label: item.description,
+                    };
+                  })}
+                />
                 <FormInput
                   label="E-mail"
                   type="email"
                   id="email"
                   value={groupManagerEmail}
-                  setValue={setGroupManagerEmail}
+                  setValue={(e) => setGroupManagerEmail(e.target.value)}
                 />
                 <FormInput
                   label="Grupo"
                   type="text"
                   id="group"
                   value={groupManagerGroup}
-                  setValue={setGroupManagerGroup}
+                  setValue={(e) => setGroupManagerGroup(e.target.value)}
                 />
                 <FormInput
                   label="Twitter"
                   type="text"
                   id="twitter"
                   value={groupManagerTwitter}
-                  setValue={setGroupManagerTwitter}
+                  setValue={(e) => setGroupManagerTwitter(e.target.value)}
                 />
                 <FormInput
                   label="Senha"
                   type="password"
                   id="password"
                   value={groupManagerPassword}
-                  setValue={setGroupManagerPassword}
+                  setValue={(e) => setGroupManagerPassword(e.target.value)}
                 />
               </Inputs>
               <SubmitButton type="submit">Adicionar</SubmitButton>

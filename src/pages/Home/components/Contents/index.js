@@ -5,13 +5,7 @@ import {
   ContainerHeader,
   ContainerTitle,
   ContainerForm,
-  InputBlock,
   SubmitButton,
-  EditInput,
-  ImageSelector,
-  ImageContainer,
-  ImgContent,
-  TextArea,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import ContentBox from "../ContentBox";
@@ -26,6 +20,7 @@ import { bindActionCreators } from "redux";
 import { sessionService } from "redux-react-session";
 import Modal from "react-bootstrap/Modal";
 import ModalInput from "sharedComponents/ModalInput";
+import FormInput from "sharedComponents/FormInput";
 
 const Contents = ({ contents, token, setToken, user, setContents }) => {
   const fields = [
@@ -194,7 +189,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
               if (contentShow.content_type === type.value) return type;
             })}
             disabled={true}
-          />          
+          />
           <ModalInput
             type="text"
             label="Fonte"
@@ -221,14 +216,14 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
               label="Título"
               id="edit_title"
               value={editTitle}
-              setValue={setEditTitle}
+              setValue={(e) => setEditTitle(e.target.value)}
             />
             <ModalInput
               type="textarea"
               label="Conteúdo"
               id="edit_body"
               value={editBody}
-              setValue={setEditBody}
+              setValue={(e) => setEditBody(e.target.value)}
             />
             <ModalInput
               type="imageselector"
@@ -243,14 +238,14 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
               id="type_id"
               options={contentTypeSelect}
               value={editContentType}
-              setValue={setEditContentType}
+              setValue={(e) => setEditContentType(e.value)}
             />
             <ModalInput
               type="text"
               label="Link da Fonte"
               id="edit_source_link"
               value={editSourceLink}
-              setValue={setEditSourceLink}
+              setValue={(e) => setEditSourceLink(e.target.value)}
             />
           </Modal.Body>
           <Modal.Footer>
@@ -276,69 +271,46 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
           </ContainerHeader>
           <ContainerForm>
             <form id="addContent" onSubmit={handleSubmit(_createContent)}>
-              <InputBlock>
-                <label htmlFor="title">Título</label>
-                <input
-                  type="text"
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="body">Conteúdo</label>
-                <TextArea
-                  id="body"
-                  value={body}
-                  onChange={(e) => setBody(e.target.value)}
-                  rows="2"
-                />
-              </InputBlock>
-
-              <EditInput>
-                <label>Ícone</label>
-                <ImageSelector>
-                  {contentIcons.map((icon, index) => (
-                    <ImageContainer key={index}>
-                      <ImgContent
-                        src={require(`../../../../${icon.uri}`)}
-                        width={80}
-                        onClick={() => setIcon(icon.value)}
-                        selected={isIconSelected(icon.value)}
-                        alt="content-icon"
-                      />
-                    </ImageContainer>
-                  ))}
-                </ImageSelector>
-              </EditInput>
-
-              <EditInput>
-                <label>Tipo</label>
-                <select
-                  value={content_type}
-                  onChange={(e) => setContentType(e.target.value)}
-                  className="form-control"
-                  required
-                >
-                  {contentTypeSelect.map((type, index) => (
-                    <option key={index} value={type.value}>
-                      {type.key}
-                    </option>
-                  ))}
-                </select>
-              </EditInput>
-
-              <InputBlock>
-                <label htmlFor="body">Link da Fonte</label>
-                <input
-                  type="text"
-                  id="source_link"
-                  value={source_link}
-                  onChange={(e) => setSourceLink(e.target.value)}
-                />
-              </InputBlock>
-
+              <FormInput
+                label="Título"
+                type="text"
+                id="title"
+                value={title}
+                setValue={(e) => setTitle(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Conteúdo"
+                type="textarea"
+                id="body"
+                value={body}
+                setValue={(e) => setBody(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Ícone"
+                type="imageselect"
+                options={contentIcons}
+                setValue={setIcon}
+                isSelected={isIconSelected}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Tipo"
+                type="select"
+                id="type_id"
+                options={contentTypeSelect}
+                setValue={(e) => setContentType(e.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Link da Fonte"
+                type="text"
+                id="source_link"
+                value={source_link}
+                setValue={(e) => setSourceLink(e.target.value)}
+                isLongInput={true}
+              />
               {/* <Input type="submit" className="shadow-sm" /> */}
               <SubmitButton type="submit">Criar</SubmitButton>
             </form>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
 import { connect } from "react-redux";
 import { setAdmins, setToken } from "actions/";
 import { bindActionCreators } from "redux";
@@ -14,19 +13,14 @@ import {
   ContainerHeader,
   ContainerTitle,
   ContainerForm,
-  InputBlock,
   SubmitButton,
-  CheckboxInputBlock,
-  CheckboxInput,
-  EditCheckbox,
-  EditCheckboxInput,
-  Label,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import ContentBox from "../ContentBox";
 import Modal from "react-bootstrap/Modal";
 import { sessionService } from "redux-react-session";
 import ModalInput from "sharedComponents/ModalInput";
+import FormInput from "sharedComponents/FormInput";
 
 const Admins = ({ token, user, admins, setAdmins, setToken }) => {
   const { handleSubmit } = useForm();
@@ -172,15 +166,13 @@ const Admins = ({ token, user, admins, setAdmins, setToken }) => {
             value={adminShow.last_name}
             disabled={true}
           />
-          <EditCheckbox>
-            <Label htmlFor="is_god">Is God</Label>
-            <EditCheckboxInput
-              type="checkbox"
-              id="is_god"
-              checked={adminShow.is_god}
-              disabled
-            />
-          </EditCheckbox>
+          <ModalInput
+            type="checkbox"
+            id="is_god"
+            label="Is God"
+            value={adminShow.is_god}
+            disabled={true}
+          />
           <ModalInput
             type="text"
             label="App"
@@ -206,38 +198,36 @@ const Admins = ({ token, user, admins, setAdmins, setToken }) => {
               label="Nome"
               id="edit_first_name"
               value={editFirstName}
-              setValue={setEditFirstName}
+              setValue={(e) => setEditFirstName(e.target.value)}
             />
             <ModalInput
               type="text"
               label="Sobrenome"
               id="edit_last_name"
               value={editLastName}
-              setValue={setEditLastName}
+              setValue={(e) => setEditLastName(e.target.value)}
             />
             <ModalInput
               type="text"
-              label="E-mail"              
+              label="E-mail"
               value={editEmail}
               disabled={true}
-            />  
+            />
             <ModalInput
               type="select"
               label="App"
-              id="app_id"    
-              options={apps}          
+              id="app_id"
+              options={apps}
               value={editApp}
-              setValue={setEditApp}
-            />            
-            <EditCheckbox>
-              <Label htmlFor="is_god">Is God</Label>
-              <EditCheckboxInput
-                type="checkbox"
-                id="is_god"
-                checked={editIsGod}
-                onChange={(e) => setEditIsGod(!editIsGod)}
-              />
-            </EditCheckbox>
+              setValue={(e) => setEditApp(e.target.value)}
+            />
+            <ModalInput
+              type="checkbox"
+              id="is_god"
+              label="Is God"
+              value={editIsGod}
+              setValue={() => setEditIsGod(!editIsGod)}
+            />
           </Modal.Body>
           <Modal.Footer>
             <SubmitButton type="submit">Editar</SubmitButton>
@@ -262,66 +252,53 @@ const Admins = ({ token, user, admins, setAdmins, setToken }) => {
           </ContainerHeader>
           <ContainerForm>
             <form id="addAdmin" onSubmit={handleSubmit(_createAdmin)}>
-              <InputBlock>
-                <label htmlFor="first_name">Nome</label>
-                <input
-                  type="text"
-                  id="first_name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="last_name">Sobrenome</label>
-                <input
-                  type="text"
-                  id="last_name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="password">Senha</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </InputBlock>
-
-              <InputBlock>
-                <label htmlFor="app_id">App</label>
-                <Select
-                  id="app_id"
-                  isSearchable={true}
-                  options={apps}
-                  onChange={(e) => setAppId(e.value)}
-                />
-              </InputBlock>
-
-              <CheckboxInputBlock>
-                <Label htmlFor="is_god">Is God</Label>
-                <CheckboxInput
-                  type="checkbox"
-                  id="is_god"
-                  value={isGod}
-                  onChange={(e) => setIsGod(!isGod)}
-                />
-              </CheckboxInputBlock>
-
+              <FormInput
+                label="Nome"
+                type="text"
+                id="first_name"
+                value={firstName}
+                setValue={(e) => setFirstName(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Sobrenome"
+                type="text"
+                id="last_name"
+                value={lastName}
+                setValue={(e) => setLastName(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="E-mail"
+                type="email"
+                id="email"
+                value={email}
+                setValue={(e) => setEmail(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Senha"
+                type="password"
+                id="password"
+                value={password}
+                setValue={(e) => setPassword(e.target.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="App"
+                type="select"
+                id="app_id"
+                options={apps}
+                setValue={(e) => setAppId(e.value)}
+                isLongInput={true}
+              />
+              <FormInput
+                label="Is God"
+                type="checkbox"
+                id="is_god"
+                value={isGod}
+                setValue={() => setIsGod(!isGod)}
+              />
               <SubmitButton type="submit">Criar Admin</SubmitButton>
             </form>
           </ContainerForm>

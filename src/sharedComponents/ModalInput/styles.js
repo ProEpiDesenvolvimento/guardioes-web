@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 export const EditInput = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${(props) => (props.isRow ? "row" : "column")};
   font-weight: 700;
   font-size: 20;
   color: #348eac;
-  margin-bottom: 1rem;
+  margin-bottom: ${(props) => (props.isRow ? "0.5rem" : "1rem")};
+  align-items: ${(props) => (props.isRow ? "center" : "none")};
 `;
 
 export const TextArea = styled.textarea`
@@ -22,6 +23,10 @@ export const TextArea = styled.textarea`
   &:disabled {
     background: #f8f9fa;
   }
+`;
+
+export const EditCheckboxInput = styled.input`
+  margin: 0 0 0.5rem 1.7rem;
 `;
 
 export const ImageSelector = styled.div`

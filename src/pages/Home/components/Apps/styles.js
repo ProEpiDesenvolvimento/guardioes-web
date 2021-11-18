@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const AddAppContainer = styled.div`
   align-content: center;
   margin: 0% 5%;
   margin-bottom: 2rem;
-  background-color: #E5E5E5;
+  background-color: #e5e5e5;
   border-radius: 10px;
   font-style: normal;
 `;
@@ -27,10 +27,10 @@ export const ContainerHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   height: 70px;
   border-radius: 10px;
-  border-bottom: 2px solid rgba(0,0,0,0.125);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
   z-index: 5;
 `;
 
@@ -40,7 +40,7 @@ export const ContainerTitle = styled.h3`
   font-family: "ArgentumSans", sans-serif;
   font-size: 22px;
   color: white;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.25);
+  text-shadow: 2px 5px 10px rgba(0, 0, 0, 0.25);
   text-align: center;
 `;
 
@@ -49,19 +49,15 @@ export const ContainerForm = styled.div`
   max-height: 14rem;
 `;
 
-export const InputBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
+export const ContainerFormInput = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 15px;
 `;
 
 export const SubmitButton = styled.button`
   width: 100%;
-  background-color: #5DD39E;
+  background-color: #5dd39e;
   color: white;
   border: 0;
   border-radius: 5px;
@@ -76,10 +72,4 @@ export const SubmitButton = styled.button`
   @media (min-width: 500px) {
     width: 14rem;
   }
-`;
-
-export const EditInputField = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 15px;
 `;

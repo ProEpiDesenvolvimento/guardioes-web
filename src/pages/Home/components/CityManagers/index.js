@@ -108,14 +108,6 @@ const CityManagers = ({
     setModalEdit(!modalEdit);
   };
 
-  const handleEditName = (value) => {
-    setEditName(value);
-  };
-
-  const handleEditEmail = (value) => {
-    setEditEmail(value);
-  };
-
   const _getAllCityManagers = async (token) => {
     const response = await getAllCityManagers(token);
     loadCityManagers(response);
@@ -208,7 +200,7 @@ const CityManagers = ({
               label="Nome"
               id="edit_name"
               value={editName}
-              setValue={handleEditName}
+              setValue={(e) => setEditName(e.target.value)}
             />
             <ModalInput
               type="text"
@@ -252,14 +244,14 @@ const CityManagers = ({
                   type="text"
                   id="name"
                   value={cityManagerName}
-                  setValue={setCityManagerName}
+                  setValue={(e) => setCityManagerName(e.target.value)}
                 />
                 <FormInput
                   label="País"
                   type="select"
                   id="country"
                   value={country}
-                  setValue={setCountry}
+                  setValue={(e) => setCountry(e.value)}
                   options={countryChoices}
                 />
 
@@ -270,7 +262,7 @@ const CityManagers = ({
                       type="select"
                       id="state"
                       value={state}
-                      setValue={setState}
+                      setValue={(e) => setState(e.value)}
                       options={stateOptions}
                     />
                     <FormInput
@@ -278,7 +270,7 @@ const CityManagers = ({
                       type="select"
                       id="city"
                       value={cityManagerCity}
-                      setValue={setCityManagerCity}
+                      setValue={(e) => setCityManagerCity(e.value)}
                       options={getCity(state)}
                     />
                   </>
@@ -289,14 +281,14 @@ const CityManagers = ({
                   type="email"
                   id="email"
                   value={cityManagerEmail}
-                  setValue={setCityManagerEmail}
+                  setValue={(e) => setCityManagerEmail(e.target.value)}
                 />
                 <FormInput
                   label="Senha"
                   type="password"
                   id="password"
                   value={cityManagerPassword}
-                  setValue={setCityManagerPassword}
+                  setValue={(e) => setCityManagerPassword(e.target.value)}
                 />
               </Inputs>
               <SubmitButton type="submit">Adicionar</SubmitButton>
