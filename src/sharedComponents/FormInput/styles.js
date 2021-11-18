@@ -35,7 +35,6 @@ export const TextArea = styled.textarea`
 
   &:focus {
     border: 2px solid #007bff;
-    //padding: 4px 4px 9px 9px;
   }
 
   &:disabled {

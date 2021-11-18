@@ -47,7 +47,6 @@ const GroupManagerTeams = ({
   const [editingGroupManagerTeam, setEditingGroupManagerTeam] = useState({});
   const [groupManagerTeamShow, setGroupManagerTeamShow] = useState({});
   const [modelsManage, setModelsManage] = useState([]);
-
   const [modalShow, setModalShow] = useState(false);
 
   const _createGroupManagerTeam = async () => {

@@ -175,10 +175,11 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
             disabled={true}
           />
           <ModalInput
-            type="imageselected"
+            type="imageselect"
             label="Ícone"
             value={contentShow.icon}
             options={contentIcons}
+            disabled={true}
           />
           <ModalInput
             type="select"
@@ -226,11 +227,11 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
               setValue={(e) => setEditBody(e.target.value)}
             />
             <ModalInput
-              type="imageselector"
+              type="imageselect"
               label="Ícone"
               options={contentIcons}
               setValue={setEditIcon}
-              isValueSelected={isEditIconSelected}
+              isSelected={isEditIconSelected}
             />
             <ModalInput
               type="select"

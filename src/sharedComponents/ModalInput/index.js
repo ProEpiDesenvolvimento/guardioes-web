@@ -99,38 +99,34 @@ const ModalInput = ({
             </label>
           </div>
         ));
-      case "imageselected":
+      case "imageselect":
         return (
           <ImageSelector>
-            {options.map((icon, index) => {
-              if (value === icon.value)
-                return (
+            {disabled
+              ? options.map((icon, index) => {
+                  if (value === icon.value)
+                    return (
+                      <ImageContainer key={index}>
+                        <ImgContent
+                          src={require(`../../${icon.uri}`)}
+                          width={80}
+                          alt="content-icon"
+                        />
+                      </ImageContainer>
+                    );
+                  else return null;
+                })
+              : options.map((icon, index) => (
                   <ImageContainer key={index}>
                     <ImgContent
                       src={require(`../../${icon.uri}`)}
                       width={80}
+                      onClick={() => setValue(icon.value)}
+                      selected={isSelected(icon.value)}
                       alt="content-icon"
                     />
                   </ImageContainer>
-                );
-              else return null;
-            })}
-          </ImageSelector>
-        );
-      case "imageselector":
-        return (
-          <ImageSelector>
-            {options.map((icon, index) => (
-              <ImageContainer key={index}>
-                <ImgContent
-                  src={require(`../../${icon.uri}`)}
-                  width={80}
-                  onClick={() => setValue(icon.value)}
-                  selected={isSelected(icon.value)}
-                  alt="content-icon"
-                />
-              </ImageContainer>
-            ))}
+                ))}
           </ImageSelector>
         );
     }
