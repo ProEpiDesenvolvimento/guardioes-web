@@ -172,6 +172,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
             type="textarea"
             label="Conteúdo"
             value={contentShow.body}
+            rows="10"
             disabled={true}
           />
           <ModalInput
@@ -224,6 +225,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
               label="Conteúdo"
               id="edit_body"
               value={editBody}
+              rows="10"
               setValue={(e) => setEditBody(e.target.value)}
             />
             <ModalInput

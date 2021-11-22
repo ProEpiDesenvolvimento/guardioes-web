@@ -233,14 +233,14 @@ const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
                   type="text"
                   id="name"
                   value={symptomName}
-                  setValue={setSymptomName}
+                  setValue={(e) => setSymptomName(e.target.value)}
                 />
                 <FormInput
                   label="Descrição"
                   type="text"
                   id="description"
                   value={symptomDescription}
-                  setValue={setSymptomDescription}
+                  setValue={(e) => setSymptomDescription(e.target.value)}
                 />
               </Inputs>
               <SubmitButton type="submit">Adicionar</SubmitButton>

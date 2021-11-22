@@ -18,6 +18,9 @@ const FormInput = ({
   setValue,
   options,
   isSelected,
+  min,
+  max,
+  isSubtitle = false,
   isLongInput = false,
 }) => {
   function defineInput() {
@@ -25,7 +28,17 @@ const FormInput = ({
       case "text":
       case "password":
       case "email":
-        return <Input type={type} id={id} value={value} onChange={setValue} />;
+      case "number":
+        return (
+          <Input
+            type={type}
+            id={id}
+            value={value}
+            onChange={setValue}
+            min={min}
+            max={max}
+          />
+        );
       case "select":
         return (
           <Select
@@ -89,7 +102,7 @@ const FormInput = ({
       isLongInput={isLongInput}
       isRow={type === "checkbox" ? true : false}
     >
-      <label htmlFor={id}>{label}</label>
+      {isSubtitle ? <h6>{label}</h6> : <label htmlFor={id}>{label}</label>}
       {defineInput()}
     </InputBlock>
   );

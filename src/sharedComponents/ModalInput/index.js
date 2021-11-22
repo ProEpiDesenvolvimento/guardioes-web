@@ -8,6 +8,7 @@ import {
   ImgContent,
 } from "./styles";
 import Select from "react-select";
+import MultiSelect from "react-multi-select-component";
 
 const ModalInput = ({
   type,
@@ -17,18 +18,27 @@ const ModalInput = ({
   setValue,
   isSelected,
   options,
+  rows,
+  min,
+  max,
+  step,
+  isSubtitle,
   disabled = false,
 }) => {
   function defineInput() {
     switch (type) {
       case "text":
+      case "number":
         return (
           <input
-            type="text"
+            type={type}
             id={id}
             value={value}
             onChange={setValue}
             disabled={disabled}
+            min={min}
+            max={max}
+            step={step}
           />
         );
       case "select":
@@ -48,8 +58,8 @@ const ModalInput = ({
             type="text"
             id={id}
             value={value}
-            rows="10"
-            onChange={(e) => setValue(e.target.value)}
+            rows={rows}
+            onChange={setValue}
             disabled={disabled}
           />
         );
@@ -129,12 +139,21 @@ const ModalInput = ({
                 ))}
           </ImageSelector>
         );
+      case "multiselect":
+        return (
+          <MultiSelect
+            options={options}
+            value={value}
+            onChange={setValue}
+            id={id}
+          />
+        );
     }
   }
 
   return (
     <EditInput isRow={type === "checkbox" ? true : false}>
-      <label htmlFor={id}>{label}</label>
+      {isSubtitle ? <h6>{label}</h6> : <label htmlFor={id}>{label}</label>}
       {defineInput()}
     </EditInput>
   );
