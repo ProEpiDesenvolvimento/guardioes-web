@@ -16,6 +16,7 @@ const ModalInput = ({
   setValue,
   isValueSelected,
   options,
+  placeholder,
   disabled = false,
 }) => {
   function defineInput() {
@@ -28,6 +29,18 @@ const ModalInput = ({
             type="text"
             id={id}
             value={value}
+            placeholder={placeholder}
+            onChange={(e) => setValue(e.target.value)}
+          />
+        );
+        case "date":
+        return disabled ? (
+          <input className="text-dark" type="date" value={value} disabled />
+        ) : (
+          <input
+            type="date"
+            id={id}
+            value={value}
             onChange={(e) => setValue(e.target.value)}
           />
         );
@@ -38,6 +51,7 @@ const ModalInput = ({
             isSearchable={true}
             options={options}
             defaultValue={value}
+            placeholder={placeholder}
             onChange={(e) => setValue(e.value)}
             isDisabled={disabled}
           />
@@ -48,7 +62,7 @@ const ModalInput = ({
             className="text-dark"
             type="text"
             value={value}
-            rows="10"
+            rows="4"
             disabled
           />
         ) : (
@@ -56,7 +70,7 @@ const ModalInput = ({
             type="text"
             id={id}
             value={value}
-            rows="10"
+            rows="4"
             onChange={(e) => setValue(e.target.value)}
           />
         );
