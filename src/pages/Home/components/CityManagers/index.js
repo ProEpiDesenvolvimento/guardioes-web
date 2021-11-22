@@ -258,6 +258,7 @@ const CityManagers = ({
                   label="País"
                   type="select"
                   id="country"
+                  placeholder="Selecione o país"
                   value={country}
                   setValue={setCountry}
                   options={countryChoices}
