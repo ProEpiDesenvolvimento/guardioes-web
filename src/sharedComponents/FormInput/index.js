@@ -1,7 +1,10 @@
 import React from "react";
-import { InputBlock, Input, SelectInput } from "./styles";
+import { InputBlock, Input, SelectInput, CheckboxInput } from "./styles";
+import Select from "react-select";
 
-const FormInput = ({ label, type, id, value, setValue, options }) => {
+const FormInput = ({ label, type, id, value, setValue, options, placeholder, disabled, checked }) => {
+  let inactive = false;
+  if(disabled !== undefined) inactive = true;
   function defineInput() {
     switch (type) {
       case "text":
@@ -13,25 +16,31 @@ const FormInput = ({ label, type, id, value, setValue, options }) => {
             id={id}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            disabled={inactive}
           />
+        );
+        case "checkbox":
+        return (
+            <CheckboxInput
+              type="checkbox"
+              id={id}
+              checked={checked}
+              onChange={(e) => setValue(e.target.value)}
+            />
         );
       case "select":
         return (
-          <SelectInput
-            type="select"
-            id={id}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          >
-            <option>Escolha</option>
-            {options.map((c) => {
-              return (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              );
-            })}
-          </SelectInput>
+          <div style={{width: '250px'}}>
+            <Select
+              type="select"
+              id={id}
+              onChange={(e) => setValue(e)}
+              placeholder={placeholder}
+              options={options}
+              isDisabled={inactive}
+            >
+            </Select>
+          </div>
         );
     }
   }

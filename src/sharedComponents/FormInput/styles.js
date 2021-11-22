@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const InputBlock = styled.div`
-  width: 250px;
+  width: auto;
   display: flex;
   flex-direction: column;
   font-weight: 700;
@@ -13,6 +13,7 @@ export const InputBlock = styled.div`
 `;
 
 export const Input = styled.input`
+  margin: 0;
   width: 100%;
   background-color: white;
   color: black;
@@ -21,6 +22,15 @@ export const Input = styled.input`
   height: 2.2rem;
   transition: opacity 0.2s;
   padding-left: 10px;
+
+`;
+
+export const CheckboxInput = styled.input` 
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  transition: opacity 0.2s;
+  padding-left: 10px;
+  cursor: pointer;
 `;
 
 export const SelectInput = styled.select`
