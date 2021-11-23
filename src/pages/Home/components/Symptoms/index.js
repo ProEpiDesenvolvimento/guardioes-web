@@ -17,14 +17,13 @@ import {
   Form,
   Inputs,
   SubmitButton,
-  EditInput,
-  TextArea,
   EditButton,
 } from "./styles";
 import { useForm } from "react-hook-form";
 import ContentBox from "../ContentBox";
 import Modal from "react-bootstrap/Modal";
 import FormInput from "sharedComponents/FormInput";
+import ModalInput from "sharedComponents/ModalInput";
 
 const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
   const { handleSubmit } = useForm();
@@ -88,14 +87,6 @@ const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
     setModalEdit(!modalEdit);
   };
 
-  const handleEditName = (value) => {
-    setEditName(value);
-  };
-
-  const handleEditDescription = (value) => {
-    setEditDescription(value);
-  };
-
   const loadSymptoms = async (response) => {
     let aux_symptoms = [];
     if (!response.symptoms) {
@@ -138,37 +129,25 @@ const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
         </Modal.Header>
 
         <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={symptomShow.id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Nome</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={symptomShow.name}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Descrição</label>
-            <TextArea
-              className="text-dark"
-              type="text"
-              value={symptomShow.description}
-              disabled
-              rows="4"
-              cols="50"
-            />
-          </EditInput>
+          <ModalInput
+            label="ID"
+            type="text"
+            value={symptomShow.id}
+            disabled={true}
+          />
+          <ModalInput
+            label="Nome"
+            type="text"
+            value={symptomShow.name}
+            disabled={true}
+          />
+          <ModalInput
+            label="Descrição"
+            type="textarea"
+            value={symptomShow.description}
+            disabled={true}
+            rows="4"
+          />
         </Modal.Body>
 
         <Modal.Footer>
@@ -182,27 +161,21 @@ const Symptoms = ({ token, user, symptoms, setSymptoms, setToken }) => {
         </Modal.Header>
         <form id="editSymptom" onSubmit={handleSubmit(_editSymptom)}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editName}
-                onChange={(e) => handleEditName(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_description">Descrição</label>
-              <TextArea
-                type="text"
-                id="edit_description"
-                value={editDescription}
-                onChange={(e) => handleEditDescription(e.target.value)}
-                rows="4"
-                cols="50"
-              />
-            </EditInput>
+            <ModalInput
+              label="Nome"
+              type="text"
+              id="edit_name"
+              value={editName}
+              setValue={(e) => setEditName(e.target.value)}
+            />
+            <ModalInput
+              label="Descrição"
+              type="textarea"
+              id="edit_description"
+              value={editDescription}
+              setValue={(e) => setEditDescription(e.target.value)}
+              rows="4"
+            />
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
