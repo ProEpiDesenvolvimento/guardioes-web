@@ -20,6 +20,7 @@ const FormInput = ({
   isSelected,
   min,
   max,
+  placeholder,
   isSubtitle = false,
   isLongInput = false,
 }) => {
@@ -37,6 +38,7 @@ const FormInput = ({
             onChange={setValue}
             min={min}
             max={max}
+            placeholder={placeholder}
           />
         );
       case "select":
