@@ -23,6 +23,7 @@ const ModalInput = ({
   max,
   step,
   isSubtitle,
+  placeholder,
   disabled = false,
 }) => {
   function defineInput() {
@@ -39,6 +40,18 @@ const ModalInput = ({
             min={min}
             max={max}
             step={step}
+            placeholder={placeholder}
+          />
+        );
+        case "date":
+        return disabled ? (
+          <input className="text-dark" type="date" value={value} disabled />
+        ) : (
+          <input
+            type="date"
+            id={id}
+            value={value}
+            onChange={setValue}
           />
         );
       case "select":
@@ -49,6 +62,7 @@ const ModalInput = ({
             options={options}
             defaultValue={value}
             onChange={setValue}
+            placeholder={placeholder}
             isDisabled={disabled}
           />
         );
@@ -71,6 +85,7 @@ const ModalInput = ({
             checked={value}
             onChange={setValue}
             disabled={disabled}
+            value={value}
           />
         );
       case "checkboxes":

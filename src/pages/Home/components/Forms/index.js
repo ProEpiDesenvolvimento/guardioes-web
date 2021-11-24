@@ -48,6 +48,9 @@ import Loading from "sharedComponents/Loading";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
 import Select from "react-select";
+import FormInput from "sharedComponents/FormInput";
+import ModalInput from "sharedComponents/ModalInput";
+
 
 const Forms = ({
   token,
@@ -305,36 +308,32 @@ const Forms = ({
         </Modal.Header>
 
         <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={questionShow.id}
-              disabled
-            />
-          </EditInput>
 
-          <EditInput>
-            <label>Texto</label>
-            <TextArea
-              className="text-dark"
-              type="text"
-              value={questionShow.text}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="ID"
+            value={questionShow.id}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Tipo</label>
-            <Select
-              options={kindOptions}
-              defaultValue={getKindSelection(questionShow.kind)}
-              isDisabled
-            />
-          </EditInput>
+        <ModalInput
+            type="textarea"
+            label="Texto"
+            value={questionShow.text}
+            disabled={true}
+          />
+
+          <ModalInput
+              type="select"
+              label="Tipo"
+              id="tipo" 
+              value={getKindSelection(questionShow.kind)}   
+              options={kindOptions}          
+              disabled={true}
+            /> 
 
           {questionShow.form_options ? questionShow.form_options.map((form_option) => (
+            
             <EditInput className="bg-light p-2" key={form_option.id}>
               <div>
                 <label>Opção ID #{form_option.id}</label>
@@ -377,26 +376,24 @@ const Forms = ({
         </Modal.Header>
         <form id="editForm" onSubmit={handleSubmit(_editFormQuestion)}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="edit_text">Texto</label>
-              <TextArea
-                type="text"
-                id="edit_name"
-                value={editingQuestion.text}
-                onChange={(e) => setEditingQuestion({ ...editingQuestion, text: e.target.value })}
-              />
-            </EditInput>
 
-            <EditInput>
-              <label htmlFor="edit_kind">Tipo</label>
-              <Select
-                id="edit_kind"
-                placeholder="Selecionar"
-                options={kindOptions}
-                defaultValue={getKindSelection(editingQuestion.kind)}
-                onChange={(e) => setEditingQuestion({ ...editingQuestion, kind: e.value })}
-              />
-            </EditInput>
+          <ModalInput
+              type="textarea"
+              label="Texto"
+              id="edit_name" 
+              value={editingQuestion.text}   
+              setValue={(e) => setEditingQuestion({ ...editingQuestion, text: e.target.value })}         
+            />
+
+          <ModalInput
+              type="select"
+              label="Tipo"
+              id="edit_kind"
+              placeholder="Selecionar"
+              value={getKindSelection(editingQuestion.kind)}   
+              options={kindOptions}          
+              setValue={(e) => setEditingQuestion({ ...editingQuestion, kind: e.value })}
+            />
 
             <DragDropContext onDragEnd={handleOptionOnDragEnd}>
               <Droppable droppableId="edit-options">
@@ -520,25 +517,25 @@ const Forms = ({
           <ContainerForm>
             <Form id="addFormQuestion" onSubmit={handleSubmit(_createFormQuestion)}>
               <Inputs>
-                <InputBlock>
-                  <label htmlFor="question_text">Texto</label>
-                  <Input
-                    type="text"
-                    id="question_text"
-                    value={questionTitle}
-                    onChange={(e) => setQuestionTitle(e.target.value)}
-                    required
-                  />
-                </InputBlock>
-                <InputBlock>
-                  <label htmlFor="question_kind">Tipo</label>
-                  <Select
-                    id="question_kind"
-                    placeholder="Selecionar"
-                    options={kindOptions}
-                    onChange={(e) => setQuestionKind(e)}
-                  />
-                </InputBlock>
+
+              <FormInput
+                  label="Texto"
+                  type="text"
+                  id="question_text"
+                  value={questionTitle}
+                  setValue={(e) => setQuestionTitle(e.target.value)}
+                  required
+              />
+
+                <FormInput
+                  label="Tipo"
+                  type="select"
+                  id="question_kind"
+                  placeholder="Selecionar"
+                  setValue={(e) => setQuestionKind(e)}
+                  options={kindOptions}
+                />
+
               </Inputs>
               <SubmitButton type="submit">
                 Adicionar

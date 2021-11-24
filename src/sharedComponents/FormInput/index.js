@@ -17,13 +17,17 @@ const FormInput = ({
   value,
   setValue,
   options,
+  placeholder,
+  disabled,
+  checked,
   isSelected,
   min,
   max,
-  placeholder,
   isSubtitle = false,
   isLongInput = false,
 }) => {
+  let inactive = false;
+  if(disabled !== undefined) inactive = true;
   function defineInput() {
     switch (type) {
       case "text":
@@ -39,7 +43,17 @@ const FormInput = ({
             min={min}
             max={max}
             placeholder={placeholder}
+            disabled={inactive}
           />
+        );
+        case "checkbox":
+        return (
+            <CheckboxInput
+              type="checkbox"
+              id={id}
+              checked={checked}
+              onChange={(e) => setValue(e.target.value)}
+            />
         );
       case "select":
         return (
@@ -49,6 +63,8 @@ const FormInput = ({
             options={options}
             defaultValue={value}
             onChange={setValue}
+            placeholder={placeholder}
+            isDisabled={inactive}
           />
         );
       case "checkbox":

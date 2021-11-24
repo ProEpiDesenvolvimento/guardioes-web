@@ -44,6 +44,9 @@ import { Table } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import { sessionService } from 'redux-react-session';
 
+import FormInput from 'sharedComponents/FormInput';
+import ModalInput from 'sharedComponents/ModalInput';
+
 const Groups = ({
   token,
   user,
@@ -368,72 +371,57 @@ const Groups = ({
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <EditInput>
-            <label>Nome</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupShow.description}
-              disabled
-            />
-          </EditInput>
 
-          <EditInput>
-            <label>Tipo</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={groupLabel}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Nome"
+            value={groupShow.description}
+            disabled={true}
+          />
 
-          {groupShow.children_label ? 
-            <EditInput>
-              <label>Tipo dos Grupos Filhos</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={groupShow.children_label}
-                disabled
-              />
-            </EditInput>
+        <ModalInput
+            type="text"
+            label="Tipo"
+            value={groupLabel}
+            disabled={true}
+          />
+
+          {groupShow.children_label ?
+          <ModalInput
+            type="text"
+            label="Tipo dos Grupos Filhos"
+            value={groupShow.children_label}
+            disabled={true}
+          />
           : null}
 
           {groupShow.parentName ?
-            <EditInput>
-              <label>Nome do Grupo Pai</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={groupShow.parentName}
-                disabled
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            label="Nome do Grupo Pai"
+            value={groupShow.parentName}
+            disabled={true}
+          />
           : null}
 
           {groupShow.code ?
-            <EditInput>
-              <label htmlFor="edit_code">Código</label>
-              <input
-                type="text"
-                id="edit_code"
-                value={groupShow.code}
-                disabled
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            label="Código"
+            id="edit_code"
+            value={groupShow.code}
+            disabled={true}
+          />
           : null}
 
           {groupShow.location_name_godata ?
-            <EditInput>
-              <label htmlFor="edit_code">Nome da Locação no GoData</label>
-              <input
-                type="text"
-                id="edit_code"
-                value={groupShow.location_name_godata}
-                disabled
-              />
-            </EditInput>
+            <ModalInput
+              type="text"
+              label="Nome da Locação no GoData"
+              id="edit_code"
+              value={groupShow.location_name_godata}
+              disabled={true}
+            />
           : null}
         </Modal.Body>
 
@@ -459,67 +447,53 @@ const Groups = ({
         <form id="editGroup" onSubmit={handleSubmit(_editGroup)}>
           <Modal.Body>
             {/* ------- NOME ------- */}
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              {user.group_name === editingGroup.description ? 
-                <input
-                  type="text"
-                  id="edit_name"
-                  disabled={true}
-                  value={editingGroup.description}
-                /> : 
-                <input
-                  type="text"
-                  id="edit_name"
-                  value={editingGroup.description}
-                  onChange={(e) => setEditingGroup({
-                    ...editingGroup, 
-                    description: e.target.value, 
-                    children_label: editingGroup.children_label
-                  })}
-                />
-              }
-            </EditInput>
+
+            <ModalInput
+              type="text"
+              label="Nome"
+              id="edit_code"
+              value={editingGroup.description}
+              disabled={user.group_name === editingGroup.description ? true : false}
+              setValue={(e) => setEditingGroup({
+                ...editingGroup, 
+                description: e.target.value, 
+                children_label: editingGroup.children_label
+              })}
+            />
             
             {/* ------- SUBGRUPO ------- */}
             {editingGroup.children_label ? 
-              <EditInput>
-                <label htmlFor="edit_code">Subgrupo</label>
-                <input
-                  type="text"
-                  id="edit_subgrupo"
-                  value={editingGroup.children_label}
-                  disabled
-                />
-              </EditInput>
+
+              <ModalInput
+              type="text"
+              label="Subgrupo"
+              id="edit_subgrupo"
+              value={editingGroup.children_label}
+              disabled={true}
+              />
               :
               <>
                 <SubmitButton type="reset" onClick={() => {setAddSubGroup(true)}}>Adicionar Subgrupo</SubmitButton>
-                {addSubGroup ? 
-                  <EditInput>
-                    <label htmlFor="edit_code">Adicionar Subgrupo</label>
-                    <input
-                      type="text"
-                      id="edit_subgrupo"
-                      value={editChildrenLabel}
-                      onChange={(e) => {setEditChildrenLabel(e.target.value)}
-                      }
-                    />
-                  </EditInput>
+                {addSubGroup ?
+                <ModalInput
+                  type="text"
+                  label="Adicionar Subgrupo"
+                  id="edit_subgrupo"
+                  value={editChildrenLabel}
+                  setValue={(e) => {setEditChildrenLabel(e.target.value)}}
+                /> 
                 : null}
               </>
             }
             {/* ------- CODIGO ------- */}
             {editingGroup.code ?
-              <EditInput>
-                <label htmlFor="edit_code">Código</label>
-                <input
-                  type="text"
-                  id="edit_code"
-                  value={editingGroup.code}
-                  onChange={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
-                />
-              </EditInput>
+             <ModalInput
+              type="text"
+              label="Código"
+              id="edit_code"
+              value={editingGroup.code}
+              setValue={(e) => setEditingGroup({...editingGroup, code: e.target.value})}
+            /> 
             : null}
 
             {locations.length > 0 && editingGroup.children_label == null ?
@@ -650,16 +624,15 @@ const Groups = ({
             <Form id="addCourse" onSubmit={handleSubmit(_createGroup)}>
               {groups.length !== 0 && user.group_name === groups[0].description ? 
                 <>
-                  {/* ------- NOME ------- */} 
-                  <InputBlock>
-                    <label htmlFor="name">Nome</label>
-                    <Input
-                      type="text"
-                      id="nameFix"
-                      disabled
-                      value={groups[0].description}
-                    /> 
-                  </InputBlock>
+                  {/* ------- NOME ------- */}
+
+                  <FormInput
+                  label="Nome"
+                  type="text"
+                  id="nameFix"
+                  disabled
+                  value={groups[0].description}
+                  />
                   
                   {/* ------- MUNICIPIOS ------- */} 
                   {typeof cities !== 'undefined' && cities.length !== 0 ? 
@@ -683,67 +656,59 @@ const Groups = ({
                 </>
               :
               <>
-                {/* ------- NOME ------- */}  
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="nameEdit"
-                    value={creatingGroup.description}
-                    onChange={(e) => setCreatingGroup({...creatingGroup, parent_id: groupID, description: e.target.value})}
-                  />
-                </InputBlock>
+                {/* ------- NOME ------- */}
+                <FormInput
+                  label="Nome"
+                  type="text"
+                  id="nameEdit"
+                  value={creatingGroup.description}
+                  setValue={(e) => setCreatingGroup({...creatingGroup, parent_id: groupID, description: e.target.value})}
+                  
+                />
 
                 {/* ------- MUNICIPIO ------- */}  
                 {cityOnly.hasOwnProperty('name') ? 
-                  <InputBlock>
-                    <label htmlFor="name">Município</label>
-                    <SelectInput
-                      type="select"
-                      id="name"
-                      disabled
-                    >
-                      <option>{cityOnly.name}</option>                  
-                    </SelectInput>
-                  </InputBlock>
+
+                  <FormInput
+                  label="Município"
+                  type="select"
+                  id="name"
+                  placeholder="Selecione o Município"
+                  disabled
+                  options={cityOnly.name}
+                  />
                 : null}
                 </>
               }
-              {/* ------- ESTADO ------- */}  
-              <InputBlock>
-                <label htmlFor="name">Estado</label>
-                <SelectInput
+              {/* ------- ESTADO ------- */} 
+
+              <FormInput
+                  label="Estado"
                   type="select"
                   id="name"
-                  value={states.description}
+                  placeholder="Selecione o estado"
                   disabled
-                >
-                  <option>{states.description}</option>
-                </SelectInput>
-              </InputBlock>
+                  value={states.description}
+              />
 
               {/* ------- CÓDIGO ------- */}
-              <InputBlock>
-                <label htmlFor="name">Código</label>
-                <Input
+
+              <FormInput
+                  label="Código"
                   type="text"
-                  id="code"
+                  id="cod"
                   value={creatingGroup.code}
-                  onChange={(e) => setCreatingGroup({...creatingGroup, code: e.target.value})}
-                />
-              </InputBlock>
+                  setValue={(e) => setCreatingGroup({...creatingGroup, code: e.target.value})}
+              />
 
               {/* ------- TIPO ------- */}  
-              <InputBlock>
-                <label htmlFor="name">Tipo</label>
-                <Input
+              <FormInput
+                  label="Tipo"
                   type="text"
                   id="tipo"
                   value={groupLabel}
                   disabled
-                  /* onChange={(e) => setCreatingGroup({...creatingGroup, description: e.target.value})} */
-                />
-              </InputBlock>
+              />
 
               <SubmitButton type="submit">
                 Adicionar em {groupLabel}

@@ -14,6 +14,7 @@ export const InputBlock = styled.div`
 `;
 
 export const Input = styled.input`
+  margin: 0;
   width: 100%;
   background-color: white;
   color: black;
@@ -22,9 +23,15 @@ export const Input = styled.input`
   height: 2.2rem;
   transition: opacity 0.2s;
   padding-left: 10px;
+
 `;
 
-export const CheckboxInput = styled.input`
+export const CheckboxInput = styled.input` 
+  border: 2px solid #348EAC;
+  border-radius: 5px;
+  transition: opacity 0.2s;
+  padding-left: 10px;
+  cursor: pointer;
   margin: 0 0 0.5rem 1.7rem;
 `;
 
