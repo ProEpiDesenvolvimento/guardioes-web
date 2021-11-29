@@ -32,6 +32,7 @@ const ModalInput = ({
       case "number":
         return (
           <input
+            className='number'
             type={type}
             id={id}
             value={value}
@@ -48,6 +49,7 @@ const ModalInput = ({
           <input className="text-dark" type="date" value={value} disabled />
         ) : (
           <input
+            className="date"
             type="date"
             id={id}
             value={value}
