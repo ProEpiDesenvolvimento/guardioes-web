@@ -10,8 +10,6 @@ import {
   Input,
   QuestionVector,
   ButtonsDiv,
-  SendButton,
-  SendButtonName,
   QuestionPopupOrgType,
   Span,
   SelectInput
@@ -20,6 +18,8 @@ import {
 import questionIcon from '../assets/question_icon.png'
 import submitPreRegister from './services/submitPreRegister';
 import validateCnpj from './services/validateCnpj';
+
+import SendButton from 'sharedComponents/SendButton';
 
 const Form = (props) => {
   const { register, handleSubmit, errors } = useForm();
@@ -157,13 +157,7 @@ const Form = (props) => {
       </FieldDiv>
       <FieldDiv>
         <ButtonsDiv>
-          <SendButton
-            type='submit'
-          >
-            <SendButtonName>
-              ENVIAR
-            </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </ButtonsDiv>
       </FieldDiv>
     </RegisterDiv>

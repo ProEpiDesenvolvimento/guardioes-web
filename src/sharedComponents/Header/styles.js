@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { device } from 'utils/devices';
 import {
-  Link,
+  Link
 } from "react-router-dom";
 
 export const Container = styled.div`

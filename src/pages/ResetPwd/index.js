@@ -7,13 +7,12 @@ import {
   LoginBox,
   Title,
   Subtitle,
-  Field,
-  SendButton,
-  SendButtonName,
   Span,
 } from "./styles";
 import Header from "sharedComponents/Header";
 import Backicon from 'sharedComponents/BackIcon'
+import InputSign from 'sharedComponents/InputSign';
+import SendButton from 'sharedComponents/SendButton';
 import { useHistory } from "react-router-dom";
 import { resetPassword, confirmToken, sendToken } from "./services/resetPassword"
 import DropdownComponent from '../../sharedComponents/DropdownComponent'
@@ -90,7 +89,7 @@ const ResetPwd = () => {
             Informe seu email para verificação
           </Subtitle>
           <DropdownComponent setItemsCallback={setUserTypeCallback} />
-          <Field
+          <InputSign
             placeholder="E-mail"
             name='email'
             type='text'
@@ -99,11 +98,7 @@ const ResetPwd = () => {
             ref={register({ required: true })}
           />
           {errors.email && <Span>O e-mail é obrigatório</Span>}
-          <SendButton type='submit'>
-            <SendButtonName>
-              ENVIAR
-          </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </LoginBox>
         ) : <> </>}
         {slide === 1? (
@@ -114,7 +109,7 @@ const ResetPwd = () => {
           <Subtitle>
             Informe o código enviado no seu email
           </Subtitle>
-          <Field
+          <InputSign
             autoFocus
             placeholder="Token"
             name='token'
@@ -124,11 +119,7 @@ const ResetPwd = () => {
             ref={refToken}
           />
           {errors.token && <Span>O token é obrigatório</Span>}
-          <SendButton type='submit'>
-            <SendButtonName>
-              ENVIAR
-          </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </LoginBox>
         ) : null}
         {slide === 2? (
@@ -139,7 +130,7 @@ const ResetPwd = () => {
           <Subtitle>
             Digite a nova senha
           </Subtitle>
-          <Field
+          <InputSign
             placeholder="Senha"
             type="password"
             name='password'
@@ -149,7 +140,7 @@ const ResetPwd = () => {
             style={{margin: '0px'}}
           />
           {errors.password && <Span>A senha é obrigatória</Span>}
-          <Field
+          <InputSign
             placeholder="Confirme a Senha"
             type="password"
             name='confirmpassword'
@@ -159,11 +150,7 @@ const ResetPwd = () => {
           />
           {errors.confirmPassword && <Span>A confirmação da senha é obrigatória</Span>}
           {password !== "" && password !== confirmPassword && <Span>As senhas precisam ser iguais</Span>}
-          <SendButton type='submit'>
-            <SendButtonName>
-              ENVIAR
-          </SendButtonName>
-          </SendButton>
+          <SendButton/>
         </LoginBox>
         ) : null}
       </Body>
