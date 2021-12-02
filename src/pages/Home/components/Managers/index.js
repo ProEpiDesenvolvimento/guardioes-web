@@ -43,13 +43,10 @@ const Managers = ({
   const [managerPassword, setManagerPassword] = useState("")
   const [modalEdit, setModalEdit] = useState(false);
   const [editingManager, setEditingManager] = useState({});
-  const [editName, setEditName] = useState("");
-  const [editEmail, setEditEmail] = useState("");
   const [managerShow, setManagerShow] = useState({});
   const [modalShow, setModalShow] = useState(false);
 
   const [modelsManage, setModelsManage] = useState([]);
-  const [showModelsManage, setShowModelsManage] = useState([]);
 
   const _createManager = async () => {
     const data = {

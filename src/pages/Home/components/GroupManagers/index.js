@@ -22,16 +22,11 @@ import {
   ContainerForm,
   Form,
   Inputs,
-  CheckboxInputBlock,
-  CheckboxInput,
   InputBlock,
   Input,
   SubmitButton,
-  Label,
   EditInput,
   EditButton,
-  EditCheckbox,
-  EditCheckboxInput,
   SelectInput
 } from './styles';
 import { useForm } from "react-hook-form";
