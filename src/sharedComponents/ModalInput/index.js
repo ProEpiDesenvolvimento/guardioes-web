@@ -28,23 +28,7 @@ const ModalInput = ({
 }) => {
   function defineInput() {
     switch (type) {
-      case "text":
-      case "number":
-        return (
-          <input
-            className='number'
-            type={type}
-            id={id}
-            value={value}
-            onChange={setValue}
-            disabled={disabled}
-            min={min}
-            max={max}
-            step={step}
-            placeholder={placeholder}
-          />
-        );
-        case "date":
+      case "date":
         return disabled ? (
           <input className="text-dark" type="date" value={value} disabled />
         ) : (
@@ -163,6 +147,23 @@ const ModalInput = ({
             value={value}
             onChange={setValue}
             id={id}
+          />
+        );
+      case "text":
+      case "number":
+      default:
+        return (
+          <input
+            className="number"
+            type={type}
+            id={id}
+            value={value}
+            onChange={setValue}
+            disabled={disabled}
+            min={min}
+            max={max}
+            step={step}
+            placeholder={placeholder}
           />
         );
     }

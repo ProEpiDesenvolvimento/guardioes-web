@@ -402,7 +402,7 @@ const Vigilance = ({
                   label="Fornecer Vigilância Ativa"
                   type="checkbox"
                   id="has_vigilance"
-                  value={hasVigilance}
+                  checked={hasVigilance}
                   setValue={() => setHasVigilance(!hasVigilance)}
                   disabled={user.type !== "group_manager"}
                 />

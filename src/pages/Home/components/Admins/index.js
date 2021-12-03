@@ -296,7 +296,7 @@ const Admins = ({ token, user, admins, setAdmins, setToken }) => {
                 label="Is God"
                 type="checkbox"
                 id="is_god"
-                value={isGod}
+                checked={isGod}
                 setValue={() => setIsGod(!isGod)}
               />
               <SubmitButton type="submit">Criar Admin</SubmitButton>

@@ -27,33 +27,17 @@ const FormInput = ({
   isLongInput = false,
 }) => {
   let inactive = false;
-  if(disabled !== undefined) inactive = true;
+  if (disabled !== undefined) inactive = true;
   function defineInput() {
     switch (type) {
-      case "text":
-      case "password":
-      case "email":
-      case "number":
+      case "checkbox":
         return (
-          <Input
-            type={type}
+          <CheckboxInput
+            type="checkbox"
             id={id}
-            value={value}
+            checked={checked}
             onChange={setValue}
-            min={min}
-            max={max}
-            placeholder={placeholder}
-            disabled={inactive}
           />
-        );
-        case "checkbox":
-        return (
-            <CheckboxInput
-              type="checkbox"
-              id={id}
-              checked={checked}
-              onChange={(e) => setValue(e.target.value)}
-            />
         );
       case "select":
         return (
@@ -65,15 +49,6 @@ const FormInput = ({
             onChange={setValue}
             placeholder={placeholder}
             isDisabled={inactive}
-          />
-        );
-      case "checkbox":
-        return (
-          <CheckboxInput
-            type="checkbox"
-            id={id}
-            checked={value}
-            onChange={setValue}
           />
         );
       case "textarea":
@@ -112,6 +87,23 @@ const FormInput = ({
             </label>
           </div>
         ));
+      case "text":
+      case "password":
+      case "email":
+      case "number":
+      default:
+        return (
+          <Input
+            type={type}
+            id={id}
+            value={value}
+            onChange={setValue}
+            min={min}
+            max={max}
+            placeholder={placeholder}
+            disabled={inactive}
+          />
+        );
     }
   }
 
