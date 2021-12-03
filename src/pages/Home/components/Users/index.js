@@ -402,6 +402,18 @@ const Users = ({
         </Modal.Header>
 
         <Modal.Body>
+          {user.type === 'admin' ?
+            <EditInput>
+              <label>ID</label>
+              <input
+                className="text-dark"
+                type="text"
+                value={userShow.id}
+                disabled
+              />
+            </EditInput>
+          : null}
+
           <EditInput>
             <label>Birthdate</label>
             <input
@@ -411,7 +423,6 @@ const Users = ({
               disabled
             />
           </EditInput>
-
 
           <EditInput>
             <label>Email</label>

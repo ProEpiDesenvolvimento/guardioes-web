@@ -106,6 +106,7 @@ const Vigilance = ({
 
   const handleCasesPageChange = async (page) => {
     setActivePage(page)
+    setFilteredCases([])
     const surveys = await getSurveysGroupCases(token, page)
     if (!surveys.errors) {
       loadGroupCases(syndromes, surveys)
@@ -267,6 +268,8 @@ const Vigilance = ({
       window.location.reload()
     }
   }
+
+  const casesNum = new Intl.NumberFormat('pt-BR').format(totalItems)
 
   return (
     <Container>
@@ -560,7 +563,7 @@ const Vigilance = ({
       </Modal>
       <ContainerContentBox className="shadow-sm" component_height={'35rem'}>
         <ContentBoxHeader>
-          <ContentBoxTitle>Casos - {filteredCases ? filteredCases.length : 0}</ContentBoxTitle>
+          <ContentBoxTitle>Casos - {casesNum}</ContentBoxTitle>
         </ContentBoxHeader>
         <SubmitButton onClick={() => handleCasesFilter()} style={{ marginBottom: 0 }}>
           {caseType === "reviewed" ? "Casos Não Visualizados" : "Casos Visualizados"}
