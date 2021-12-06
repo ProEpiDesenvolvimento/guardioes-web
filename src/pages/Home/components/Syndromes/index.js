@@ -186,6 +186,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
     setEditDescription(content.description);
     setEditDetails(content.details);
     setEditDays(content.days_period);
+    setEditThresholdScore(content.threshold_score);
     setEditSymptoms(editSymptoms);
     setEditModal(!editModal);
   };
