@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import {
-  setCityManagers, setToken
-} from 'actions/';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { setCityManagers, setToken } from "actions/";
 
-import { bindActionCreators } from 'redux';
-import getAllCityManagers from './services/getAllCityManagers';
-import createCityManager from './services/createCityManager';
-import deleteCityManager from './services/deleteCityManager';
-import editCityManager from './services/editCityManager';
+import { bindActionCreators } from "redux";
+import getAllCityManagers from "./services/getAllCityManagers";
+import createCityManager from "./services/createCityManager";
+import deleteCityManager from "./services/deleteCityManager";
+import editCityManager from "./services/editCityManager";
 
-import { countryChoices } from '../../../../utils/selector';
-import { stateOptions, getCity } from '../../../../utils/Brasil';
+import { countryChoices } from "../../../../utils/selector";
+import { stateOptions, getCity } from "../../../../utils/Brasil";
 
 import {
   Container,
@@ -21,25 +19,23 @@ import {
   ContainerForm,
   Form,
   Inputs,
-  InputBlock,
-  Input,
   SubmitButton,
-  EditInput,
   EditButton,
-  SelectInput
-} from './styles';
+} from "./styles";
 import { useForm } from "react-hook-form";
-import Modal from 'react-bootstrap/Modal';
-import ContentBox from '../ContentBox';
+import Modal from "react-bootstrap/Modal";
+import ContentBox from "../ContentBox";
+import FormInput from "sharedComponents/FormInput";
+import ModalInput from "sharedComponents/ModalInput";
 
 const CityManagers = ({
   token,
   user,
   cityManagers,
   setCityManagers,
-  setToken
+  setToken,
 }) => {
-  const { handleSubmit } = useForm()
+  const { handleSubmit } = useForm();
 
   const [cityManagerName, setCityManagerName] = useState("");
   const [cityManagerCity, setCityManagerCity] = useState("");
@@ -57,52 +53,52 @@ const CityManagers = ({
 
   const _createCityManager = async () => {
     if (cityManagerCity === "") {
-      alert('Selecione um Município.')
-      return
+      alert("Selecione um Município.");
+      return;
     }
 
     const data = {
-      "city_manager": {
-        "name": cityManagerName,
-        "city": cityManagerCity,
-        "email": cityManagerEmail,
-        "password": cityManagerPassword,
-        "app_id": user.app_id,
-      }
-    }
-    const response = await createCityManager(data, token)
+      city_manager: {
+        name: cityManagerName,
+        city: cityManagerCity,
+        email: cityManagerEmail,
+        password: cityManagerPassword,
+        app_id: user.app_id,
+      },
+    };
+    const response = await createCityManager(data, token);
 
     if (response.status === 200) {
-      setCityManagerName("")
-      setCityManagerCity("")
-      setCityManagerEmail("")
-      setCityManagerPassword("")
-      _getAllCityManagers(token)
+      setCityManagerName("");
+      setCityManagerCity("");
+      setCityManagerEmail("");
+      setCityManagerPassword("");
+      _getAllCityManagers(token);
     }
-  }
+  };
 
   const _deleteCityManager = async (id, token) => {
-    await deleteCityManager(id, token)
-    _getAllCityManagers(token)
-  }
+    await deleteCityManager(id, token);
+    _getAllCityManagers(token);
+  };
 
   const _editCityManager = async () => {
     const data = {
-      "city_manager": {
-        "name": editName,
-        "email": editEmail,
-        "app_id": user.app_id,
-      }
+      city_manager: {
+        name: editName,
+        email: editEmail,
+        app_id: user.app_id,
+      },
     };
     await editCityManager(editingCityManager.id, data, token);
     setModalEdit(false);
     _getAllCityManagers(token);
-  }
+  };
 
   const handleShow = (content) => {
     setCityManagerShow(content);
     setModalShow(!modalShow);
-  }
+  };
 
   const handleEdit = (content) => {
     setEditingCityManager(content);
@@ -110,109 +106,82 @@ const CityManagers = ({
     setEditEmail(content.email);
     setEditCity(content.city);
     setModalEdit(!modalEdit);
-  }
-
-  const handleEditName = (value) => {
-    setEditName(value);
-  }
-
-  const handleEditEmail = (value) => {
-    setEditEmail(value);
-  }
+  };
 
   const _getAllCityManagers = async (token) => {
-    const response = await getAllCityManagers(token)
-    loadCityManagers(response)
-  }
+    const response = await getAllCityManagers(token);
+    loadCityManagers(response);
+  };
 
   const loadCityManagers = async (response) => {
     let aux_city_managers = [];
     if (!response.city_managers) {
       response.city_managers = [];
     }
-    response.city_managers.forEach(city_manager => {
+    response.city_managers.forEach((city_manager) => {
       if (city_manager.app_id === user.app_id) {
         aux_city_managers.push({
-          "id": city_manager.id,
-          "name": city_manager.name,
-          "email": city_manager.email,
-          "city": city_manager.city,
-        })
+          id: city_manager.id,
+          name: city_manager.name,
+          email: city_manager.email,
+          city: city_manager.city,
+        });
       }
-    })
+    });
     if (aux_city_managers.length === 0) {
-      aux_city_managers = null
+      aux_city_managers = null;
     }
-    await setCityManagers(aux_city_managers)
-  }
+    await setCityManagers(aux_city_managers);
+  };
 
   useEffect(() => {
-    _getAllCityManagers(token)
-    setToken(token)
+    _getAllCityManagers(token);
+    setToken(token);
   }, []);
 
-  const fields =
-    [{
+  const fields = [
+    {
       key: "id",
-      value: "ID"
+      value: "ID",
     },
     {
       key: "name",
       value: "Nome",
-    }];
+    },
+  ];
 
   return (
     <>
-      <Modal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-      >
+      <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Informações do Gerente de Município
-          </Modal.Title>
+          <Modal.Title>Informações do Gerente de Município</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <EditInput>
-            <label>ID</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.id}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Nome</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.name}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>E-mail</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.email}
-              disabled
-            />
-          </EditInput>
-
-          <EditInput>
-            <label>Município</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={cityManagerShow.city}
-              disabled
-            />
-          </EditInput>
+          <ModalInput
+            type="text"
+            label="ID"
+            value={cityManagerShow.id}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="Nome"
+            value={cityManagerShow.name}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="E-mail"
+            value={cityManagerShow.email}
+            disabled={true}
+          />
+          <ModalInput
+            type="text"
+            label="Município"
+            value={cityManagerShow.city}
+            disabled={true}
+          />
         </Modal.Body>
 
         <Modal.Footer>
@@ -220,47 +189,31 @@ const CityManagers = ({
         </Modal.Footer>
       </Modal>
 
-      <Modal
-        show={modalEdit}
-        onHide={() => setModalEdit(false)}
-      >
+      <Modal show={modalEdit} onHide={() => setModalEdit(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Editar Gerente de Município
-          </Modal.Title>
+          <Modal.Title>Editar Gerente de Município</Modal.Title>
         </Modal.Header>
         <form id="editCityManager" onSubmit={handleSubmit(_editCityManager)}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editName}
-                onChange={(e) => handleEditName(e.target.value)}
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_email">E-mail</label>
-              <input
-                type="email"
-                id="edit_email"
-                value={editEmail}
-                onChange={(e) => handleEditEmail(e.target.value)}
-                disabled
-              />
-            </EditInput>
-
-            <EditInput>
-              <label htmlFor="edit_city">Município</label>
-              <input
-                type="text"
-                id="edit_city"
-                value={editCity}
-                disabled
-              />
-            </EditInput>
+            <ModalInput
+              type="text"
+              label="Nome"
+              id="edit_name"
+              value={editName}
+              setValue={(e) => setEditName(e.target.value)}
+            />
+            <ModalInput
+              type="text"
+              label="E-mail"
+              value={editEmail}
+              disabled={true}
+            />
+            <ModalInput
+              type="text"
+              label="Município"
+              value={editCity}
+              disabled={true}
+            />
           </Modal.Body>
           <Modal.Footer>
             <EditButton type="submit">Editar</EditButton>
@@ -286,111 +239,81 @@ const CityManagers = ({
           <ContainerForm>
             <Form id="addApp" onSubmit={handleSubmit(_createCityManager)}>
               <Inputs>
-                <InputBlock>
-                  <label htmlFor="name">Nome</label>
-                  <Input
-                    type="text"
-                    id="name"
-                    value={cityManagerName}
-                    onChange={(e) => setCityManagerName(e.target.value)}
-                  />
-                </InputBlock>
-                
-                <InputBlock>
-                  <label htmlFor="country">País</label>
-                  <SelectInput
-                    type="select"
-                    id="country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                  >
-                    <option>Escolha</option>
-                    {countryChoices.map((c) => {
-                      return <option key={c.value} value={c.value}>{c.label}</option>
-                    })}
-                  </SelectInput>
-                </InputBlock>
+                <FormInput
+                  label="Nome"
+                  type="text"
+                  id="name"
+                  value={cityManagerName}
+                  setValue={(e) => setCityManagerName(e.target.value)}
+                />
+                <FormInput
+                  label="País"
+                  type="select"
+                  id="country"
+                  placeholder="Selecione o país"
+                  value={country}
+                  setValue={(e) => setCountry(e.value)}
+                  options={countryChoices}
+                />
 
-                {country === 'Brazil' ? (
+                {country === "Brazil" ? (
                   <>
-                    <InputBlock>
-                      <label htmlFor="state">Estado</label>
-                      <SelectInput
-                        type="select"
-                        id="state"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                      >
-                        <option>Escolha</option>
-                        {stateOptions.map((s) => {
-                          return <option key={s.value} value={s.value}>{s.label}</option>
-                        })}
-                      </SelectInput>
-                    </InputBlock>
-
-                    <InputBlock>
-                      <label htmlFor="city">Município</label>
-                      <SelectInput
-                        type="select"
-                        id="city"
-                        value={cityManagerCity}
-                        onChange={(e) => setCityManagerCity(e.target.value)}
-                      >
-                        <option>Escolha</option>
-                        {getCity(state).map((c) => {
-                          return <option key={c.value} value={c.value}>{c.label}</option>
-                        })}
-                      </SelectInput>
-                    </InputBlock>
+                    <FormInput
+                      label="Estado"
+                      type="select"
+                      id="state"
+                      value={state}
+                      setValue={(e) => setState(e.value)}
+                      options={stateOptions}
+                    />
+                    <FormInput
+                      label="Município"
+                      type="select"
+                      id="city"
+                      value={cityManagerCity}
+                      setValue={(e) => setCityManagerCity(e.value)}
+                      options={getCity(state)}
+                    />
                   </>
                 ) : null}
-                
-                <InputBlock>
-                  <label htmlFor="email">E-mail</label>
-                  <Input
-                    type="email"
-                    id="email"
-                    value={cityManagerEmail}
-                    onChange={(e) => setCityManagerEmail(e.target.value)}
-                  />
-                </InputBlock>
 
-                <InputBlock>
-                  <label htmlFor="password">Senha</label>
-                  <Input
-                    type="password"
-                    id="password"
-                    value={cityManagerPassword}
-                    onChange={(e) => setCityManagerPassword(e.target.value)}
-                  />
-                </InputBlock>
+                <FormInput
+                  label="E-mail"
+                  type="email"
+                  id="email"
+                  value={cityManagerEmail}
+                  setValue={(e) => setCityManagerEmail(e.target.value)}
+                />
+                <FormInput
+                  label="Senha"
+                  type="password"
+                  id="password"
+                  value={cityManagerPassword}
+                  setValue={(e) => setCityManagerPassword(e.target.value)}
+                />
               </Inputs>
-              <SubmitButton type="submit">
-                Adicionar
-              </SubmitButton>
+              <SubmitButton type="submit">Adicionar</SubmitButton>
             </Form>
           </ContainerForm>
         </AddAppContainer>
-      </Container >
+      </Container>
     </>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
   user: state.user.user,
-  cityManagers: state.user.city_managers
+  cityManagers: state.user.city_managers,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(
-  {
-    setCityManagers,
-    setToken
-  },
-  dispatch,
-);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setCityManagers,
+      setToken,
+    },
+    dispatch
+  );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CityManagers);
+export default connect(mapStateToProps, mapDispatchToProps)(CityManagers);

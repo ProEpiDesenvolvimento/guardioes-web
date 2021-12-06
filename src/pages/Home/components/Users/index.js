@@ -29,6 +29,8 @@ import { useForm } from "react-hook-form";
 import Pagination from "react-js-pagination";
 import { countryChoices, genderChoices, raceChoices } from '../../../../utils/selector';
 import Select from 'react-select';
+import ModalInput from 'sharedComponents/ModalInput';
+import FormInput from 'sharedComponents/FormInput';
 
 const Users = ({
   setUsers,
@@ -216,54 +218,48 @@ const Users = ({
         </Modal.Header>
         <form id="editUser" onSubmit={handleSubmit(_editUser)}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="email">E-mail</label>
-              <input
-                className="text-dark"
-                type="text"
-                id="email"
-                value={editingUser.email}
-                disabled
-              />
-            </EditInput>
 
-            <EditInput>
-              <label htmlFor="edit_name">Nome</label>
-              <input
-                type="text"
-                id="edit_name"
-                value={editName}
-                onChange={(e) => handleEditName(e.target.value)}
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            id="email"
+            label="E-mail"
+            value={editingUser.email}
+            disabled={true}
+          />
 
-            <EditInput>
-              <label htmlFor="edit_birthdate">Data de Nascimento</label>
-              <input
-                id="edit_birthdate"
-                type="date"
-                value={moment(editBirthdate).format("YYYY-MM-DD")}
-                onChange={(e) => handleEditBirthdate(e.target.value)}
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            id="edit_name"
+            label="Nome"
+            value={editName}
+            setValue={(e) => handleEditName(e.target.value)}
+          />
 
-            <EditInput>
-              <label htmlFor="edit_gender">Gênero</label>
-              <Select
-                id="edit_gender"
-                options={genderChoices}
-                onChange={(e) => handleEditGender(e.value)}
-              />
-            </EditInput>
+          <ModalInput
+            type="date"
+            id="edit_birthdate"
+            label="Data de Nascimento"
+            value={moment(editBirthdate).format("YYYY-MM-DD")}
+            setValue={(e) => handleEditBirthdate(e.target.value)}
+          />
 
-            <EditInput>
-              <label htmlFor="edit_race">Raça</label>
-              <Select
-                id="edit_race"
-                options={raceChoices}
-                onChange={(e) => handleEditRace(e.value)}
-              />
-            </EditInput>
+          <ModalInput
+              type="select"
+              label="Gênero"
+              id="edit_gender"
+              placeholder="Selecionar"
+              options={genderChoices}          
+              setValue={(e) => handleEditGender(e.value)}
+            />
+
+          <ModalInput
+              type="select"
+              label="Raça"
+              id="edit_race"
+              placeholder="Selecionar"
+              options={raceChoices}          
+              setValue={(e) => handleEditRace(e.value)}
+            />
 
             <EditCheckbox>
               <label htmlFor="edit_professional">Profissional da Saúde</label>
@@ -293,95 +289,86 @@ const Users = ({
         </Modal.Header>
         <form id="filterUser" onSubmit={handleSubmit(() => getSearch(1))}>
           <Modal.Body>
-            <EditInput>
-              <label htmlFor="email">Email:</label>
-              <input
-                className="text-dark"
-                type="text"
-                id="email"
-                placeholder="Todos os emails"
-                value={filteringUser.email}
-                onChange={(e) => setFilteringUser({ ...filteringUser, email: e.target.value })}
-              />
-            </EditInput>
 
-            <EditInput>
-              <label htmlFor="user_name">Nome:</label>
-              <input
-                className="text-dark"
-                type="text"
-                id="user_name"
-                value={filteringUser.user_name}
-                placeholder="Todos os nomes"
-                onChange={(e) => setFilteringUser({ ...filteringUser, user_name: e.target.value })}
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            label="Email:"
+            id="email"
+            placeholder="Todos os emails"
+            value={filteringUser.email}
+            setValue={(e) => setFilteringUser({ ...filteringUser, email: e.target.value })}
+          />
 
-            <EditInput>
-              <label htmlFor="gender">Gênero:</label>
-              <Select
-                id="gender"
-                placeholder="Todos os gêneros"
-                defaultValue={createDefaultValue(filteringUser.gender)}
-                options={genderChoices}
-                onChange={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
-              />
-            </EditInput>
+          <ModalInput
+            type="text"
+            label="Nome:"
+            id="user_name"
+            placeholder="Todos os nomes"
+            value={filteringUser.user_name}
+            setValue={(e) => setFilteringUser({ ...filteringUser, user_name: e.target.value})}
+          />
 
-            <EditInput>
-              <label htmlFor="race">Raça:</label>
-              <Select
-                id="race"
-                options={raceChoices}
-                defaultValue={createDefaultValue(filteringUser.race)}
-                placeholder="Todas as raças"
-                onChange={(e) => setFilteringUser({ ...filteringUser, race: e.value })}
-              />
-            </EditInput>
+          <ModalInput
+            type="select"
+            label="Gênero:"
+            id="gender"
+            placeholder="Todos os gêneros"
+            value={createDefaultValue(filteringUser.gender)}
+            options={genderChoices}
+            setValue={(e) => setFilteringUser({ ...filteringUser, gender: e.value })}
+          />
 
-            <EditInput>
-              <label htmlFor="country">País:</label>
-              <Select
-                id="country"
-                options={countryChoices}
-                defaultValue={createDefaultValue(filteringUser.country)}
-                placeholder="Todos os países"
-                onChange={e => setFilteringUser({ ...filteringUser, country: e.value })}
-              />
-            </EditInput>
+          <ModalInput
+            type="select"
+            label="Raça:"
+            id="race"
+            placeholder="Todas as raças"
+            value={createDefaultValue(filteringUser.race)}
+            options={raceChoices}
+            setValue={(e) => setFilteringUser({ ...filteringUser, race: e.value })}
+          />
 
-            <EditInput>
-              <label htmlFor="is_professional">É profissional de saúde:</label>
-              <Select
-                id="is_professional"
-                options={[
-                  { key: true, label: "Sim" },
-                  { key: false, label: 'Não' }]}
-                placeholder="Todos os tipos"
-                defaultValue={createDefaultValue(filteringUser.is_professional)}
-                onChange={(e) => setFilteringUser({ ...filteringUser, is_professional: e.key })}
-              />
-            </EditInput>
+          <ModalInput
+            type="select"
+            label="País:"
+            id="country"
+            placeholder="Todos os países"
+            value={createDefaultValue(filteringUser.country)}
+            options={countryChoices}
+            setValue={e => setFilteringUser({ ...filteringUser, country: e.value })}
+          />
+
+          <ModalInput
+            type="select"
+            label="É profissional de saúde:"
+            id="is_professional"
+            placeholder="Todos os tipos"
+            value={createDefaultValue(filteringUser.is_professional)}
+            options={[
+              { key: true, label: "Sim" },
+              { key: false, label: 'Não' }]}
+            setValue={(e) => setFilteringUser({ ...filteringUser, is_professional: e.key })}
+          />
 
             {user.type === "group_manager" ?
-              <EditInput>
-                <label htmlFor="identification_code">Código de identificação:</label>
-                <Select
-                  id="identification_code_suffix"
-                  placeholder="Selecionar comparador"
-                  options={filtersSuffixList}
-                  defaultValue={createDefaultValue(filteringSuffix.identification_code)}
-                  onChange={(e) => setFilteringSuffix({ ...filteringSuffix, identification_code: e.key })}
-                />
-                <input
-                  className="text-dark mt-2"
-                  type="text"
-                  id="identification_code"
-                  value={filteringUser.identification_code}
-                  placeholder="Todos os códigos de identificação"
-                  onChange={(e) => setFilteringUser({ ...filteringUser, identification_code: e.target.value })}
-                />
-              </EditInput> : null
+              <>
+              <ModalInput
+                type="select"
+                label="Código de identificação:"
+                id="identification_code_suffix"
+                placeholder="Selecionar comparador"
+                value={createDefaultValue(filteringSuffix.identification_code)}
+                options={filtersSuffixList}
+                setValue={(e) => setFilteringSuffix({ ...filteringSuffix, identification_code: e.key })}
+              />
+              <ModalInput
+                type="text"
+                id="identification_code"
+                placeholder="Todos os códigos de identificação"
+                value={filteringUser.identification_code}
+                setValue={(e) => setFilteringUser({ ...filteringUser, identification_code: e.target.value})}
+              />
+              </> : null
             }
           </Modal.Body>
 
@@ -402,97 +389,63 @@ const Users = ({
         </Modal.Header>
 
         <Modal.Body>
-          {user.type === 'admin' ?
-            <EditInput>
-              <label>ID</label>
-              <input
-                className="text-dark"
-                type="text"
-                value={userShow.id}
-                disabled
-              />
-            </EditInput>
-          : null}
 
-          <EditInput>
-            <label>Birthdate</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={moment(userShow.birthdate).format('MM/DD/YYYY')}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Aniversário"
+            value={moment(userShow.birthdate).format('MM/DD/YYYY')}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Email</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.email}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Email"
+            value={userShow.email}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Data de criação</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.created_at}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Data de criação"
+            value={userShow.created_at}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Código identificador</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.identification_code}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Código identificador"
+            value={userShow.identification_code}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Gender</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.gender}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Gênero"
+            value={userShow.gender}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Country</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.country}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="País"
+            value={userShow.country}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Race</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.race}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="Raça"
+            value={userShow.race}
+            disabled={true}
+          />
 
-          <EditInput>
-            <label>Is Professional</label>
-            <input
-              className="text-dark"
-              type="text"
-              value={userShow.is_professional}
-              disabled
-            />
-          </EditInput>
+        <ModalInput
+            type="text"
+            label="É profissional de saúde:"
+            value={userShow.is_professional == false ? "Não" : "Sim"}
+            disabled={true}
+          />
+
         </Modal.Body>
 
         <Modal.Footer>

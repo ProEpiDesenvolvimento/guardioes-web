@@ -22,6 +22,8 @@ import {
     Label,
 } from './styles';
 
+import FormInput from 'sharedComponents/FormInput';
+
 const Profile = ({
     token,
     user,
@@ -129,134 +131,120 @@ const Profile = ({
                 </ContainerHeader>
                 <ContainerForm>
                     <form id="editUser" onSubmit={handleSubmit(_editUser)}>
-                        <InputBlock>
-                            <label htmlFor="first_name">Nome</label>
-                            <input
+                            <FormInput
+                                label="Nome"
                                 type="text"
                                 id="first_name"
                                 value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                setValue={(e) => setFirstName(e.target.value)}
+                                isLongInput={true}
                             />
-                        </InputBlock>
 
                         {user.type === "admin" &&
-                            <InputBlock>
-                                <label htmlFor="last_name">Sobrenome</label>
-                                <input
-                                    type="text"
-                                    id="last_name"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="Sobrenome"
+                                type="text"
+                                id="last_name"
+                                value={lastName}
+                                setValue={(e) => setLastName(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
 
-                        <InputBlock>
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
+                            <FormInput
+                                label="Email"
+                                type="text"
                                 id="email"
                                 value={email}
-                                //onChange={(e) => setEmail(e.target.value)}
                                 disabled
+                                isLongInput={true}
                             />
-                        </InputBlock>
 
-                        <InputBlock>
-                            <label htmlFor="change_password">Alterar senha</label>
-                            <input
-                                type="password"
+                            <FormInput
+                                label="Alterar senha"
+                                type="text"
                                 id="change_password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                setValue={(e) => setPassword(e.target.value)}
+                                isLongInput={true}
                             />
-                        </InputBlock>
 
                         {user.type !== "admin" &&
-                            <InputBlock>
-                                <label htmlFor="app_id">App Id</label>
-                                <input
-                                    type="number"
-                                    id="app_id"
-                                    value={appId}
-                                    disabled
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="App Id"
+                                type="text"
+                                id="app_id"
+                                value={appId}
+                                disabled
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "admin" &&
-                            <InputBlock>
-                                <label htmlFor="app_name">App:</label>
-                                <input
-                                    type="text"
-                                    id="app_name"
-                                    value={appName}
-                                    onChange={(e) => setAppName(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="App: "
+                                type="text"
+                                id="app_name"
+                                value={appName}
+                                setValue={(e) => setAppName(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "admin" &&
-                            <InputBlock>
-                                <label htmlFor="app_twitter">App Twitter:</label>
-                                <input
-                                    type="text"
-                                    id="app_twitter"
-                                    value={appTwitter}
-                                    onChange={(e) => setAppTwitter(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="App Twitter: "
+                                type="text"
+                                id="app_twitter"
+                                value={appTwitter}
+                                setValue={(e) => setAppTwitter(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "group_manager" &&
-                            <InputBlock>
-                                <label htmlFor="twitter">Twitter</label>
-                                <input
-                                    type="text"
-                                    id="twitter"
-                                    value={twitter}
-                                    onChange={(e) => setTwitter(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="Twitter"
+                                type="text"
+                                id="twitter"
+                                value={twitter}
+                                setValue={(e) => setTwitter(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "group_manager" &&
-                            <CheckboxInputBlock>
-                                <Label htmlFor="has_id_code">Código de Identificação</Label>
-                                <CheckboxInput
-                                    type="checkbox"
-                                    id="has_id_code"
-                                    checked={hasRequireID}
-                                    onChange={(e) => setHasRequireID(!hasRequireID)}
-                                />
-                            </CheckboxInputBlock>
+                            <FormInput
+                                label="Código de Identificação"
+                                type="checkbox"
+                                id="has_id_code"
+                                ckecked={hasRequireID}
+                                setValue={(e) => setHasRequireID(!hasRequireID)}
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "group_manager" && hasRequireID &&
-                            <InputBlock>
-                                <label htmlFor="id_code_length">Quantidade de caracteres</label>
-                                <input
-                                    type="number"
-                                    id="id_code_length"
-                                    value={idCodeLength}
-                                    min="1"
-                                    onChange={(e) => setIdCodeLength(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="Quantidade de caracteres"
+                                type="text"
+                                id="id_code_length"
+                                value={idCodeLength}
+                                setValue={(e) => setIdCodeLength(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
 
                         {user.type === "group_manager" && hasRequireID &&
-                            <InputBlock>
-                                <label htmlFor="require_id">Nome do código de identificação</label>
-                                <input
-                                    type="string"
-                                    id="require_id"
-                                    value={requireId}
-                                    onChange={(e) => setRequireId(e.target.value)}
-                                />
-                            </InputBlock>
+                            <FormInput
+                                label="Nome do código de identificação"
+                                type="text"
+                                id="require_id"
+                                value={requireId}
+                                setValue={(e) => setRequireId(e.target.value)}
+                                isLongInput={true}
+                            />
                         }
-
                         <SubmitButton type="submit">
                             Salvar
                         </SubmitButton>
