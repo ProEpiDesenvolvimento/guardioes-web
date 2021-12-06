@@ -219,7 +219,7 @@ const Admins = ({ token, user, admins, setAdmins, setToken }) => {
               id="app_id"
               options={apps}
               value={editApp}
-              setValue={(e) => setEditApp(e.target.value)}
+              setValue={(e) => setEditApp(e.value)}
             />
             <ModalInput
               type="checkbox"
