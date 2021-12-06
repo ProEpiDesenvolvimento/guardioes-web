@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { DropdownDiv, DropdownTitle, Header, SelectionDiv } from './styles.js'
+import { DropdownTitle, SelectionDiv } from './styles.js'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem';
 

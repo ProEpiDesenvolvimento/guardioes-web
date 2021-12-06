@@ -104,30 +104,6 @@ export const ButtonName = styled.p`
     color: #000000
 `;
 
-export const SendButton = styled.button`
-    display: inline-block;
-    position: relative;
-    background: #5DD39E;
-    width: 150px;
-    height: 40px;
-    margin: 3vh 0 0 15vh;
-    border-radius: 15px;
-    border: 1px;
-    text-decoration: none;
-    cursor: pointer;
-`;
-
-export const SendButtonName = styled.p`
-    text-align: center;
-    text-decoration: none;
-    margin: 9px;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 17px;
-    line-height: 24px;
-    color: #FFFFFF;
-`;
-
 export const QuestionPopupOrgType = styled(Popup)`
     width: 15%;
     height: 5%;

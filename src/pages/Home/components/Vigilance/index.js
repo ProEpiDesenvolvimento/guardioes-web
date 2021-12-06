@@ -266,6 +266,8 @@ const Vigilance = ({
     }
   };
 
+  const casesNum = new Intl.NumberFormat('pt-BR').format(totalItems)
+
   return (
     <Container>
       {/* -------- SINDROMES VIGILANCIA -------- */}

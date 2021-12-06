@@ -11,7 +11,6 @@ import Select from 'react-select';
 import axios from 'axios';
 
 import getAllGroups from './services/getAllGroups'
-import getGroup from './services/getGroup'
 import createGroup from './services/createGroup'
 import deleteGroup from './services/deleteGroup'
 import getChildrenGroups from './services/getChildrenGroups'

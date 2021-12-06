@@ -7,9 +7,7 @@ import {
   EditCheckboxInput,
   SearchView,
   PaginationDiv,
-  Search,
   SearchInputDiv,
-  SearchInput,
   SearchBtn
 } from './styles';
 import './styles.css';
