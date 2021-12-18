@@ -47,6 +47,7 @@ const Users = ({
   const [editBirthdate, setEditBirthdate] = useState(new Date());
   const [editGender, setEditGender] = useState("");
   const [editRace, setEditRace] = useState("");
+  const [editCountry, setEditCountry] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
   const { handleSubmit } = useForm();
   const [userList, setUserList] = useState([]);
@@ -146,7 +147,8 @@ const Users = ({
         "birthdate": editBirthdate,
         "gender": editGender,
         "race": editRace,
-        "is_professional": editProfessional
+        "is_professional": editProfessional,
+        "country": editCountry
       }
     };
     await editUser(editingUser.id, data, token);
@@ -160,6 +162,7 @@ const Users = ({
     setEditBirthdate(content.birthdate);
     setEditGender(content.gender);
     setEditRace(content.race);
+    setEditCountry(content.country)
     setEditProfessional(content.is_professional);
     setModalEdit(!modalEdit);
   }
@@ -244,14 +247,24 @@ const Users = ({
           />
 
           <ModalInput
-              type="select"
-              label="Gênero"
-              id="edit_gender"
-              placeholder={editGender}
-              options={genderChoices}          
-              value={editGender} 
-              setValue={(e) => handleEditGender(e.value)}
-            />
+            type="select"
+            label="Gênero"
+            id="edit_gender"
+            placeholder={editGender}
+            options={genderChoices}          
+            value={editGender} 
+            setValue={(e) => handleEditGender(e.value)}
+          />
+
+          <ModalInput
+            label="País"
+            type="select"
+            id="country"
+            placeholder={editCountry}
+            value={editCountry}
+            setValue={(e) => setEditCountry(e.value)}
+            options={countryChoices}
+          />
 
           <ModalInput
               type="select"
