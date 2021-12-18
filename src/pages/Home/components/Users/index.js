@@ -247,8 +247,9 @@ const Users = ({
               type="select"
               label="Gênero"
               id="edit_gender"
-              placeholder="Selecionar"
+              placeholder={editGender}
               options={genderChoices}          
+              value={editGender} 
               setValue={(e) => handleEditGender(e.value)}
             />
 
@@ -256,8 +257,9 @@ const Users = ({
               type="select"
               label="Raça"
               id="edit_race"
-              placeholder="Selecionar"
-              options={raceChoices}          
+              placeholder={editRace}
+              options={raceChoices}     
+              value={editRace}     
               setValue={(e) => handleEditRace(e.value)}
             />
 
@@ -266,7 +268,7 @@ const Users = ({
               <EditCheckboxInput
                 id="edit_professional"
                 type="checkbox"
-                value={editProfessional}
+                checked={editProfessional}
                 onChange={() => handleEditProfessional(!editProfessional)}
               />
             </EditCheckbox>
