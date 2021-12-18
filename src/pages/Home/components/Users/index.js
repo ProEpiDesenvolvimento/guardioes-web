@@ -406,60 +406,60 @@ const Users = ({
         <Modal.Body>
 
         <ModalInput
-            type="text"
-            label="Aniversário"
-            value={moment(userShow.birthdate).format('MM/DD/YYYY')}
-            disabled={true}
-          />
+          type="text"
+          label="Aniversário"
+          value={moment(userShow.birthdate).format('MM/DD/YYYY')}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Email"
-            value={userShow.email}
-            disabled={true}
-          />
+          type="text"
+          label="Email"
+          value={userShow.email}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Data de criação"
-            value={userShow.created_at}
-            disabled={true}
-          />
+          type="text"
+          label="Data de criação"
+          value={moment(userShow.created_at).format("DD-MM-YYYY")}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Código identificador"
-            value={userShow.identification_code}
-            disabled={true}
-          />
+          type="text"
+          label="Código identificador"
+          value={userShow.identification_code}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Gênero"
-            value={userShow.gender}
-            disabled={true}
-          />
+          type="text"
+          label="Gênero"
+          value={userShow.gender}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="País"
-            value={userShow.country}
-            disabled={true}
-          />
+          type="text"
+          label="País"
+          value={userShow.country}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Raça"
-            value={userShow.race}
-            disabled={true}
-          />
+          type="text"
+          label="Raça"
+          value={userShow.race}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="É profissional de saúde:"
-            value={userShow.is_professional == false ? "Não" : "Sim"}
-            disabled={true}
-          />
+          type="text"
+          label="É profissional de saúde:"
+          value={userShow.is_professional == false ? "Não" : "Sim"}
+          disabled={true}
+        />
 
         </Modal.Body>
 
