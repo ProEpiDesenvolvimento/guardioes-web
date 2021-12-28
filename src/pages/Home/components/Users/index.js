@@ -399,18 +399,11 @@ const Users = ({
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            User Information
+            Informações do Usuário
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-
-        <ModalInput
-          type="text"
-          label="Aniversário"
-          value={moment(userShow.birthdate).format('MM/DD/YYYY')}
-          disabled={true}
-        />
 
         <ModalInput
           type="text"
@@ -421,15 +414,15 @@ const Users = ({
 
         <ModalInput
           type="text"
-          label="Data de criação"
-          value={moment(userShow.created_at).format("DD-MM-YYYY")}
+          label="Nome"
+          value={userShow.user_name}
           disabled={true}
         />
 
         <ModalInput
           type="text"
-          label="Código identificador"
-          value={userShow.identification_code}
+          label="Data de Nascimento"
+          value={moment(userShow.birthdate).format('DD/MM/YYYY')}
           disabled={true}
         />
 
@@ -457,7 +450,21 @@ const Users = ({
         <ModalInput
           type="text"
           label="É profissional de saúde:"
-          value={userShow.is_professional == false ? "Não" : "Sim"}
+          value={userShow.is_professional ? "Sim" : "Não"}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="Código de Identificação"
+          value={userShow.identification_code}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="Data de criação"
+          value={moment(userShow.created_at).format("DD-MM-YYYY")}
           disabled={true}
         />
 
