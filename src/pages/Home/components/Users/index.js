@@ -47,6 +47,7 @@ const Users = ({
   const [editBirthdate, setEditBirthdate] = useState(new Date());
   const [editGender, setEditGender] = useState("");
   const [editRace, setEditRace] = useState("");
+  const [editCountry, setEditCountry] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
   const { handleSubmit } = useForm();
   const [userList, setUserList] = useState([]);
@@ -146,7 +147,8 @@ const Users = ({
         "birthdate": editBirthdate,
         "gender": editGender,
         "race": editRace,
-        "is_professional": editProfessional
+        "is_professional": editProfessional,
+        "country": editCountry
       }
     };
     await editUser(editingUser.id, data, token);
@@ -160,6 +162,7 @@ const Users = ({
     setEditBirthdate(content.birthdate);
     setEditGender(content.gender);
     setEditRace(content.race);
+    setEditCountry(content.country)
     setEditProfessional(content.is_professional);
     setModalEdit(!modalEdit);
   }
@@ -244,20 +247,32 @@ const Users = ({
           />
 
           <ModalInput
-              type="select"
-              label="Gênero"
-              id="edit_gender"
-              placeholder="Selecionar"
-              options={genderChoices}          
-              setValue={(e) => handleEditGender(e.value)}
-            />
+            type="select"
+            label="Gênero"
+            id="edit_gender"
+            placeholder={editGender}
+            options={genderChoices}          
+            value={editGender} 
+            setValue={(e) => handleEditGender(e.value)}
+          />
+
+          <ModalInput
+            label="País"
+            type="select"
+            id="country"
+            placeholder={editCountry}
+            value={editCountry}
+            setValue={(e) => setEditCountry(e.value)}
+            options={countryChoices}
+          />
 
           <ModalInput
               type="select"
               label="Raça"
               id="edit_race"
-              placeholder="Selecionar"
-              options={raceChoices}          
+              placeholder={editRace}
+              options={raceChoices}     
+              value={editRace}     
               setValue={(e) => handleEditRace(e.value)}
             />
 
@@ -266,7 +281,7 @@ const Users = ({
               <EditCheckboxInput
                 id="edit_professional"
                 type="checkbox"
-                value={editProfessional}
+                checked={editProfessional}
                 onChange={() => handleEditProfessional(!editProfessional)}
               />
             </EditCheckbox>
@@ -384,67 +399,74 @@ const Users = ({
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            User Information
+            Informações do Usuário
           </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
 
         <ModalInput
-            type="text"
-            label="Aniversário"
-            value={moment(userShow.birthdate).format('MM/DD/YYYY')}
-            disabled={true}
-          />
+          type="text"
+          label="Email"
+          value={userShow.email}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Email"
-            value={userShow.email}
-            disabled={true}
-          />
+          type="text"
+          label="Nome"
+          value={userShow.user_name}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Data de criação"
-            value={userShow.created_at}
-            disabled={true}
-          />
+          type="text"
+          label="Data de Nascimento"
+          value={moment(userShow.birthdate).format('DD/MM/YYYY')}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Código identificador"
-            value={userShow.identification_code}
-            disabled={true}
-          />
+          type="text"
+          label="Gênero"
+          value={userShow.gender}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Gênero"
-            value={userShow.gender}
-            disabled={true}
-          />
+          type="text"
+          label="País"
+          value={userShow.country}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="País"
-            value={userShow.country}
-            disabled={true}
-          />
+          type="text"
+          label="Raça"
+          value={userShow.race}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="Raça"
-            value={userShow.race}
-            disabled={true}
-          />
+          type="text"
+          label="É profissional de saúde:"
+          value={userShow.is_professional ? "Sim" : "Não"}
+          disabled={true}
+        />
 
         <ModalInput
-            type="text"
-            label="É profissional de saúde:"
-            value={userShow.is_professional == false ? "Não" : "Sim"}
-            disabled={true}
-          />
+          type="text"
+          label="Código de Identificação"
+          value={userShow.identification_code}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="Data de criação"
+          value={moment(userShow.created_at).format("DD-MM-YYYY")}
+          disabled={true}
+        />
 
         </Modal.Body>
 
