@@ -55,7 +55,19 @@ const ContentBox = ({
             setEditingContent={setEditingContent}
             token={token}
           /> :
-          <Loading isLoading={true} />
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>{object} vazio</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td>Não há nada encontrado em {object}.</td>
+                </tr>
+            </tbody>
+          </Table>
+          //<Loading isLoading={true} />
         :
           <Table responsive>
             <thead>
