@@ -34,13 +34,14 @@ const Rumors = ({token}) => {
       async function _getRumors() {
         try {
           const response = await getRumors(token);
+          if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
           setRumors(response);
         } catch (err) {
           alert("Algo deu errado. Tente novamente em instantes!");
         }
       }
       _getRumors();
-    }, [rumors])
+    }, [])
 
 
   const handleShow = (rumor) => {
@@ -65,11 +66,17 @@ const Rumors = ({token}) => {
       "confirmed_deaths": editConfirmedDeaths,
     };
     await updateRumor(rumorEditing.id, data, token);
+    const response = await getRumors(token);
+    if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
+    setRumors(response);
     setModalEdit(false);
   }
 
   const _deleteRumor = async (id) => {
     await deleteRumor(id, token);
+    const response = await getRumors(token);
+    if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
+    setRumors(response);
   }
 
 

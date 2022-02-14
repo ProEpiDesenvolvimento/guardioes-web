@@ -15,7 +15,7 @@ const editRumor = async (id, data, token) => {
     })
     .catch((e) => {
       if (e.response.data.error === "You are not authorized to access this page.") {
-        alert("Você não tem permissão para editar Usuários.");
+        alert("Você não tem permissão para editar Rumores.");
       } else {
         alert('Algo deu errado, tente novamente!');
       }

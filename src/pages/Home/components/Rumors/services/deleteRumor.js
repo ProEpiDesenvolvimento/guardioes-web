@@ -9,12 +9,12 @@ const deleteRumor = async (id, token) => api
     )
   .then(async (res) => {
     const { data } = res;
-    alert("Conteudo deletado")
+    alert("Rumor deletado")
     return data
   })
   .catch((e) => {
     if (e.response.data.error === "You are not authorized to access this page.") {
-      alert("Você não tem permissão para deletar Usuários.");
+      alert("Você não tem permissão para deletar Rumores.");
     }
     console.log(e);
   });
