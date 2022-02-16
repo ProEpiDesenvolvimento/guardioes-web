@@ -12,6 +12,7 @@ import deleteRumor from "./services/deleteRumor";
 import { useForm } from "react-hook-form";
 
 const fields = [
+    { key: "id", value: "ID" },
     { key: "title", value: "Título" },
     { key: "confirmed_cases", value: "Casos confirmados" },
   ];
@@ -29,17 +30,17 @@ const Rumors = ({token}) => {
     const [editConfirmedCases, setEditConfirmedCases] = useState(0);
     const [editConfirmedDeaths, setEditConfirmedDeaths] = useState(0);
 
+    async function _getRumors() {
+      try {
+        const response = await getRumors(token);
+        if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
+        setRumors(response);
+      } catch (err) {
+        alert("Algo deu errado. Tente novamente em instantes!");
+      }
+    }
 
     useEffect(() => {
-      async function _getRumors() {
-        try {
-          const response = await getRumors(token);
-          if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
-          setRumors(response);
-        } catch (err) {
-          alert("Algo deu errado. Tente novamente em instantes!");
-        }
-      }
       _getRumors();
     }, [])
 
@@ -66,17 +67,13 @@ const Rumors = ({token}) => {
       "confirmed_deaths": editConfirmedDeaths,
     };
     await updateRumor(rumorEditing.id, data, token);
-    const response = await getRumors(token);
-    if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
-    setRumors(response);
+    _getRumors()
     setModalEdit(false);
   }
 
   const _deleteRumor = async (id) => {
     await deleteRumor(id, token);
-    const response = await getRumors(token);
-    if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
-    setRumors(response);
+    _getRumors()
   }
 
 
@@ -156,6 +153,13 @@ const Rumors = ({token}) => {
         </Modal.Header>
 
         <Modal.Body>
+
+        <ModalInput
+          type="text"
+          label="ID"
+          value={rumorShow.id}
+          disabled={true}
+        />
 
         <ModalInput
           type="text"
