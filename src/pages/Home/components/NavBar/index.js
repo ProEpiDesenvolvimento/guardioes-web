@@ -84,6 +84,10 @@ const NavBar = ({
     {
       key: "godata",
       value: "GoData"
+    },
+    {
+      key: "rumors",
+      value: "Rumores"
     }
   ];
 
@@ -104,11 +108,11 @@ const NavBar = ({
 
     if (user.type === "admin" && user.is_god) {
       categories = getCategories(
-        ["dashboards", "admins", "apps", "managers", "city_managers", "group_managers", "symptoms", "syndromes", "contents", "users", "profile"]
+        ["dashboards", "admins", "apps", "managers", "city_managers", "group_managers", "symptoms", "syndromes", "contents","rumors", "users", "profile"]
       );
     } else if (user.type === "admin" && !user.is_god) {
       categories = getCategories(
-        ["dashboards", "managers", "city_managers", "group_managers", "symptoms", "syndromes", "contents", "users", "profile"]
+        ["dashboards", "managers", "city_managers", "group_managers", "symptoms", "syndromes", "contents", "users","rumors", "profile"]
       );
     } else if (user.type === "manager") {
       categories = getCategories(

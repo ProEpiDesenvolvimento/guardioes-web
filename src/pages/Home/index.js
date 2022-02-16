@@ -23,6 +23,7 @@ import Syndromes from './components/Syndromes';
 import Admins from './components/Admins';
 import Vigilance from './components/Vigilance';
 import Profile from './components/Profile'
+import Rumors from './components/Rumors'
 import GoData from './components/GoData';
 import { connect } from 'react-redux';
 import {
@@ -125,6 +126,10 @@ const Home = ({
       {
         key: "vigilance",
         value: Vigilance
+      },
+      {
+        key: "rumors",
+        value: Rumors
       },
       {
         key: "godata",
