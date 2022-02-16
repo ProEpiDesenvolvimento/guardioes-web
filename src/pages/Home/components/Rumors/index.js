@@ -34,7 +34,7 @@ const Rumors = ({token}) => {
       try {
         const response = await getRumors(token);
         if (!response.rumors || response.rumors.length === 0) { response.rumors = null; }
-        setRumors(response);
+        setRumors(response.rumors);
       } catch (err) {
         alert("Algo deu errado. Tente novamente em instantes!");
       }
