@@ -61,30 +61,6 @@ export const Inputs = styled.div`
   flex-flow: row wrap;
 `;
 
-export const InputBlock = styled.div`
-  width: 225px;
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  font-size: 20;
-  color: #348EAC;
-  text-shadow: 2px 5px 10px rgba(0,0,0,0.125);
-  margin-bottom: 1rem;
-  margin-right: 50px;
-`;
-
-export const Input = styled.input`
-  width: 100%;
-  background-color: white;
-  color: black;
-  border: 2px solid #348EAC;
-  border-radius: 5px;
-  height: 2.2rem;
-  cursor: text;
-  transition: opacity 0.2s;
-  padding-left: 10px;
-`;
-
 export const SubmitButton = styled.button`
   width: 100px;
   background-color: #5DD39E;
@@ -98,31 +74,6 @@ export const SubmitButton = styled.button`
 
   &:hover {
     opacity: 0.7;
-  }
-`;
-
-export const EditInput = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  font-size: 24;
-  color: #348EAC;
-  margin-bottom: 1rem;
-`;
-
-export const TextArea = styled.textarea`
-  resize: none;
-  border: solid 1px #CCCCCC;
-  border-radius: 5px;
-  padding: 5px 5px 10px 10px;
-
-  &:focus {
-    border: solid 2px #007bff;
-    padding: 4px 4px 9px 9px;
-  }
-
-  &:disabled {
-    background: #f8f9fa;
   }
 `;
 
