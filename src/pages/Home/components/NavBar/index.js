@@ -7,9 +7,6 @@ import {
   OptionName
 } from "./styles";
 import { connect } from "react-redux";
-import {
-  setAdminCategories
-} from "actions/";
 import { bindActionCreators } from "redux";
 
 const NavBar = ({ 
@@ -169,13 +166,10 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   token: state.user.token,
   user: state.user.user,
-  admin_categories: state.user.admin_categories
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(
-  {
-    setAdminCategories
-  },
+  {},
   dispatch,
 );
 
