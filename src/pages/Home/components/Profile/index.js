@@ -97,7 +97,7 @@ const Profile = ({
         setAppId(user.app_id);
         setTwitter(user.twitter);
         setRequireId(user.require_id);
-        setHasRequireID(user.require_id === null? false : true);
+        setHasRequireID(!!user.require_id);
         setIdCodeLength(user.id_code_length);
     }
 
@@ -218,7 +218,7 @@ const Profile = ({
                                 label="Código de Identificação"
                                 type="checkbox"
                                 id="has_id_code"
-                                ckecked={hasRequireID}
+                                checked={hasRequireID}
                                 setValue={(e) => setHasRequireID(!hasRequireID)}
                                 isLongInput={true}
                             />

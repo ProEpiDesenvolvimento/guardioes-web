@@ -1,10 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from "react-redux";
+import { googleMapsApiKey } from 'services/urls';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Modal from 'react-bootstrap/Modal';
 import ModalInput from '../../../../sharedComponents/ModalInput';
 import moment from 'moment';
 
-import {SubmitButton} from "./styles"
+import { SubmitButton } from "./styles"
+import { setRumors, setToken } from "actions";
+import { bindActionCreators } from "redux";
 import ContentBox from '../../components/ContentBox';
 import getRumors from "./services/getRumors";
 import updateRumor from "./services/editRumor";
@@ -12,15 +16,25 @@ import deleteRumor from "./services/deleteRumor";
 import { useForm } from "react-hook-form";
 
 const fields = [
-    { key: "id", value: "ID" },
-    { key: "title", value: "Título" },
-    { key: "confirmed_cases", value: "Casos confirmados" },
-  ];
+  { key: "id", value: "ID" },
+  { key: "title", value: "Título" },
+  { key: "confirmed_cases", value: "Casos confirmados" },
+];
 
-const Rumors = ({token}) => {
+const initialRegion = {
+  lat: -15.8194724,
+  lng: -47.924146,
+};
+
+const Rumors = ({ rumors, token, setToken, setRumors }) => {
     const { handleSubmit } = useForm();
+    const { isLoaded } = useJsApiLoader({
+      id: 'google-map-script',
+      googleMapsApiKey,
+    });
+    const [map, setMap] = useState(null);
+    const [coords, setCoords] = useState({ lat: 0, lng: 0 });
 
-    const [rumors, setRumors] = useState([]); 
     const [rumorShow, setRumorShow] = useState({});
     const [rumorEditing, setRumorEditing] = useState({});
     const [modalShow, setModalShow] = useState(false);
@@ -29,6 +43,23 @@ const Rumors = ({token}) => {
     const [editDescription, setEditDescription] = useState('');
     const [editConfirmedCases, setEditConfirmedCases] = useState(0);
     const [editConfirmedDeaths, setEditConfirmedDeaths] = useState(0);
+
+    useEffect(() => {
+      if (map) {
+        map.setCenter(coords);
+        map.setZoom(15);
+      }
+    }, [map, coords])
+
+    const onLoad = useCallback((map) => {
+      const bounds = new window.google.maps.LatLngBounds(initialRegion);
+      map.fitBounds(bounds);
+      setMap(map)
+    }, [])
+
+    const onUnmount = useCallback(() => {
+      setMap(null)
+    }, [])
 
     async function _getRumors() {
       try {
@@ -47,6 +78,11 @@ const Rumors = ({token}) => {
 
   const handleShow = (rumor) => {
     setRumorShow(rumor);
+    const newCoords = {
+      lat: rumor.latitude ? rumor.latitude : 0,
+      lng: rumor.longitude ? rumor.longitude : 0
+    }
+    setCoords(newCoords);
     setModalShow(!modalShow);
   }
 
@@ -122,15 +158,22 @@ const Rumors = ({token}) => {
 
         <ModalInput
           type="text"
+          label="Rumor informado por:"
+          value={`${rumorEditing.user?.user_name} <${rumorShow.user?.email}>`}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
           label="Rumor informado em:"
-          value={moment(rumorEditing.created_at).format('DD/MM/YYYY')}
+          value={moment(rumorEditing.created_at).format('DD/MM/YYYY HH:mm')}
           disabled={true}
         />
 
         <ModalInput
           type="text"
           label="Última atualização em:"
-          value={moment(rumorEditing.updated_at).format('DD/MM/YYYY')}
+          value={moment(rumorEditing.updated_at).format('DD/MM/YYYY HH:mm')}
           disabled={true}
         />
 
@@ -191,18 +234,48 @@ const Rumors = ({token}) => {
 
         <ModalInput
           type="text"
+          label="Rumor informado por:"
+          value={`${rumorShow.user?.user_name} <${rumorShow.user?.email}>`}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
           label="Rumor informado em:"
-          value={moment(rumorShow.created_at).format('DD/MM/YYYY')}
+          value={moment(rumorShow.created_at).format('DD/MM/YYYY HH:mm')}
           disabled={true}
         />
 
         <ModalInput
           type="text"
           label="Última atualização em:"
-          value={moment(rumorShow.updated_at).format('DD/MM/YYYY')}
+          value={moment(rumorShow.updated_at).format('DD/MM/YYYY HH:mm')}
           disabled={true}
         />
 
+        {isLoaded && 
+          (
+            <GoogleMap
+              key={rumorShow.id}
+              mapContainerStyle={{
+                width: '100%',
+                height: '350px'
+              }}
+              center={coords}
+              zoom={15}
+              onLoad={onLoad}
+              onUnmount={onUnmount}
+            >
+              <Marker
+                key={rumorShow.id}
+                position={coords}
+                onClick={() => {
+                  window.open(map.mapUrl, '_blank');
+                }}
+              />
+            </GoogleMap>
+          )
+        }
         </Modal.Body>
 
         <Modal.Footer>
@@ -221,15 +294,23 @@ const Rumors = ({token}) => {
           handleEdit={handleEdit}
         />
 
-        </>
+    </>
   )
 }
 
 const mapStateToProps = (state) => ({
-    token: state.user.token,
-  });
+  token: state.user.token,
+  user: state.user.user,
+  rumors: state.user.rumors,
+});
 
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      setRumors,
+      setToken,
+    },
+    dispatch
+  );
 
-export default connect(
-    mapStateToProps,
-  )(Rumors);
+export default connect(mapStateToProps, mapDispatchToProps)(Rumors);

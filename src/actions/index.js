@@ -3,10 +3,10 @@ import {
   SET_TOKEN,
   SET_USER,
   SET_EMAIL,
-  SET_ADMIN_CATEGORIES,
   SET_APPS,
   SET_SYMPTOMS,
   SET_CONTENTS,
+  SET_RUMORS,
   SET_CITY_MANAGERS,
   SET_GROUP_MANAGERS,
   SET_GROUP_MANAGER_TEAMS,
@@ -28,13 +28,13 @@ export const setEmail = (payload) => ({ type: SET_EMAIL, payload });
 
 export const setUser = (payload) => ({ type: SET_USER, payload });
 
-export const setAdminCategories = (payload) => ({ type: SET_ADMIN_CATEGORIES, payload });
-
 export const setApps = (payload) => ({ type: SET_APPS, payload });
 
 export const setSymptoms = (payload) => ({ type: SET_SYMPTOMS, payload });
 
 export const setContents = (payload) => ({ type: SET_CONTENTS, payload });
+
+export const setRumors = (payload) => ({ type: SET_RUMORS, payload });
 
 export const setCityManagers = (payload) => ({ type: SET_CITY_MANAGERS, payload });
 

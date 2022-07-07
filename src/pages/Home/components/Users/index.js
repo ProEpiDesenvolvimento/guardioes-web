@@ -242,7 +242,7 @@ const Users = ({
             type="date"
             id="edit_birthdate"
             label="Data de Nascimento"
-            value={moment(editBirthdate).format("YYYY-MM-DD")}
+            value={moment(editBirthdate).format("DD/MM/YYYY")}
             setValue={(e) => handleEditBirthdate(e.target.value)}
           />
 
@@ -464,7 +464,7 @@ const Users = ({
         <ModalInput
           type="text"
           label="Data de criação"
-          value={moment(userShow.created_at).format("DD-MM-YYYY")}
+          value={moment(userShow.created_at).format("DD/MM/YYYY")}
           disabled={true}
         />
 
