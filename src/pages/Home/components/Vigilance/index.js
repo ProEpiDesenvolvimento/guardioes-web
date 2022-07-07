@@ -18,6 +18,7 @@ import { Table } from "react-bootstrap";
 import TableCases from "./TableCases";
 import TableComponent from "./Table";
 import Pagination from "react-js-pagination";
+import moment from "moment";
 
 import { connect } from "react-redux";
 import {
@@ -102,6 +103,8 @@ const Vigilance = ({
   };
 
   const handleCasesPageChange = async (page) => {
+    setCases([]);
+    setFilteredCases([]);
     setActivePage(page);
     const surveys = await getSurveysGroupCases(token, page);
     if (!surveys.errors) {
@@ -143,6 +146,7 @@ const Vigilance = ({
         ...survey,
         syndrome_name: syndromesObj[survey.syndrome_id].description,
         user_name: survey.user.user_name,
+        bad_since: moment(survey.bad_since).format("DD/MM/YYYY"),
       });
     });
     filterGroupCases(aux_cases);
@@ -514,7 +518,7 @@ const Vigilance = ({
       <ContainerContentBox className="shadow-sm" component_height={"35rem"}>
         <ContentBoxHeader>
           <ContentBoxTitle>
-            Casos - {filteredCases ? filteredCases.length : 0}
+            Casos - {casesNum}
           </ContentBoxTitle>
         </ContentBoxHeader>
         <SubmitButton
