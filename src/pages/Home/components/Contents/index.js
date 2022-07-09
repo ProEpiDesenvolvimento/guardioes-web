@@ -78,6 +78,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
         icon,
         content_type,
         source_link,
+        group_manager_id: user.type === "group_manager" ? user.id : null,
         app_id: user.app_id,
       },
     };

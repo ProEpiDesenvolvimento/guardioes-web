@@ -2,9 +2,9 @@ import {
 	SET_EMAIL,
 	SET_TOKEN,
 	SET_USER,
-	SET_ADMIN_CATEGORIES,
 	SET_APPS,
 	SET_CONTENTS,
+	SET_RUMORS,
 	SET_SYMPTOMS,
 	SET_CITY_MANAGERS,
 	SET_GROUP_MANAGERS,
@@ -23,20 +23,9 @@ const initialState = {
 	email: "",
 	token: "",
 	user: {},
-	admin_categories: {
-		config_app: false,
-		manager: false,
-		users: false,
-		symptoms: false,
-		syndromes: false,
-		contents: false,
-		dashboard: false,
-		group_managers: false,
-		group_manager_teams: [],
-		groups: false
-	},
 	apps: [],
 	contents: [],
+	rumors: [],
 	symptoms: [],
 	managers: [],
 	city_managers: [],
@@ -68,11 +57,6 @@ const User = (state = initialState, action) => {
 				...state,
 				token: action.payload,
 			};
-		case SET_ADMIN_CATEGORIES:
-			return {
-				...state,
-				admin_categories: action.payload,
-			};
 		case SET_APPS:
 			return {
 				...state,
@@ -82,6 +66,11 @@ const User = (state = initialState, action) => {
 			return {
 				...state,
 				contents: action.payload
+			};
+		case SET_RUMORS:
+			return {
+				...state,
+				rumors: action.payload
 			};
 		case SET_SYMPTOMS:
 			return {

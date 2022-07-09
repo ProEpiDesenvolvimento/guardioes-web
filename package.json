@@ -5,6 +5,7 @@
   "dependencies": {
     "@agney/react-loading": "^0.1.2",
     "@material-ui/core": "^3.9.4",
+    "@react-google-maps/api": "^2.12.0",
     "axios": "^0.23.0",
     "bootstrap": "^4.5.0",
     "jquery": "^3.5.1",
