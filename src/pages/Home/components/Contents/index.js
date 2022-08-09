@@ -32,6 +32,10 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
       key: "title",
       value: "Title",
     },
+    {
+      key: "group_manager_id",
+      value: "ID Instituição",
+    },
   ];
 
   const { handleSubmit } = useForm();
