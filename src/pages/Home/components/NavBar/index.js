@@ -56,7 +56,7 @@ const NavBar = ({
     },
     {
       key: "contents",
-      value: "Conteúdos"
+      value: "Dicas"
     },
     {
       key: "forms",

@@ -9,13 +9,13 @@ const editContent = async (id, data, token) => {
         }
     )
         .then(async (res) => {
-            alert('Conteúdo Editado!');
+            alert('Dica Editado!');
             const response = { data: res.data };
             return response;
         })
         .catch((e) => {
             if (e.response.data.error === "You are not authorized to access this page.") {
-                alert("Você não tem permissão para editar Conteúdos.");
+                alert("Você não tem permissão para editar Dicas.");
             } else {
                 alert('Algo deu errado, tente novamente!');
             }

@@ -28,7 +28,7 @@ const Sidebar = () => {
         </OptionButton>
         <OptionButton>
           <OptionName>
-            Conteúdos
+            Dicas
           </OptionName>
         </OptionButton>
       </OptionsSection>

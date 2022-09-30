@@ -15,7 +15,7 @@ const createContent = async (data, token) =>
     })
     .catch((e) => {
       if (e.response.data.error === "You are not authorized to access this page.") {
-        alert("Você não tem permissão para criar Conteúdos.");
+        alert("Você não tem permissão para criar Dicas.");
       } else {
         alert('Algo deu errado, tente novamente!');
       }      
