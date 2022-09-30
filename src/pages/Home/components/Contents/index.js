@@ -32,6 +32,10 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
       key: "title",
       value: "Title",
     },
+    {
+      key: "group_manager_id",
+      value: "ID Instituição",
+    },
   ];
 
   const { handleSubmit } = useForm();
@@ -153,7 +157,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
     <>
       <Modal show={modalShow} onHide={() => setModalShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Informações do Conteúdo</Modal.Title>
+          <Modal.Title>Informações da Dica</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -210,7 +214,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
 
       <Modal show={modalEdit} onHide={() => setModalEdit(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Editar Conteúdo</Modal.Title>
+          <Modal.Title>Editar Dica</Modal.Title>
         </Modal.Header>
         <form id="editContent" onSubmit={handleSubmit(_editContent)}>
           <Modal.Body>
@@ -260,7 +264,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
 
       <Container>
         <ContentBox
-          title="Conteúdos"
+          title="Dicas"
           fields={fields}
           delete_function={_deleteContent}
           contents={contents}
@@ -271,7 +275,7 @@ const Contents = ({ contents, token, setToken, user, setContents }) => {
 
         <AddContentContainer className="shadow-sm">
           <ContainerHeader>
-            <ContainerTitle>Adicionar Conteúdo</ContainerTitle>
+            <ContainerTitle>Adicionar Dica</ContainerTitle>
           </ContainerHeader>
           <ContainerForm>
             <form id="addContent" onSubmit={handleSubmit(_createContent)}>

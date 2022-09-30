@@ -9,7 +9,7 @@ export const modelsCheckboxes = [
         value: "citymanager"
     },
     {
-        label: "Gerir Conteúdos",
+        label: "Gerir Dicas",
         value: "content"
     },
     {

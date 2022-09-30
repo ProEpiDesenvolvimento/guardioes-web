@@ -1,5 +1,5 @@
 # Pull official base image
-FROM node:10-alpine
+FROM node:14
 
 # Set working directory
 WORKDIR /code
