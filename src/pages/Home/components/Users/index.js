@@ -355,7 +355,7 @@ const Users = ({
 
           <ModalInput
             type="select"
-            label="É profissional de saúde:"
+            label="É profissional de saúde"
             id="is_professional"
             placeholder="Todos os tipos"
             value={createDefaultValue(filteringUser.is_professional)}
@@ -449,7 +449,7 @@ const Users = ({
 
         <ModalInput
           type="text"
-          label="É profissional de saúde:"
+          label="É profissional de saúde"
           value={userShow.is_professional ? "Sim" : "Não"}
           disabled={true}
         />

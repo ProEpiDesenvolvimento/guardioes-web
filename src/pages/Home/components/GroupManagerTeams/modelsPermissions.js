@@ -13,7 +13,7 @@ export const modelsCheckboxes = [
     value: "dashboard"
   },
   {
-    label: "Gerir casos da vigilância",
+    label: "Gerir Casos da Vigilância Ativa",
     value: "vigilance"
   },
 ];
