@@ -455,7 +455,7 @@ const Vigilance = ({
           <ModalInput
             label="Data de Nascimento"
             type="text"
-            value={caseShow.user ? caseShow.user.birthdate.split("T", 1) : ""}
+            value={caseShow.user ? moment(caseShow.user.birthdate).format("DD/MM/YYYY") : ""}
             disabled={true}
           />
           <ModalInput
