@@ -12,7 +12,7 @@
     "lottie-react-web": "^2.2.2",
     "material-ui": "^0.20.2",
     "material-ui-country-flags": "^3.0.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "query-string": "^6.13.4",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.1.0",
