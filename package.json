@@ -32,7 +32,7 @@
     "redux-logger": "^3.0.6",
     "redux-react-session": "^2.6.1",
     "semantic-ui-react": "^0.88.2",
-    "serve": "^11.3.2",
+    "serve": "^14.1.2",
     "styled-components": "^4.4.1"
   },
   "scripts": {
