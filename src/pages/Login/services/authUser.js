@@ -1,6 +1,6 @@
 import api from 'services/api';
 
-const requestLogin = async (email, password, userType) =>
+const authUser = async (email, password, userType) =>
     api.post(`/${userType}/login`, { [userType]: { email, password } })
         .then(async (res) => {
             const response = { authorization: res.headers.authorization, user: res.data };
@@ -11,4 +11,4 @@ const requestLogin = async (email, password, userType) =>
             console.log(e);
             return { authorization: "", user: {} }
         });
-export default requestLogin;
+export default authUser;

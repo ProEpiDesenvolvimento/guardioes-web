@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-import { stateOptions } from "utils/Brasil";
+import { stateOptions } from "utils/brasil";
 import { cnpjMask, phoneMask } from "utils/mask";
 
 import {

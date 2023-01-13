@@ -9,7 +9,7 @@ import deleteCityManager from "./services/deleteCityManager";
 import editCityManager from "./services/editCityManager";
 
 import { countryChoices } from "../../../../utils/selector";
-import { stateOptions, getCity } from "../../../../utils/Brasil";
+import { stateOptions, getCity } from "../../../../utils/brasil";
 
 import {
   Container,

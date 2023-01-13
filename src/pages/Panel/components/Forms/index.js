@@ -42,7 +42,7 @@ import {
 import "./styles.css";
 import TableDragAndDrop from "../ContentBox/TableDragAndDrop";
 import { Table } from "react-bootstrap";
-import deleteIcon from "../../../Home/components/assets/trash-solid.svg";
+import deleteIcon from "../../../Panel/components/assets/trash-solid.svg";
 
 import Loading from "sharedComponents/Loading";
 import { useForm } from "react-hook-form";

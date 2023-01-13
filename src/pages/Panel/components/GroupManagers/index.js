@@ -9,8 +9,8 @@ import deleteGroupManager from "./services/deleteGroupManager";
 import editGroupManager from "./services/editGroupManager";
 
 import getRootGroup from "../Groups/services/getRootGroup";
-import getChildrenGroups from "./../Groups/services/getChildrenGroups";
-import createGroup from "./../Groups/services/createGroup";
+import getChildrenGroups from "../Groups/services/getChildrenGroups";
+import createGroup from "../Groups/services/createGroup";
 
 import {
   Container,

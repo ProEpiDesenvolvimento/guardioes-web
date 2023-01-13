@@ -6,10 +6,10 @@ import {
   ContentBoxTableHeader,
   ContentBoxTableIcon,
  } from './styles';
-import editIcon from 'pages/Home/components/assets/edit-solid.svg';
-import deleteIcon from 'pages/Home/components/assets/trash-solid.svg';
-import confirmIcon from 'pages/Home/components/assets/confirm.svg';
-import cancelIcon from 'pages/Home/components/assets/cancel.svg';
+import editIcon from 'pages/Panel/components/assets/edit-solid.svg';
+import deleteIcon from 'pages/Panel/components/assets/trash-solid.svg';
+import confirmIcon from 'pages/Panel/components/assets/confirm.svg';
+import cancelIcon from 'pages/Panel/components/assets/cancel.svg';
 
 const TableComponent = ({
   contents,

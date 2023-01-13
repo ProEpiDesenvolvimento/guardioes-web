@@ -9,7 +9,7 @@ import moment from 'moment';
 import { SubmitButton } from "./styles"
 import { setRumors, setToken } from "actions";
 import { bindActionCreators } from "redux";
-import ContentBox from '../../components/ContentBox';
+import ContentBox from '../ContentBox';
 import getRumors from "./services/getRumors";
 import updateRumor from "./services/editRumor";
 import deleteRumor from "./services/deleteRumor";
