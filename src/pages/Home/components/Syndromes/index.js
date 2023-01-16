@@ -275,7 +275,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
             </ContainerInput>
             <ModalInput
               label="Sintomas"
-              type="multiselect"
+              type="multi-select"
               options={options}
               value={editSymptoms}
               setValue={setEditSymptoms}
@@ -312,7 +312,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
         <Modal.Body>
           <ModalInput
             label="Sintomas"
-            type="multiselect"
+            type="multi-select"
             id="symptoms"
             options={options}
             value={selected}

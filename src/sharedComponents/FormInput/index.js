@@ -53,7 +53,7 @@ const FormInput = ({
         );
       case "textarea":
         return <TextArea id={id} value={value} onChange={setValue} rows="2" />;
-      case "imageselect":
+      case "image-select":
         return (
           <ImageSelector>
             {options.map((icon, index) => (
