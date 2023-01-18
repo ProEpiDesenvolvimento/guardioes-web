@@ -48,12 +48,12 @@ const ChangePwd = ({
         const auxUser = await sessionService.loadUser()
         setToken(auxSession.token)
         setUser(auxUser)
-      } catch (err) {
+      } catch {
         history.push("/login")
       }
     }
     _loadSession();
-  }, [setToken, setUser, token]);
+  }, [setToken, setUser, token, history]);
 
   const handleResetPassword = async (e) => {
     if (password === "") {

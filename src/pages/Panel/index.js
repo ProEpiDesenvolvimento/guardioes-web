@@ -54,7 +54,7 @@ const Panel = ({
         if (auxUser.first_access) {
           history.push("/change")
         }
-      } catch (err) {
+      } catch {
         history.push("/login")
       }
     }

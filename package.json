@@ -47,6 +47,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "react-error-overlay": "6.0.9",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "jest": "^27.3.1"

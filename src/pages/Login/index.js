@@ -5,7 +5,7 @@ import {
   setEmail, setToken, setUser
 } from 'actions/';
 import { bindActionCreators } from 'redux';
-import requestLogin from './services/requestLogin'
+import authUser from './services/authUser'
 import { sessionService } from 'redux-react-session'
 import {
   Container,
@@ -37,9 +37,10 @@ const Login = ({
   const [option, setOption] = useState('admin');
   const [password, setPassword] = useState('');
 
-  const makeUserLogin = async (data) => {
-    const response = await requestLogin(email, password, option)
+  const makeUserLogin = async (_data) => {
+    const response = await authUser(email, password, option)
     const responseUser = response.user[option]
+
     if (response.authorization !== '') {
       setToken(response.authorization);
       setUser({
@@ -56,7 +57,6 @@ const Login = ({
               history.push('/panel')
             })
         })
-      
     }
   }
 
@@ -70,8 +70,10 @@ const Login = ({
         await sessionService.loadSession()
         await sessionService.loadUser()
         history.push('/panel')
-      } catch (e) {
-        console.log(e)
+      } catch {
+        await sessionService.deleteSession()
+        await sessionService.deleteUser()
+        setUser({})
       }
     }
     _loadSession();

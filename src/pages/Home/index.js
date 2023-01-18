@@ -35,10 +35,12 @@ const Home = (token) => {
         setToken(auxSession.token)
         setUser(auxUser)
         history.push("/panel")
-      } catch (e) {}
+      } catch (e) {
+        console.log(e)
+      }
     }
     _loadSession();
-  }, [setToken, setUser, token, history]);
+  }, [token, history]);
 
   return (
     <>
