@@ -17,7 +17,7 @@ const validateSession = async (session) => {
   const user = await sessionService.loadUser();
   const response = await getUser(user.id, user.type, session.token);
   
-  if (response.errors) {
+  if (response.errors && response.errors.request?.status === 401) {
     window.location.reload();
     return false;
   }
