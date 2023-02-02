@@ -8,7 +8,7 @@ import {
   ImgContent,
 } from "./styles";
 import Select from "react-select";
-import MultiSelect from "react-multi-select-component";
+import { MultiSelect } from "react-multi-select-component";
 
 const ModalInput = ({
   type,
@@ -110,7 +110,7 @@ const ModalInput = ({
             </label>
           </div>
         ));
-      case "imageselect":
+      case "image-select":
         return (
           <ImageSelector>
             {disabled
@@ -140,7 +140,7 @@ const ModalInput = ({
                 ))}
           </ImageSelector>
         );
-      case "multiselect":
+      case "multi-select":
         return (
           <MultiSelect
             options={options}

@@ -3,7 +3,7 @@ import {configure, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { describe } from 'jest-circus';
 import ModalInput from '../sharedComponents/ModalInput';
-import MultiSelect from "react-multi-select-component";
+import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
 import {
     TextArea,
@@ -128,26 +128,26 @@ describe('Testing the ModalInput ', () => {
             expect(wrapper.find(Select).prop('isDisabled')).toBe(props.disabled)
         });}
 
-    else if(props.type === 'multiselect') {
-        it('testing if there is a Select in ModalInput - case multiselect', () => {
+    else if(props.type === 'multi-select') {
+        it('testing if there is a Select in ModalInput - case multi-select', () => {
             expect(wrapper.find(MultiSelect).length).toBe(1);
          ;
         });
     
-        it('testing if the id is the same as the assigned id - case multiselect', () => {
+        it('testing if the id is the same as the assigned id - case multi-select', () => {
             expect(wrapper.find(MultiSelect).prop('id')).toBe(props.id)
         });
     
-        it('testing if the value is the same as the assigned value - case multiselect', () => {
+        it('testing if the value is the same as the assigned value - case multi-select', () => {
             expect(wrapper.find(MultiSelect).prop('value')).toBe(props.value)
         });
     
-        it('test if there is the onChange method on the ModalInput and if it takes user input - case multiselect', () => {
+        it('test if there is the onChange method on the ModalInput and if it takes user input - case multi-select', () => {
             expect(wrapper.find(MultiSelect).prop('onChange')).toBeDefined();
             expect(wrapper.find(MultiSelect).prop('onChange')).toBe(props.setValue)
         });
 
-        it('testing if the options is the same as the assigned options - case multiselect', () => {
+        it('testing if the options is the same as the assigned options - case multi-select', () => {
             expect(wrapper.find(MultiSelect).prop('options')).toBe(props.options)
         });}
 

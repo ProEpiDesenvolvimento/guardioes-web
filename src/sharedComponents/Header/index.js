@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Container,
   Logo,
@@ -30,15 +30,11 @@ const Header = ({
     "group_manager_team": "Equipe de Instituição",
   }
 
-  useEffect(() => {
-    // console.log("USER", user)
-  }, [user])
-
   const logout = async () => {
     if (authenticated === true ) {
       await sessionService.deleteSession()
       await sessionService.deleteUser()
-      setUser("")
+      setUser({})
     }
     history.push("/login")
   }

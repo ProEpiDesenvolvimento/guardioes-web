@@ -38,7 +38,7 @@ export const Content = styled.div`
   margin-left: 10%;
 `;
 
-export const Email = styled.text`
+export const Email = styled.span`
   color: #5DD39E;
   font-weight: bold;
   font-size: 14;
@@ -51,7 +51,7 @@ export const Body = styled.div`
     width: 100vw;
 `;
 
-export const Text = styled.div`
+export const Text = styled.span`
   color: #524948;
   font-size: 14px;
 `;
@@ -82,7 +82,7 @@ export const SocialMedia = styled.button`
   }
 `;
 
-export const SocialMediaText = styled.text`
+export const SocialMediaText = styled.span`
   font-size: 12px;
   font-weight: 300;
 `;
