@@ -59,7 +59,7 @@ const FormInput = ({
             {options.map((icon, index) => (
               <ImageContainer key={index}>
                 <ImgContent
-                  src={require(`../../${icon.uri}`)}
+                  src={require(`../../${icon.uri}`).default}
                   width={80}
                   onClick={() => setValue(icon.value)}
                   selected={isSelected(icon.value)}
