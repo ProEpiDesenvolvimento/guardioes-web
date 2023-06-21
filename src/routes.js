@@ -15,7 +15,7 @@ export default function Routes({token}) {
     <BrowserRouter>
       <Switch>
         <Route path='/' exact component={Home} />
-        <Route onEnter={sessionService.checkAuth} path='/panel' exact component={Panel} />
+        <Route onEnter={sessionService.checkAuth} path='/panel/:page' exact component={Panel} />
         <Route path='/statistics' exact component={Statistics} />
         <Route path='/login' exact component={Login} />
         <Route path='/reset' exact component={ResetPwd} />

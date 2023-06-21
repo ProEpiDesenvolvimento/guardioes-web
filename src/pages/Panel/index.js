@@ -33,7 +33,7 @@ import {
 import { bindActionCreators } from 'redux';
 import { sessionService } from 'redux-react-session';
 import Users from './components/Users';
-import { useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 const Panel = ({
   token,
@@ -41,6 +41,7 @@ const Panel = ({
   user,
   setUser
 }) => {
+  const { page } = useParams()
   const history = useHistory()
 
   useEffect(() => {
@@ -140,6 +141,23 @@ const Panel = ({
   const setComponentCallback = (component) => {
     setComponent({ key: component.key, value: component.value });
   }
+
+  useEffect(() => {
+    if (page) {
+      components.forEach((comp) => {
+        if (comp.key === page) {
+          setComponent({ key: comp.key, value: comp.value })
+        }
+      })
+      console.log('att')
+      console.log(page)
+    }
+  }, [components, page])
+
+  useEffect(() => {
+    history.push(component.key)
+    console.log(component)
+  }, [component, history])
 
   useEffect(() => {	
     loadComponents();
