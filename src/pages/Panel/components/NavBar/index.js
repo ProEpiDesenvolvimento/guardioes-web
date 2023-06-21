@@ -63,6 +63,10 @@ const NavBar = ({
       value: "Biossegurança"
     },
     {
+      key: "events",
+      value: "Eventos"
+    },
+    {
       key: "users",
       value: "Usuários"
     },
@@ -121,7 +125,7 @@ const NavBar = ({
       );
     } else if (user.type === "group_manager") {
       categories = getCategories(
-        ["dashboards", "group_manager_teams", "groups", "contents", "forms", "users", "vigilance", "godata", "profile"]
+        ["dashboards", "group_manager_teams", "groups", "contents", "forms", "events", "users", "vigilance", "godata", "profile"]
       );
     } else if (user.type === "group_manager_team") {
       categories = getCategories(

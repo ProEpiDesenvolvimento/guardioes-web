@@ -24,6 +24,7 @@ import Admins from './components/Admins';
 import Vigilance from './components/Vigilance';
 import Profile from './components/Profile'
 import Rumors from './components/Rumors'
+import Events from './components/Events';
 import GoData from './components/GoData';
 import { connect } from 'react-redux';
 import {
@@ -113,6 +114,10 @@ const Panel = ({
       {
         key: "forms",
         value: Forms
+      },
+      {
+        key: "events",
+        value: Events
       },
       {
         key: "users",
