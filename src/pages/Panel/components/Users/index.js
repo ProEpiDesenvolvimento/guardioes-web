@@ -242,7 +242,7 @@ const Users = ({
             type="date"
             id="edit_birthdate"
             label="Data de Nascimento"
-            value={moment(editBirthdate).format("DD/MM/YYYY")}
+            value={moment(editBirthdate).format("YYYY-MM-DD")}
             setValue={(e) => handleEditBirthdate(e.target.value)}
           />
 
@@ -257,6 +257,16 @@ const Users = ({
           />
 
           <ModalInput
+            type="select"
+            label="Raça"
+            id="edit_race"
+            placeholder={editRace}
+            options={raceChoices}     
+            value={editRace}     
+            setValue={(e) => handleEditRace(e.value)}
+          />
+
+          <ModalInput
             label="País"
             type="select"
             id="country"
@@ -266,18 +276,8 @@ const Users = ({
             options={countryChoices}
           />
 
-          <ModalInput
-              type="select"
-              label="Raça"
-              id="edit_race"
-              placeholder={editRace}
-              options={raceChoices}     
-              value={editRace}     
-              setValue={(e) => handleEditRace(e.value)}
-            />
-
             <EditCheckbox>
-              <label htmlFor="edit_professional">Profissional da Saúde</label>
+              <label htmlFor="edit_professional">Líder comunitário</label>
               <EditCheckboxInput
                 id="edit_professional"
                 type="checkbox"
@@ -355,7 +355,7 @@ const Users = ({
 
           <ModalInput
             type="select"
-            label="É profissional de saúde"
+            label="É líder comunitário:"
             id="is_professional"
             placeholder="Todos os tipos"
             value={createDefaultValue(filteringUser.is_professional)}
@@ -435,13 +435,6 @@ const Users = ({
 
         <ModalInput
           type="text"
-          label="País"
-          value={userShow.country}
-          disabled={true}
-        />
-
-        <ModalInput
-          type="text"
           label="Raça"
           value={userShow.race}
           disabled={true}
@@ -449,14 +442,21 @@ const Users = ({
 
         <ModalInput
           type="text"
-          label="É profissional de saúde"
+          label="País"
+          value={userShow.country}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="É líder comunitário"
           value={userShow.is_professional ? "Sim" : "Não"}
           disabled={true}
         />
 
         <ModalInput
           type="text"
-          label="Código de Identificação"
+          label="Código de identificação"
           value={userShow.identification_code}
           disabled={true}
         />
