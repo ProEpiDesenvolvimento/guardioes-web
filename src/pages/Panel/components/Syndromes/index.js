@@ -231,7 +231,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
               rows="1"
             />
             <ModalInput
-              label="Período de dias"
+              label="Duração em dias"
               type="number"
               id="edit_days"
               value={editDays}
@@ -239,7 +239,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
               min="1"
             />
             <ModalInput
-              label="Porcentagem limite para match com essa síndrome"
+              label="Porcentagem mínima para dar match (%)"
               type="number"
               id="edit_days"
               value={editThresholdScore}
@@ -265,7 +265,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 rows="1"
               />
               <ModalInput
-                label="Mensagem de hospitalização"
+                label="Mensagem de ir ao hospital"
                 isSubtitle={true}
                 type="textarea"
                 value={editMessageHospital}
@@ -285,7 +285,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
               <ContainerInput className="bg-light p-2" key={s.value}>
                 <h6>{s.label}</h6>
                 <ModalInput
-                  label="Porcentagem"
+                  label="Peso do sintoma (%)"
                   type="number"
                   id={`edit_percentage_${s.value}`}
                   min={0}
@@ -322,7 +322,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
             <ContainerInput className="bg-light p-2" key={s.value}>
               <h6>{s.label}</h6>
               <ModalInput
-                label="Porcentagem"
+                label="Peso do sintoma (%)"
                 type="number"
                 id={`percentage_${s.value}`}
                 min={0}
@@ -368,13 +368,13 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
             disabled={true}
           />
           <ModalInput
-            label="Período de dias"
+            label="Duração em dias"
             type="text"
             value={syndromeShow.days_period}
             disabled={true}
           />
           <ModalInput
-            label="Pontuação limite para match com a sindrome em %"
+            label="Porcentagem mínima para dar match (%)"
             type="text"
             value={syndromeShow.threshold_score}
             disabled={true}
@@ -399,7 +399,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 disabled={true}
               />
               <ModalInput
-                label="Mensagem de hospitalização"
+                label="Mensagem de ir ao hospital"
                 type="textarea"
                 value={syndromeShow.message.go_to_hospital_message}
                 isSubtitle={true}
@@ -414,7 +414,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 <ContainerInput className="bg-light p-2" key={symptom.id}>
                   <h6>{symptom.description}</h6>
                   <ModalInput
-                    label="Porcentagem"
+                    label="Peso do sintoma (%)"
                     type="text"
                     id={`show_percentage_${symptom.id}`}
                     value={Math.round(symptom.percentage * 100)}
@@ -466,7 +466,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 isLongInput={true}
               />
               <FormInput
-                label="Período de dias"
+                label="Duração em dias"
                 type="number"
                 id="days_period"
                 value={syndromeDays}
@@ -475,7 +475,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 isLongInput={true}
               />
               <FormInput
-                label="Porcentagem limite para match com essa síndrome"
+                label="Porcentagem mínima para dar match (%)"
                 type="number"
                 id="days_period"
                 value={syndromeThresholdScore}
@@ -502,7 +502,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 isSubtitle={true}
               />
               <FormInput
-                label="Mensagem de hospitalização"
+                label="Mensagem de ir ao hospital"
                 type="textarea"
                 value={syndromeMessageHospital}
                 setValue={(e) => setSyndromeMessageHospital(e.target.value)}
