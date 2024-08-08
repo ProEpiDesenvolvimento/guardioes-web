@@ -49,6 +49,8 @@ const Users = ({
   const [editRace, setEditRace] = useState("");
   const [editCountry, setEditCountry] = useState("");
   const [editProfessional, setEditProfessional] = useState(false);
+  const [editVBE, setEditVBE] = useState(false);
+  const [editTraining, setEditTraining] = useState(false);
   const { handleSubmit } = useForm();
   const [userList, setUserList] = useState([]);
   const [activePage, setActivePage] = useState(1);
@@ -148,6 +150,8 @@ const Users = ({
         "gender": editGender,
         "race": editRace,
         "is_professional": editProfessional,
+        "is_vbe": editVBE,
+        "in_training": editTraining,
         "country": editCountry
       }
     };
@@ -185,6 +189,14 @@ const Users = ({
 
   const handleEditProfessional = (value) => {
     setEditProfessional(value);
+  }
+
+  const handleEditVBE = (value) => {
+    setEditVBE(value);
+  }
+
+  const handleEditTraining = (value) => {
+    setEditTraining(value);
   }
 
   const cancelFilter = () => {
@@ -283,6 +295,26 @@ const Users = ({
                 type="checkbox"
                 checked={editProfessional}
                 onChange={() => handleEditProfessional(!editProfessional)}
+              />
+            </EditCheckbox>
+
+            <EditCheckbox>
+              <label htmlFor="edit_vbe">Faz parte do VBE</label>
+              <EditCheckboxInput
+                id="edit_vbe"
+                type="checkbox"
+                checked={editVBE}
+                onChange={() => handleEditVBE(!editVBE)}
+              />
+            </EditCheckbox>
+
+            <EditCheckbox>
+              <label htmlFor="edit_vbe">Está em treinamento</label>
+              <EditCheckboxInput
+                id="edit_vbe"
+                type="checkbox"
+                checked={editTraining}
+                onChange={() => handleEditTraining(!editTraining)}
               />
             </EditCheckbox>
           </Modal.Body>
@@ -451,6 +483,20 @@ const Users = ({
           type="text"
           label="É líder comunitário"
           value={userShow.is_professional ? "Sim" : "Não"}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="Faz parte do VBE"
+          value={userShow.is_vbe ? "Sim" : "Não"}
+          disabled={true}
+        />
+
+        <ModalInput
+          type="text"
+          label="Está em treinamento"
+          value={userShow.in_training ? "Sim" : "Não"}
           disabled={true}
         />
 
