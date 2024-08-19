@@ -168,6 +168,8 @@ const Users = ({
     setEditRace(content.race);
     setEditCountry(content.country)
     setEditProfessional(content.is_professional);
+    setEditVBE(content.is_vbe);
+    setEditTraining(content.in_training);
     setModalEdit(!modalEdit);
   }
 
