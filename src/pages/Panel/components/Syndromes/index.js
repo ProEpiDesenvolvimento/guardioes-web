@@ -146,6 +146,11 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
     _getSyndromes(token);
   };
 
+  const handleEditThresholdScore = (value) => {
+    const newValue = parseFloat(value) / 100;
+    setEditThresholdScore(newValue);
+  };
+
   const handlePercentage = (value, symptom) => {
     const newValue = parseFloat(value) / 100;
     setSelected(
@@ -239,16 +244,17 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
               min="1"
             />
             <ModalInput
-              label="Porcentagem mínima para dar match (%)"
+              label="Pontuação mínima para dar match (%)"
               type="number"
               id="edit_days"
-              value={editThresholdScore}
-              setValue={(e) => setEditThresholdScore(e.target.value)}
+              value={Math.round(editThresholdScore * 100)}
+              setValue={(e) => handleEditThresholdScore(e.target.value)}
               min="0"
               max="100"
+              step={1}
             />
             <ContainerInput className="bg-light p-2">
-              <Label>Mensagem</Label>
+              <Label>Mensagem no app</Label>
               <ModalInput
                 label="Título"
                 isSubtitle={true}
@@ -374,15 +380,15 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
             disabled={true}
           />
           <ModalInput
-            label="Porcentagem mínima para dar match (%)"
+            label="Pontuação mínima para dar match (%)"
             type="text"
-            value={syndromeShow.threshold_score}
+            value={Math.round(syndromeShow.threshold_score * 100)}
             disabled={true}
           />
 
           {syndromeShow.message ? (
             <ContainerInput className="bg-light p-2">
-              <Label>Mensagem</Label>
+              <Label>Mensagem no app</Label>
               <ModalInput
                 label="Título"
                 type="text"
@@ -409,20 +415,23 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
             </ContainerInput>
           ) : null}
 
-          {syndromeShow.symptoms
-            ? syndromeShow.symptoms.map((symptom) => (
-                <ContainerInput className="bg-light p-2" key={symptom.id}>
-                  <h6>{symptom.description}</h6>
-                  <ModalInput
-                    label="Peso do sintoma (%)"
-                    type="text"
-                    id={`show_percentage_${symptom.id}`}
-                    value={Math.round(symptom.percentage * 100)}
-                    disabled={true}
-                  />
-                </ContainerInput>
-              ))
-            : null}
+          <ContainerInput className="bg-light p-2">
+            <Label>Sintomas</Label>
+            {syndromeShow.symptoms
+              ? syndromeShow.symptoms.map((symptom) => (
+                  <div key={symptom.id}>
+                    <h6>{symptom.description}</h6>
+                    <ModalInput
+                      label="Peso do sintoma (%)"
+                      type="text"
+                      id={`show_percentage_${symptom.id}`}
+                      value={Math.round(symptom.percentage * 100)}
+                      disabled={true}
+                    />
+                  </div>
+                ))
+              : null}
+          </ContainerInput>
         </Modal.Body>
 
         <Modal.Footer>
@@ -475,7 +484,7 @@ const Syndromes = ({ token, user, syndromes, setSyndromes, setToken }) => {
                 isLongInput={true}
               />
               <FormInput
-                label="Porcentagem mínima para dar match (%)"
+                label="Pontuação mínima para dar match (%)"
                 type="number"
                 id="days_period"
                 value={syndromeThresholdScore}
