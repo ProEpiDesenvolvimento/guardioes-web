@@ -1,71 +1,145 @@
-# Guardiões da Saúde Painel
+# Painel Guardiões da Saúde
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A parte web do projeto é onde ocorre o gerenciamento do aplicativo e análise dos dados obtidos. É possível ver vários gráficos e informações melhor organizadas a fim de facilitar o processo da vigilância ativa/participativa.
+Bem-vindo ao repositório do Painel do aplicativo mobile **[Guardiões Da Saúde](https://github.com/proepidesenvolvimento/guardioes-app)**.
 
-## Tecnologias
+Esse painel é a interface web do projeto que permite o gerenciamento dos dados exibidos no aplicativo.
+Com ele, é possível visualizar gráficos, relatórios e informações organizadas para facilitar o processo de **vigilância ativa/participativa**.
 
-Usamos no Painel:
+Para saber mais sobre o projeto, visite nossa página oficial **[clicando aqui](https://proepidesenvolvimento.github.io/guardioes-api/)**.
 
-- [Node.js](https://nodejs.org/en/)
-- [NPM](https://www.npmjs.com/)
-- [React](https://pt-br.reactjs.org/)
+---
 
-## Como rodar o Painel
+## Tecnologias Utilizadas
 
-### Levantar o ambiente apenas com o Painel
+As principais tecnologias utilizadas neste projeto são:
 
-1. Rode o seguinte comando para instalar as dependências.
+- **[Node.js](https://nodejs.org/en/):** Ambiente de execução para JavaScript no lado do servidor.
+- **[NPM](https://www.npmjs.com/):** Gerenciador de pacotes para o Node.js.
+- **[React](https://pt-br.reactjs.org/):** Biblioteca para construção de interfaces de usuário.
 
-```shell
+---
+
+## Configuração do Ambiente de Desenvolvimento
+
+### Pré-requisitos
+
+Antes de começar, certifique-se de que os seguintes softwares estão instalados em sua máquina:
+
+1. **[Node.js](https://nodejs.org/en/):** Certifique-se de usar a versão **16.20.0**.
+2. **[Docker](https://www.docker.com/):** Necessário para levantar o Metabase.
+3. **NPM:** Instalado automaticamente junto com o Node.js.
+
+---
+
+### Levantando o Ambiente
+
+#### Apenas o Painel
+
+Levante apenas o painel para desenvolver no código.
+
+1. **Instale as dependências:**
+
+Este comando instalará todas as bibliotecas necessárias para rodar o painel:
+
+```bash
 npm install
 ```
 
-2. O próximo comando é para subir o site localmente:
+2. Inicie o servidor de desenvolvimento:
 
-```shell
+Use o comando a seguir para rodar o painel localmente:
+
+```
 npm start
 ```
 
-Para conseguir fazer login, acessar os dados e gerir sua própria versão do aplicativo, levante a [API](https://github.com/proepidesenvolvimento/guardioes-api).
+#### Painel e Metabase
 
-## Erros
+Levante ambos se a intenção for acessar as estatísticas e dados do Metabase.
 
-### Versão do NPM e do Node:
+1. **Build do projeto:**
 
-Antes de fazer a instalação tenha certeza que o seu node e o npm estejam atualizado, e que sejam compatíveis entre sí. Neste [link](https://nodejs.org/pt-br/download/releases/) Você poderá checar as versões de cada npm para cada node. Essas versões caso não estejam certas podem gerar conflitos.
+Este comando instalará todas as dependências e criará o build:
 
-### NPM install:
-
-Pode dar erro logo quando se roda o comando npm install e nesse caso uma possível solução é rodar os seguintes comandos:
-
-```Shell
-sudo rm -rf node_modules
-npm cache clean --force
+```bash
+docker-compose build
 ```
 
-Verifique também se seu usuário possui permissão de admininstrador. Após isso repita o processo do início.
+2. Levante o painel e Metabase:
 
-## Como contribuir
+```bash
+docker-compose up
+```
 
-Ficaremos muito felizes de receber e incorporar suas contribuições. Tem algumas informações adicionais sobre o estilo do código e a documentação.
+Acesse o painel:
+O painel estará disponível no navegador em http://localhost:3000.
 
-Em geral o processo é bem simples:
+Para utilizar as funcionalidades do painel, você precisará levantar também a API via **[guardioes-api](https://proepidesenvolvimento.github.io/guardioes-api/)**.
 
-- Crie uma issue descrevendo uma feature que você queira trabalhar (ou olhe as issues com o label help-wanted e good-first-issue)
-- Escreva seu código, testes e documentação
-- Abra um pull request descrevendo as suas alterações propostas
-- Seu pull request será revisado por um dos mantenedores, que pode levantar questões para você sobre eventuais mudanças necessárias ou questões.
+## Solução de Problemas
 
-## Como conseguir ajuda
+Erros Comuns
 
-Caso seja dúvida técnica sobre a _stack_ do projeto, siga os passos descritos acima de como executar em modo desenvolvimento. Caso a duvida persista ou seja sobre outro assunto, abra uma _issue_ com uma **TAG** no nome `[duvida]` que tentaremos responder o mais rápido possível.
+1. Versões do Node.js e NPM  
+   Problema: Conflitos entre versões podem causar erros durante a instalação de dependências.
 
-Em caso de dúvidas em relação às tecnologias que utilizamos, sugerimos as suas próprias documentações e fóruns. Porém, sempre estamos abertos para ajudar, então comente a dificuldade que está passando na _issue_ que está resolvendo que iremos auxiliar.
+   Solução:
+   Verifique as versões instaladas:
 
-## License & copyright
+   ```
+   node -v
+   npm -v
+   ```
 
-ProEpi, Associação Brasileira de Profissionais de Epidemiologia de Campo
+   Compare com as versões suportadas no link oficial de releases.
+   Atualize ou faça downgrade para versões compatíveis, se necessário.
 
+2. Erro ao Instalar Dependências (npm install)  
+   Problema: Pode ocorrer erro ao executar npm install devido a problemas de cache ou permissões.
+
+   Solução: Execute os seguintes comandos para resolver:
+
+   ```
+   sudo rm -rf node_modules
+   npm cache clean --force
+   ```
+
+   Após isso, reinstale as dependências:
+
+   ```
+   npm install
+   ```
+
+   Certifique-se de que seu usuário tem permissões de administrador.
+
+3. Erro ao Logar  
+   Problema: Falhas ao logar no painel podem estar relacionadas à configuração incorreta do arquivo urls.js ou à falta da API.
+
+   Solução:
+   Verifique se o arquivo urls.js está configurado corretamente.
+   Certifique-se de que a API está levantada e acessível.
+
+## Testes Automatizados
+
+Para garantir a estabilidade e a qualidade do código, você pode executar os testes do projeto:
+
+Execute todos os testes com o comando:
+
+```
+npm test
+```
+
+Para rodar testes de um arquivo específico:
+
+```
+npm test -- [caminho_do_arquivo]
+```
+
+## Licença
+
+ProEpi, Associação Brasileira de Profissionais de Epidemiologia de Campo  
 Licensed under the [Apache License 2.0](LICENSE.md).
+
+Se precisar de ajuda, abra uma issue no repositório ou entre em contato com a equipe de desenvolvimento!
